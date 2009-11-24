@@ -12,20 +12,12 @@ class LanguageList {
     
         // Intercept method that starts with find.
         if (name.startsWith("find")) {
-            // Check if method exists for class.
-            def method = LanguageList.metaClass.getMetaMethod(name, null)
-            if (method) {
-                method.invoke(this, name, args)
-                
-            // No method found so we write the implementation here.
-            } else {
-                def result = list.find { it == name[4..-1] }
-                // Add new method to class with metaClass.
-                LanguageList.metaClass."$name" = { Object[] varArgs ->
-                    result + "[cache]" 
-                }
-                result
+            def result = list.find { it == name[4..-1] }
+            // Add new method to class with metaClass.
+            LanguageList.metaClass."$name" = { Object[] varArgs ->
+                result + "[cache]" 
             }
+            result
         } else {
             throw new MissingMethodException(name, this.class, args)
         }
