@@ -4,3 +4,6 @@ The Groovy Goodness series is [a series of blog entries](http://mrhaki.blogspot.
 
 The directory `Blog/Posts` contains directories for each blog entry. The sample Groovy files are placed inside those directories.
 
+# Author and Origin
+
+The samples are written by [mrhaki](http://www.mrhaki.com) who's real name is Hubert Klein Ikkink. The samples are published at [GitHub:mrhaki/Groovy-Goodness](http://github.com/mrhaki/Groovy-Groodness).
