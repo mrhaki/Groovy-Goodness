@@ -12,8 +12,8 @@ list.rightShift 'two'
 assert 3 == list.size()
 assert ['one', 'three', 'four'] == list
 
-// Operator overloading in action: rightShift is &gt;&gt;
-list &gt;&gt; 'one'
+// Operator overloading in action: rightShift is >>
+list >> 'one'
 assert 2 == list.size()
 assert ['three', 'four'] == list
 
