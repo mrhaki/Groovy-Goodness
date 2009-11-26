@@ -6,5 +6,5 @@ def txtFiles = new FileNameFinder().getFileNames(groovyHome, '**/*.txt' /* inclu
 assert new File(groovyHome, 'README.txt').absolutePath in txtFiles
 
 // Find files with regular expressions.
-def icoFiles = new FileNameByRegexFinder(groovyHome, /.*\.ico$/)
+def icoFiles = new FileNameByRegexFinder().getFileNames(groovyHome, /.*\.ico$/)
 assert new File(groovyHome, 'html/groovy-jdk/groovy.ico').absolutePath in icoFiles
