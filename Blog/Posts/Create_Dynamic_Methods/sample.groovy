@@ -2,22 +2,25 @@
 class LanguageList {
     // Simple list with three String values.
     def list = ['Java', 'Groovy', 'Scala']
+
+    // Set metaClass property to ExpandoMetaClass instance.
+    LanguageList() {
+        def mc = new ExpandoMetaClass(LanguageList, false, true)
+        mc.initialize()
+        this.metaClass = mc
+    }
     
     // Override for methodMissing.
     // If the given method name starts with find we try to search
     // for the String following find... in the list.
     // If the method doesn't exist for this class, we add it to 
     // the metaClass property, so next time the method is there.
-    def methodMissing(String name, args) {
-    
-        // Intercept method that starts with find.
-        if (name.startsWith("find")) {
+    def methodMissing(String name, Object args) {
+        if (name.startsWith('find')) {
             def result = list.find { it == name[4..-1] }
             // Add new method to class with metaClass.
-            LanguageList.metaClass."$name" = { Object[] varArgs ->
-                result + "[cache]" 
-            }
-            result
+            this.metaClass."$name" = {-> result + "[cache]" }
+            result    
         } else {
             throw new MissingMethodException(name, this.class, args)
         }
