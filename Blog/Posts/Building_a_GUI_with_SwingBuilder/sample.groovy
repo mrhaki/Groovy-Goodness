@@ -11,7 +11,8 @@ class Address {
 
 def address = new Address(street: 'Evergreen Terrace', number: '742', city: 'Springfield')
 
-SwingBuilder.build {  // static build method makes sure UI is build on Event Dispatch Thread.
+def swingBuilder = new SwingBuilder()
+swingBuilder.edt {  // edt method makes sure UI is build on Event Dispatch Thread.
     lookAndFeel 'nimbus'  // Simple change in look and feel.
     frame(title: 'Address', size: [350, 230], 
             show: true, locationRelativeTo: null, 
