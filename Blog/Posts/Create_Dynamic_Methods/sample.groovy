@@ -16,11 +16,13 @@ class LanguageList {
     // If the method doesn't exist for this class, we add it to 
     // the metaClass property, so next time the method is there.
     def methodMissing(String name, Object args) {
+    println ' mm ' + name
         if (name.startsWith('find')) {
-            def result = list.find { it == name[4..-1] }
+            def finder = { delegate.list.find { lang -> lang == name[4..-1] } }
+            //def result = list.find { it == name[4..-1] }
             // Add new method to class with metaClass.
-            this.metaClass."$name" = {-> result + "[cache]" }
-            result    
+            this.metaClass."$name" = { delegate.list.find { lang -> lang == name[4..-1] } + '[cache]' }
+            finder()
         } else {
             throw new MissingMethodException(name, this.class, args)
         }
