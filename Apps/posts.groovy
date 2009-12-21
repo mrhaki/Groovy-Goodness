@@ -68,7 +68,7 @@ def createDirectory(title) {
     newTitle = newTitle.replaceAll(/\s+/, '_')
     def dir = new File(baseDir, newTitle)
     if (!dir.exists()) {
-        println "Creating dir $newTitle.absolutePath" 
+        println "Creating dir $dir.absolutePath" 
         dir.mkdirs()
     }
     dir
