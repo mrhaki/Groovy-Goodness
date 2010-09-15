@@ -1,0 +1,63 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Immutable Collections</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Immutable Collections</h3>
+
+<div class="post">
+<p>Groovy adds the method <code>asImmutable()</code> to the <code>Collection</code> interface. With this method we can convert a list or map to an immutable one. We can read data from the immutable list or map, but we cannot add, change or remove elements from the list or map. This is a good way to insure our list or map is read only in for example a threading and concurrency context.</p>
+<pre class="brush:groovy">
+def list = ['Groovy', 'Java', 'JRuby'].asImmutable()
+assert 'Groovy' == list[0]
+try {
+    list &lt;&lt; 'Scala'  // Cannot add item.
+} catch (e) {
+    assert e instanceof UnsupportedOperationException
+}
+try {
+    list.remove 'Java'  // Cannot remove item.
+} catch (e) {
+    assert e instanceof UnsupportedOperationException
+}
+
+def map = [name: 'mrhaki', country: 'The Netherlands', blog: true].asImmutable()
+assert map.blog
+try {
+    map.blog = false  // Cannot change item.
+} catch (e) {
+    assert e instanceof UnsupportedOperationException
+}
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

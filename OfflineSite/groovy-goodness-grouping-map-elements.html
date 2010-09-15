@@ -1,0 +1,80 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Grouping Map Elements</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Grouping Map Elements</h3>
+
+<div class="post">
+<p>In a <a href="http://mrhaki.blogspot.com/2009/09/groovy-goodness-using-groupby-method.html">previous Groovy Goodness post</a> we learned how to use the <code>groupBy</code> method on collections. The <code>Map</code> class has an extra method: <code>groupEntriesBy</code>. We must provide a closure for this method to define how we want the elements of the map to be grouped. The result is a new <code>Map</code> with keys and a list of <code>Map$Entry</code> objects for each key. This is different from the result of the <code>groupBy</code> method. Because then we get a <code>Map</code> with keys and a <code>Map</code> for each key.</p>
+<pre class="brush:groovy">
+// A simple map.
+def m = [q1: 'Groovy', sort: 'desc', q2: 'Grails']
+
+// Closure we use to define the grouping.
+// We want all keys starting with 'q' grouped together
+// with the key 'params', all other keys are not grouped.
+def groupIt = { key, value -&gt;
+    if (key.startsWith('q')) { 
+        'params'
+    } else {
+        key
+    }
+}
+
+// Use groupEntriesBy.
+def groupEntries = m.groupEntriesBy(groupIt)
+assert 2 == groupEntries.size()
+assert groupEntries.params &amp; groupEntries.sort
+assert 'desc' == groupEntries.sort[0].value  // Key for a list of Map$Entry objects.
+assert 2 == groupEntries.params.size()
+assert 'Groovy' == groupEntries.params[0].value
+assert 'q1' == groupEntries.params[0].key
+assert 'Grails' == groupEntries.params.find { it.key == 'q2' }.value
+assert groupEntries.params instanceof ArrayList
+assert groupEntries.params[0] instanceof Map$Entry
+
+// Use groupBy.
+def group = m.groupBy(groupIt)
+assert 2 == group.size()
+assert group.params &amp; group.sort
+assert 'desc' == group.sort.sort  // Key for Map with key/value pairs.
+assert 2 == group.params.size()
+assert 'Groovy' == group.params.q1
+assert 'q1' == group.params.keySet().toArray()[0]
+assert 'Grails' == group.params.q2
+assert group.params instanceof Map
+assert group.params.q1 instanceof String
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,88 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Newify to Create New Instances</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Newify to Create New Instances</h3>
+
+<div class="post">
+<p>The <code>@Newify</code> transformation annotation allows other ways to create a new instance of a class. We can use a <code>new()</code> method on the class or even omit the whole <code>new</code> keyword. The syntax is copied from other languages like Ruby and Python. If we use the <code>@Newify</code> annotation we get a slightly more readable piece of code (in some situations). We can use parameters in the annotation to denote all those classes we want to be instantiated with the <code>new()</code> method or without the <code>new</code> keyword.</p>
+<pre class="brush:groovy">
+class Author {
+    String name
+    List books
+}
+class Book { 
+    String title 
+}
+
+def createKing() {
+    new Author(name: 'Stephen King', books: [
+        new Book(title: 'Carrie'),
+        new Book(title: 'The Shining'),
+        new Book(title: 'It')
+    ])
+}
+
+assert 3 == createKing().books.size()
+assert 'Stephen King' == createKing().name
+assert 'Carrie' == createKing().books.getAt(0).title
+
+@Newify 
+def createKingRuby() {
+    Author.new(name: 'Stephen King', books: [
+        Book.new(title: 'Carrie'),
+        Book.new(title: 'The Shining'),
+        Book.new(title: 'It')
+    ])
+}
+
+assert 3 == createKingRuby().books.size()
+assert 'Stephen King' == createKingRuby().name
+assert 'Carrie, The Shining, It' == createKingRuby().books.title.join(', ')
+
+@Newify([Author, Book]) 
+def createKingPython() {
+    Author(name: 'Stephen King', books: [
+        Book(title: 'Carrie'),
+        Book(title: 'The Shining'),
+        Book(title: 'It')
+    ])
+}
+
+assert 3 == createKingPython().books.size()
+assert 'Stephen King' == createKingPython().name
+assert 'It' == createKingPython().books.title.find { it == 'It' }
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

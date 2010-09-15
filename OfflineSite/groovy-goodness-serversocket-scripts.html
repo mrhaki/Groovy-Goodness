@@ -1,0 +1,96 @@
+<html>
+<head>
+
+<title>Groovy Goodness: ServerSocket Scripts</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: ServerSocket Scripts</h3>
+
+<div class="post">
+<p>One of the Groovy commandline arguments is <code>-l</code> to start Groovy in server listening mode. We can provide a script that is read and executed while Groovy is running. The script is read each time for a new request, so we can keep Groovy running and change the script. Next time a new client connects to the server Groovy will use the new script.</p><p>In the script we have extra properties we can use. The <code>init</code> property is true if the script hasn't run yet for the client connection. We can check for <code>init</code> to run initializing code. The property <code>socket</code> contains the Socket for the server. The property <code>out</code> is set to a PrintWriter we can use to output information back to the client. Because the name is <code>out</code> we can use the <code>println()</code> method to send text back to the client. And finally we have the property <code>line</code> with the contents of the input (closed by a line ending) sent to the server script. To stop the client client connection from the server script we must return the String <em>success</em> from our script. This will close the client connection.</p>
+<pre class="brush:groovy">
+// File: SimpleServer.groovy
+
+// The code block will be executed once.
+if (init) {
+    meta = [:]
+    // We can access the socket in our script.
+    meta.host = socket.inetAddress.hostAddress
+}
+
+// The line contains a single line of input from the client.
+// If line starts with the text OUTPUT we output all gathered meta 
+// information and close the client connection.
+if (line.startsWith('OUTPUT')) {
+    println()
+    println "Server running on $meta.host"
+    println "Meta info:"
+    println "----------"
+    meta.each { key, value -> 
+        println "$key = $value"
+    }
+    println()
+    return "success"  // Close client connection
+} else {
+    // Build meta information map.
+    metaInfo = line.tokenize(":")  // Input meta information as key:value
+    meta[metaInfo[0]] = metaInfo[1]
+}
+</pre>
+<p>Now we can run the server with Groovy:</p>
+<pre class="brush:shell;light:true">
+$ groovy -l 9010 SimpleServer.groovy
+groovy is listening on port 9090
+</pre>
+<p>And we can test the server with telnet:</p>
+<pre class="brush:shell;light:true">
+$ telnet localhost 9010
+Trying 127.0.0.1...
+Connected to localhost
+Escape character is '^]'.
+test:true
+username:mrhaki
+language:Groovy
+OUTPUT
+
+Server running on 127.0.0.1
+Meta info:
+----------
+host = 127.0.0.1
+test = true
+username = mrhaki
+language = Groovy
+
+Connection closed by foreign host.
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

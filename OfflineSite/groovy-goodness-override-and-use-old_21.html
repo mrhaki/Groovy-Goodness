@@ -1,0 +1,55 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Override and Use Old Implementation with Dynamic Methods</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Override and Use Old Implementation with Dynamic Methods</h3>
+
+<div class="post">
+<p>We can add new methods to classes with the <code>metaClass</code> property. But what if we want to use the old implementation for some cases? We can save the original method implementation in a variable and use it in our new implementation. The best way to get the original method is to access <code>metaClass</code> and invoke the <code>getMetaMethod()</code> method. We save this method in a variable. In the new implementatation we can use the <code>invoke()</code> method on the saved method to invoke the original code.</p>
+<pre class="brush:groovy">
+def savedToUpperCase = String.metaClass.getMetaMethod('toUpperCase', [] as Class[])
+String.metaClass.toUpperCase = { -> 
+    def result = savedToUpperCase.invoke(delegate)    
+    if (delegate =~ /Groovy/) {
+        result + ' Oh, yeah man! Groooovy...'
+    } else {
+        result
+    }
+}
+
+assert 'A SIMPLE STRING' == 'A simple string'.toUpperCase()
+assert 'THIS IS GROOVY. Oh, yeah man! Groooovy...' == 'This is Groovy.'.toUpperCase()
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

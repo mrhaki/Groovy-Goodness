@@ -1,0 +1,73 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Working on Files or Directories (or Both) with FileType</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Working on Files or Directories (or Both) with FileType</h3>
+
+<div class="post">
+<p>Working with files in Groovy is very easy. We have a lot of useful methods available in the <code>File</code> class. For example we can run a Closure for each file that can be found in a directory with the <code>eachFile()</code> method. Since Groovy 1.7.1 we can define if we only want to process the directories, files or both. To do this we must pass a <code>FileType</code> constant to the method. See the following example code:</p>
+<pre class="brush:groovy">
+import groovy.io.FileType
+
+// First create sample dirs and files.
+(1..3).each { 
+ new File("dir$it").mkdir() 
+}
+(1..3).each { 
+ def file = new File("file$it")
+ file << "Sample content for ${file.absolutePath}"
+}
+
+def currentDir = new File('.')
+def dirs = []
+currentDir.eachFile FileType.DIRECTORIES, {
+    dirs << it.name
+}
+assert 'dir1,dir2,dir3' == dirs.join(',')
+
+def files = []
+currentDir.eachFile(FileType.FILES) {
+    files << it.name
+}
+assert 'file1,file2,file3' == files.join(',')
+
+def found = []
+currentDir.eachFileMatch(FileType.ANY, ~/.*2/) {
+   found << it.name
+}
+
+assert 'dir2,file2' == found.join(',')
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

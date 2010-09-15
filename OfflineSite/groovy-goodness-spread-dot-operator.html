@@ -1,0 +1,66 @@
+<html>
+<head>
+
+<title>Groovy Goodness: The Spread-Dot Operator</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: The Spread-Dot Operator</h3>
+
+<div class="post">
+<p>Groovy adds some nice operators to the language to write brief code. We already learned about the <a href="http://mrhaki.blogspot.com/2009/08/groovy-goodness-elvis-operator.html">Elvis operator</a> and the <a href="http://mrhaki.blogspot.com/2009/08/groovy-goodness-spaceship-operator.html">Spaceship operator</a>. And now we see what the spread-dot operator is about and what it does.</p>
+<p>The spread-dot operator (<code>*.</code>) is used to invoke a method on all members of a <code>Collection</code> object. The result of using the spread-dot operator is another <code>Collection</code> object. Here is some sample code:</p>
+<pre class="brush:groovy">
+class Language {
+    String lang
+    def speak() { "$lang speaks." }
+}
+
+// Create a list with 3 objects. Each object has a lang 
+// property and a speak() method. 
+def list = [     
+    new Language(lang: 'Groovy'),     
+    new Language(lang: 'Java'),     
+    new Language(lang: 'Scala') 
+]  
+
+// Use the spread-dot operator to invoke the speak() method. 
+assert ['Groovy speaks.', 'Java speaks.', 'Scala speaks.'] == list*.speak() 
+assert ['Groovy speaks.', 'Java speaks.', 'Scala speaks.'] == list.collect{ it.speak() }  
+
+// We can also use the spread-dot operator to access 
+// properties, but we don't need to, because Groovy allows 
+// direct property access on list members. 
+assert ['Groovy', 'Java', 'Scala'] == list*.lang 
+assert ['Groovy', 'Java', 'Scala'] == list.lang
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

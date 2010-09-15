@@ -1,0 +1,61 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Closure Arguments</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Closure Arguments</h3>
+
+<div class="post">
+<p>If we define a closure in Groovy we can define our own arguments or rely on the default <code>it</code> for a single argument closure. The <code>it</code> argument is available if we don't define any named arguments ourselves. We can also create a closure and define it to have no arguments even not the <code>it</code> argument.</p>
+<pre class="brush:groovy">
+// Closure with default 'it' argument.
+def defaultIt = { it - 1 }
+assert 'Groovy String with .' == defaultIt('Groovy String with 1.')
+assert 41 == defaultIt(42)
+
+// Closure with named argument.
+def namedArg = { value -> value * 2 }
+assert 'Groovy Groovy ' == namedArg('Groovy ')
+assert 84 == namedArg(42)
+
+// Closure with multiple named arguments.
+def moreArgs = { a, b -> a + b }
+assert 'Groovy Java' == moreArgs('Groovy ', 'Java')
+assert 44 == moreArgs(42, 2)
+
+// Closure without arguments, even no 'it'.
+def noArgs = {-> 'Groovy closure without arguments' }
+assert 'Groovy closure without arguments' == noArgs()
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

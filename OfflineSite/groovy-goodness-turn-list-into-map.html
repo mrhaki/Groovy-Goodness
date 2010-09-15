@@ -1,0 +1,49 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Turn a List into a Map</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Turn a List into a Map</h3>
+
+<div class="post">
+<p>With Groovy we can use the values of an <code>Object</code> array and transform them to a map with the <code>toSpreadMap()</code> method. The array must have an even number of elements, because the odd elements are the keys for the new map and the even numbers are the values for the keys. The <code>SpreadMap</code> object, which now contains the keys and values, is an immutable map, so we cannot change the contents once we have created the map.</p>
+<pre class="brush:groovy">
+def list = ['key', 'value', 'name', 'mrhaki'] as Object[]
+def map = list.toSpreadMap()
+
+assert 2 == map.size()
+assert 'value' == map.key
+assert 'mrhaki' == map['name']
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

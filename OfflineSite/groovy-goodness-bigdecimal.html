@@ -1,0 +1,52 @@
+<html>
+<head>
+
+<title>Groovy Goodness: BigDecimal</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: BigDecimal</h3>
+
+<div class="post">
+<p>In Groovy <code>java.math.BigDecimal</code> is the default type for non-integer floating types. Because of default imports we don't have to import the <code>BigDecimal</code> class, but we can use it right away. To create a <code>BigDecimal</code> (or <code>BigInteger</code>) we can use the "G" or "g" suffix.</p>
+<pre class="brush:groovy">
+assert 123g instanceof BigInteger
+assert 42G instanceof BigInteger
+assert 1.423 instanceof BigDecimal
+assert 42.0g instanceof BigDecimal
+assert 9203.10291G instanceof BigDecimal
+
+// Let's do some math.
+assert 3.2 == 1.2G + 2G
+assert 10 == 10.1g - 0.1G
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

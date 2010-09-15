@@ -1,0 +1,55 @@
+<html>
+<head>
+
+<title>Groovy Goodness: withReader and withWriter</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: withReader and withWriter</h3>
+
+<div class="post">
+<p>Normally when we are working with readers and writers in Java we must make sure we close the appropriate reader and writer. Groovy has several <code>with...()</code> methods for <code>File</code>, <code>URL</code> or streams and writers, where <code>...</code> is the name of the reader or writer. We pass a closure to these methods and Groovy makes sure all readers and writers are closed correctly, even if exceptions are thrown in the closure.</p>
+<pre class="brush:groovy">
+def file = new File('sample.txt')
+
+file.withWriter('UTF-8') {
+    it.writeLine 'Adding this text to the file.'
+}
+
+def s 
+file.withReader('UTF-8') {
+    s = it.readLine()
+}
+
+assert 'Adding this text to the file.' == s
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

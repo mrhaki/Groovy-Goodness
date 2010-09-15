@@ -1,0 +1,66 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Apply Closure to All Element in a Collection with collect</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Apply Closure to All Element in a Collection with collect</h3>
+
+<div class="post">
+<p>We can apply a closure to all elements in a collection with the <code>collect()</code> method. The closure is executed for each element and the return value of the closure is the new element in the collection. We can put a lot of code in the closure, but we have to remember the last statement defines the return value and type for the element in the new collection.</p>
+<pre class="brush:groovy">
+class User {
+    String username
+    String language= 'Java'
+    String toString() { "$username likes $language" }
+}
+
+def users = ['mrhaki', 'Hubert A. Klein Ikkink', 'Sample'].collect { new User(username: it) }
+assert ['mrhaki likes Java', 'Hubert A. Klein Ikkink likes Java', 'Sample likes Java'] == users.collect { it.toString() }
+// Last statement of collect closure is new list item.
+def usersGroovy = users.collect { user ->
+    if (user.username != 'Sample') {
+        user.language = 'Groovy'
+    }
+    user  // Return user object so new list contains user objects!
+}
+assert ['mrhaki likes Groovy', 'Hubert A. Klein Ikkink likes Groovy', 'Sample likes Java'] == usersGroovy.collect { it.toString() }
+
+// Last statement of collect closure is new list item.
+// In this case we only return a String.
+def usersClojure = users.collect { user ->
+    user.language = 'Clojure'
+}
+assert ['Clojure', 'Clojure', 'Clojure'] == usersClojure
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

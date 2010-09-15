@@ -1,0 +1,50 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Counting the Items in a List</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Counting the Items in a List</h3>
+
+<div class="post">
+<p>In Groovy we can count how many thimes a specific object is in a list. We use the <code>count()</code> method on the list, iterator or array to achieve this. We must specify one parameter: the object we want to count. Groovy uses the <code>compareTo</code> or <code>equals()</code> method to check for equality.</p>
+<pre class="brush:groovy">
+def list = [0, 1, 2, 1, 1, 3, 2, 0, 1]
+
+assert 9 == list.size()
+assert 2 == list.count(0)
+assert 4 == list.count(1)
+assert 2 == list.count(2)
+assert 1 == list.count(3)
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

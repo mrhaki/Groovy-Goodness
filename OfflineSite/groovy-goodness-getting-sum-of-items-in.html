@@ -1,0 +1,58 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Getting the Sum of Items in a Collection</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Getting the Sum of Items in a Collection</h3>
+
+<div class="post">
+<p>In Groovy we can sum up the elements in a Collection with the <code>sum()</code> methods. We can use the variant without arguments, but also the one with one argument. The argument is the initial value for the sum value. The <code>sum()</code> method invokes the <code>plus()</code> method on the elements in the collection.</p>
+<pre class="brush:groovy">
+def numbers = [1, 2, 3, 4, 5, 6]
+assert 21 == numbers.sum()
+assert 31 == numbers.sum(10)
+
+class Product {
+    String name
+    BigDecimal price
+
+    BigDecimal plus(Product other) {
+        price + other.price
+    }
+}
+def products = [new Product(name: 'laptop', price: 999), new Product(name: 'netbook', price: 395)]
+
+assert 1394 == products.sum()
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

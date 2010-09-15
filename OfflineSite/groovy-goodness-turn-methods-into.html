@@ -1,0 +1,81 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Turn Methods into Closures</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Turn Methods into Closures</h3>
+
+<div class="post">
+<p>Groovy supports closures and they are very useful when we create Groovy applications. For example we can pass closures as arguments to methods to execute them. We can create closures ourselves, but we can also convert a method to a closure with the <code>.&amp;</code> operator. And we can use the converted method just like a normal closure. Because Groovy can use Java objects we can also convert a Java method into a closure.
+</p>
+<p>Let's start with a simple Java class:</p>
+<pre class="brush:java">
+public class JavaObject {
+ public static void javaSays(final String s) {
+  System.out.println("Java says: Hello " + s + "!");
+ }
+}
+</pre>
+<p>With the following script we use this Java class and convert the <code>javaSays</code> method to a closure:</p>
+<pre class="brush:groovy">
+// Simple list with names.
+def names = ['groovy', 'grails', 'mrhaki']
+
+// Simple closure.
+names.each { println 'Normal closure says: Hello ' + it + '!' }
+
+// Groovy method to convert to closure.
+def groovySays(s) {
+ "Groovy says: Hello ${s}!"
+}
+// Use .&amp; syntax to convert method to closure.
+names.each(this.&amp;groovySays)
+
+// Convert Java method to closure and use it.
+def javaSays = JavaObject.&amp;javaSays
+names.each javaSays
+</pre>
+<p>If we run this script we get the following output:</p>
+<pre class="brush:plain">
+Normal closure says: Hello groovy!
+Normal closure says: Hello grails!
+Normal closure says: Hello mrhaki!
+Groovy says: Hello groovy!
+Groovy says: Hello grails!
+Groovy says: Hello mrhaki!
+Java says: Hello groovy!
+Java says: Hello grails!
+Java says: Hello mrhaki!
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

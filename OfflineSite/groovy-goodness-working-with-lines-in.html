@@ -1,0 +1,88 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Working with Lines in Strings</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Working with Lines in Strings</h3>
+
+<div class="post">
+<p>In Groovy we can create multiline strings, which contain line separators. But we can also read text from an file containing line separators. The Groovy String GDK contains method to work with strings that contain line separators. We can loop through the string line by line, or we can do split on each line. We can even convert the line separators to the platform specific line separators with the <code>denormalize()</code> method or linefeeds with the <code>normalize()</code> method.</p>
+<pre class="brush:groovy">
+def multiline = '''\
+Groovy is closely related to Java,
+so it is quite easy to make a transition.
+'''
+
+// eachLine takes a closure with one argument, that
+// contains the complete line.
+multiline.eachLine { 
+    if (it =~ /Groovy/) {
+        println it  // Output: Groovy is closely related to Java,
+    }
+}  
+
+// or eachLine has a closure with two argument, the current line
+// and the line count.
+multiline.eachLine { line, count -> 
+    if (count == 0) {
+        println "line $count: $line"  // Output: line 0: Groovy is closely related to Java,
+    }
+}
+
+def platformLinefeeds = multiline.denormalize()
+def linefeeds = multiline.normalize()
+
+// Read all lines and convert to list.
+def list = multiline.readLines()
+assert list instanceof ArrayList
+assert 2 == list.size()
+assert 'Groovy is closely related to Java,' == list[0]
+
+def records = """\
+mrhaki\tGroovy
+hubert\tJava
+"""
+
+// splitEachLine will split each line with the specified
+// separator. The closure has one argument, the list of 
+// elements separated by the separator.
+records.splitEachLine('\t') { items ->
+    println items[0] + " likes " + items[1]
+}
+// Output:
+// mrhaki likes Groovy
+// hubert likes Java
+</pre>
+<p>Run this script in <a href="http://groovyconsole.appspot.com/view.groovy?id=34005">Groovy web console</a>.</p>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

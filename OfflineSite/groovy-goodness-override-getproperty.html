@@ -1,0 +1,61 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Override getProperty Method with Dynamic Groovy</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Override getProperty Method with Dynamic Groovy</h3>
+
+<div class="post">
+<p>Groovy's ExpandoMetaClass features allows us to override the <code>getProperty()</code> method for a class. This method is invoked if we want to access a property for an object. We can look up existing properties and return their result, but we can also write behaviour for the situation when the property doesn't exist.</p>
+<pre class="brush:groovy">
+class User {
+    String username
+}
+
+User.metaClass.getProperty = { String propName ->
+    def meta = User.metaClass.getMetaProperty(propName)
+    if (meta) {
+        meta.getProperty(delegate)
+    } else {
+        'Dynamic property for User'
+    }
+}
+
+def mrhaki = new User(username: 'mrhaki')
+def hubert = new User(username: 'hubert')
+
+assert 'mrhaki' == mrhaki.username
+assert 'Dynamic property for User' == mrhaki.fullname
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

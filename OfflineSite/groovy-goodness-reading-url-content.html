@@ -1,0 +1,67 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Reading URL Content</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Reading URL Content</h3>
+
+<div class="post">
+<p>Groovy adds some methods to the <code>URL</code> class which make reading data from an URL easy. For example the <code>text</code> property returns the complete contents of the document that is identified by the URL. Or we can use the <code>eachLine()</code> method to loop through each line of the document. Groovy also adds a <code>toURL()</code> to the <code>String</code> class to make a <code>URL</code> object.</p>
+<pre class="brush:groovy">
+// Contents of http://www.mrhaki.com/url.html:
+// Simple test document
+// for testing URL extensions
+// in Groovy.
+
+def url = &quot;http://www.mrhaki.com/url.html&quot;.toURL()
+
+assert '''\
+Simple test document
+for testing URL extensions
+in Groovy.
+''' == url.text
+
+def result = []
+url.eachLine {
+    if (it =~ /Groovy/) {
+        result &lt;&lt; it
+    }
+}
+assert ['in Groovy.'] == result
+
+url.withReader { reader -&gt;
+    assert 'Simple test document' == reader.readLine()
+}
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

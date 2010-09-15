@@ -1,0 +1,79 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Add Methods Dynamically to Classes with ExpandoMetaClass</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Add Methods Dynamically to Classes with ExpandoMetaClass</h3>
+
+<div class="post">
+<p>We can add new behaviour, like methods, to classes in Groovy dynamically. So this means a method is not added to the class definition in the source code, but to the class definition while an application is already running. Groovy adds a <code>metaClass</code> property to all classes for this purpose. The type of this property is <code>ExpandoMetaClass</code>. We can assign methods (also static), properties, constructors to the <code>metaClass</code> property and the defined behaviour is added dynamically to the class definition. After we have added our behaviour we can create a new instance of the class and invoke the methods, constructors and access the properties just like we are used to do.</p>
+<pre class="brush:groovy">
+// We add the method rightShift to the List class. 
+// The implementation is simply calling the remove method of List with
+// the provided argument.
+List.metaClass.rightShift {
+    delegate.remove it
+}
+
+def list = ['one', 'two', 'three', 'four']
+assert 4 == list.size()
+
+list.rightShift 'two'
+assert 3 == list.size()
+assert ['one', 'three', 'four'] == list
+
+// Operator overloading in action: rightShift is &gt;&gt;
+list &gt;&gt; 'one'
+assert 2 == list.size()
+assert ['three', 'four'] == list
+
+
+// We can also add behaviour to a specific instance instead of class.
+// Notice we use the instance list instead of class List to assign 
+// method groovy to metaClass property.
+list.metaClass.groovy {
+    delegate.collect { it + ' groovy' }
+}
+
+assert ['three groovy', 'four groovy'] == list.groovy()
+
+def newList = ['a', 'b']
+try {
+    newList.groovy()  // groovy method was added to list instance not List class.
+    assert false
+} catch (e) {
+    assert e instanceof MissingMethodException
+}
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

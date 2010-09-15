@@ -1,0 +1,99 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Using ConfigSlurper with Configuration Scripts</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Using ConfigSlurper with Configuration Scripts</h3>
+
+<div class="post">
+<p>The <a href="http://groovy.codehaus.org/gapi/groovy/util/ConfigSlurper.html"><code>ConfigSlurper</code></a> class can be used to parse Groovy scripts with configuration information. This way we can use a real script instead of a properties file to define configuration information in our applications. In a <a href="http://mrhaki.blogspot.com/2009/08/grassroots-groovy-configuration-with.html">previous post</a> we saw how to use the <code>ConfigSlurper</code> from Java code and in this post we focus on using it in Groovy code.</p><p>Using the <code>ConfigSlurper</code> we can parse Groovy scripts into a <a href="http://groovy.codehaus.org/gapi/groovy/util/ConfigObject.html"><code>ConfigObject</code></a>. The <code>ConfigObject</code> is a subclass of <code>LinkedHashMap</code> and contains the configuration information. A configuration script contains information defined using dot notation or closures. Because it is a script we can use all Groovy constructs, or use any other Groovy and Java class we want.</p><p>To support different configuration settings per environment (for example development, test and production) we can define a special environments section in our script. When we create a new <code>ConfigSlurper</code> instance and use a environment name in the constructor, the environment section is used to determine values. If we don't specify the environment in the constructor the environments section is skipped.</p><p>Okay that is a lot of explaining, let's see some code:</p>
+<pre class="brush:groovy">
+// Configuration script as String, but can also be URL, file.
+def mail = '''
+
+// Dot notation.
+mail.hostname = 'localhost'  
+
+// Scoped closure notation.
+mail {  
+    // Using Groovy constructs.
+    ['user', 'password'].each { 
+        this."${it}" = 'secret' 
+    }
+}
+
+// Environments section.
+environments {
+    dev {
+        mail.hostname = 'local'
+    }
+    test {
+        mail.hostname = 'test'
+    }
+    prod {
+        mail.hostname = 'prod'
+    }
+}
+'''
+
+// Another configuration script.
+def app = '''
+app {
+    version = version()  // Use method in script.
+}
+
+// Define method to build version info.
+def version() {
+    "1.0-${releasedate.format('yyyy_MM_dd')}"
+}
+'''
+
+// Read mail configuration script for the prod environment.
+def mailConfig = new ConfigSlurper('prod').parse(mail)
+
+// We can pass information to the configuration with
+// the setBinding method.
+def appSlurper = new ConfigSlurper()
+appSlurper.setBinding([releasedate: new Date(109, 9, 10)])
+def appConfig = appSlurper.parse(app)
+
+// Both configurations are merged into one.
+def config = mailConfig.merge(appConfig)
+
+assert 'prod' == config.mail.hostname
+assert 'secret' == config.mail.user
+assert 'secret' == config.mail.password
+assert '1.0-2009_10_10' == config.app.version
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Round and Truncate Decimal Values</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Round and Truncate Decimal Values</h3>
+
+<div class="post">
+<p>Groovy adds <code>round()</code> and <code>truncate()</code> methods to the <code>Double</code> and <code>Float</code> classes.</p>
+<pre class="brush:groovy">
+def doubleValue = 12.5456d
+
+assert 12.546d == doubleValue.round(3)
+assert 13 == doubleValue.round()
+
+assert 12 == doubleValue.trunc()
+assert 12.54d == doubleValue.trunc(2)
+
+def floatValue = 987.654f
+
+assert 987.65f == floatValue.round(2)
+assert 988 == floatValue.round()
+assert 987.6f == floatValue.trunc(1)
+assert 987 == floatValue.trunc()
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Working with Dates</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Working with Dates</h3>
+
+<div class="post">
+<p>Thanks to Groovy's extensions to the JDK <code>Date</code> classes we can work with dates more easily. For example we can now add and subtract days with the <code>plus()</code> and <code>minus()</code> methods. And because this methods are mapped to the operators <code>+</code> and <code>-</code> we can write dense code.</p>
+<p>Also the <code>next()</code> and <code>previous()</code> methods are implemented so we can use the <code>++</code> and <code>--</code> operators to get to a next or previous day. We can even use the subscript operator (<code>[]</code>) to get date fields, because of the <code>getAt()</code> method Groovy adds to the <code>Date</code> class.</p>
+<p>The <code>Date</code> class also contains <code>parse()</code> and <code>format()</code> methods to convert string to a date and to format a date into a string.</p>
+<pre class="brush:groovy">
+// Date.parse() to convert String to Date.
+date = new Date().parse('yyyy/MM/dd', '1973/07/09')
+
+// We can use [] or getAt() to get date fields.
+assert 1973 == date[Calendar.YEAR]
+assert 6 == date[Calendar.MONTH]
+assert 9 == date.getAt(Calendar.DATE)
+
+dateNext = date.clone()
+datePrevious = date.clone()
+
+// We can use the + and - operators to add or 
+// subtract days.
+nextDay = date + 1  // Or date.plus(1)
+previousDay = date - 1  // Or date.minus(1)
+
+// ++ operator to move one day ahead.
+dateNext++  // Or dateNext.next()
+assert dateNext == nextDay
+
+// -- operator to move one day back.
+datePrevious--  // Or datePrevious.previous()
+assert datePrevious == previousDay
+
+otherDate = new Date().parse('yyyy/MM/dd', '1973/07/21')
+// Dates can be used in ranges.
+assert 12 == (otherDate..&lt;date).size()
+
+// Set Locale to assert date formatting.
+Locale.setDefault(Locale.US)
+
+// Date.format() uses java.text.SimpleDateFormat.
+assert '9 July, 1973' == date.format("d MMMM, yyyy")
+assert '7/9/73' == date.getDateString()
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

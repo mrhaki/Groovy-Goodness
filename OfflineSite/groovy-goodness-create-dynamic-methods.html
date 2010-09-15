@@ -1,0 +1,76 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Create Dynamic Methods</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Create Dynamic Methods</h3>
+
+<div class="post">
+<p>In Groovy we can write classes and write an implementation for methods we don't even know exist. We must implement the method <code>methodMissing()</code> which is invoked when other methods cannot be found. Because <code>methodMissing()</code> is invoked each time another method cannot be found, it can be expensive, but we can use the <code>metaClass</code> property to cache the new method. Next time the cached version is used.</p>
+<pre class="brush:groovy">
+class LanguageList {
+    def list = ['Java', 'Groovy', 'Scala']
+
+    // Set metaClass property to ExpandoMetaClass instance, so we 
+    // can add dynamic methods.
+    LanguageList() {
+        def mc = new ExpandoMetaClass(LanguageList, false, true)
+        mc.initialize()
+        this.metaClass = mc
+    }
+    
+    def methodMissing(String name, args) {
+        // Intercept method that starts with find.
+        if (name.startsWith("find")) {
+            def result = list.find { it == name[4..-1] }
+            // Add new method to class with metaClass.
+            this.metaClass."$name" = {-> result + "[cache]" }
+            result
+        } else {
+            throw new MissingMethodException(name, this.class, args)
+        }
+    }
+}
+
+def languages = new LanguageList()
+assert 'Groovy' == languages.findGroovy()
+assert 'Scala' == languages.findScala()
+assert 'Java' == languages.findJava()
+assert !languages.findRuby()
+
+assert 'Groovy[cache]' == languages.findGroovy()
+assert 'Scala[cache]' == languages.findScala()
+assert 'Java[cache]' == languages.findJava()
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

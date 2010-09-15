@@ -1,0 +1,60 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Expando as Dynamic Bean</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Expando as Dynamic Bean</h3>
+
+<div class="post">
+<p>The <code>Expando</code> class in Groovy is sort of a dynamic bean. We can add properties and we can add closures as methods to an instance of the <code>Expando</code> class. This is useful if we don't want to create a new class for a simple bean.</p>
+<pre class="brush:groovy">
+def user = new Expando(username: 'mrhaki')
+assert 'mrhaki' == user.username
+
+// Add an extra property.
+user.email = 'email@host.com'
+assert 'email@host.com' == user.email
+
+// Assign closure as method. The closure can
+// take parameters.
+user.printInfo = { writer -&gt;
+    writer &lt;&lt; &quot;Username: $username&quot;
+    writer &lt;&lt; &quot;, email: $email&quot;
+}
+
+def sw = new StringWriter()
+user.printInfo(sw)
+assert 'Username: mrhaki, email: email@host.com' == sw.toString()
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

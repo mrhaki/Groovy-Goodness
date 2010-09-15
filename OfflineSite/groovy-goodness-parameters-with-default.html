@@ -1,0 +1,54 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Parameters with Default Values</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Parameters with Default Values</h3>
+
+<div class="post">
+<p>In Groovy we can assign default values to parameters in a method. If we define a default value for a parameter Groovy basically supports two method signatures: one with all parameters and one where the parameter with a default value is omitted. If we use multiple parameters with default values then the right most parameter with a default value is first eliminated then the next and so on.</p>
+<pre class="brush:groovy">
+def say(msg = 'Hello', name = 'world') {
+    "$msg $name!"
+}
+
+// We can invoke 3 signatures:
+// say(), say(msg), say(msg, name)
+assert 'Hello world!' == say()
+// Right most parameter with default value is eliminated first.
+assert 'Hi world!' == say('Hi')
+assert 'Howdy, mrhaki!' == say('Howdy,', 'mrhaki')
+</pre>
+<p>Run this script in <a href="http://groovyconsole.appspot.com/?id=11016">GroovyConsole</a>.</p>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

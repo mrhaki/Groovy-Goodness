@@ -1,0 +1,73 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Grab That Dependency</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Grab That Dependency</h3>
+
+<div class="post">
+<p>In Groovy scripts we can automatically download dependencies with <a href="http://groovy.codehaus.org/Grapes+and+grab()">Grape</a>. Grape can be used as annotation (for a method or parameter) or with a plain method call. <a href="http://ant.apache.org/ivy/">Apacy Ivy</a> is used by Grape to find and download the dependencies. This means we can also use all Maven2 dependency repositories. If we want to add new repositories we must create a file <code>~/.groovy/grapeConfig.xml</code> which is an Ivy configuration file and in it we can add a new repository. The downloaded files are saved in <code>~/.groovy/grapes</code>.</p><p>The command-line <code>grape</code> command can be used to download dependencies or to list the already downloaded dependencies. For example with <code>$ grape list</code> we get a list of all dependencies on our local computer.</p>
+<pre class="brush:groovy">
+import org.apache.commons.lang.SystemUtils
+
+@Grab(group='commons-lang', module='commons-lang', version='2.4')
+def printInfo() {
+    if (SystemUtils.isJavaVersionAtLeast(5)) {
+        println 'We are ready to use annotations in our Groovy code.'
+    } else {
+        println 'We cannot use annotations in our Groovy code.'
+    }
+}
+
+printInfo()
+</pre>
+<p>Default Grape configuration file:</p>
+<pre class="brush:xml">
+&lt;ivysettings&gt;
+  &lt;settings defaultResolver=&quot;downloadGrapes&quot;/&gt;
+  &lt;resolvers&gt;
+    &lt;chain name=&quot;downloadGrapes&quot;&gt;
+      &lt;filesystem name=&quot;cachedGrapes&quot;&gt;
+        &lt;ivy pattern=&quot;${user.home}/.groovy/grapes/[organisation]/[module]/ivy-[revision].xml&quot;/&gt;
+        &lt;artifact pattern=&quot;${user.home}/.groovy/grapes/[organisation]/[module]/[type]s/[artifact]-[revision](-[classifier]).[ext]&quot;/&gt;
+      &lt;/filesystem&gt;
+      &lt;!-- todo add 'endorsed groovy extensions' resolver here --&gt;
+      &lt;ibiblio name=&quot;codehaus&quot; root=&quot;http://repository.codehaus.org/&quot; m2compatible=&quot;true&quot;/&gt;
+      &lt;ibiblio name=&quot;ibiblio&quot; m2compatible=&quot;true&quot;/&gt;
+      &lt;ibiblio name=&quot;java.net2&quot; root=&quot;http://download.java.net/maven/2/&quot; m2compatible=&quot;true&quot;/&gt;
+    &lt;/chain&gt;
+  &lt;/resolvers&gt;
+&lt;/ivysettings&gt;
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

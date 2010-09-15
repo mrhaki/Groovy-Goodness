@@ -1,0 +1,57 @@
+<html>
+<head>
+
+<title>Groovy Goodness: the Spaceship Operator</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: the Spaceship Operator</h3>
+
+<div class="post">
+<p>Groovy adds some nice operators to the language. One of them is the spaceship operator. It's called the spaceship operator, because we use the following syntax <code>&lt;=&gt;</code> and that looks a bit like a UFO. The operator is another way of referring to the <code>compareTo</code> method of the <code>Comparable</code> interface. This means we can implement the <code>compareTo</code> method in our own classes and this will allow us to use the <code>&lt;=&gt;</code> operator in our code. And of course all classes which already have implemented the <code>compareTo</code> method can be used with the spaceship operator. The operator makes for good readable sort methods.</p>
+<pre class="brush:groovy">
+class Person implements Comparable {
+    String username
+    String email
+
+    int compareTo(other) {
+        this.username &lt;=&gt; other.username
+    }
+}
+
+assert -1 == ('a' &lt;=&gt; 'b')
+assert 0 == (42 &lt;=&gt; 42)
+assert -1 == (new Person([username:'mrhaki', email: 'test@email.com']) <=> new Person([username:'zavaria', email:'tester@email.com']))
+assert [1, 2, 3, 4] == [4, 2, 1, 3].sort{ a, b -> a <=> b }
+</pre>
+<p>Run this script in <a href="http://groovyconsole.appspot.com/?id=15004">GroovyConsole</a>.</p>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

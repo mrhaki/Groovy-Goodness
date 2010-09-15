@@ -1,0 +1,88 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Removing Duplicate Elements in a Collection</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Removing Duplicate Elements in a Collection</h3>
+
+<div class="post">
+<p>We can easily remove duplicate elements in a collection with the different <code>unique()</code> methods. Without any parameters the default comparator for the objects is used to determine duplicate elements. But we can also use a closure to define the rules for duplicate elements. The closure can have one parameter and then we must return a value that is used for comparison, or the closure has two parameters and then we must return an Integer value where 0 means the items are not unique. Finally we can pass our own <code>Comparator</code> implementation to the <code>unique()</code> method where we define when an element is unique or not.</p>
+<pre class="brush:groovy">
+class User implements Comparable {
+    String username, email
+    boolean active
+    
+    int compareTo(Object other) {
+        username &lt;=&gt; other.username
+    }
+}
+
+def mrhaki1 = new User(username: 'mrhaki', email: 'mrhaki@localhost', active: false)
+def mrhaki2 = new User(username: 'mrhaki', email: 'user@localhost', active: true)
+def hubert1 = new User(username: 'hubert', email: 'user@localhost', active: false)
+def hubert2 = new User(username: 'hubert', email: 'hubert@localhost', active: true)
+
+// Caution: unique() changes the original collection, so 
+// for the sample we invoke unique each time on a fresh new
+// user list.
+def uniqueUsers = [mrhaki1, mrhaki2, hubert1, hubert2].unique()
+assert 2 == uniqueUsers.size()
+assert [mrhaki1, hubert1] == uniqueUsers
+
+// Use closure with one parameter.
+def uniqueEmail = [mrhaki1, mrhaki2, hubert1, hubert2].unique { user -&gt; 
+    user.email 
+}
+assert 3 == uniqueEmail.size()
+assert [mrhaki1, mrhaki2, hubert2] == uniqueEmail
+
+// Use closure with two parameters.
+def uniqueActive = [mrhaki1, mrhaki2, hubert1, hubert2].unique { user1, user2 -&gt;
+    user1.active &lt;=&gt; user2.active
+}
+assert 2 == uniqueActive.size()
+assert [mrhaki1, mrhaki2] == uniqueActive
+
+// Use a comparator.
+def emailComparator = [
+    equals: { delegate.equals(it) },
+    compare: { first, second -&gt;
+        first.email &lt;=&gt; second.email
+    }
+] as Comparator
+def unique = [mrhaki1, mrhaki2, hubert1, hubert2].unique(emailComparator)
+assert 3 == unique.size()
+assert [mrhaki1, mrhaki2, hubert2] == unique
+?</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

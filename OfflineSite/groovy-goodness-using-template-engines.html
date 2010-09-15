@@ -1,0 +1,89 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Using the Template Engines</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Using the Template Engines</h3>
+
+<div class="post">
+<p>Groovy has a built-in <a href="http://groovy.codehaus.org/Groovy+Templates">template mechanism</a> to generate text dynamically. We can use the <a href="http://groovy.codehaus.org/api/groovy/text/SimpleTemplateEngine.html"><code>SimpleTemplateEngine</code></a>, <a href="http://groovy.codehaus.org/api/groovy/text/GStringTemplateEngine.html"><code>GStringTemplateEngine</code></a> and <a href="http://groovy.codehaus.org/api/groovy/text/XmlTemplateEngine.html"><code>XmlTemplateEngine</code></a> to create a dynamic text from a static source. The <code>XmlTemplateEngine</code> is best used for generating XML, the <code>GStringTemplateEngine</code> is best used for streaming scenarios and otherwise we use the <code>SimpleTemplateEngine</code>.</p>
+<p>To use a template engine we must read in the static text from a file, URL or String, bind dynamic data to the template engine and get the generated text. These steps are very easy to follow and that makes using the Groovy template engine so easy.</p>
+<pre class="brush:groovy">
+import groovy.text.*
+
+// SimpleTemplateEngine.
+def simple = new SimpleTemplateEngine()
+def source = '''Dear $name,
+Please respond to this e-mail before ${(now + 7).format(&quot;dd-MM-yyyy&quot;)}
+Kind regards, mrhaki'''
+def binding = [now: new Date(109, 11, 1), name: 'Hubert Klein Ikkink']
+def output = simple.createTemplate(source).make(binding).toString()
+
+assert &quot;Dear Hubert Klein Ikkink,\nPlease respond to this e-mail before 08-12-2009\nKind regards, mrhaki&quot; == output
+
+// GStringTemplateEngine with out variable.
+def gstring = new GStringTemplateEngine()
+def gsource = '''Dear &lt;%= name %&gt;,
+Text is created for &lt;% if (gstring) out &lt;&lt; 'GStringTemplateEngine' else out &lt;&lt; 'other template engine'%&gt;.'''
+def gbinding = [name: 'mrhaki', gstring: true]
+def goutput = gstring.createTemplate(gsource).make(gbinding).toString()
+
+assert &quot;Dear mrhaki,\nText is created for GStringTemplateEngine.&quot; == goutput
+
+// XmlTemplateEngine with gsp:scriplet and gsp:expression tags.
+def xmlEngine = new XmlTemplateEngine()
+def xml = '''&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;users xmlns:gsp='http://groovy.codehaus.org/2005/gsp'&gt;
+    &lt;gsp:scriptlet&gt;users.each {&lt;/gsp:scriptlet&gt;
+        &lt;user id=&quot;${it.id}&quot;&gt;&lt;gsp:expression&gt;it.name&lt;/gsp:expression&gt;&lt;/user&gt;
+    &lt;gsp:scriptlet&gt;}&lt;/gsp:scriptlet&gt;
+&lt;/users&gt;'''
+def xmlBinding = [users: [
+    new Expando(id: 1, name: 'mrhaki'),
+    new Expando(id: 2, name: 'Hubert')]
+]
+def xmlOutput = xmlEngine.createTemplate(xml).make(xmlBinding).toString()
+
+assert '''\
+&lt;users&gt;
+  &lt;user id='1'&gt;
+    mrhaki
+  &lt;/user&gt;
+  &lt;user id='2'&gt;
+    Hubert
+  &lt;/user&gt;
+&lt;/users&gt;
+''' == xmlOutput
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Using the Inject Method</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Using the Inject Method</h3>
+
+<div class="post">
+<p>Groovy has some features and methods we can categorize as functional programming. The <code>inject()</code> method is a so called higher-order function. Other languages call it a fold, reduce or accumulate. The <code>inject()</code> method processes a data structure with a closure and builds up a return value. The first parameter of the <code>inject()</code> method is the first value of the intermediary results of the second parameter: the closure. When we use the <code>inject()</code> we don't introduce any side effects, because we build up the value without using any <em>outside</em> variable.</p>
+<p>To understand the <code>inject()</code> method better we look at some sample code:</p>
+<pre class="brush:groovy">
+// Traditional "sum of the values in a list" sample.
+// First with each() and side effect, because we have
+// to declare a variable to hold the result:
+def total = 0
+(1..4).each { total += it }
+assert 10  == total
+
+// With the inject method we 'inject' the 
+// first value of the result, and then for
+// each item the result is increased and
+// returned for the next iteration.
+def sum = (1..4).inject(0) { result, i -> result + i }
+assert 10 == sum
+
+// We add a println statement to see what happens.
+(1..4).inject(0) { result, i ->
+    println "$result + $i = ${result + i}"
+    result + i
+}
+// Output: 
+// 0 + 1 = 1
+// 1 + 2 = 3
+// 3 + 3 = 6
+// 6 + 4 = 10
+
+
+class Person {
+    String username
+    String email
+}
+def persons = [
+    new Person(username:'mrhaki', email: 'email@host.com'),
+    new Person(username:'hubert', email: 'other@host.com')
+]
+
+// Convert list to a map where the key is the value of
+// username property of Person and the value is the email
+// property of Person. We inject an empty map as the starting
+// point for the result.
+def map = persons.inject([:]) { result, person ->
+    result[person.username] = person.email
+    result
+}
+assert [mrhaki: 'email@host.com', hubert: 'other@host.com'] == map
+</pre>
+<p>Run this script on <a href="http://groovyconsole.appspot.com/?id=12002">GroovyConsole</a>.</p>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

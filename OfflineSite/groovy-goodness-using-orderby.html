@@ -1,0 +1,64 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Using the OrderBy Comparator</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Using the OrderBy Comparator</h3>
+
+<div class="post">
+<p>The <code>OrderBy</code> class in Groovy implements the <code>Comparator</code> interface. We provide one or more closures to an <code>OrderBy</code> object, which are executed for comparing values. We can use this object whenever we need a comparator, for example if we invoke the <code>sort()</code> method on a collection.</p>
+<pre class="brush:groovy">
+class Language {
+    String name
+    boolean dynamic
+    String toString() { "name: $name, dynamic: $dynamic" }
+}
+
+def languages = [
+    new Language(name: 'Groovy', dynamic: true),
+    new Language(name: 'Java', dynamic: false),
+    new Language(name: 'Clojure', dynamic: true)
+]
+
+// We order first on dynamic property and then name property.
+def orderByDynamicAndName = new OrderBy([{ it.dynamic }, { it.name }])
+def sortedLanguages = languages.sort(orderByDynamicAndName)
+
+assert 'Java' == sortedLanguages[0].name
+assert !sortedLanguages[0].dynamic
+assert 'Clojure' == sortedLanguages[1].name 
+assert 'Groovy' == sortedLanguages[2].name
+assert sortedLanguages[1].dynamic && sortedLanguages[2].dynamic
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

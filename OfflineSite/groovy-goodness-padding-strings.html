@@ -1,0 +1,99 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Padding Strings</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Padding Strings</h3>
+
+<div class="post">
+<p>Groovy extends the <code>String</code> class with a couple of padding methods. These methods allows us to define a fixed width a <code>String</code> value must occupy. If the <code>String</code> itself is less than the fixed width then the space is padded with spaces or any other character or <code>String</code> we define. We can pad to the left or the right of the <code>String</code> or both left and right and put the <code>String</code> in the center.</p><p>These methods are especially useful when we create Groovy scripts that run on the console and we want to format some output.</p>
+<pre class="brush:groovy">
+assert '   Groovy   ' == 'Groovy'.center(12)
+assert 'Groovy      ' == "Groovy".padRight(12)
+assert '      Groovy' == /Groovy/.padLeft(12)
+
+assert '---Groovy---' == "Groovy".center(12, '-')
+assert 'Groovy * * *' == "Groovy".padRight(12, ' *')
+assert 'Groovy Groovy Groovy' == 'Groovy'.padLeft(20, 'Groovy ')
+
+def createOutput = {
+    def table = [
+        // Page,    Response time, Size
+        ['page1.html',        200, 1201],
+        ['page2.html',         42, 8853],
+        ['page3.html',         98, 3432],
+        ['page4.html',        432, 9081]
+    ]
+
+    def total = { data, index ->
+        data.inject(0) { result, row -> result += row[index] }
+    }
+    def totalTime = total.curry(table, 1)
+    def totalSize = total.curry(table, 2)
+
+    def out = new StringBuffer()
+    out &lt;&lt; ' Summary '.center(15, "*") &lt;&lt; '\n\n'
+    out &lt;&lt; 'Total pages:'.padRight(25)
+    out &lt;&lt; table.size().toString().padLeft(6) &lt;&lt; '\n'
+    out &lt;&lt; 'Total response time (ms):'.padRight(25)
+    out &lt;&lt; totalTime().toString().padLeft(6) &lt;&lt; '\n'
+    out &lt;&lt; 'Total size (KB):'.padRight(25)
+    out &lt;&lt; totalSize().toString().padLeft(6) &lt;&lt; '\n\n'
+
+    out &lt;&lt; ' Details '.center(15, "*") &lt;&lt; '\n\n'
+    table.each {
+        out &lt;&lt; it[0].padRight(14)
+        out &lt;&lt; it[1].toString().padLeft(5)
+        out &lt;&lt; it[2].toString().padLeft(8)
+        out &lt;&lt; '\n'
+    }
+    out.toString()
+}
+
+assert '''\
+*** Summary ***
+
+Total pages:                  4
+Total response time (ms):   772
+Total size (KB):          22567
+         
+*** Details ***
+
+page1.html      200    1201
+page2.html       42    8853
+page3.html       98    3432
+page4.html      432    9081
+''' == createOutput()
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

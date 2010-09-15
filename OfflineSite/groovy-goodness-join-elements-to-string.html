@@ -1,0 +1,61 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Join Elements to a String</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Join Elements to a String</h3>
+
+<div class="post">
+<p>In Groovy we can join elements in a list or array with the <code>join()</code> method to a <code>String</code>. We can set the separator that needs to be between each element. If we don't define a separator the elements are all concatenated together without any separation. The <code>join()</code> method knows when thet last element of the list is reached and no separator is added at the end of the <code>String</code>. Because the end result is a string, all elements are converted to their string counterparts with the <code>toString()</code> method.</p>
+<pre class="brush:groovy">
+def abc = ['a', 'b', 'c']
+assert 'abc' == abc.join()
+assert 'a::b::c' == abc.join('::')
+
+def numbers = [0, 1, 2, 3, 4, 5] as Integer[]
+assert '012345' == numbers.join()
+assert '0 x 1 x 2 x 3 x 4 x 5' == numbers.join(' x ')
+assert '0 1 2 3 4 5' == numbers.join(' ')
+
+def objects = [new URL('http://www.mrhaki.com'), 'mrhaki', new Expando(name: 'mrhaki'), new Date(109, 10, 10)]
+assert 'http://www.mrhaki.com,mrhaki,{name=mrhaki},Tue Nov 10 00:00:00 UTC 2009' == objects.join(',')
+
+// Also great for creating URL query parameters.
+def map = [q: 'groovy', maxResult: 10, start: 0, format: 'xml']
+def params = map.inject([]) { result, entry -&gt; 
+    result &lt;&lt; &quot;${entry.key}=${URLEncoder.encode(entry.value.toString())}&quot;
+}.join('&amp;')
+assert 'q=groovy&amp;maxResult=10&amp;start=0&amp;format=xml' == params
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

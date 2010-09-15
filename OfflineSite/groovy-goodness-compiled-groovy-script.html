@@ -1,0 +1,53 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Compiled Groovy Script is a Java Class</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Compiled Groovy Script is a Java Class</h3>
+
+<div class="post">
+<p>A Groovy script has no class declaration or <code>main()</code> method, but if we compile the script class to Java bytecode, it has. This means we can write a Groovy script, compile the source and use the resulting class in Java.</p>
+<pre class="brush:groovy">
+// File: Sample.groovy
+package com.mrhaki.blog
+
+println 'Hello from Groovy'
+</pre>
+<p>Next we can compile this script and use Java to invoke the class. We must make sure we add the Groovy library to the classpath, but that is all.</p>
+<pre class="brush:plain;light:true">
+$ groovyc Sample.groovy
+$ java -cp .:$GROOVY_HOME/embeddable/groovy-all-1.6.5.jar com.mrhaki.blog.Sample
+Hello from Groovy
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

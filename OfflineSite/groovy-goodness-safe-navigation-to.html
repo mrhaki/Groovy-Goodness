@@ -1,0 +1,72 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Safe Navigation to Avoid NullPointerException</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Safe Navigation to Avoid NullPointerException</h3>
+
+<div class="post">
+<p>Little things in live can be such a joy. The safe navigation operator in Groovy is such a little thing. Suppose we have modelled a simple domain like this:</p>
+<pre class="brush:groovy">
+class Company {
+    Address address
+    String name
+}
+
+class Address {
+    Street street
+    String postalCode
+    String city
+}
+
+class Street { 
+    String name
+    String number
+    String additionalInfo
+}
+</pre>
+<p>We want to display the streetname, but we don't know if all object instances are available. To avoid a NullPointerException we write the following code:</p>
+<pre class="brush:groovy">
+// company can be null.
+if (company != null && company.getAddress() != null && company.getAddress().getStreet() != null) {
+    println company.address.street.name
+}
+</pre>
+<p>Groovy adds the safe navigation operator to shorten all this to:</p>
+<pre class="brush:groovy">
+// company can be null.
+println company?.address?.street?.name
+</pre>
+<p>If one of the objects was null, the output of the total statement is null. We will not get any NullPointerExceptions.</p>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

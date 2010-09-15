@@ -1,0 +1,55 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Splitting with Closures</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Splitting with Closures</h3>
+
+<div class="post">
+<p>Groovy adds a <code>split()</code> method to objects with a closure parameter. In the closure we must define a condition to split up the items in two lists. One list contains all the items that apply to the closure condition, the other list contains the rest of the items that don't apply to the closure condition.</p>
+<pre class="brush:groovy">
+def range = 1..10
+def (even, odd) = range.split { it % 2 == 0 }
+assert [2,4,6,8,10] == even
+assert [1,3,5,7,9] == odd
+
+def map = [language: 'Groovy', username: 'mrhaki', age: 36]
+def (strings, others) = map.split { it.value instanceof String } 
+assert 2 == strings.size()
+assert 1 == others.size()
+assert 'language' == strings[0].key &amp;&amp; 'Groovy' == strings[0].value 
+assert 'username' == strings[1].key &amp;&amp; 'mrhaki' == strings[1].value 
+assert 'age' == others[0].key &amp;&amp; 36 == others[0].value
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

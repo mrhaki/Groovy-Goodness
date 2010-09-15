@@ -1,0 +1,57 @@
+<html>
+<head>
+
+<title>Groovy Goodness: New Ways to Curry</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: New Ways to Curry</h3>
+
+<div class="post">
+<p>A couple of weeks ago I gave a presentation about Groovy and the subject of closures and the <code>curry()</code> method was covered. Someone from the audience asked if the arguments could be 'curried' from right to left instead of from left to right. I had to say no, but since Groovy 1.7.2 this isn't true anymore. Groovy 1.7.2 adds the <code>rcurry()</code> method which uses a right to left order. And as a bonus we also have got the <code>ncurry()</code> method where we can supply a parameter value for an argument of the closure at a specific index.</p>
+<pre class="brush:groovy">
+@Grab('commons-lang:commons-lang:2.5')
+import org.apache.commons.lang.RandomStringUtils as RSU
+
+def randomClosure = { size, letters, numbers ->
+    // Invoke RandomStringUtils.random() method 
+    RSU.random size, letters, numbers
+}
+
+def randomNumbers = randomClosure.rcurry(false, true)  // letters = false, numbers = true
+def randomLetters = randomClosure.ncurry(1, true, false) // letters = true, numbers = false
+
+println randomClosure(10, true, true)  // Sample output: VG7mffNAdA
+println randomNumbers(10)              // Sample output: 8099670444
+println randomLetters(10)              // Sample output: ZOHlHewEPU
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

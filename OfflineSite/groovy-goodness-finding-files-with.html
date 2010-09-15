@@ -1,0 +1,51 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Finding Files with FileNameFinder</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Finding Files with FileNameFinder</h3>
+
+<div class="post">
+<p>The <code>groovy.util</code> package contains the <a href="http://groovy.codehaus.org/gapi/groovy/util/FileNameFinder.html"><code>FileNameFinder</code></a> and <a href="http://groovy.codehaus.org/gapi/groovy/util/FileNameByRegexFinder.html"><code>FileNameByRegExFinder</code></a> classes. We can use the <code>FileNameFinder</code> classe to search recursively for files in a directory with ANT fileset pattern conventions. With the <code>FileNameByRegExFinder</code> we use regular expressions to define the file patterns.</p>
+<pre class="brush:groovy">
+// Suppose we have a environment variable GROOVY_HOME pointing to the Groovy installation dir.
+def groovyHome = System.getenv('GROOVY_HOME')
+
+def txtFiles = new FileNameFinder().getFileNames(groovyHome, '**/*.txt' /* includes */, '**/*.doc **/*.pdf' /* excludes */)
+assert new File(groovyHome, 'README.txt').absolutePath in txtFiles
+
+def icoFiles = new FileNameByRegexFinder().getFileNames(groovyHome, /.*\.ico/)
+assert new File(groovyHome, 'html/groovy-jdk/groovy.ico').absolutePath in icoFiles
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Check for Object Equality</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Check for Object Equality</h3>
+
+<div class="post">
+<p>Groovy overloads the <code>==</code> operator and maps it to the <code>equals()</code> method. This is very different from Java, so when developers are switching back and forth between Groovy and Java mistakes are bound to happen. In Java we use the <code>==</code> operator to see if variables are referring to the same object instance. In Groovy we use the <code>==</code> operator to see if two objects are the same, in Java we would use the <code>equals()</code> method for this. To test if two variables are referring to the same object instance in Groovy we use the <code>is()</code> method. The <code>!=</code> operator is also overloaded and maps to the <code>!equals()</code> statement.</p><p>And because we are in Groovy land all null values are handled gracefully. We don't have to write extra checks to check for null values before we can test for equality.</p>
+<pre class="brush:groovy">
+Integer myInt = 42
+Integer anotherInt = myInt
+Integer newInt = 42
+Integer different = 101
+
+assert myInt == anotherInt  // In Java: myInt != null &amp;&amp; myInt.equals(anotherInt)
+assert myInt.is(anotherInt)  // In Java: myInt == anotherInt
+
+assert myInt == newInt
+
+assert myInt != different
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

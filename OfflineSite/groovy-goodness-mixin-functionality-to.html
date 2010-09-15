@@ -1,0 +1,71 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Mixin Functionality to Classes</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Mixin Functionality to Classes</h3>
+
+<div class="post">
+<p>In a previous blog post we learned how to use <code>Categories</code> to add functionality to existing class. We had to use the <code>use</code> keyword to define a block in which the <code>Category</code> was valid. But we can also add new functionality with the <code>@Mixin</code> compile-time annotation or at runtime with the <code>mixin()</code> method (GDK extension to <a href="http://groovy.codehaus.org/groovy-jdk/java/lang/Class.html"><code>Class</code></a>).</p>
+<pre class="brush:groovy">
+class Pirate {
+    def talk(text) {
+        "Aargh, walk the plank. ${text}"
+    }
+}
+
+// Compile time mixin to Talk class. This add all
+// methods from Pirate to Talk.
+@Mixin(Pirate)  
+class Talk {}
+
+assert 'Aargh, walk the plank. Give me a bottle of rum.' == new Talk().talk("Give me a bottle of rum.")
+</pre>
+<pre class="brush:groovy">
+import org.apache.commons.lang.StringUtils
+
+class Parrot {
+    static String speak(String text) {
+        /Parrot says "$text"/
+    }
+}
+
+// Runtime mixin on String class. 
+// mixin() is a GDK extension to Class.
+String.mixin Parrot, StringUtils
+
+assert 'Parrot says "mrhaki"' == 'mrhaki'.speak()
+assert 'Groovy is so much...' == 'Groovy is so much fun.'.abbreviate(20)  // StringUtils mixin.
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

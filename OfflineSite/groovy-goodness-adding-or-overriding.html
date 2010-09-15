@@ -1,0 +1,58 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Adding or Overriding Methods with ExpandoMetaClass</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Adding or Overriding Methods with ExpandoMetaClass</h3>
+
+<div class="post">
+<p>In Groovy we can add new methods to classes with <code>ExpandoMetaClass</code> using the <code>leftShift</code> (<code>&lt;&lt;</code>) operator. If the method already exists we get an error. To override an existing method we can use the equal operator (<code>=</code>). But we can also use the equal operator (<code>=</code>) to add a new method, but then we don't get an error when the method already exists.</p>
+<pre class="brush:groovy">
+Integer.metaClass.eights &lt;&lt; { delegate * 8 }
+assert 32 == 4.eights()
+
+Integer.metaClass.hundreds = { delegate * 100 }
+assert 200 == 2.hundreds()
+
+try {
+    Integer.metaClass.toString &lt;&lt; { 'Groovy' } // Cannot use &lt;&lt; for existing method.
+    assert false
+} catch (e) {
+    assert 'Cannot add new method [toString] for arguments [[]]. It already exists!' == e.message
+}
+
+Integer.metaClass.toString = { 'Groovy' }
+assert 'Groovy' == 100.toString()
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

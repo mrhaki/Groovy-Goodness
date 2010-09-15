@@ -1,0 +1,86 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Simple Evaluation of Groovy Expressions in Java</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Simple Evaluation of Groovy Expressions in Java</h3>
+
+<div class="post">
+<p>We can run Groovy code from Java code in several ways. A very simple and easy way is to use the <code>Eval</code> class. The <code>Eval</code> class has five methods to execute simple Groovy expressions with zero to three arguments. All methods are static and the Groovy expression must be a String.</p>
+<pre class="brush:java">
+package com.mrhaki.blog;
+
+import java.util.*;
+import groovy.util.Eval;
+import junit.framework.*;
+import static junit.framework.Assert.*;
+
+public class EvalGroovyTest extends TestCase {
+    public static void main(String[] args) {        
+        assertEquals(
+            "Invoke Eval.me() without arguments",
+            "Hello from Groovy", 
+            Eval.me("def language = 'Groovy'; \"Hello from $language\";").toString()
+        );
+        
+        final Map values = new HashMap();
+        values.put("name", "mrhaki");
+        values.put("lang", "Groovy");
+        String expression = "\"Hello $params.name from $params.lang\"";
+        assertEquals(
+            "Invoke Eval.me() with 2 arguments: first is name of object used by expression, second is object self",
+            "Hello mrhaki from Groovy",
+            Eval.me("params", values, expression).toString()
+        );
+            
+        assertTrue(
+            "Invoke Eval.x() where the passed arguments name is x in the expression",
+            (Boolean) Eval.x("mrhaki", "x.any { it =~ 'a' }")
+        );
+        
+        assertTrue(
+            "Invoke Eval.xy() where the passed arguments name is x and y in the expression",
+            (Boolean) Eval.xy("mrhaki", "h", "x.any { it =~ y }")
+        );
+        
+        expression = "x.\"$z\"() * y";  // Unreadable expression to return x with the method z applied y times.
+        assertEquals(
+            "Invoke Eval.xyz() where the passed arguments name is x, y and z in the expression",
+            "GROOVYGROOVY", 
+            Eval.xyz("groovy", 2, "toUpperCase", expression).toString()
+        );
+    }
+}
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

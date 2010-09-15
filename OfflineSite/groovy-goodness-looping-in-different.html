@@ -1,0 +1,106 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Looping in Different Ways</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Looping in Different Ways</h3>
+
+<div class="post">
+<p>Looping in Groovy can be done in several ways. We can use the standard classic Java for loop or use the newer Java for-each loop. But Groovy adds more ways to loop several times and execute a piece of code. Groovy extends the <code>Integer</code> class with the <code>step()</code>, <code>upto()</code> and <code>times()</code> methods. These methods take a closure as a parameter. In the closure we define the piece of code we want to be executed several times.</p><p>If we have a <code>List</code> in Groovy we can loop through the items of the list with the <code>each()</code> and <code>eachWithIndex()</code> methods. We also need to pass a closure as parameter to the methods. The closure is then executed for every item in the list.</p>
+<pre class="brush:groovy">
+// Result variable for storing loop results.
+def result = ''
+// Closure to fill result variable with value.
+def createResult = { 
+    if (!it) {  // A bit of Groovy truth: it == 0 is false
+        result = '0'
+    } else {
+        result += it
+    }
+}
+
+// Classic for loop.
+for (i = 0; i &lt; 5; i++) {
+    createResult(i)
+}
+assert '01234' == result
+
+// Using int.upto(max).
+0.upto(4, createResult)
+assert '01234' == result
+
+// Using int.times.
+5.times(createResult)
+assert '01234' == result
+
+// Using int.step(to, increment).
+0.step 5, 1, createResult
+assert '01234' == result
+
+// Classic while loop.
+def z = 0
+while (z &lt; 5) {
+    createResult(z)
+    z++
+}
+assert '01234' == result
+
+def list = [0, 1, 2, 3, 4]
+
+// Classic Java for-each loop.
+for (int i : list) {
+    createResult(i)
+}
+assert '01234' == result
+
+// Groovy for-each loop.
+for (i in list) {
+    createResult(i)
+}
+assert '01234' == result
+
+// Use each method to loop through list values.
+list.each(createResult)
+assert '01234' == result
+
+// Ranges are lists as well.
+(0..4).each(createResult)
+assert '01234' == result
+
+// eachWithIndex can be used with closure: first parameter is value, second is index.
+result = ''
+list.eachWithIndex { listValue, index -> result += "$index$listValue" }
+assert '0011223344' == result
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

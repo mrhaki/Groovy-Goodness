@@ -1,0 +1,60 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Looping Through Each Permutation in a Collection</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Looping Through Each Permutation in a Collection</h3>
+
+<div class="post">
+<p>Groovy 1.7 adds news methods to the standard Java classes. One of the new methods is <code>eachPermutation()</code>. With this method we can loop through all permutations of a collection and run a closure for the iterations. To get all permutations for a collection we can use the <code>permutations()</code> method.</p>
+<pre class="brush:groovy">
+def languages = ['Groovy', 'Clojure', 'Scala']
+
+def result = []
+languages.eachPermutation {
+    result &lt;&lt; it
+}
+
+assert 6 == result.size()
+assert ['Groovy', 'Clojure', 'Scala'] == result[0]
+assert ['Groovy', 'Scala', 'Clojure'] == result[1]
+assert [['Clojure', 'Groovy', 'Scala'], ['Clojure', 'Scala', 'Groovy']] == result.findAll { it[0] == 'Clojure' }
+
+// We can also get the complete list of permutations as Set.
+def list = [true, false]
+def permutations = list.permutations()
+assert 2 == permutations.size()
+assert [[false,true], [true,false]] as Set == permutations
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

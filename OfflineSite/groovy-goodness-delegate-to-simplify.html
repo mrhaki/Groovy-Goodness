@@ -1,0 +1,90 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Delegate to Simplify Code</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Delegate to Simplify Code</h3>
+
+<div class="post">
+<p>Groovy supports the @Delegate annotation. With this annotation we can import all the methods of the class the annotation is used for. For example if we use the delegate annotation for the <code>Date</code> class we get all the methods of the <code>Date</code> class in our class. Just like that. This is best explained with a little sample in which we use the @Delegate annotation for properties of type <code>Date</code> and <code>List</code>:</p>
+<pre class="brush:groovy">
+class SimpleEvent {
+    @Delegate Date when
+    @Delegate List&lt;String&gt; attendees = []
+    int maxAttendees = 0
+    String description
+}
+
+def event = new SimpleEvent(when: new Date() + 7, description: 'Small Groovy seminar', maxAttendees: 2)
+
+assert 0 == event.size()  // Delegate to List.size()
+assert event.after(new Date())  // Delegate to Date.after()
+assert 'Small Groovy seminar' == event.description
+assert 2 == event.maxAttendees
+
+event &lt;&lt; 'mrhaki' &lt;&lt; 'student1'  // Delegate to List.leftShift()
+assert 2 == event.size()
+assert 'mrhaki' == event[0]
+
+event -= 'student1'  // Delegate to List.minus()
+assert 1 == event.size()
+</pre>
+<p>We have used the @Delegate annotations and as by magic the <code>SimpleEvent</code> has all methods of both the <code>Date</code> class and <code>List</code> interface. The code reads naturally and the meaning is obvious. Because the <code>SimpleEvent</code> class has all methods from the <code>List</code> interface we can override the methods as well. In our sample we override the <code>add()</code> so we can check if the number of attendees doesn't exceed the maximum number of attendees allowed:</p>
+<pre class="brush:groovy">
+class SimpleEvent {
+    @Delegate Date when
+    @Delegate List&lt;String&gt; attendees = []
+    int maxAttendees = 0
+    String description
+
+    boolean add(Object value) {
+        if (attendees.size() < maxAttendees) {
+            return attendees.add(value)
+        } else {
+            throw new IllegalArgumentException("Maximum of ${maxAttendees} attendees exceeded.")
+        }
+    }
+}
+
+def event = new SimpleEvent(when: new Date() + 7, description: 'Small Groovy seminar', maxAttendees: 2)
+event &lt;&lt; 'mrhaki' &lt;&lt; 'student1'
+
+try {
+    event &lt;&lt; 'three is a crowd.'
+    assert false
+} catch (IllegalArgumentException e) {
+    assert 'Maximum of 2 attendees exceeded.' == e.message
+}
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

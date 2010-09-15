@@ -1,0 +1,81 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Optional Parenthesis</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Optional Parenthesis</h3>
+
+<div class="post">
+<p>Groovy can make code more readable with small features like optional parenthesis. If a method contains at least one argument we can leave out the parenthesis. There must also be no ambiquity, before we can leave out the parenthesis, otherwise the results can be unexpected. This also works for methods with named parameters and as a result the code could already look like a more natural language.</p>
+<pre class="brush:groovy">
+class User {
+    String name    
+    def connections = []
+    
+    def speaks(args) {
+        connections.find{it.name == args.to.name}.listen(args.saying)
+    }
+    
+    def meets(user) {
+        connections &lt;&lt; user
+    }
+    
+    def listen(text) {
+        println &quot;I, $name, am listening to '$text'&quot;
+    }
+
+    def greeting() {
+        &quot;Hi, I am $name.&quot;
+    }
+}
+
+def mrhaki = new User(name: 'mrhaki')
+def hubert = new User(name: 'hubert')
+
+mrhaki.meets hubert  // No parenthesis needed.
+
+println mrhaki.greeting()  // Need to use parenthesis for greeting, otherwise Groovy thinks greeting is a property.
+// Output: Hi, I am mrhaki
+
+mrhaki.speaks to: hubert, saying: 'How are you doing?'  // Named parameters.
+// Output: I, hubert, am listening to 'How are you doing?'
+
+// Look out with closures as the last element.
+// The method can be invoked in several ways.
+def list = [1,2,3,4]
+list.sum(100, { it * 2 })  // Traditional, all parenthesis and comma.
+list.sum(100) { it * 2 }  // Last argument is closure, so can be outside parenthesis and no comma 
+list.sum 100, { it * 2 }  // No parenthesis, but with the comma.
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

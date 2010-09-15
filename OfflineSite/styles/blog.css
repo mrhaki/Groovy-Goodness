@@ -1,0 +1,73 @@
+#navbar {
+	display: none;
+}
+
+html {
+}
+
+body {
+	font-family: "Lucida Grande",Arial,Verdana,sans-serif;
+	line-height: 140%;
+	background-color: #ffffff;
+	text-align:left;
+	margin: 20px;
+}
+
+em {
+    font-style: italic;
+}
+
+p,pre {
+    margin-bottom: 1em;
+}
+
+h3 {
+	font-size: 123.1%;
+	font-weight: bold;
+}
+
+h3.post-title {
+	margin: 0.5em 0;
+}
+
+.titlewrapper h1 {
+	font-size: 182%;
+	font-weight: bold;
+	color: rgb(119,119,119);
+	letter-spacing: -2px;
+}
+
+.titlewrapper a {
+	text-decoration: none;
+}
+
+.description {
+	font-size: 123.1%;
+	color: #ccc;
+	padding-left: 2em;
+	padding-top: 0.3em;
+}
+
+a, a:hover {
+	color: rgb(0, 136, 204);
+}
+
+a:visited {
+	color: rgb(119,119,119);
+}
+
+a:selected {
+	color: rgb(51,51,51);
+}
+
+img {
+	padding: 4px;
+}
+
+.dp-highlighter ol li, .dp-highlighter .columns div, .dp-highlighter .tools {
+	border-color: rgb(119,119,119);
+}
+
+div.toc {
+    margin-top: 2em;
+ }

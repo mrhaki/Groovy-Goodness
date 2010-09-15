@@ -1,0 +1,265 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Bound and Constrained Properties in GroovyBeans</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Bound and Constrained Properties in GroovyBeans</h3>
+
+<div class="post">
+<p>In <a href="http://mrhaki.blogspot.com/2009/08/groovy-goodness-groovybeans-simpler.html">a previous post</a> we learned some basic GroovyBeans syntax. With less code we could write a complete JavaBean. In this post we see how we can implement bound and constrained properties as defined in the JavaBeans specification. A bound property is a bean property for which a change to the property results in a notification being sent to some other bean. A constrained property is a bean property for which a change to the property results in validation by another bean. The other bean may reject the change if it is not appropriate.</p>
+<p>Implementing these properties is of course easy in Groovy! Groovy supports the <code>@Bindable</code> and <code>@Vetoable</code> annotations (<a href="http://groovy.codehaus.org/Bindable+and+Vetoable+transformation">extra info on Groovy site</a>) to implement bound and constrained properties. The following code shows a simple bean:</p>
+<pre class="brush:groovy">
+import groovy.beans.*
+
+class Car {
+   int numberOfDoors
+   @Vetoable String model
+   @Vetoable String brand
+   boolean automatic
+   @Bindable double price
+ 
+   String toString() {
+     "[Car details =&gt; brand: '${brand}', model: '${model}', #doors: '${numberOfDoors}', automatic: '${automatic}', price: '${price}']"
+   }
+}
+</pre>
+<p>And that is it! When we compile the <code>Car</code> class Groovy adds all necessary <code>addXXXListener</code> methods with implementations. Just for excercise we see the equivalent in Java:</p>
+<pre class="brush:java">
+import java.beans.*;
+
+public class Car {
+ private int numberOfDoors;
+ private String model;
+ private String brand;
+ private boolean automatic;
+ private double price;
+ 
+ private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+ private final VetoableChangeSupport vcs = new VetoableChangeSupport(this);
+
+ public void addPropertyChangeListener(PropertyChangeListener listener) {
+  pcs.addPropertyChangeListener(listener);
+ }
+
+ public void removePropertyChangeListener(PropertyChangeListener listener) {
+  pcs.removePropertyChangeListener(listener);
+ }
+ 
+ public void addVetoableChangeListener(VetoableChangeListener listener) {
+  vcs.addVetoableChangeListener(listener);
+ }
+
+ public void removeVetoableChangeListener(VetoableChangeListener listener) {
+  vcs.removeVetoableChangeListener(listener);
+ }
+
+ public void setPrice(double price) {
+  double oldPrice = this.price;
+  this.price = price;
+  pcs.firePropertyChange("price", oldPrice, price);
+    }
+ 
+ public double getPrice() {
+  return this.price;
+ }
+ 
+ public void setModel(String model) throws PropertyVetoException {
+  String oldModel = this.model;
+  vcs.fireVetoableChange("model", oldModel, model);
+  this.model = model;
+  pcs.firePropertyChange("model", oldModel, model);
+ }
+ 
+ public String getModel() {
+  return this.model;
+ }
+ 
+ public void setBrand(String model) throws PropertyVetoException {
+  String oldBrand = this.brand;
+  vcs.fireVetoableChange("model", oldBrand, brand);
+  this.brand = brand;
+  pcs.firePropertyChange("model", oldBrand, brand);
+ }
+ 
+ public String getBrand() {
+  return this.brand;
+ }
+ 
+ public void setNumberOfDoors(int numberOfDoors) {
+  this.numberOfDoors = numberOfDoors;
+ }
+ 
+ public int getNumberOfDoors() {
+  return numberOfDoors;
+ }
+ 
+ public void setAutomatic(boolean automatic) {
+  this.automatic = automatic;
+ }
+ 
+ public boolean isAutomatic() {
+  return this.automatic;
+ }
+ 
+ public String toString() {
+  final StringBuilder builder = new StringBuilder();
+  builder.append("[Car details =&gt; brand: '");
+  builder.append(brand);
+  builder.append("', model: '");
+  builder.append(model);
+  builder.append("', #doors: '");
+  builder.append(numberOfDoors);
+  builder.append("', automatic: '");
+  builder.append(automatic);
+  builder.append("', price: '");
+  builder.append(price);
+  builder.append("']");
+  return builder.toString();
+ }
+}
+</pre>
+<p>Well I think we see the difference in lines of code...</p>
+<p>Let's write a simple Groovy script to listen for the propertychange and vetoablechange events. We can also  write less code than the Java equivalent here. In Groovy we can <a href="http://groovy.codehaus.org/Groovy+Beans">use closures</a> to implement listener interfaces. The following Groovy script listens for property changes and rejects certain values:</p>
+<pre class="brush:groovy">
+import groovy.beans.*
+import java.beans.*
+
+def toyota = new Car(brand: 'Toyota', model: 'Verso', price: 28919, numberOfDoors: 5)
+toyota.propertyChange = {
+ if (it.propertyName == 'price') {
+  println "The price has changed. Inform sales the new price is '${it.newValue}'." 
+ }
+}
+toyota.vetoableChange = { PropertyChangeEvent pce ->
+ if (pce.propertyName == "brand") {
+  if (!(pce.newValue in ['Toyota', 'Lexus'])) {
+   throw new PropertyVetoException('New value is not Toyota or Lexus', pce)
+  }
+ }
+ if (pce.propertyName == "model") {
+  if (pce.newValue ==~ /.*\d+.*/) {
+   throw new PropertyVetoException('No numbers in model names allowed.', pce)
+  }
+ }
+}
+
+toyota.price = 30995
+assert 30995 == toyota.price
+
+toyota.brand = 'Lexus'
+assert 'Lexus' == toyota.brand
+
+try {
+ toyota.brand = 'AUDI'
+ assert false: 'We should not be able to set this value.'
+} catch (PropertyVetoException e) {
+ assert true
+}
+
+try {
+ toyota.model = 'A5'
+ assert false: 'We should not be able to set this value.'
+} catch (PropertyVetoException e) {
+ assert true
+}
+</pre>
+<p>Our Groovy <code>Car</code> class is compiled to Java byte code. So we must be able to use this class in our normal Java applications. So here is a Java application which implements the appropriate listener interface. Notice we must compile this Java application with <code>groovyc</code> and we cannot use anonymous inner classes as interface implementations.</p>
+<pre class="brush:java">
+import java.beans.*;
+import java.util.regex.*;
+
+public class CarApp implements PropertyChangeListener, VetoableChangeListener {
+    public static void main(String[] args) {
+        Car toyota = new Car();
+        toyota.setModel("Verso");
+        toyota.setBrand("Toyota");
+        toyota.setNumberOfDoors(5);
+        toyota.setPrice(28919);
+
+        CarApp app = new CarApp();
+        toyota.addPropertyChangeListener(app);
+        toyota.addVetoableChangeListener(app);
+
+        toyota.setPrice(30995);
+        toyota.setBrand("Lexus");
+        try {
+            toyota.setBrand("AUDI");
+        } catch (PropertyVetoException e) {
+            System.out.println("Brand is not changed.");
+        }
+        try {
+            toyota.setModel("A5");
+        } catch (PropertyVetoException e) {
+            System.out.println("Model is not changed.");
+        }
+    }
+
+    public void propertyChange(PropertyChangeEvent evt) {
+       if (evt.getPropertyName().equals("price")) {
+           System.out.println("The price has changed. Inform sales the new price is '" + evt.getNewValue() + "'.");
+       }
+    }
+
+    public void vetoableChange(PropertyChangeEvent evt) {
+       if (evt.getPropertyName().equals("brand")) {
+           if (!isValidBrand(evt.getNewValue())) {
+               throw new PropertyVetoException("New value is not Toyota or Lexus", evt)
+           }
+       }
+       if (evt.getPropertyName().equals("model")) {
+           if (!isValidModel(evt.getNewValue())) {
+               throw new PropertyVetoException("No numbers in model names allowed.", evt)       
+           }
+       }
+    }
+
+    private boolean isValidBrand(String newValue) {
+        final String[] names = new String[2];
+        names[0] = "Toyota";
+        names[1] = "Lexus";
+        for (String name: names) {
+            if (newValue.equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+ 
+    private boolean isValidModel(String model) {
+        return !Pattern.matches(".*\\d+.*", model);
+    }
+}
+</pre>
+<p>The @Bindable and @Vetoable really make for readable Groovy code and still implement all the functionality we expect.</p>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Type Conversion Using GPathResult When Reading XML</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Type Conversion Using GPathResult When Reading XML</h3>
+
+<div class="post">
+<p>To read XML we can use the <code>XmlSlurper</code> class and we get a <a href="http://groovy.codehaus.org/gapi/groovy/util/slurpersupport/GPathResult.html"><code>GPathResult</code></a> object back. With <code>GPathResult</code> we can traverse throught the XML and get values from elements and attributes. <code>GPathResult</code> contains several method to convert values to specific classes, like <code>toBoolean()</code>, <code>toString()</code>, <code>toInteger()</code> and more.</p>
+<pre class="brush:groovy">
+def xml = '''
+&lt;users&gt;
+    &lt;user loggedin=&quot;true&quot;&gt;
+        &lt;age&gt;36&lt;/age&gt;
+        &lt;name&gt;mrhaki&lt;/name&gt;
+        &lt;fullname&gt;Hubert A. Klein Ikkink&lt;/fullname&gt;
+        &lt;homepage&gt;http://www.mrhaki.com/&lt;/homepage&gt;
+    &lt;/user&gt;
+&lt;/users&gt;
+'''
+
+def users = new XmlSlurper().parseText(xml)
+def mrhaki = users.user[0]
+assert mrhaki.@loggedin.toBoolean() 
+assert 36 == mrhaki.age.toInteger()
+assert 'mrhaki' == mrhaki.name.toString()
+assert new URL('http://www.mrhaki.com/') == mrhaki.homepage.toURL()
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

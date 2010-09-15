@@ -1,0 +1,126 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Creating XML with MarkupBuilder</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Creating XML with MarkupBuilder</h3>
+
+<div class="post">
+<p>Groovy has some nice builder classes to create XML. We look at the <code>MarkupBuilder</code> and <code>StreamingMarkupBuilder</code> class in this post. Both allow us to define the XML structure with builder syntax. The <code>MarkupBuilder</code> is good for simple XML, but if we want to add for example namespaces we can use the <code>StreamingMarkupBuilder</code>.</p>
+<pre class="brush:groovy">
+import groovy.xml.*
+
+def writer = new StringWriter()
+def html = new MarkupBuilder(writer)
+html.html {
+    head {
+        title 'Simple document'
+    }
+    body(id: 'main') {
+        h1 'Building HTML the Groovy Way'
+        p {
+           mkp.yield 'Mixing text with '
+           strong 'bold'
+           mkp.yield ' elements.'
+        }
+        a href: 'more.html', 'Read more...'
+    }
+}
+println writer
+
+/*
+Output:
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Simple document&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body id='main'&gt;
+    &lt;h1&gt;Building HTML the Groovy Way&lt;/h1&gt;
+    &lt;p&gt;Mixing text with
+      &lt;b&gt;bold&lt;/b&gt; elements.
+    &lt;/p&gt;
+    &lt;a href="more.html"&gt;Read more..&lt;/a&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+*/
+
+def builder = new StreamingMarkupBuilder()
+builder.encoding = 'UTF-8'
+def books = builder.bind {
+    mkp.xmlDeclaration()
+    namespaces &lt;&lt; [meta:'http://meta/book/info']  // Or mkp.declareNamespace('meta':'http://meta/book/info')
+    books(count: 3) {
+        book(id: 1) {
+            title lang:'en', 'Groovy in Action'
+            meta.isbn '1-932394-84-2'
+        }
+        book(id: 2) {
+            title lang:'en', 'Groovy Programming' 
+            meta.isbn '0123725070'
+        }
+        book(id: 3) {
+            title 'Groovy &amp; Grails'  // &amp; is converted to &amp;amp;
+            comment &lt;&lt; 'Not yet available.'  // Or mkp.comment('Not yet available')            
+        }
+        book(id: 4) {
+            mkp.yieldUnescaped '&lt;title&gt;Griffon Guide&lt;/title&gt;'
+        }
+    }
+}
+
+println XmlUtil.serialize(books)
+
+/* 
+Output:
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;books xmlns:meta=&quot;http://meta/book/info&quot; count=&quot;3&quot;&gt;
+  &lt;book id=&quot;1&quot;&gt;
+    &lt;title lang=&quot;en&quot;&gt;Groovy in Action&lt;/title&gt;
+    &lt;meta:isbn&gt;1-932394-84-2&lt;/meta:isbn&gt;
+  &lt;/book&gt;
+  &lt;book id=&quot;2&quot;&gt;
+    &lt;title lang=&quot;en&quot;&gt;Groovy Programming&lt;/title&gt;
+    &lt;meta:isbn&gt;0123725070&lt;/meta:isbn&gt;
+  &lt;/book&gt;
+  &lt;book id=&quot;3&quot;&gt;
+    &lt;title&gt;Groovy &amp;amp; Grails&lt;/title&gt;
+    &lt;!--Not yet available.--&gt;
+  &lt;/book&gt;
+  &lt;book id=&quot;4&quot;&gt;
+    &lt;title&gt;Griffon Guide&lt;/title&gt;
+  &lt;/book&gt;
+&lt;/books&gt;
+*/
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,115 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Building a GUI with SwingBuilder</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Building a GUI with SwingBuilder</h3>
+
+<div class="post">
+<p>Groovy has some very nice builders to quickly make for example XML. The <code>SwingBuilder</code> class makes it possible to use a builder syntax to make a GUI. We define the components we want to display, bindings, and event handlers. Groovy adds the TableLayout as a layout manger to define a simple table-like layout.</p>
+<pre class="brush:groovy">
+import groovy.swing.SwingBuilder  
+import groovy.beans.Bindable  
+import static javax.swing.JFrame.EXIT_ON_CLOSE  
+import java.awt.*
+ 
+@Bindable
+class Address {  
+    String street, number, city
+    String toString() { "address[street=$street,number=$number,city=$city]" }
+}
+  
+def address = new Address(street: 'Evergreen Terrace', number: '742', city: 'Springfield')
+  
+def swingBuilder = new SwingBuilder()
+swingBuilder.edt {  // edt method makes sure UI is build on Event Dispatch Thread.
+    lookAndFeel 'nimbus'  // Simple change in look and feel.
+    frame(title: 'Address', size: [350, 230], 
+            show: true, locationRelativeTo: null, 
+            defaultCloseOperation: EXIT_ON_CLOSE) { 
+        borderLayout(vgap: 5)
+        
+        panel(constraints: BorderLayout.CENTER, 
+                border: compoundBorder([emptyBorder(10), titledBorder('Enter your address:')])) {
+            tableLayout {
+                tr {
+                    td {
+                        label 'Street:'  // text property is default, so it is implicit.
+                    }
+                    td {
+                        textField address.street, id: 'streetField', columns: 20
+                    }
+                }
+                tr {
+                    td {
+                        label 'Number:'
+                    }
+                    td {
+                        textField id: 'numberField', columns: 5, text: address.number
+                    }
+                }
+                tr {
+                    td {
+                        label 'City:'
+                    }
+                    td {
+                        textField id: 'cityField', columns: 20, address.city
+                    }
+                }
+            }
+            
+        }
+        
+        panel(constraints: BorderLayout.SOUTH) {
+            button text: 'Save', actionPerformed: {
+                println address
+            }
+        }
+        
+        // Binding of textfield's to address object.
+        bean address, 
+            street: bind { streetField.text }, 
+            number: bind { numberField.text }, 
+            city: bind { cityField.text }
+    }  
+}
+</pre>
+<p>When we run the script we get the following output:</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://2.bp.blogspot.com/_-vJw6r2W-bw/SvnduM-yxnI/AAAAAAAADFM/oGF-QzKZsbg/s1600-h/blog-gg-swing1.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 320px; height: 210px;" src="http://2.bp.blogspot.com/_-vJw6r2W-bw/SvnduM-yxnI/AAAAAAAADFM/oGF-QzKZsbg/s320/blog-gg-swing1.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5402593013835941490" /></a>
+<p>If we change the input field and click on the <em>Save</em> button we get the following output:</p>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://4.bp.blogspot.com/_-vJw6r2W-bw/SvnduB0sYQI/AAAAAAAADFU/s6mMR_OVgy0/s1600-h/blog-gg-swing2.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 320px; height: 210px;" src="http://4.bp.blogspot.com/_-vJw6r2W-bw/SvnduB0sYQI/AAAAAAAADFU/s6mMR_OVgy0/s320/blog-gg-swing2.png" border="0" alt=""id="BLOGGER_PHOTO_ID_5402593010840789250" /></a>
+<pre class="brush:plain;light:true">
+address[street=Main St.,number=1,city=Hometown]
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

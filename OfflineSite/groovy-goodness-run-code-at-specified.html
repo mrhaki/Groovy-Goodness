@@ -1,0 +1,91 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Run Code at a Specified Time</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Run Code at a Specified Time</h3>
+
+<div class="post">
+<p>In Groovy we can use the method <code>runAfter()</code> to run a closure after a specified delay in milliseconds. This method is added by Groovy GDK to the <code>Timer</code> class.</p>
+<pre class="brush:groovy">
+// File: timer.groovy
+def timer = new Timer()
+def task = timer.runAfter(10000) {
+    println "Actually executed at ${new Date()}."
+}
+println "Current date is ${new Date()}. Task is executed at ${new Date(task.scheduledExecutionTime())}."
+</pre>
+<p>If we run this script we get the following output (of course depending on the time the script is executed):</p>
+<pre class="brush:shell;light:true">
+$ groovy timer.groovy
+Current date is Thu Nov 12 6:51:41 CET 2009. Task is executed at Thu Nov 12 6:51:51 CET 2009.
+Actually executed at Thu Nov 12 6:51:51 CET 2009.
+</pre>
+<p>As a bonus we add a <code>runEvery()</code> method to the <code>Timer</code> class with categories:</p>
+<pre class="brush:groovy">
+// File: newtimer.groovy
+class GroovyTimerTask extends TimerTask {
+    Closure closure
+    void run() {
+        closure()
+    }
+}
+
+class TimerMethods {
+    static TimerTask runEvery(Timer timer, long delay, long period, Closure codeToRun) {
+        TimerTask task = new GroovyTimerTask(closure: codeToRun)
+        timer.schedule task, delay, period
+        task
+    }
+}
+
+use (TimerMethods) {
+    def timer = new Timer()
+    def task = timer.runEvery(1000, 5000) {
+        println "Task executed at ${new Date()}."
+    }
+    println "Current date is ${new Date()}."
+}
+</pre>
+<pre class="brush:shell;light:true">
+$ groovy newtimer.groovy
+Current date is Thu Nov 12 7:03:29 CET 2009.
+Task executed at Thu Nov 12 7:03:30 CET 2009.
+Task executed at Thu Nov 12 7:03:35 CET 2009.
+Task executed at Thu Nov 12 7:03:40 CET 2009.
+Task executed at Thu Nov 12 7:03:45 CET 2009.
+Task executed at Thu Nov 12 7:03:50 CET 2009.
+...
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

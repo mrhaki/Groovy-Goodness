@@ -1,0 +1,56 @@
+<html>
+<head>
+
+<title>Groovy Goodness: GroovyCollections Utility Class</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: GroovyCollections Utility Class</h3>
+
+<div class="post">
+<p>Groovy has a utility class to make combinations of lists or arrays, or to tranpose lists or arrays: <a href="http://groovy.codehaus.org/api/groovy/util/GroovyCollections.html">GroovyCollections</a>. The class also contains <code>min()</code>, <code>max()</code> and <code>sum()</code> methods, but these are already available as methods on lists and arrays. Let's see the class in action:</p>
+<pre class="brush:groovy">
+def methods = ['min', 'max', 'sum']
+def classes = ['Object[]', 'Collection']
+
+def combinations = GroovyCollections.combinations([classes, methods])
+assert 2 * 3 == combinations.size()
+assert [['Object[]', 'min'], ['Collection', 'min'], ['Object[]', 'max'], ['Collection', 'max'], ['Object[]', 'sum'], ['Collection', 'sum']] == combinations
+assert 3 == combinations.findAll { it[0] == 'Collection' }.size()
+
+def keys = ['username', 'email']
+def values = ['mrhaki', 'email@host.com', 'not-tranposed']
+def transpose = GroovyCollections.transpose([keys, values, [0, 1]])
+assert 2 == transpose.size()
+assert [['username', 'mrhaki', 0], ['email', 'email@host.com', 1]] == transpose
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

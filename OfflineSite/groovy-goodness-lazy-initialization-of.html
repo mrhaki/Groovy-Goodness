@@ -1,0 +1,66 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Lazy Initialization of Properties</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Lazy Initialization of Properties</h3>
+
+<div class="post">
+<p>Sometimes we want the value of a property only to be calculated on first use. The calculation of the value can be time consuming or requires a lot of resources. In Groovy we can use the <code>@Lazy</code> transformation to define a property we want to be initialized lazily. The value is not calculated or assigned until the value is requested. The transformation also allows a <code>soft</code> parameter. This defines the field as soft reference.</p>
+<pre class="brush:groovy">
+class Get {
+    String url
+    @Lazy URL urlObj = { url?.toURL() }()  // Closures allowed to create object.
+    // Will use a soft reference.
+    @Lazy(soft=true) String text = urlObj?.text
+}
+
+def g = new Get(url: 'http://mrhaki.blogspot.com/') 
+assert 'http://mrhaki.blogspot.com/' == g.url
+assert g.dump().contains('text=null')
+assert g.dump().contains('urlObj=null')
+
+// Now we access the urlObj property, so the value
+// is calculated and we can access it.
+assert g.urlObj
+assert 'http' == g.urlObj.protocol
+assert 'mrhaki.blogspot.com' == g.urlObj.host
+assert '/' == g.urlObj.path
+
+// Now we access the text property, so the contents
+// is fetched from the URL.
+assert g.text
+assert g.text.contains('Messages from mrhaki')
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

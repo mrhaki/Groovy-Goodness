@@ -1,0 +1,358 @@
+<html>
+<head>
+
+<title>Groovy Goodness</title>
+
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="Stylesheet" href="styles/shBlackWhite.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body class="toc">
+
+<div class="titlewrapper">
+	<h1 class="title">Groovy Goodness</h1>
+	<h2 class="description">assert 'mrhaki' == ['Hubert','Alexander','Klein','Ikkink'].inject('mr') { c,n -&gt; c += n[0].toLowerCase() }</h2>
+</div>
+
+<div class="toc">
+    <ul>
+	
+	    <li><a href="groovy-goodness-using-subscript.html">Groovy Goodness: Using the Subscript Operator on Iterators</a></li>
+	
+	    <li><a href="groovy-goodness-traversing-directory.html">Groovy Goodness: Traversing a Directory</a></li>
+	
+	    <li><a href="groovy-goodness-working-on-files-or.html">Groovy Goodness: Working on Files or Directories (or Both) with FileType</a></li>
+	
+	    <li><a href="groovy-goodness-refactor-xml-creation.html">Groovy Goodness: Refactor XML Creation with StreamingMarkupBuilder</a></li>
+	
+	    <li><a href="groovy-goodness-sum-values-in-object.html">Groovy Goodness: Sum the Values in a Object Array</a></li>
+	
+	    <li><a href="groovy-goodness-tokenize-string.html">Groovy Goodness: Tokenize a String</a></li>
+	
+	    <li><a href="groovy-goodness-see-if-string-is-number.html">Groovy Goodness: See if String is a Number</a></li>
+	
+	    <li><a href="groovy-goodness-adding-maps-to-map_21.html">Groovy Goodness: Adding Maps to Map</a></li>
+	
+	    <li><a href="groovy-goodness-sorting-map.html">Groovy Goodness: Sorting a Map</a></li>
+	
+	    <li><a href="groovy-goodness-new-ways-to-curry.html">Groovy Goodness: New Ways to Curry</a></li>
+	
+	    <li><a href="groovy-goodness-configuring-grape-to.html">Groovy Goodness: Configuring Grape to Use Classloader</a></li>
+	
+	    <li><a href="groovy-goodness-use-keywords-as-method.html">Groovy Goodness: Use Keywords as Method Names</a></li>
+	
+	    <li><a href="groovy-goodness-use-strings-as.html">Groovy Goodness: Use Strings as Subscript Operator</a></li>
+	
+	    <li><a href="groovy-goodness-use-ranges-as-subscript.html">Groovy Goodness: Use Ranges as Subscript Operators</a></li>
+	
+	    <li><a href="groovy-goodness-intersect-collections.html">Groovy Goodness: Intersect Collections</a></li>
+	
+	    <li><a href="groovy-goodness-invoke-methods.html">Groovy Goodness: Invoke Methods Dynamically</a></li>
+	
+	    <li><a href="groovy-goodness-create-stubs-for.html">Groovy Goodness: Create Stubs for Testing</a></li>
+	
+	    <li><a href="groovy-goodness-round-and-truncate.html">Groovy Goodness: Round and Truncate Decimal Values</a></li>
+	
+	    <li><a href="groovy-goodness-integer-divisions.html">Groovy Goodness: Integer Divisions</a></li>
+	
+	    <li><a href="groovy-goodness-override-getproperty.html">Groovy Goodness: Override getProperty Method with Dynamic Groovy</a></li>
+	
+	    <li><a href="groovy-goodness-leave-last-comma-in.html">Groovy Goodness: Create Elements in Collection Definition</a></li>
+	
+	    <li><a href="groovy-goodness-apply-method-to-all.html">Groovy Goodness: Apply Method to All Elements in a List</a></li>
+	
+	    <li><a href="groovy-goodness-is-object-in-class.html">Groovy Goodness: Is Object in Class Hierarchy</a></li>
+	
+	    <li><a href="groovy-goodness-make-number-absolute.html">Groovy Goodness: Make a Number Absolute</a></li>
+	
+	    <li><a href="groovy-goodness-add-shutdownhook.html">Groovy Goodness: Add a ShutdownHook</a></li>
+	
+	    <li><a href="groovy-goodness-turn-list-into-map.html">Groovy Goodness: Turn a List into a Map</a></li>
+	
+	    <li><a href="groovy-goodness-check-if-string-is.html">Groovy Goodness: Check if String is a Number</a></li>
+	
+	    <li><a href="groovy-goodness-normalize-and.html">Groovy Goodness: Normalize and Denormalize Linefeeds and Carriage Returns</a></li>
+	
+	    <li><a href="groovy-goodness-removing-duplicate.html">Groovy Goodness: Removing Duplicate Elements in a Collection</a></li>
+	
+	    <li><a href="groovy-goodness-recursively-collect.html">Groovy Goodness: Recursively Collect Elements</a></li>
+	
+	    <li><a href="groovy-goodness-what-character-are-you.html">Groovy Goodness: What Character Are You?</a></li>
+	
+	    <li><a href="groovy-goodness-powerful-assert.html">Groovy Goodness: Powerful Assert</a></li>
+	
+	    <li><a href="groovy-goodness-apply-closure-to-all.html">Groovy Goodness: Apply Closure to All Element in a Collection with collect</a></li>
+	
+	    <li><a href="groovy-goodness-using-orderby.html">Groovy Goodness: Using the OrderBy Comparator</a></li>
+	
+	    <li><a href="groovy-goodness-getting-all_25.html">Groovy Goodness: Getting All Subsequences of a List</a></li>
+	
+	    <li><a href="groovy-goodness-looping-through-each.html">Groovy Goodness: Looping Through Each Permutation in a Collection</a></li>
+	
+	    <li><a href="groovy-goodness-we-can-handle-truth.html">Groovy Goodness: We Can Handle the Truth</a></li>
+	
+	    <li><a href="groovy-goodness-implementing-metaclass.html">Groovy Goodness: Implementing MetaClass Methods with Same Name but Different Arguments</a></li>
+	
+	    <li><a href="groovy-goodness-override-and-use-old_21.html">Groovy Goodness: Override and Use Old Implementation with Dynamic Methods</a></li>
+	
+	    <li><a href="groovy-goodness-adding-or-overriding.html">Groovy Goodness: Adding or Overriding Methods with ExpandoMetaClass</a></li>
+	
+	    <li><a href="groovy-goodness-get-properties-from.html">Groovy Goodness: Get Properties from ReleaseInfo</a></li>
+	
+	    <li><a href="groovy-goodness-getting-groovy-with-dom.html">Groovy Goodness: Getting Groovy with DOM</a></li>
+	
+	    <li><a href="groovy-goodness-splitting-with-closures.html">Groovy Goodness: Splitting with Closures</a></li>
+	
+	    <li><a href="groovy-goodness-getting-information.html">Groovy Goodness: Getting Information About Objects</a></li>
+	
+	    <li><a href="groovy-goodness-groovy-mystic.html">Groovy Goodness: Groovy Mystic Expressions</a></li>
+	
+	    <li><a href="groovy-goodness-add-static-methods-with.html">Groovy Goodness: Add Static Methods with MetaClass to Classes</a></li>
+	
+	    <li><a href="groovy-goodness-info-about-closure.html">Groovy Goodness: Info About Closure Parameters</a></li>
+	
+	    <li><a href="groovy-goodness-getting-sum-of-items-in.html">Groovy Goodness: Getting the Sum of Items in a Collection</a></li>
+	
+	    <li><a href="groovy-goodness-formatted-strings-with.html">Groovy Goodness: Formatted Strings with sprintf</a></li>
+	
+	    <li><a href="groovy-goodness-delete-non-empty.html">Groovy Goodness: Delete Non-empty Directory Recursively with File</a></li>
+	
+	    <li><a href="groovy-goodness-type-conversion-using.html">Groovy Goodness: Type Conversion Using GPathResult When Reading XML</a></li>
+	
+	    <li><a href="groovy-goodness-semicolons-are-optional.html">Groovy Goodness: Semicolons are Optional</a></li>
+	
+	    <li><a href="groovy-goodness-counting-items-in-list.html">Groovy Goodness: Counting the Items in a List</a></li>
+	
+	    <li><a href="groovy-goodness-add-methods-to.html">Groovy Goodness: Add Methods to Interfaces with ExpandoMetaClass</a></li>
+	
+	    <li><a href="groovy-goodness-know-more-about-class.html">Groovy Goodness: Know More About a Class</a></li>
+	
+	    <li><a href="groovy-goodness-using-servletcategory.html">Groovy Goodness: Using the ServletCategory</a></li>
+	
+	    <li><a href="groovy-goodness-implicit-method-docall.html">Groovy Goodness: Implicit Method doCall in Closure</a></li>
+	
+	    <li><a href="groovy-goodness-automatic-return-value.html">Groovy Goodness: Automatic Return Value Casting</a></li>
+	
+	    <li><a href="groovy-goodness-serversocket-scripts.html">Groovy Goodness: ServerSocket Scripts</a></li>
+	
+	    <li><a href="groovy-goodness-use-category-and-get.html">Groovy Goodness: Use a Category and Get a Return Value</a></li>
+	
+	    <li><a href="groovy-goodness-bit-of-metaclass-dsl.html">Groovy Goodness: A Bit of metaClass DSL</a></li>
+	
+	    <li><a href="groovy-goodness-closure-arguments.html">Groovy Goodness: Closure Arguments</a></li>
+	
+	    <li><a href="groovy-goodness-intercept-methods-with.html">Groovy Goodness: Intercept Methods with Interceptors</a></li>
+	
+	    <li><a href="groovy-goodness-compiled-groovy-script.html">Groovy Goodness: Compiled Groovy Script is a Java Class</a></li>
+	
+	    <li><a href="groovy-goodness-simple-evaluation-of.html">Groovy Goodness: Simple Evaluation of Groovy Expressions in Java</a></li>
+	
+	    <li><a href="groovy-goodness-setting-closures.html">Groovy Goodness: Setting a Closure's Delegate</a></li>
+	
+	    <li><a href="groovy-goodness-create-dynamic-methods.html">Groovy Goodness: Create Dynamic Methods</a></li>
+	
+	    <li><a href="groovy-goodness-finding-files-with.html">Groovy Goodness: Finding Files with FileNameFinder</a></li>
+	
+	    <li><a href="groovy-goodness-are-you-in-membership.html">Groovy Goodness: Are You In? (Membership Operator)</a></li>
+	
+	    <li><a href="groovy-goodness-add-methods-dynamically.html">Groovy Goodness: Add Methods Dynamically to Classes with ExpandoMetaClass</a></li>
+	
+	    <li><a href="groovy-goodness-running-unit-test.html">Groovy Goodness: Running a Unit Test</a></li>
+	
+	    <li><a href="groovy-goodness-testing-for-expected.html">Groovy Goodness: Testing for Expected Exceptions</a></li>
+	
+	    <li><a href="groovy-goodness-running-groovy-scripts.html">Groovy Goodness: Running Groovy Scripts in Java with GroovyClassLoader</a></li>
+	
+	    <li><a href="groovy-goodness-source-of-groovy-gdk.html">Groovy Goodness: Source of Groovy GDK</a></li>
+	
+	    <li><a href="groovy-goodness-raising-power-of.html">Groovy Goodness: Raising the Power of Numbers</a></li>
+	
+	    <li><a href="groovy-goodness-run-code-at-specified.html">Groovy Goodness: Run Code at a Specified Time</a></li>
+	
+	    <li><a href="groovy-goodness-convert-string-to.html">Groovy Goodness: Convert String to Boolean</a></li>
+	
+	    <li><a href="groovy-goodness-passing-closures-to.html">Groovy Goodness: Passing Closures to Methods</a></li>
+	
+	    <li><a href="groovy-goodness-building-gui-with.html">Groovy Goodness: Building a GUI with SwingBuilder</a></li>
+	
+	    <li><a href="groovy-goodness-define-your-own-type.html">Groovy Goodness: Define Your Own Type Conversion</a></li>
+	
+	    <li><a href="groovy-goodness-readers-and-writers.html">Groovy Goodness: withReader and withWriter</a></li>
+	
+	    <li><a href="groovy-goodness-using-def-to-define.html">Groovy Goodness: Using def to Define a Variable</a></li>
+	
+	    <li><a href="groovy-goodness-complex-keys-in-maps.html">Groovy Goodness: Complex Keys in Maps</a></li>
+	
+	    <li><a href="groovy-goodness-variable-scope-in.html">Groovy Goodness: Variable Scope in Scripts</a></li>
+	
+	    <li><a href="groovy-goodness-splitting-strings.html">Groovy Goodness: Splitting Strings</a></li>
+	
+	    <li><a href="groovy-goodness-base64-encoding.html">Groovy Goodness: Base64 Encoding</a></li>
+	
+	    <li><a href="groovy-goodness-get-value-from-map-or.html">Groovy Goodness: Get Value from Map or a Default Value</a></li>
+	
+	    <li><a href="groovy-goodness-remove-parts-of-string.html">Groovy Goodness: Remove Parts of a String</a></li>
+	
+	    <li><a href="groovy-goodness-working-with-lines-in.html">Groovy Goodness: Working with Lines in Strings</a></li>
+	
+	    <li><a href="groovy-goodness-access-strings-with.html">Groovy Goodness: Access Strings with Subscript Operator</a></li>
+	
+	    <li><a href="groovy-goodness-invoke-methods.html">Groovy Goodness: Invoke Methods Dynamically</a></li>
+	
+	    <li><a href="groovy-goodness-getting-submap-from-map.html">Groovy Goodness: Getting a Submap from a Map</a></li>
+	
+	    <li><a href="groovy-goodness-immutable-collections.html">Groovy Goodness: Immutable Collections</a></li>
+	
+	    <li><a href="groovy-goodness-getting-and-setting.html">Groovy Goodness: Getting and Setting Properties</a></li>
+	
+	    <li><a href="groovy-goodness-groovy-sql-dataset.html">Groovy Goodness: Groovy SQL DataSet</a></li>
+	
+	    <li><a href="groovy-goodness-groovy-sql.html">Groovy Goodness: Groovy SQL</a></li>
+	
+	    <li><a href="groovy-goodness-optional-parenthesis.html">Groovy Goodness: Optional Parenthesis</a></li>
+	
+	    <li><a href="groovy-goodness-static-imports.html">Groovy Goodness: Static Imports</a></li>
+	
+	    <li><a href="groovy-goodness-using-replaceall.html">Groovy Goodness: Using the replaceAll Methods from String</a></li>
+	
+	    <li><a href="groovy-goodness-groovlets-as.html">Groovy Goodness: Groovlets as Lightweight Servlets</a></li>
+	
+	    <li><a href="groovy-goodness-using-template-engines.html">Groovy Goodness: Using the Template Engines</a></li>
+	
+	    <li><a href="groovy-goodness-bigdecimal.html">Groovy Goodness: BigDecimal</a></li>
+	
+	    <li><a href="groovy-goodness-getting-tail-of-list.html">Groovy Goodness: Getting the Tail of a List</a></li>
+	
+	    <li><a href="groovy-goodness-check-if-method-or.html">Groovy Goodness: Check If Method or Property is Available</a></li>
+	
+	    <li><a href="groovy-goodness-navigating-with-gpath.html">Groovy Goodness: Navigating with GPath</a></li>
+	
+	    <li><a href="groovy-goodness-default-imports.html">Groovy Goodness: Default Imports</a></li>
+	
+	    <li><a href="groovy-goodness-grouping-map-elements.html">Groovy Goodness: Grouping Map Elements</a></li>
+	
+	    <li><a href="groovy-goodness-using-antbuilder.html">Groovy Goodness: Using AntBuilder</a></li>
+	
+	    <li><a href="groovy-goodness-reading-xml.html">Groovy Goodness: Reading XML</a></li>
+	
+	    <li><a href="groovy-goodness-finding-data-in.html">Groovy Goodness: Finding Data in Collections</a></li>
+	
+	    <li><a href="groovy-goodness-using-groovy-on-command.html">Groovy Goodness: Using Groovy on the Command-Line</a></li>
+	
+	    <li><a href="groovy-goodness-executing-string-or.html">Groovy Goodness: Executing String or List</a></li>
+	
+	    <li><a href="groovy-goodness-using-configslurper.html">Groovy Goodness: Using ConfigSlurper with Configuration Scripts</a></li>
+	
+	    <li><a href="groovy-goodness-reading-url-content.html">Groovy Goodness: Reading URL Content</a></li>
+	
+	    <li><a href="groovy-goodness-creating-xml-with.html">Groovy Goodness: Creating XML with MarkupBuilder</a></li>
+	
+	    <li><a href="groovy-goodness-groovycollections.html">Groovy Goodness: GroovyCollections Utility Class</a></li>
+	
+	    <li><a href="groovy-goodness-join-elements-to-string.html">Groovy Goodness: Join Elements to a String</a></li>
+	
+	    <li><a href="groovy-goodness-mixin-functionality-to.html">Groovy Goodness: Mixin Functionality to Classes</a></li>
+	
+	    <li><a href="groovy-goodness-expando-as-dynamic-bean.html">Groovy Goodness: Expando as Dynamic Bean</a></li>
+	
+	    <li><a href="groovy-goodness-create-singleton-class.html">Groovy Goodness: Create a Singleton Class</a></li>
+	
+	    <li><a href="groovy-goodness-newify-to-create-new.html">Groovy Goodness: Newify to Create New Instances</a></li>
+	
+	    <li><a href="groovy-goodness-use-categories-to-add.html">Groovy Goodness: Use Categories to Add Functionality to Classes</a></li>
+	
+	    <li><a href="groovy-goodness-building-object-graphs.html">Groovy Goodness: Building Object Graphs</a></li>
+	
+	    <li><a href="groovy-goodness-observable-map-and-list.html">Groovy Goodness: Observable Map and List</a></li>
+	
+	    <li><a href="groovy-goodness-grab-that-dependency.html">Groovy Goodness: Grab That Dependency</a></li>
+	
+	    <li><a href="groovy-goodness-matchers-for-regular.html">Groovy Goodness: Matchers for Regular Expressions</a></li>
+	
+	    <li><a href="groovy-goodness-using-regular.html">Groovy Goodness: Using Regular Expression Pattern Class</a></li>
+	
+	    <li><a href="groovy-goodness-using-groovymbeans-for.html">Groovy Goodness: Using GroovyMBeans for Easy JMX</a></li>
+	
+	    <li><a href="groovy-goodness-multimethods-or.html">Groovy Goodness: MultiMethods or Multiple Dispatch</a></li>
+	
+	    <li><a href="groovy-goodness-parsing-commandline.html">Groovy Goodness: Parsing Commandline Arguments with CliBuilder</a></li>
+	
+	    <li><a href="groovy-goodness-padding-strings.html">Groovy Goodness: Padding Strings</a></li>
+	
+	    <li><a href="groovy-goodness-working-with-arrays.html">Groovy Goodness: Working with Arrays</a></li>
+	
+	    <li><a href="groovy-goodness-lazy-initialization-of.html">Groovy Goodness: Lazy Initialization of Properties</a></li>
+	
+	    <li><a href="groovy-goodness-making-class-immutable.html">Groovy Goodness: Making a Class Immutable</a></li>
+	
+	    <li><a href="groovy-goodness-looping-in-different.html">Groovy Goodness: Looping in Different Ways</a></li>
+	
+	    <li><a href="groovy-goodness-check-for-object.html">Groovy Goodness: Check for Object Equality</a></li>
+	
+	    <li><a href="groovy-goodness-named-parameters-are.html">Groovy Goodness: Named Parameters are Converted to Map</a></li>
+	
+	    <li><a href="groovy-goodness-exception-handling.html">Groovy Goodness: Exception Handling</a></li>
+	
+	    <li><a href="groovy-goodness-parameters-with-default.html">Groovy Goodness: Parameters with Default Values</a></li>
+	
+	    <li><a href="groovy-goodness-optional-return-keyword.html">Groovy Goodness: Optional return Keyword</a></li>
+	
+	    <li><a href="groovy-goodness-using-groupby-method.html">Groovy Goodness: Using the GroupBy Method</a></li>
+	
+	    <li><a href="groovy-goodness-as-keyword.html">Groovy Goodness: the as Keyword</a></li>
+	
+	    <li><a href="groovy-goodness-using-lists-and-maps-as.html">Groovy Goodness: Using Lists and Maps As Constructors</a></li>
+	
+	    <li><a href="groovy-goodness-add-some-curry-for.html">Groovy Goodness: Add Some Curry for Taste</a></li>
+	
+	    <li><a href="groovy-goodness-using-inject-method.html">Groovy Goodness: Using the Inject Method</a></li>
+	
+	    <li><a href="groovy-goodness-with-method.html">Groovy Goodness: the With Method</a></li>
+	
+	    <li><a href="groovy-goodness-keep-your-values-in.html">Groovy Goodness: Keep Your Values in Ranges</a></li>
+	
+	    <li><a href="groovy-goodness-spread-operator.html">Groovy Goodness: the Spread Operator</a></li>
+	
+	    <li><a href="groovy-goodness-date-and-time-durations.html">Groovy Goodness: Date and Time Durations and the TimeCategory</a></li>
+	
+	    <li><a href="groovy-goodness-multiple-assignments.html">Groovy Goodness: Multiple Assignments</a></li>
+	
+	    <li><a href="groovy-goodness-working-with-dates.html">Groovy Goodness: Working with Dates</a></li>
+	
+	    <li><a href="groovy-goodness-spread-dot-operator.html">Groovy Goodness: The Spread-Dot Operator</a></li>
+	
+	    <li><a href="groovy-goodness-delegate-to-simplify.html">Groovy Goodness: Delegate to Simplify Code</a></li>
+	
+	    <li><a href="groovy-goodness-working-with-files.html">Groovy Goodness: Working with Files</a></li>
+	
+	    <li><a href="groovy-goodness-spaceship-operator.html">Groovy Goodness: the Spaceship Operator</a></li>
+	
+	    <li><a href="groovy-goodness-grep-method.html">Groovy Goodness: the Grep Method</a></li>
+	
+	    <li><a href="groovy-goodness-switch-statement.html">Groovy Goodness: the Switch Statement</a></li>
+	
+	    <li><a href="groovy-goodness-tell-groovy-truth.html">Groovy Goodness: Tell the Groovy Truth</a></li>
+	
+	    <li><a href="groovy-goodness-string-strings-strings.html">Groovy Goodness: 'String', "Strings", /Strings/ and GStrings</a></li>
+	
+	    <li><a href="groovy-goodness-turn-methods-into.html">Groovy Goodness: Turn Methods into Closures</a></li>
+	
+	    <li><a href="groovy-goodness-bound-and-constrained.html">Groovy Goodness: Bound and Constrained Properties in GroovyBeans</a></li>
+	
+	    <li><a href="groovy-goodness-groovybeans-simpler.html">Groovy Goodness: GroovyBeans the Simpler JavaBeans</a></li>
+	
+	    <li><a href="groovy-goodness-safe-navigation-to.html">Groovy Goodness: Safe Navigation to Avoid NullPointerException</a></li>
+	
+	    <li><a href="groovy-goodness-elvis-operator.html">Groovy Goodness: the Elvis Operator ?:</a></li>
+	
+	    <li><a href="groovy-goodness-use-map-as-interface.html">Groovy Goodness: Use a Map as Interface Implementation</a></li>
+	
+	    <li><a href="groovy-goodness-stringmultiply.html">Groovy Goodness: String.multiply()</a></li>
+	
+	</ul>
+</div>
+
+</body>
+</html>

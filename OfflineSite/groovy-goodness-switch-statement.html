@@ -1,0 +1,78 @@
+<html>
+<head>
+
+<title>Groovy Goodness: the Switch Statement</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: the Switch Statement</h3>
+
+<div class="post">
+<p>The Java switch statement looks pale compared to Groovy's switch statement. In Groovy we can use different classifiers for a switch statement instead of only an int or int-derived type. Anything that implements the <code>isCase()</code> method can be used as a classifier. Groovy already added an <code>isCase()</code> method to <code>Class</code> (uses <code>isInstance</code>), <code>Object</code> (uses (<code>equals</code>), collections (uses <code>contains</code>) and regular expressions (uses <code>matches</code>). If we implement the <code>isCase</code> method in our own Groovy classes we can use it as a classifier as well. Finally we can a closure as a classifier. The closure will be evaluated to a boolean value.</p>
+<pre class="brush:groovy">
+def testSwitch(val) {
+    def result
+    switch (val) {
+        case ~/^Switch.*Groovy$/:
+            result = 'Pattern match'
+            break
+        case BigInteger:
+            result = 'Class isInstance'
+            break
+        case 60..90:
+            result = 'Range contains'
+            break
+        case [21, 'test', 9.12]:
+            result = 'List contains'
+            break
+        case 42.056:
+            result = 'Object equals'
+            break
+        case { it instanceof Integer && it < 50 }:
+            result = 'Closure boolean'
+            break
+        default:
+            result = 'Default'
+            break
+    }    
+    result
+}
+
+assert 'Pattern match' == testSwitch("Switch to Groovy")
+assert 'Class isInstance' == testSwitch(42G)
+assert 'Range contains' == testSwitch(70)
+assert 'List contains' == testSwitch('test')
+assert 'Object equals' == testSwitch(42.056)
+assert 'Closure boolean' == testSwitch(20)
+assert 'Default' == testSwitch('default')
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

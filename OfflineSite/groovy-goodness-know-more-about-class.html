@@ -1,0 +1,63 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Know More About a Class</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Know More About a Class</h3>
+
+<div class="post">
+<p>In Groovy we can use the Java reflection API to examine our classes. Groovy makes it a bit easier because we can access properties the Groovy way. And because we can call methods and properties directly on the class instead of the class property. We can still go the route through the class property, but it is optional.</p>
+<pre class="brush:groovy">
+interface Simple {}
+class Sample implements Simple {
+    String info
+    String displayInfo() { "info from $Sample.name" }
+}
+
+assert 'Sample' == Sample.name
+assert 'Sample' == Sample.class.name
+
+def interfaces = Sample.interfaces.name
+assert 'Simple' in interfaces
+assert 'groovy.lang.GroovyObject' in interfaces
+
+def methods = Sample.methods.name
+assert 'setInfo' in methods
+assert 'getInfo' in methods
+assert 'displayInfo' in methods
+
+def s = new Sample()
+assert 'info from Sample' == s.displayInfo()
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

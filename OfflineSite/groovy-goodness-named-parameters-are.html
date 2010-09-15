@@ -1,0 +1,73 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Named Parameters are Converted to Map</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Named Parameters are Converted to Map</h3>
+
+<div class="post">
+<p>We can use named parameters when we invoke a Groovy method, but Groovy doesn't invoke the method with just those parameters. Groovy collects all named parameters and puts them in a Map. The Map is passed on to the method as the first argument. The method needs to know how to get the information from the Map and process it. There is one rule: the first parameter of the method must be the Map parameter, because Groovy will put the Map as first argument in the method invocation. Other parameters are appended in the same order as defined in the method invocation.</p>
+<pre class="brush:groovy">
+class Address {
+    String street, city
+    int number    
+}
+
+class Person {
+    String name
+    Address address
+    String phoneNumber
+    
+    def move(newAddress, newPhoneNumber) {
+        address.street = newAddress.street
+        address.number = newAddress['number']
+        address.city   = newAddress."city"
+        phoneNumber = newPhoneNumber
+    }
+}
+
+def a = new Address(street: 'Main St.', number: 1, city: 'Duck City')
+def p = new Person(name: 'mrhaki', address: a, phoneNumber: '555-123499102')
+
+p.move(street: 'High Av.', city: 'New Yark', '00920120', number: 42)  
+// Groovy transform the method invocation to:
+// p.move([street: 'High Av.', number: 42, city: 'New Yark'], '555-00920120')
+
+assert 'High Av.' == p.address.street
+assert 42 == p.address.number
+assert 'New Yark' == p.address.city
+assert '555-00920120' == p.phoneNumber
+assert 'mrhaki' == p.name
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

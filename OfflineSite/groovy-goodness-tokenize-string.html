@@ -1,0 +1,56 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Tokenize a String</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Tokenize a String</h3>
+
+<div class="post">
+<p>Groovy adds the <code>tokenize()</code> method to the <code>String</code> class. We can use this method to split up a string value using a <code>String</code>, <code>char</code> or whitespace as delimiter. Groovy also adds a <code>split()</code> method without arguments that uses whitespace as delimiter, but returns a String array instead of List.</p>
+<pre class="brush:groovy">
+def s = 'one two three four'
+
+def resultList = s.tokenize()
+assert resultList.class.name == 'java.util.ArrayList'
+assert ['one', 'two', 'three', 'four'] == resultList
+
+def resultArray = s.split()
+assert resultArray instanceof String[]
+assert ['one', 'two', 'three', 'four'] == resultArray
+
+def s1 = 'Java:Groovy'
+assert ['Java', 'Groovy'] == s1.tokenize(":")
+assert ['Java', 'Groovy'] == s1.tokenize(':' as char)
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

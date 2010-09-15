@@ -1,0 +1,88 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Building Object Graphs</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Building Object Graphs</h3>
+
+<div class="post">
+<p>With Groovy we can build a graph of objects just like with Java, but we can also use the <a href="http://groovy.codehaus.org/ObjectGraphBuilder"><code>ObjectGraphBuilder</code></a>. With the builder we can construct a graph of objects that follow the Java Beans rules. The builder follows some standard rules to determine parent/child relations and use of classes. We can override this default behaviour by adding specific resolver classes to the builder object.</p>
+<pre class="brush:groovy">
+class School {
+    String name
+    List&lt;Course&gt; courses = []
+}
+
+class Course {
+    String name
+    Teacher teacher
+    List&lt;Student&gt; students = []
+}
+
+class Teacher { String name }
+
+class Student { String name }
+
+def builder = new ObjectGraphBuilder(classLoader: getClass().classLoader) // Need classLoader when in Groovy console.
+def firstSchool = builder.school(name: 'First School') {
+    course(name: 'Math') {
+        teacher(name: 'Matt') 
+        student(name: 'Mary', id: 'Mary')  // id attribute allows us to reference it later in the builder.
+        student(name: 'John', id: 'John')
+        student(name: 'Rose', id: 'Rose')
+    }
+    course(name: 'English') {
+        teacher(name: 'Emily', id: 'Emily')
+        student(refId: 'Mary')  // refId refers to id attribute we set earlier.
+        student(name: 'Alex')
+        student(refId: 'Rose')
+    }
+    course(name: 'Java') {
+        teacher(refId: 'Emily')
+        student(name: 'mrhaki')
+        student(refId: 'John')
+        student(refId: 'Mary')
+    }    
+}
+
+assert 'First School' == firstSchool.name
+assert 3 == firstSchool.courses.size()
+assert 'Math' == firstSchool.courses[0].name
+assert 'Matt' == firstSchool.courses[0].teacher.name
+assert 3 == firstSchool.courses[0].students.size()
+assert ['English', 'Java'] == firstSchool.courses.findAll{ it.teacher.name == 'Emily' }.name
+assert 'mrhaki' == firstSchool.courses[2].students.find { it.name == 'mrhaki' }.name
+assert 'Mary' == firstSchool.courses.find{ it.name == 'Java' }.students.find{ it.name == 'Mary' }.name
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

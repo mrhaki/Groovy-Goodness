@@ -1,0 +1,74 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Optional return Keyword</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Optional return Keyword</h3>
+
+<div class="post">
+<p>In Groovy we can omit the <code>return</code> keyword at the end of a method, it is optional. It is no problem to leave it in, but we can leave it out without any problems. Since Groovy 1.6 this is even true when the last statement of a method is a conditional statement or a try-catch block.</p>
+<pre class="brush:groovy">
+def simple() {
+    "Hello world"
+}
+assert 'Hello world' == simple()
+
+
+def doIt(b) {
+    if (b) {
+        "You are true"
+    } else {
+        "You are false"
+    }
+}
+assert 'You are true' == doIt(true)
+assert 'You are false' == doIt(false)
+
+
+def tryIt(file) {
+    try {
+        new File(file).text
+    } catch (e) {
+        "Received exception: ${e.message}"
+    } finally {
+        println 'Finally is executed but nothing is returned.'
+        'Finally reached'
+    }
+}
+assert 'Received exception: invalidfilename (The system cannot find the file specified)'  == tryIt('invalidfilename') 
+// Create new file with the name test.
+def newFile = new FileWriter('test').withWriter { it.write('file contents') }
+assert 'file contents' == tryIt('test')
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

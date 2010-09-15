@@ -1,0 +1,57 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Use a Map as Interface Implementation</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Use a Map as Interface Implementation</h3>
+
+<div class="post">
+<p>To implement an interface we can use a Groovy map and with the <code>as</code> keyword we can pass it on to a method. Here is a simple example where we define an implementation of the <code>java.io.FileFilter</code> as a map. We pass the implementation on to the <code>java.io.File.listFiles()</code> method to display all files with extensions <code>.css</code> and <code>.png</code>:</p>
+<pre class="brush:groovy">
+map = [ 
+    // Implement FileFilter.accept(File) method.
+    accept: { file -&gt; file.path ==~ /.*\.(css|png)$/ } 
+] as FileFilter
+new File('c:/temp').listFiles(map).each { 
+    println it.path 
+}
+</pre>
+<p>If the interface we want to implement has more than one method we can only use a map for the implementation. But if the interface only contains one method (as in this case) we can also use a closure for the implementation. In the following example we implement the <code>java.io.FileFilter</code> interface with a closure to filter all files with the extension <code>.jpg</code>:</p>
+<pre class="brush:groovy">
+filter = { it.path ==~ /.*\.jpg$/ }
+new File('c:/temp').listFiles(filter as FileFilter).each { file -&gt;
+    println file.path
+}
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Sorting a Map</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Sorting a Map</h3>
+
+<div class="post">
+<p>Maps don't have an order for the elements, but we may want to sort the entries in the map. Since Groovy 1.7.2 we can use the <code>sort()</code> method which uses the natural ordering of the keys to sort the entries. Or we can pass a Comparator to the <code>sort()</code> method to define our own sorting algorithm for the keys.</p>
+<pre class="brush:groovy">
+def m = [sort: 'asc', name: 'test', paginate: true, max: 100]
+
+def expectedKeys = ['max', 'name', 'paginate', 'sort'] 
+assert expectedKeys == m.sort()*.key  // Since 1.7.2
+assert expectedKeys == m.sort( { k1, k2 -&gt; k1 &lt;=&gt; k2 } as Comparator )*.key // Since 1.7.2
+
+// Sorting before Groovy 1.7.2
+assert expectedKeys == new TreeMap(m)*.key
+assert expectedKeys == m.sort { e1, e2 -&gt; e1.key &lt;=&gt; e2.key }*.key  // Sort by closure.
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

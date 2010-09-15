@@ -1,0 +1,85 @@
+<html>
+<head>
+
+<title>Groovy Goodness: the Spread Operator</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: the Spread Operator</h3>
+
+<div class="post">
+<p>In <a href="http://mrhaki.blogspot.com/2009/08/groovy-goodness-spread-dot-operator.html">a previous post</a> we learned about the spread-dot operator, in this post we look at the spread operator. The spread operator (<code>*</code>) is used to tear a list apart into single elements. This can be used to invoke a method with multiple parameters and then spread a list into the values for the parameters. The spread operator can also be used to add lists or ranges to lists and to add maps to other maps.</p>
+<pre class="brush:groovy">
+class Simple {
+    String speak(Integer n, String text, Date date) {
+        def out = new StringBuffer()
+        n.times { 
+            out &lt;&lt; "Say $text on ${date.format('yyyy-MM-dd')}.\n" 
+        }
+        out
+    }
+}
+
+// Spread params list for speak() method.
+def params = [
+    2,
+    "hello world",
+    new Date().parse("yyyy/MM/dd", "2009/09/01")
+]
+assert '''Say hello world on 2009-09-01.
+Say hello world on 2009-09-01.
+''' == new Simple().speak(*params)
+
+// Add a list to another list.
+def list = ['Groovy', 'Java']
+assert ['Groovy', 'Java', 'Scala'] == [*list, 'Scala']
+
+// Add a range to a list.
+def range = 2..5
+assert [1, 2, 3, 4, 5, 6] == [1, *range, 6]
+
+// Add a map to another map.
+def map = [name: 'mrhaki', blog: true]
+assert [name: 'mrhaki', blog: true, subject: 'Groovy Goodness'] == [subject: 'Groovy Goodness', *:map]
+
+// Little trick to simulate named parameters for a method.
+// It is just a trick so the ordering of the map key/values
+// must be the same as the method parameters.
+def paramsMap = [
+    n: 1, 
+    text: 'hello', 
+    date: new Date().parse("yyyy/MM/dd", "2009/09/04")
+]
+def paramsList = paramsMap.values().toList()
+assert 'Say hello on 2009-09-04.\n' == new Simple().speak(*paramsList)
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,90 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Add Some Curry for Taste</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Add Some Curry for Taste</h3>
+
+<div class="post">
+<p>Currying is a technique to create a clone of a closure and fixing values for some of the parameters. We can fix one or more parameters, depending on the number of arguments we use for the <code>curry()</code> method. The parameters are bound from left to right. The good thing is we can even use other closures as parameters for the <code>curry()</code> method.</p><p>Let's see some <code>curry()</code> action in the following sample:</p>
+<pre class="brush:groovy">
+// Simple sample.
+def addNumbers = { x, y -> x + y }
+def addOne = addNumbers.curry(1)
+assert 5 == addOne(4)
+
+
+// General closure to use a filter on a list.
+def filterList = { filter, list -> list.findAll(filter) }
+// Closure to find even numbers.
+def even = { it % 2 == 0 }
+// Closure to find odd numbers.  
+def odd = { !even(it) }  
+// Other closures can be curry parameters.
+def evenFilterList = filterList.curry(even)
+def oddFilterList = filterList.curry(odd)
+assert [0,2,4,6,8] == evenFilterList(0..8)
+assert [1,3,5,7] == oddFilterList(0..8)
+
+
+// Recipe to find text in lines.
+def findText = { filter, handler, text -> 
+    text.eachLine {
+        filter(it) ? handler(it) : null
+    }
+}
+// Recipe for a regular expression filter.
+def regexFilter = { pattern, line -> line =~ pattern }
+
+// Create filter for searching lines with "Groovy".
+def groovyFilter = regexFilter.curry(/Groovy/)
+// Create handler to print out line.
+def printHandler = { println "Found in line: $it" }
+
+// Create specific closure as clone of processText to
+// search with groovyFilter and print out found lines.
+def findGroovy = findText.curry(groovyFilter, printHandler)
+
+// Invoke the closure.
+findGroovy('''Groovy rules!
+And Java?
+Well... Groovy needs the JVM... 
+''')
+
+// This will output:
+// Found in line: Groovy rules!
+// Foudn in line: Well... Groovy needs the JVM...
+</pre>
+<p>Run this script on <a href="http://groovyconsole.appspot.com/?id=11004">GroovyConsole</a>.</p>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

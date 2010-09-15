@@ -1,0 +1,44 @@
+<html>
+<head>
+
+<title>Groovy Goodness: String.multiply()</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: String.multiply()</h3>
+
+<div class="post">
+<p>I really like the Groovy extensions to the <a href="http://groovy.codehaus.org/groovy-jdk/java/lang/String.html">String</a> class. Today I discoverd the <a href="http://groovy.codehaus.org/groovy-jdk/java/lang/String.html#multiply(java.lang.Number%20factor)">multiply()</a> method. We want to repeat a dash 80 times? Solution:</p>
+<pre class="brush:groovy">'-'.multiply(80)</pre>
+<p>Simple and readable. But it can even be shorter. As John Flinchbaugh mentioned in the comments, the multiply method is nothing more than an overload for the operator *. So we get the same result with the following statement:</p>
+<pre class="brush:groovy">'-' * 80</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>
