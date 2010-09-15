@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<title>Groovy Goodness: Define Your Own Type Conversion</title>
+<title>Groovy Goodness: Process Map Entries in Reverse</title>
 
 <script language="javascript" src="scripts/shCore.js"></script> 
 <script language="javascript" src="scripts/shLegacy.js"></script> 
@@ -22,34 +22,26 @@
 
 <a href="index.html">Back to index</a>
 
-<h3 class="post-title">Groovy Goodness: Define Your Own Type Conversion</h3>
+<h3 class="post-title">Groovy Goodness: Process Map Entries in Reverse</h3>
 
 <div class="post">
-<p>In Groovy we can override the method <code>asType()</code> to convert an object into another type. We can use the method <code>asType()</code> in our code to invoke the conversion, but we can even make it shorter an use <code>as</code>.</p>
+<p>Since Groovy 1.7.2 we can loop through a <code>Map</code> in reverse with the <code>reverseEach()</code>. The order in which the content is processed is not guaranteed with a <code>Map</code>. If we use a <code>TreeMap</code> the natural ordering of the keys of the map is used.</p>
 <pre class="brush:groovy">
-class Size {
-    def x, y
-    
-    Object asType(Class clazz) {
-        if (clazz == SquaredSize) {
-            new SquaredSize(x: x**2, y: y**2)
-        }
-    }
+def reversed = [:]
+[a: 1, c: 3, b: 2].reverseEach { key, value ->
+    reversed[key] = value ** 2
 }
 
-class SquaredSize {
-    def x, y
-    
-    String toString() { "x: $x, y: $y" }
+assert [b: 4, c: 9, a: 1] == reversed
+
+// TreeMap uses natural ordering of keys, so 
+// reverseEach starts with key 'c'.
+def tree = [a: 10, c: 30, b: 20] as TreeMap
+def reversedMap = [:]
+tree.reverseEach {
+    reversedMap[it.key] = it.value * 2
 }
-
-def size = new Size(x: 10, y: 5)
-def squared = size as SquaredSize  // Or size.asType(SquaredSize)
-
-println squared  // Output: x: 100, y: 25
-
-assert 100 == squared.x
-assert 25 == squared.y
+assert [c: 60, b: 40, a: 20] == reversedMap
 </pre>
 </div>
 

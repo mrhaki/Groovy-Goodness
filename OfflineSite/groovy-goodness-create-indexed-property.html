@@ -1,0 +1,83 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Create Indexed Property Getter and Setter Methods</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Create Indexed Property Getter and Setter Methods</h3>
+
+<div class="post">
+<p>In Groovy we can define properties in our class and automatically the getter and setter methods for these properties are generated in the class file. If we have a Collection type property we normally get the get/set method for this property. But according to the JavaBean specification we can define a Collection type property as indexed property. This means we need an extra get/set method with an index parameter, so we can set the value of a element in the property directly:</p>
+<pre class="brush:java">
+//Methods to access individual values
+public PropertyElement getPropertyName(int index)
+public void setPropertyName(int index, PropertyElement element)
+
+/Methods to access the entire indexed property array
+public PropertyElement[] getPropertyName()
+public void setPropertyName(PropertyElement element[])
+</pre>
+<p>Normally if we use our class in Groovy code we don't need those extra methods, because we can GPath to access and set elements in the Collection typed property. But suppose our class needs to be accessed from Java code or by an IDE, we want those extra methods. We only have to add the <code>@IndexedProperty</code> annotation to our property and we get the extra getter and setter methods we want:</p>
+<pre class="brush:groovy">
+import groovy.transform.IndexedProperty
+
+class Group {
+    String name
+    List members = []
+}
+
+class IndexedGroup {
+    String name
+    @IndexedProperty List members = []
+}
+
+def group = new Group(name: 'Groovy')
+group.members[0] = 'mrhaki'
+group.members[1] = 'Hubert'
+assert 2 == group.members.size()
+assert ['mrhaki', 'Hubert'] == group.members
+
+try {
+    group.setMembers(0, 'hubert') // Not index property
+} catch (MissingMethodException e) {
+    assert e
+}
+
+def indexedGroup = new IndexedGroup(name: 'Grails')
+indexedGroup.members[0] = 'mrhaki'
+indexedGroup.setMembers 1, 'Hubert'
+assert 2 == indexedGroup.members.size()
+assert 'mrhaki' == indexedGroup.getMembers(0)
+assert 'Hubert' == indexedGroup.members[1]
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<title>Groovy Goodness: Define Your Own Type Conversion</title>
+<title>Groovy Goodness: Capitalize Strings</title>
 
 <script language="javascript" src="scripts/shCore.js"></script> 
 <script language="javascript" src="scripts/shLegacy.js"></script> 
@@ -22,34 +22,14 @@
 
 <a href="index.html">Back to index</a>
 
-<h3 class="post-title">Groovy Goodness: Define Your Own Type Conversion</h3>
+<h3 class="post-title">Groovy Goodness: Capitalize Strings</h3>
 
 <div class="post">
-<p>In Groovy we can override the method <code>asType()</code> to convert an object into another type. We can use the method <code>asType()</code> in our code to invoke the conversion, but we can even make it shorter an use <code>as</code>.</p>
+<p>Groovy 1.7.3 adds the <code>capitalize()</code> method to the <code>String</code> class. This will capitalize the first letter of the String:</p>
 <pre class="brush:groovy">
-class Size {
-    def x, y
-    
-    Object asType(Class clazz) {
-        if (clazz == SquaredSize) {
-            new SquaredSize(x: x**2, y: y**2)
-        }
-    }
-}
-
-class SquaredSize {
-    def x, y
-    
-    String toString() { "x: $x, y: $y" }
-}
-
-def size = new Size(x: 10, y: 5)
-def squared = size as SquaredSize  // Or size.asType(SquaredSize)
-
-println squared  // Output: x: 100, y: 25
-
-assert 100 == squared.x
-assert 25 == squared.y
+assert 'MrHaki' == 'mrHaki'.capitalize()
+assert 'Groovy' == 'groovy'.capitalize()
+assert 'Groovy is Gr8!' == 'groovy is Gr8!'.capitalize()
 </pre>
 </div>
 

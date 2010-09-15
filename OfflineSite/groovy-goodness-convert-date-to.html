@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<title>Groovy Goodness: Define Your Own Type Conversion</title>
+<title>Groovy Goodness: Convert Date to java.sql.Timestamp</title>
 
 <script language="javascript" src="scripts/shCore.js"></script> 
 <script language="javascript" src="scripts/shLegacy.js"></script> 
@@ -22,34 +22,22 @@
 
 <a href="index.html">Back to index</a>
 
-<h3 class="post-title">Groovy Goodness: Define Your Own Type Conversion</h3>
+<h3 class="post-title">Groovy Goodness: Convert Date to java.sql.Timestamp</h3>
 
 <div class="post">
-<p>In Groovy we can override the method <code>asType()</code> to convert an object into another type. We can use the method <code>asType()</code> in our code to invoke the conversion, but we can even make it shorter an use <code>as</code>.</p>
+<p>Groovy adds many methods to standard Java classes we can use in our code. To convert a simple <code>Date</code> object to a <code>java.sql.Timestamp</code> we can simply use the <code>toTimestamp()</code> method on a <code>Date</code> object.</p>
 <pre class="brush:groovy">
-class Size {
-    def x, y
-    
-    Object asType(Class clazz) {
-        if (clazz == SquaredSize) {
-            new SquaredSize(x: x**2, y: y**2)
-        }
-    }
-}
+import static java.util.Calendar.*
 
-class SquaredSize {
-    def x, y
-    
-    String toString() { "x: $x, y: $y" }
-}
+// Create date object with specific year, month and day.
+def date = new Date()
+date.clearTime()
+date.set year: 2010, month: AUGUST, date: 10
 
-def size = new Size(x: 10, y: 5)
-def squared = size as SquaredSize  // Or size.asType(SquaredSize)
-
-println squared  // Output: x: 100, y: 25
-
-assert 100 == squared.x
-assert 25 == squared.y
+// Convert to java.sql.Timestamp.
+def sqlTimestamp = date.toTimestamp()
+assert 'java.sql.Timestamp' == sqlTimestamp.class.name
+assert '2010-08-10 00:00:00.0' == sqlTimestamp.toString()
 </pre>
 </div>
 

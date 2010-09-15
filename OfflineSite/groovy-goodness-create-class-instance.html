@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<title>Groovy Goodness: Define Your Own Type Conversion</title>
+<title>Groovy Goodness: Create Class Instance Dynamically</title>
 
 <script language="javascript" src="scripts/shCore.js"></script> 
 <script language="javascript" src="scripts/shLegacy.js"></script> 
@@ -22,34 +22,34 @@
 
 <a href="index.html">Back to index</a>
 
-<h3 class="post-title">Groovy Goodness: Define Your Own Type Conversion</h3>
+<h3 class="post-title">Groovy Goodness: Create Class Instance Dynamically</h3>
 
 <div class="post">
-<p>In Groovy we can override the method <code>asType()</code> to convert an object into another type. We can use the method <code>asType()</code> in our code to invoke the conversion, but we can even make it shorter an use <code>as</code>.</p>
+<p>The <code>Class</code> method in Groovy has a <code>newInstance()</code> to dynamically create a new instance of a given class. We can use an Object array or Map as argument if we want to invoke the non-default constructor of the class.</p>
 <pre class="brush:groovy">
-class Size {
-    def x, y
+class Blog {
+    String name
+    String subject
     
-    Object asType(Class clazz) {
-        if (clazz == SquaredSize) {
-            new SquaredSize(x: x**2, y: y**2)
-        }
+    Blog() {}
+    
+    Blog(String name, String subject) {
+        this.name = name
+        this.subject = subject
     }
 }
 
-class SquaredSize {
-    def x, y
-    
-    String toString() { "x: $x, y: $y" }
-}
+def blog = Blog.newInstance()
+assert !blog.name, 'Name has no value'
+assert !blog.subject, 'Subject has no value'
 
-def size = new Size(x: 10, y: 5)
-def squared = size as SquaredSize  // Or size.asType(SquaredSize)
+def blog2 = Blog.newInstance(['mrhaki', 'Groovy'] as Object[])
+assert 'mrhaki' == blog2.name
+assert 'Groovy' == blog2.subject
 
-println squared  // Output: x: 100, y: 25
-
-assert 100 == squared.x
-assert 25 == squared.y
+def blog3 = Blog.newInstance([name:'mrhaki', subject: 'Groovy'])
+assert 'mrhaki' == blog3.name
+assert 'Groovy' == blog3.subject
 </pre>
 </div>
 

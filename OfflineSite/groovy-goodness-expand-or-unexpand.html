@@ -1,0 +1,77 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Expand or Unexpand Space or Tab Delimited Text</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Expand or Unexpand Space or Tab Delimited Text</h3>
+
+<div class="post">
+<p>Groovy 1.7.3 adds new functionality to the <code>String</code> class. For example we can use the <code>expand()</code> method to expand tabs in a <code>String</code> to spaces with a default tab stop size of 8. We can use a parameter to use a different tab stop size. But we can also go the other way around.</p>
+<p>So if we have a tabular text based on spaces we can convert the <code>String</code> to a tab separated <code>String</code>. Here the default tab stop size is also 8, but we can use the parameter to define a different tab stop size.</p>
+<pre class="brush:groovy">
+// Simple ruler to display 0 up to 30
+def ruler = (0..30).inject('\n') { result, c -> 
+    result += (c % 10) 
+}
+
+def stringWithTabs = 'Groovy\tGrails\tGriffon'
+
+println ruler
+println stringWithTabs.expand()  // default tab stop is 8
+println stringWithTabs.expand(10)  // tab stop is 10
+
+// Output:
+// 0123456789012345678901234567890
+// Groovy  Grails  Griffon
+/ /Groovy    Grails    Griffon
+
+assert 'Groovy  Grails  Griffon' == stringWithTabs.expand()
+assert 'Groovy    Grails    Griffon' == stringWithTabs.expand(10)
+
+
+def stringWithSpaces = 'Hubert  Klein   Ikkink'
+def stringWithSpaces10 = 'Hubert    Klein     Ikkink'
+println ruler
+println stringWithSpaces
+println stringWithSpaces10
+
+// Output:
+// 0123456789012345678901234567890
+// Hubert  Klein   Ikkink
+// Hubert    Klein     Ikkink
+
+assert 'Hubert\tKlein\tIkkink' == stringWithSpaces.unexpand()
+assert 'Hubert\tKlein\tIkkink' == stringWithSpaces10.unexpand(10)
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

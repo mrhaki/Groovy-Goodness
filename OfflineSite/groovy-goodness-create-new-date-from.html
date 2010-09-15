@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<title>Groovy Goodness: Define Your Own Type Conversion</title>
+<title>Groovy Goodness: Create New Date from Old Date with Updates</title>
 
 <script language="javascript" src="scripts/shCore.js"></script> 
 <script language="javascript" src="scripts/shLegacy.js"></script> 
@@ -22,34 +22,26 @@
 
 <a href="index.html">Back to index</a>
 
-<h3 class="post-title">Groovy Goodness: Define Your Own Type Conversion</h3>
+<h3 class="post-title">Groovy Goodness: Create New Date from Old Date with Updates</h3>
 
 <div class="post">
-<p>In Groovy we can override the method <code>asType()</code> to convert an object into another type. We can use the method <code>asType()</code> in our code to invoke the conversion, but we can even make it shorter an use <code>as</code>.</p>
+<p>Groovy 1.7.3 adds the <code>updated()</code> method to the <code>Date</code> and <code>Calendar</code> classes. We pass a <code>Map</code> as parameter to this method to define which fields are updated. The fields that are not mentioned are unchanged. The result is a new <code>Date</code> or <code>Calendar</code> object, our original object stays the same.</p>
 <pre class="brush:groovy">
-class Size {
-    def x, y
-    
-    Object asType(Class clazz) {
-        if (clazz == SquaredSize) {
-            new SquaredSize(x: x**2, y: y**2)
-        }
-    }
-}
+import static java.util.Calendar.*
 
-class SquaredSize {
-    def x, y
-    
-    String toString() { "x: $x, y: $y" }
-}
+def cal = Calendar.instance
+cal[MONTH] = DECEMBER
+def calNextMonth = cal.updated(month: cal[MONTH] + 1, year: 2012)
 
-def size = new Size(x: 10, y: 5)
-def squared = size as SquaredSize  // Or size.asType(SquaredSize)
+assert JANUARY == calNextMonth[MONTH]
+assert 2013 == calNextMonth[YEAR]
 
-println squared  // Output: x: 100, y: 25
+def date = new Date()
+date.set(year: 2011, month: MAY, date: 5)
+def dateTenYearsAgo = date.updated(year: date[YEAR] - 10)
 
-assert 100 == squared.x
-assert 25 == squared.y
+assert '2011-5-5' == date.format('yyyy-M-d')
+assert '2001-5-5' == dateTenYearsAgo.format('yyyy-M-d')
 </pre>
 </div>
 

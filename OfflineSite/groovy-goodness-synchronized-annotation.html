@@ -1,0 +1,90 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Synchronized Annotation for Synchronizing Methods</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Synchronized Annotation for Synchronizing Methods</h3>
+
+<div class="post">
+<p>Since Groovy 1.7.3 we have a new AST transformation: <a href="http://projectlombok.org/features/Synchronized.html">@Synchronized</a>. This annotation is based on the <a href="http://projectlombok.org/features/Synchronized.html">Project Lombok Synchronized annotation</a>. We can use the annotation on instance and static methods. The annotation will create a lock variable in our class (or we can use an existing variable) and the code is synchronized on that lock variable. Normally with the <code>synchronized</code> keyword the lock is on <code>this</code>, but that can have side-effects.</p>
+<pre class="brush:groovy">
+import groovy.transform.Synchronized
+
+class Util {
+    private counter = 0
+    
+    private def list = ['Groovy']
+    
+    private Object listLock = new Object[0]
+    
+    @Synchronized
+    void workOnCounter() {
+        assert 0 == counter
+        counter++
+        assert 1 == counter
+        counter --
+        assert 0 == counter
+    }
+    
+    @Synchronized('listLock')
+    void workOnList() {
+        assert 'Groovy' == list[0]
+        list << 'Grails'
+        assert 2 == list.size()
+        list = list - 'Grails'
+        assert 'Groovy' == list[0]
+    }
+}
+
+def util = new Util()
+def tc1 = Thread.start { 
+    100.times { 
+        util.workOnCounter()
+        sleep 20 
+        util.workOnList()
+        sleep 10
+    } 
+}
+def tc2 = Thread.start { 
+    100.times { 
+        util.workOnCounter()
+        sleep 10 
+        util.workOnList()
+        sleep 15
+    } 
+}
+tc1.join()
+tc2.join()
+</pre>
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

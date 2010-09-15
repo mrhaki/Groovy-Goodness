@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<title>Groovy Goodness: Define Your Own Type Conversion</title>
+<title>Groovy Goodness: Get to Know More About a GString</title>
 
 <script language="javascript" src="scripts/shCore.js"></script> 
 <script language="javascript" src="scripts/shLegacy.js"></script> 
@@ -22,34 +22,26 @@
 
 <a href="index.html">Back to index</a>
 
-<h3 class="post-title">Groovy Goodness: Define Your Own Type Conversion</h3>
+<h3 class="post-title">Groovy Goodness: Get to Know More About a GString</h3>
 
 <div class="post">
-<p>In Groovy we can override the method <code>asType()</code> to convert an object into another type. We can use the method <code>asType()</code> in our code to invoke the conversion, but we can even make it shorter an use <code>as</code>.</p>
+<p>One of Groovy's great features is the GString. With the GString we can write strings containing expressions that are evaluated. We create a GString if our string is inside double quotes. We can found out information about the expressions in our GString with some simple methods and properties:</p>
 <pre class="brush:groovy">
-class Size {
-    def x, y
-    
-    Object asType(Class clazz) {
-        if (clazz == SquaredSize) {
-            new SquaredSize(x: x**2, y: y**2)
-        }
-    }
-}
 
-class SquaredSize {
-    def x, y
-    
-    String toString() { "x: $x, y: $y" }
-}
+def user = 'mrhaki'
+def language = 'Groovy'
 
-def size = new Size(x: 10, y: 5)
-def squared = size as SquaredSize  // Or size.asType(SquaredSize)
+def s = "Hello ${user}, welcome to ${language}."
 
-println squared  // Output: x: 100, y: 25
-
-assert 100 == squared.x
-assert 25 == squared.y
+assert 2 == s.valueCount
+assert ['mrhaki', 'Groovy'] == s.values
+assert 'mrhaki' == s.getValue(0)
+assert 'Groovy' == s.getValue(1)
+assert 32 == s.length()
+assert 'Hello ' == s.strings[0]
+assert ', welcome to ' == s.strings[1]
+assert '.' == s.strings[2]
+assert 'Hello mrhaki, welcome to Groovy.' == s
 </pre>
 </div>
 

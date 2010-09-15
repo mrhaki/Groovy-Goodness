@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<title>Groovy Goodness: Define Your Own Type Conversion</title>
+<title>Groovy Goodness: Use a Class by Proxy</title>
 
 <script language="javascript" src="scripts/shCore.js"></script> 
 <script language="javascript" src="scripts/shLegacy.js"></script> 
@@ -22,34 +22,43 @@
 
 <a href="index.html">Back to index</a>
 
-<h3 class="post-title">Groovy Goodness: Define Your Own Type Conversion</h3>
+<h3 class="post-title">Groovy Goodness: Use a Class by Proxy</h3>
 
 <div class="post">
-<p>In Groovy we can override the method <code>asType()</code> to convert an object into another type. We can use the method <code>asType()</code> in our code to invoke the conversion, but we can even make it shorter an use <code>as</code>.</p>
+<p>In the <code>groovy.util</code> package we find the <code>Proxy</code> class. We can use this class to create a proxy for another object. All methods calls to the proxy object are redirected to the original object, instead for the methods we override in the proxy class:</p>
 <pre class="brush:groovy">
-class Size {
-    def x, y
-    
-    Object asType(Class clazz) {
-        if (clazz == SquaredSize) {
-            new SquaredSize(x: x**2, y: y**2)
+class User {
+    String name
+    String email
+    String password
+
+    String displayName() { name }
+}
+
+class UserProxy extends groovy.util.Proxy {
+    List fields
+
+    // Override getProperty for custom behavior by the proxy.
+    Object getProperty(String propertyName) {
+        if (propertyName in fields) {
+            getAdaptee().getProperty(propertyName)
+        } else {
+            throw new MissingPropertyException("Unknown property $propertyName")
         }
     }
 }
 
-class SquaredSize {
-    def x, y
-    
-    String toString() { "x: $x, y: $y" }
+def user = new User(name: 'mrhaki', email: 'private@localhost', password: 'secret')
+def userProxy= new UserProxy(fields: ['name']).wrap(user)  // Create proxy for user instance.
+
+assert 'mrhaki' == userProxy.name
+try {
+    userProxy.email
+    assert false
+} catch (MissingPropertyException e) {
+    assert 'Unknown property email' == e.message
 }
-
-def size = new Size(x: 10, y: 5)
-def squared = size as SquaredSize  // Or size.asType(SquaredSize)
-
-println squared  // Output: x: 100, y: 25
-
-assert 100 == squared.x
-assert 25 == squared.y
+assert 'mrhaki' == userProxy.displayName()  // Use original method.
 </pre>
 </div>
 

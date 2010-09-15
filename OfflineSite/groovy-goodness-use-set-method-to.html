@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<title>Groovy Goodness: Define Your Own Type Conversion</title>
+<title>Groovy Goodness: Use the set Method to Define a Date or Calendar Value</title>
 
 <script language="javascript" src="scripts/shCore.js"></script> 
 <script language="javascript" src="scripts/shLegacy.js"></script> 
@@ -22,34 +22,26 @@
 
 <a href="index.html">Back to index</a>
 
-<h3 class="post-title">Groovy Goodness: Define Your Own Type Conversion</h3>
+<h3 class="post-title">Groovy Goodness: Use the set Method to Define a Date or Calendar Value</h3>
 
 <div class="post">
-<p>In Groovy we can override the method <code>asType()</code> to convert an object into another type. We can use the method <code>asType()</code> in our code to invoke the conversion, but we can even make it shorter an use <code>as</code>.</p>
+<p>In a previous post we learned about the new subscript operator support in Groovy 1.7.3 for setting <code>Date</code> or <code>Calendar</code> values. But we have other new ways in Groovy 1.7.3: we can use a <code>set()</code> method to set the values. The method accepts a <code>Map</code> with the following keys: year, month, date, hourOfDay, minute and second. The keys are used to set the according values of the <code>Date</code> or <code>Calendar</code> object.</p>
 <pre class="brush:groovy">
-class Size {
-    def x, y
-    
-    Object asType(Class clazz) {
-        if (clazz == SquaredSize) {
-            new SquaredSize(x: x**2, y: y**2)
-        }
-    }
-}
+import static java.util.Calendar.*
 
-class SquaredSize {
-    def x, y
-    
-    String toString() { "x: $x, y: $y" }
-}
+def cal = Calendar.instance
+cal.set(year: 2010, month: JULY, date: 9)
 
-def size = new Size(x: 10, y: 5)
-def squared = size as SquaredSize  // Or size.asType(SquaredSize)
+assert 'Birthday @ 2010-7-9' == 'Birthday @ ' + cal.format('yyyy-M-d')
+assert FRIDAY == cal[DAY_OF_WEEK]
 
-println squared  // Output: x: 100, y: 25
+def date = new Date()
+date.set(hourOfDay: 12, minute: 0, second: 0, year: 2010, month: JUNE, date: 1)
 
-assert 100 == squared.x
-assert 25 == squared.y
+assert '12:00:00' == date.format('HH:mm:ss')
+assert 2010 == date[YEAR]
+assert JUNE == date[MONTH]
+assert 1 == date.getAt(DATE)
 </pre>
 </div>
 

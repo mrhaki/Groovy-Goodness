@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<title>Groovy Goodness: Define Your Own Type Conversion</title>
+<title>Groovy Goodness: Map with Default Values</title>
 
 <script language="javascript" src="scripts/shCore.js"></script> 
 <script language="javascript" src="scripts/shLegacy.js"></script> 
@@ -22,34 +22,24 @@
 
 <a href="index.html">Back to index</a>
 
-<h3 class="post-title">Groovy Goodness: Define Your Own Type Conversion</h3>
+<h3 class="post-title">Groovy Goodness: Map with Default Values</h3>
 
 <div class="post">
-<p>In Groovy we can override the method <code>asType()</code> to convert an object into another type. We can use the method <code>asType()</code> in our code to invoke the conversion, but we can even make it shorter an use <code>as</code>.</p>
+<p>In Groovy we can create a map and use the <code>withDefault()</code> method with a closure to define default values for keys that are not yet in the map. The value for the key is then added to the map, so next time we can get the value from the map.</p>
 <pre class="brush:groovy">
-class Size {
-    def x, y
-    
-    Object asType(Class clazz) {
-        if (clazz == SquaredSize) {
-            new SquaredSize(x: x**2, y: y**2)
-        }
-    }
+def m = [start: 'one'].withDefault { key -> 
+    key.isNumber() ? 42 : 'Groovy rocks!'
 }
 
-class SquaredSize {
-    def x, y
-    
-    String toString() { "x: $x, y: $y" }
-}
+assert 'one' == m.start
+assert 42 == m['1']
+assert 'Groovy rocks!' == m['I say']
+assert 3 == m.size()
 
-def size = new Size(x: 10, y: 5)
-def squared = size as SquaredSize  // Or size.asType(SquaredSize)
-
-println squared  // Output: x: 100, y: 25
-
-assert 100 == squared.x
-assert 25 == squared.y
+// We can still assign our own values to keys of course:
+m['mrhaki'] = 'Hubert Klein Ikkink'
+assert 'Hubert Klein Ikkink' == m.mrhaki
+assert 4 == m.size()
 </pre>
 </div>
 

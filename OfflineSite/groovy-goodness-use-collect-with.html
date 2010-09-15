@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<title>Groovy Goodness: Define Your Own Type Conversion</title>
+<title>Groovy Goodness: Use Collect with Initial Collection Value</title>
 
 <script language="javascript" src="scripts/shCore.js"></script> 
 <script language="javascript" src="scripts/shLegacy.js"></script> 
@@ -22,34 +22,21 @@
 
 <a href="index.html">Back to index</a>
 
-<h3 class="post-title">Groovy Goodness: Define Your Own Type Conversion</h3>
+<h3 class="post-title">Groovy Goodness: Use Collect with Initial Collection Value</h3>
 
 <div class="post">
-<p>In Groovy we can override the method <code>asType()</code> to convert an object into another type. We can use the method <code>asType()</code> in our code to invoke the conversion, but we can even make it shorter an use <code>as</code>.</p>
+<p>The <code>collect()</code> method in Groovy can be used to iterate over collections and transform each element of the collection. The transformation is defined in as a closure and is passed to the <code>collect()</code> method. But we can also add an initial collection to which the transformed elements are added.</p>
 <pre class="brush:groovy">
-class Size {
-    def x, y
-    
-    Object asType(Class clazz) {
-        if (clazz == SquaredSize) {
-            new SquaredSize(x: x**2, y: y**2)
-        }
-    }
-}
+// Collect without 
+// initial collection.
+assert [0,2,4,6] == (0..3).collect { it * 2 }
+assert ['Groovy', 'Grails'] == [lang: 'Groovy', framework: 'Grails'].collect { it.value }
 
-class SquaredSize {
-    def x, y
-    
-    String toString() { "x: $x, y: $y" }
-}
-
-def size = new Size(x: 10, y: 5)
-def squared = size as SquaredSize  // Or size.asType(SquaredSize)
-
-println squared  // Output: x: 100, y: 25
-
-assert 100 == squared.x
-assert 25 == squared.y
+// Collect with initial collection argument.
+assert [0, 1, 2, 3] == [2, 3].collect([0, 1]) { it }
+assert [0, 3, 6, 9] == [2, 3].collect([0, 3], { it * 3})
+assert ['Gradle', 'groovy', 'grails'] == ['Groovy', 'Grails'].collect(['Gradle']) { it.toLowerCase() }
+assert ['m','r','h','a','k','i'] == [4, -3, 7, 5].collect(['m', 'r']) { (it + 100) as char }
 </pre>
 </div>
 

@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<title>Groovy Goodness: Define Your Own Type Conversion</title>
+<title>Groovy Goodness: Inherit Constructors From Parent Classes</title>
 
 <script language="javascript" src="scripts/shCore.js"></script> 
 <script language="javascript" src="scripts/shLegacy.js"></script> 
@@ -22,34 +22,35 @@
 
 <a href="index.html">Back to index</a>
 
-<h3 class="post-title">Groovy Goodness: Define Your Own Type Conversion</h3>
+<h3 class="post-title">Groovy Goodness: Inherit Constructors From Parent Classes</h3>
 
 <div class="post">
-<p>In Groovy we can override the method <code>asType()</code> to convert an object into another type. We can use the method <code>asType()</code> in our code to invoke the conversion, but we can even make it shorter an use <code>as</code>.</p>
+<p>We have a new transformation annotation in Groovy 1.7.3 to safe us a lot of typing when we define new classes that extend from parent classes with multiple constructors: <code>@InheritConstructors</code>. When we apply this transformation to our class we automatically get all constructors from the super class. This is very useful if we for example extend from <code>java.lang.Exception</code>, because otherwise we would have to define four constructors ourselves. The transformation adds these constructors for us in our class file. This works also for our own created classes.</p>
 <pre class="brush:groovy">
-class Size {
-    def x, y
+import groovy.transform.InheritConstructors
+
+@InheritConstructors
+class MyException extends Exception {
+}
+
+def e = new MyException()
+def e1 = new MyException('message')   // Other constructors are available.
+assert 'message' == e1.message
+
+
+class Person {
+    String name
     
-    Object asType(Class clazz) {
-        if (clazz == SquaredSize) {
-            new SquaredSize(x: x**2, y: y**2)
-        }
+    Person(String name) {
+        this.name = name
     }
 }
 
-class SquaredSize {
-    def x, y
-    
-    String toString() { "x: $x, y: $y" }
-}
+@InheritConstructors
+class Child extends Person {}
 
-def size = new Size(x: 10, y: 5)
-def squared = size as SquaredSize  // Or size.asType(SquaredSize)
-
-println squared  // Output: x: 100, y: 25
-
-assert 100 == squared.x
-assert 25 == squared.y
+def child = new Child('Liam')
+assert 'Liam' == child.name
 </pre>
 </div>
 

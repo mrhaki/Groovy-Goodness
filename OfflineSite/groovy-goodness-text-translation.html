@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<title>Groovy Goodness: Define Your Own Type Conversion</title>
+<title>Groovy Goodness: Text Translation</title>
 
 <script language="javascript" src="scripts/shCore.js"></script> 
 <script language="javascript" src="scripts/shLegacy.js"></script> 
@@ -22,34 +22,20 @@
 
 <a href="index.html">Back to index</a>
 
-<h3 class="post-title">Groovy Goodness: Define Your Own Type Conversion</h3>
+<h3 class="post-title">Groovy Goodness: Text Translation</h3>
 
 <div class="post">
-<p>In Groovy we can override the method <code>asType()</code> to convert an object into another type. We can use the method <code>asType()</code> in our code to invoke the conversion, but we can even make it shorter an use <code>as</code>.</p>
+<p>In Groovy 1.7.3 the <code>tr()</code> method is added to the <code>String</code> class. With this method we can do translations in String values. We define a source set of characters that need to be replaced by a replacement set of characters. We can also use a regular expression style (remember it is not a real regular expression) to define a range of characters.</p>
+<p>If the replacement set is smaller than the source set, than the last character of the replacement set is used for the remaining source set characters.</p>
 <pre class="brush:groovy">
-class Size {
-    def x, y
-    
-    Object asType(Class clazz) {
-        if (clazz == SquaredSize) {
-            new SquaredSize(x: x**2, y: y**2)
-        }
-    }
-}
+// Source set and replacement set are equal size.
+assert 'I 10v3 9r00vy' == 'I love Groovy'.tr('loeG', '1039')
 
-class SquaredSize {
-    def x, y
-    
-    String toString() { "x: $x, y: $y" }
-}
+// Regular expression style range
+assert 'mrHAKI' == 'mrhaki'.tr('a-k', 'A-K')
 
-def size = new Size(x: 10, y: 5)
-def squared = size as SquaredSize  // Or size.asType(SquaredSize)
-
-println squared  // Output: x: 100, y: 25
-
-assert 100 == squared.x
-assert 25 == squared.y
+// Replacement set is smaller than source set.
+assert 'Gr8888' == 'Groovy'.tr('ovy', '8')
 </pre>
 </div>
 
