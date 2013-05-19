@@ -1,0 +1,54 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Find Elements Matching Groovy Truth</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Find Elements Matching Groovy Truth</h3>
+
+<div class="post">
+<p>In Groovy 1.8.1 we can use the <code>find()</code> and <code>findAll()</code> methods to find the elements in for example a List wich complies to Groovy truth. The <code>find()</code> and <code>findAll()</code> methods are defined in the Groovy GDK on the Object class, so we can use it for every object that can be iterated.</p><pre class="brush:groovy">class User {
+    boolean enabled
+    
+    Boolean asBoolean() {
+        enabled
+    }
+}
+
+def items = [0, false, null, [], [:], '', new User(enabled: false), 'Groovy rocks!', 101]
+
+assert items.find() == 'Groovy rocks!'
+
+assert items.findAll() == ['Groovy rocks!', 101]
+</pre
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

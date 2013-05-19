@@ -1,0 +1,74 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Using Project Coin Features Also With Older Java Versions</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Using Project Coin Features Also With Older Java Versions</h3>
+
+<div class="post">
+<p>Since Groovy 2 we can use a subset of the <a href="http://openjdk.java.net/projects/coin/">Project Coin</a> features from Java 7. But we don't have to run Java 7 to use them in Groovy code. We can use the new features even if we run our Groovy code on older Java versions.</p><p>Groovy didn't have to add all Project Coin features, because some are already supported in Groovy, like the <code>switch</code> statement on <code>String</code> objects or diamond operator. A feature that is added is a syntax enhancement to define binary literals. We can now use binary integral literals by prefixing the value with <code>0b</code>:</p><pre class="brush:groovy">// Binary notation.
+int x = 0b101
+assert x == 5
+</pre><p>The <em>underscore in number literals</em> is now supported in Groovy. We can define numbers and use an underscore to make them more readable. The value is not changed:</p><pre class="brush:groovy">import static java.text.NumberFormat.getInstance as formatter
+import static java.util.Locale.US
+
+// Use underscore for number literals.
+double d = 89_192.29
+assert formatter(US).format(d) == '89,192.29'
+
+long longNumber = 1230_3910_1929_182931
+assert longNumber == 123039101929182931
+
+int length = 5_10
+assert length == 510
+
+long hex = 0x00_ff
+assert hex == 255
+</pre><p>We can define a multi-catch exception in Groovy 2. We specify more than exception in the <code>catch</code> clause separated by a pipe (<code>|</code>) symbol:</p><pre class="brush:groovy">import java.lang.reflect.*
+
+// Multicatch.
+@groovy.transform.ToString
+class Person {
+    String name
+}
+
+try {
+    final Person p = new Person(name: 'mrhaki')
+    final Method toString = p.class.getMethod("toString1", null)
+    final Object result = toString.invoke(p, null)
+} catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+    assert e
+}
+</pre><p><em>(Code written with Groovy 2.0.4)</em></p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,141 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Adding Extra Methods Using Extension Modules</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Adding Extra Methods Using Extension Modules</h3>
+
+<div class="post">
+<p>Groovy 2.0 brought us extension modules. An extension module is a JAR file with classes that provide extra methods to existing other classes like in the JDK or third-party libraries. Groovy uses this mechanism to add for example extra methods to the <code>File</code> class. We can implement our own extension module to add new <em>extension</em> methods to existing classes. Once we have written the module we can add it to the classpath of our code or application and all the new methods are immediately available.</p><p>We define the new extension methods in helper classes, which are part of the module. We can create instance and static extension methods, but we need a separate helper class for each type of extension method. We cannot mix static and instance extension methods in one helper class. First we create a very simple class with an extension method for the <code>String</code> class. The first argument of the extension method defines the type or class we want the method to be added to. The following code shows the method <code>likeAPirate</code>. The extension method needs to be <code>public</code> and <code>static</code> even though we are creating an instance extension method.</p><pre class="brush:groovy">// File: src/main/groovy/com/mrhaki/groovy/PirateExtension.groovy
+package com.mrhaki.groovy
+
+class PirateExtension {
+    static String likeAPirate(final String self) {
+        // List of pirate language translations.
+        def translations = [
+            ["hello", "ahoy"], ["Hi", "Yo-ho-ho"],
+            ['are', 'be'], ['am', 'be'], ['is', 'be'],
+            ['the', "th'"], ['you', 'ye'], ['your', 'yer'],
+            ['of', "o'"]
+        ]
+        
+        // Translate the original String to a 
+        // pirate language String.
+        String result = self
+        translations.each { translate ->
+                result = result.replaceAll(translate[0], translate[1])
+        }
+        result
+    }
+}
+</pre><p>Next we need to create an extension module descriptor file. In this file we define the name of the helper class, so Groovy will know how to use it. The descriptor file needs to be placed in the <code>META-INF/services</code> directory of our module archive or classpath. The name of the file is <code>org.codehaus.groovy.runtime.ExtensionModule</code>. In the file we define the name of our module, version and the name of the helper class. The name of the helper class is defined with the property <code>extensionClasses</code>:</p><pre class="brush:plain"># File: src/main/resources/META-INF/services/org.codehaus.groovy.runtime.ExtensionModule
+moduleName = pirate-module
+moduleVersion = 1.0
+extensionClasses = com.mrhaki.groovy.PirateExtension
+</pre><p>Now are extension module is ready. The easiest way to distribute the module is by packaging the code and descriptor file in a JAR file and put it in a artifact repository manager. Other developers can then use build tools like Gradle or Maven to include the extension module in their projects and applications. If we use Gradle to create a JAR file we only needs this small build script:</p><pre class="brush:groovy">// File: build.gradle
+apply plugin: 'groovy'
+
+repositories.mavenCentral()
+
+dependencies {
+    // Since Gradle 1.4 we don't use the groovy configuration
+    // to define dependencies. We can simply use the
+    // compile and testCompile configurations.
+    compile 'org.codehaus.groovy:groovy-all:2.0.6'
+}
+</pre><p>Now we can invoke <code>$ gradle build</code> and we got ourselves an extension module.</p><p>Let's add a test for our new extension method. Because we use Gradle the test classpath already will contain our extension module helper class and descriptor file. In our test we can simply invoke the method and test the results. We are going to use Spock to write a simple specification:</p><pre class="brush:groovy">// File: src/test/groovy/com/mrhaki/groovy/PirateExtensionSpec.groovy
+package com.mrhaki.groovy
+
+import spock.lang.Specification
+
+class PirateExtensionSpec extends Specification {
+
+    def "likeAPirate method should work as instance method on a String value"() {
+        given:
+        final String originalText = "Hi, Groovy is the greatest language of the JVM."
+
+        expect:
+        originalText.likeAPirate() == "Yo-ho-ho, Groovy be th' greatest language o' th' JVM."
+    }
+
+}
+</pre><p>We add the dependency to Spock in our Gradle build file:</p><pre class="brush:groovy;highlight:[11]">// File: build.gradle
+apply plugin: 'groovy'
+
+repositories.mavenCentral()
+
+dependencies {
+    // Since Gradle 1.4 we don't use the groovy configuration
+    // to define dependencies. We can simply use the
+    // compile and testCompile configurations.
+    compile 'org.codehaus.groovy:groovy-all:2.0.6'
+
+    testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+}
+</pre><p>We can run <code>$ gradle test</code> to run the Spock specification and test our new extension method.</p><p>To add a static method to an existing class we need to add an extra helper class to our extension module and an extra property to our descriptor file to register the helper class. The first argument of the extension method define the type we want to add a static method to. In the following helper class we add the extension method <code>talkLikeAPirate()</code> to the <code>String</code> class.</p><pre class="brush:groovy">// File: src/main/groovy/com/mrhaki/groovy/PirateStaticExtension.groovy
+package com.mrhaki.groovy
+
+class PirateStaticExtension {
+    static String talkLikeAPirate(final String type) {
+        "Arr, me hearty,"
+    }
+}
+</pre><p>We change the descriptor file and add the <code>staticExtensionClasses</code> property:</p><pre class="brush:plain;highlight:[4]"># File: src/main/resources/META-INF/services/org.codehaus.groovy.runtime.ExtensionModule
+moduleName = pirate-module
+moduleVersion = 1.0
+extensionClasses = com.mrhaki.groovy.PirateExtension
+staticExtensionClasses = com.mrhaki.groovy.PirateStaticExtension
+</pre><p>In our Spock specification we add an extra test for our new static method <code>talkLikeAPirate()</code> on the <code>String</code> class:</p><pre class="brush:groovy;highlight:[15,16,17,18]">// File: src/test/groovy/com/mrhaki/groovy/PirateExtensionSpec.groovy
+package com.mrhaki.groovy
+
+import spock.lang.Specification
+
+class PirateExtensionSpec extends Specification {
+
+    def "likeAPirate method should work as instance method on a String value"() {
+        given:
+        final String originalText = "Hi, Groovy is the greatest language of the JVM."
+
+        expect:
+        originalText.likeAPirate() == "Yo-ho-ho, Groovy be th' greatest language o' th' JVM."
+    }
+
+    def "talkLikeAPirate method should work as static method on String class"() {
+        expect:
+        "Arr, me hearty, Groovy rocks!" == String.talkLikeAPirate() + " Groovy rocks!"
+    }
+
+}
+</pre><p>Written with Groovy 2.1</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

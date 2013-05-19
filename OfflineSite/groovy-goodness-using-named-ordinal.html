@@ -1,0 +1,102 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Using Named (Ordinal) Parameters with Groovy SQL</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Using Named (Ordinal) Parameters with Groovy SQL</h3>
+
+<div class="post">
+<p>Groovy has great SQL support built-in. With just a few lines of code we can access a database and write SQL statements and execute them. To query data we can for example use the <code>rows()</code> method. We pass a SQL query and we get a List of <code>GroovyResultSet</code> objects back. But we can also use other methods like <code>query()</code> or <code>eachRow()</code>.</p><p>The query may contain named placeholders. For example <code>:name</code> or <code>?.id</code>. Both the <code>:</code> and <code>?.</code> syntax are supported. To give the named parameters a value we pass an extra object to the query method. This object can be a Map, Expando object or any object with properties matching the names of the named parameter.</p><p>Besides we can even used named ordinal parameters. Then we must use the <code>?.</code> syntax. We set the ordinal (1-based) after the question mark. Now we pass multiple objects with values for the named parameters to the query method. For each ordinal we must pass an object with values for that named ordinal parameter.</p><p>The following sample shows the possibilities:</p><pre class="brush:groovy">@Grapes([
+    @Grab(group='com.h2database', module='h2', version='1.3.160'),
+    @GrabConfig(systemClassLoader = true)
+])
+import com.h2database.*
+import groovy.sql.*
+
+def db = Sql.newInstance('jdbc:h2:mem:', 'sa', '', 'org.h2.Driver')
+
+// Setup database.
+db.execute '''
+    create table if not exists languages(
+        id int primary key,
+        name varchar(20) not null
+    )
+'''
+
+db.execute "insert into languages values(1, 'Groovy')"
+db.execute "insert into languages values(2, 'Java')"
+
+// ------------------
+// Ready for queries:
+// ------------------
+
+// Use :name syntax for named parameters.
+def result = db.rows('select * from languages where name = :name',
+                     [name: 'Groovy'])
+assert result[0] == [ID: 1, NAME: 'Groovy']
+
+// Different syntax with ?.name.
+result = db.rows('select * from languages where name = ?.name',
+                 [name: 'Groovy'])
+assert result[0] == [ID: 1, NAME: 'Groovy']
+
+// We can use our own classes with properties matching
+// query parameters.
+class QueryParams {
+    String name = 'Java'
+    Integer id = 2
+}
+
+result = db.rows('select * from languages where name = ?.name and id = :id',
+                 new QueryParams())
+assert result[0] == [ID: 2, NAME: 'Java']
+
+
+// We can use ordinal named parameters.
+// For each ordinal placeholder we must pass an object
+// with values.
+result = db.rows('select * from languages where name = ?1.name and id = ?2.id',
+                 [name: 'Groovy'] /* ?1.name */, [id: 1] /* ?2.id */)
+assert result[0] == [ID: 1, NAME: 'Groovy']
+
+result = db.rows('select * from languages where name = ?1.name and id = ?2.id',
+                 [name: 'Groovy'], new Expando([id: 1]))
+assert result[0] == [ID: 1, NAME: 'Groovy']
+
+result = db.rows('select * from languages where name = ?1.name or name = ?2.name',
+                 new QueryParams(), [name: 'Groovy'])
+assert result[0] == [ID: 1, NAME: 'Groovy']
+assert result[1] == [ID: 2, NAME: 'Java']
+</pre
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

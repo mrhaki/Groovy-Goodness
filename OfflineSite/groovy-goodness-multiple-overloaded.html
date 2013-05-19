@@ -1,0 +1,65 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Multiple Overloaded Operator Methods for Nice API</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Multiple Overloaded Operator Methods for Nice API</h3>
+
+<div class="post">
+<p>We saw earlier that Groovy supports <a href="http://mrhaki.blogspot.com/2009/09/groovy-goodness-multimethods-or.html">Multimethods or multiple dispatch</a>. Groovy will resolve the correct overloaded method to invoke based on the runtime type of the method argument. This is great to use for a clean and simple API for a class.</p><p>Suppose we have an <code>Event</code> class with a list of attendees and sessions. We want to use the <code>&lt;&lt;</code> operator to add attendees and sessions to an <code>Event</code> object. The following code sample shows how we can implement this in Groovy:</p><pre class="brush:groovy">class Event {
+    List&lt;Person&gt; attendees = []
+    List&lt;Session&gt; sessions = []
+
+    Event leftShift(final Person person) {
+        attendees &lt;&lt; person
+        this
+    }
+    
+    Event leftShift(final Session session) {
+        sessions &lt;&lt; session
+        this
+    }  
+}
+class Session { String title }
+class Person { String name }
+
+final Event gr8Conf = new Event()
+gr8Conf &lt;&lt; new Person(name: 'mrhaki') &lt;&lt; new Session(title: /Groovy's Hidden Gems/)
+
+assert gr8Conf.attendees.size() == 1
+assert gr8Conf.sessions.size() == 1
+assert gr8Conf.attendees[0].name == 'mrhaki'
+assert gr8Conf.sessions[0].title == "Groovy's Hidden Gems"
+</pre
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

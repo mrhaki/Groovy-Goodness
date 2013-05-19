@@ -1,0 +1,73 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Add AST Transformations Transparently to Scripts</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Add AST Transformations Transparently to Scripts</h3>
+
+<div class="post">
+<p>With Groovy 1.8 we can add compilation customizers when for example we want to run a Groovy script from our application code. Cedric Champeau has a nice <a href="http://www.jroller.com/melix/entry/customizing_groovy_compilation_process">blog post</a> about this feature. And we already learned about the <a href="http://mrhaki.blogspot.com/2011/06/groovy-goodness-add-imports.html">import customizer</a> in a previous Groovy Goodness blog post.
+</p>
+<p>Another customizer is the <code>ASTTransformationCustomizer</code>. We can use this customizer to add an AST transformation to a script. The AST transformation is then applied to all classes in the script. This means we can only apply transformations that can be used at class level. Another thing we need to notice is that we cannot set parameters for the AST transformation, so only the defaults for the parameters are used.
+</p>
+<p>We can use both local and global AST transformations with the <code>ASTTransformationCustomizer</code>. For a local transformation we use the annotation class, for a global transformation we pass the AST transformation class to the constructor.
+</p>
+<pre class="brush:groovy">
+package com.mrhaki.blog
+
+import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer
+import org.codehaus.groovy.control.CompilerConfiguration
+import groovy.transform.Canonical
+
+def conf = new CompilerConfiguration()
+conf.addCompilationCustomizers(new ASTTransformationCustomizer(Canonical))
+
+def shell = new GroovyShell(conf)
+shell.evaluate '''
+package com.mrhaki.blog
+
+class User {
+    String username, fullname
+}
+
+// TupleConstructor is added by Canonical transformation.
+def user = new User('mrhaki', 'Hubert A. Klein Ikkink')
+// ToString is added by Canonical transformation.
+assert user.toString() == 'com.mrhaki.blog.User(mrhaki, Hubert A. Klein Ikkink)'
+
+// AST transformation is also applied to the Script class.
+assert this.toString() == 'com.mrhaki.blog.Script1()'
+'''
+</pre
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+<html>
+<head>
+
+<title>Groovy Goodness: New Dollar Slashy Strings</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: New Dollar Slashy Strings</h3>
+
+<div class="post">
+<p>Groovy already has a lot of ways to define a String value, and with Groovy 1.8 we have another one: the dollar slashy String. This is closely related to the slashy String definition we already knew (which also can be multi-line by the way, added in Groovy 1.8), but with different escaping rules. We don't have to escape a slash if we use the dollar slashy String format, which we would have to do otherwise.</p>
+<pre class="brush:groovy">
+def source = 'Read more about "Groovy" at http://mrhaki.blogspot.com/'
+
+// 'Normal' slashy String, we need to escape / with \/
+def regexp = /.*"(.*)".*\/(.*)\//  
+
+def matcher = source =~ regexp
+assert matcher[0][1] == 'Groovy'
+assert matcher[0][2] == 'mrhaki.blogspot.com'
+
+// Dollar slash String.
+def regexpDollar = $/.*"(.*)".*/(.*)//$  
+
+def matcherDollar = source =~ regexpDollar
+assert matcher[0][1] == 'Groovy'
+assert matcher[0][2] == 'mrhaki.blogspot.com'
+
+def multiline = $/
+Also multilines 
+are supported.
+/$
+</pre
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

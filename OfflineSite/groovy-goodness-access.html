@@ -1,0 +1,76 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Access ResultSetMetaData with Groovy SQL</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Access ResultSetMetaData with Groovy SQL</h3>
+
+<div class="post">
+<p>Groovy's SQL support allows us to access <code>ResultSetMetaData</code> with a  closure when we use the query methods <code>rows()</code> and <code>eachRow()</code>. We can pass a closure as the last argument of these methods. The closure parameter is the <code>ResultSetMetaData</code> object. The closure is only invoked once after the query is executed.<br />
+</p><pre class="brush:groovy">@Grapes([
+    @Grab(group='com.h2database', module='h2', version='1.3.160'),
+    @GrabConfig(systemClassLoader = true)
+])
+import com.h2database.*
+import groovy.sql.*
+
+def db = Sql.newInstance('jdbc:h2:mem:', 'sa', '', 'org.h2.Driver')
+
+// Setup database.
+db.execute '''
+    create table if not exists languages(
+        id int primary key,
+        name varchar(20) not null
+    )
+'''
+
+db.execute "insert into languages values(1, 'Groovy')"
+db.execute "insert into languages values(2, 'Java')"
+
+// Sample of meta closure:
+String query = 'select id as identifier, name as langName from languages'
+def rows = db.rows(query, { meta ->
+    assert meta.tableName == 'languages'
+    assert meta.columnCount == 2
+
+    assert meta.getColumnLabel(1) == 'IDENTIFIER'
+    assert meta.getColumnName(1) == 'ID'
+    assert meta.getColumnTypeName(1) == 'INTEGER'
+
+    assert meta.getColumnLabel(2) == 'LANGNAME'
+    assert meta.getColumnName(2) == 'NAME'
+    assert meta.getColumnTypeName(2) == 'VARCHAR'
+})
+</pre
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

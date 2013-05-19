@@ -1,0 +1,60 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Apply Mixin to Object Instances</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Apply Mixin to Object Instances</h3>
+
+<div class="post">
+<p>In Groovy we can add extra functionality to a class with <a href="http://mrhaki.blogspot.com/2009/10/groovy-goodness-mixin-functionality-to.html">so-called mixins</a>. In the <a href="http://mrhaki.blogspot.com/2009/10/groovy-goodness-mixin-functionality-to.html">previous blog post</a> we added extra functionality to a class, but we can also apply run-time mixins to an object instance. The syntax is slightly different, because we must use the <code>mixin()</code> method on the <code>metaClass</code> property of the object.</p><pre class="brush:groovy">class Parrot {
+    static String speak(Message text) {
+        /"$text" Polly wants a cracker!/
+    }
+}
+
+// Runtime mixin on String object instead of class. 
+String s = 'Groovy is Gr8'
+s.metaClass.mixin Parrot
+
+assert s.speak() == '"Groovy is Gr8" Polly wants a cracker!'
+
+
+String other = 'Groovy and Grails'
+try {
+    other.speak()
+} catch (MissingMethodException e) {
+    assert e.message.startsWith('No signature of method: java.lang.String.speak() is applicable for argument types: () values: []')
+}
+</pre><p>Written with Groovy 2.1</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

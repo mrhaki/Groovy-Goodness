@@ -1,0 +1,47 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Default Groovy Script File Extensions</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Default Groovy Script File Extensions</h3>
+
+<div class="post">
+<p>When we run a Groovy script file from the command line with the <code>groovy</code> command we can use the complete filename to refer to the script file. But we can also leave out the filename extension. By default the following extensions are used to search for the Groovy script file:</p><ul><li><code>.groovy</code></li>
+<li><code>.gvy</code></li>
+<li><code>.gy</code></li>
+<li><code>.gsh</code></li>
+</ul><p>So suppose we have a Groovy script file named <code>sample.gsh</code> we can use the following commands to run the file:</p><pre class="brush:shell">$ groovy sample.gsh
+$ groovy sample
+</pre><p><em>(With this post we hit Groovy Goodness post 250. ;-) )</em></p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

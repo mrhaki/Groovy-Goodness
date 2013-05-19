@@ -1,0 +1,88 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Cache Closure Results with Memoization</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Cache Closure Results with Memoization</h3>
+
+<div class="post">
+<p>Closures are very powerful in Groovy. Groovy 1.8 introduces closure memoization. This means we can cache the result of a closure, so the next time we invoke the closure the result is returned immediately. This is very useful for time consuming computations in a closure.</p>
+<p>To use this feature we invoke the <code>memoize()</code> method on a closure. Now the results from calls to the closure are cached. We can use three other methods to define for example the maximum number of calls to cache, or the least number of calls with <code>memoizeAtMost()</code>, <code>memoizeAtLeast()</code> and <code>memoizeBetween()</code>.</p>
+<pre class="brush:groovy">
+// Closure simple increments parameter.
+// Also script variable incrementChange is 
+// changed so we can check if the result is
+// from a cached call or not.
+def incrementChange = false
+def increment = { 
+    incrementChange = true
+    it + 1 
+}
+// Just invoke the closure 5 times with different parameters.
+(0..5).each {
+    incrementChange  = false
+    assert increment(it) == it + 1
+    assert incrementChange
+}
+incrementChange = false
+assert increment(1) == 2  // Call is not cached.
+assert incrementChange  
+
+// Use memoize() so all calls are cached.
+incrementChange = false
+def incrementMemoize = increment.memoize()
+// Just invoke the closure 5 times with different parameters.
+(0..5).each {
+    incrementChange = false
+    assert incrementMemoize(it) == it + 1
+    assert incrementChange
+}
+incrementChange = false
+assert incrementMemoize(2) == 3  // Cached call.
+assert !incrementChange  
+
+// Use memoizeAtMost().
+incrementChange = false
+def memoizeAtMostOnce = increment.memoizeAtMost(1)
+// Just invoke the closure 5 times with different parameters.
+(0..5).each {
+    incrementChange = false
+    assert memoizeAtMostOnce(it) == it + 1
+    assert incrementChange
+}
+incrementChange = false
+assert memoizeAtMostOnce(1) == 2  // 2nd call is not cached.
+assert incrementChange  
+</pre
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

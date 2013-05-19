@@ -1,0 +1,51 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Collect on Nested Collections</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Collect on Nested Collections</h3>
+
+<div class="post">
+<p><a href="http://mrhaki.blogspot.com/2009/12/groovy-goodness-apply-closure-to-all.html">The <code>collect()</code> method</a> has been around in Groovy for a long time and it is very useful. With the <code>collect()</code> method we can iterate through a collection and transform each element with a Closure to another value. To <a href="http://mrhaki.blogspot.com/2009/12/groovy-goodness-recursively-collect.html">apply a transformation to collections in collections</a> we can use the <code>collectAll()</code> method. Since Groovy 1.8.1 the <code>collectAll()</code> method is deprecated in favor of the new <code>collectNested()</code> method. So with <code>collectNested()</code> we can transform elements in a collection and even in nested collections and the result will be a collection (with nested collections) with transformed elements.<br />
+We can pass an initial collection to the method to which the transformed elements are added.</p><pre class="brush:groovy">def list = [10, 20, [1, 2, [25, 50]], ['Groovy']]
+
+assert list.collectNested { it * 2 } == [20, 40, [2, 4, [50, 100]], ['GroovyGroovy']]
+assert list.collectNested(['1.8.1', [0]]) { it * 2 } == ['1.8.1', [0], 20, 40, [2, 4, [50, 100]], ['GroovyGroovy']]
+assert list.collectNested([]) { it * 2 } == [20, 40, [2, 4, [50, 100]], ['GroovyGroovy']]
+
+// Simple collect will duplicate the nested collection instead
+// of elements in the nested collection.
+assert list.collect { it * 2 } == [20, 40, [1, 2, [25, 50], 1, 2, [25, 50]], ['Groovy', 'Groovy']]
+</pre
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

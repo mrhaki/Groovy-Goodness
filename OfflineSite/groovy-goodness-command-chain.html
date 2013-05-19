@@ -1,0 +1,128 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Command Chain Expressions for Fluid DSLs</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Command Chain Expressions for Fluid DSLs</h3>
+
+<div class="post">
+<p>Groovy 1.8 introduces command chain expression to further the support for DSLs. We already could leave out parenthesis when invoking top-level methods. But now we can also leave out punctuation when we chain methods calls, so we don't have to type the dots anymore. This results in a DSL that looks and reads like a natural language.</p>
+<p>Let 's see a little sample where we can see how the DSL maps to real methods with arguments:</p>
+<pre class="brush:groovy">
+// DSL:
+take 3.apples from basket
+// maps to:
+take(3.apples).from(basket)
+
+// DSL (odd number of elements):
+calculate high risk
+// maps to:
+calculate(high).risk
+// or:
+calculate(high).getRisk()
+
+// DSL:
+// We must use () for last method call, because method doesn't have arguments.
+talk to: 'mrhaki' loudly()  
+// maps to:
+talk(to: 'mrhaki').loudly()
+</pre>
+<p>Implementing the methods to support these kind of DSLs can be done using maps and closures. The following sample is a DSL to record the time spent on a task at different clients:</p>
+<pre class="brush:groovy">
+worked 2.hours on design at GroovyRoom
+developed 3.hours at OfficeSpace
+developed 1.hour at GroovyRoom
+worked 4.hours on testing at GroovyRoom
+</pre>
+<p>We see how to implement the methods to support this DSL here:</p>
+<pre class="brush:groovy">
+// Constants for tasks and clients.
+enum Task { design, testing, developing }
+enum Client { GroovyRoom, OfficeSpace }
+
+// Supporting class to save work item info.
+class WorkItem {
+    Task task
+    Client client
+    Integer hours
+}
+
+// Support syntax 1.hour, 3.hours and so on.
+Integer.metaClass.getHour = { -&gt; delegate }
+Integer.metaClass.getHours = { -&gt; delegate }
+
+// Import enum values as constants.
+import static Task.*
+import static Client.*
+
+// List to save hours spent on tasks at
+// different clients.
+workList = []
+ 
+def worked(Integer hours) {
+    ['on': { Task task -&gt;
+        ['at': { Client client -&gt;
+            workList &lt;&lt; new WorkItem(task: task, client: client, hours: hours)
+        }]
+    }]
+}
+
+def developed(Integer hours) {
+    ['at': { Client client -&gt;
+        workList &lt;&lt; new WorkItem(task: developing, client: client, hours: hours)
+    }]
+}
+
+// -----------------------------------
+// DSL
+// -----------------------------------
+worked 2.hours on design at GroovyRoom
+developed 3.hours at OfficeSpace
+developed 1.hour at GroovyRoom
+worked 4.hours on testing at GroovyRoom
+
+
+// Test if workList is filled
+// with correct data.
+def total(condition) {
+    workList.findAll(condition).sum { it.hours }
+}
+
+assert total({ it.client == GroovyRoom }).hours == 7
+assert total({ it.client == OfficeSpace }).hours == 3
+assert total({ it.task == developing }).hours == 4
+assert total({ it.task == design }).hours == 2
+assert total({ it.task == testing }).hours == 4
+</pre
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

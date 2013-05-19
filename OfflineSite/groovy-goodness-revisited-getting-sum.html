@@ -1,0 +1,59 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Revisited Getting the Sum of Items in a Collection</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Revisited Getting the Sum of Items in a Collection</h3>
+
+<div class="post">
+<p>A while ago I wrote a blog post <a href="http://mrhaki.blogspot.dk/2009/12/groovy-goodness-getting-sum-of-items-in.html">Groovy Goodness: Getting the Sum of Items in a Collection</a>. Today I presented about this little topic as part of the "Groovy Hidden Gems" session at <a href="http://gr8conf.eu">Gr8Conf 2012</a>. One of the attendees noticed the code where we calculate the sum of the <code>Person</code> objects was not working. So it time to revisit this topic.</p><p>The problem with the presented solution is that with more than two elements in the list the code throws an exception. The return method of the <code>plus()</code> method is a <code>BigDecimal</code> so Groovy tries to invoke the <code>plus()</code> method on the <code>BigDecimal</code> class with a <code>Person</code> type argument. And that doesn't exist, hence the exception.</p><p>To fix this we must return a new <code>Product</code> object from the <code>plus()</code> method with the sum of the <code>price</code> property. The code is now:</p><pre class="brush:groovy">class Product {
+    String name
+    BigDecimal price
+
+    Product plus(Product other) {
+        new Product(price: this.price + other.price)
+    }
+}
+def products = [
+    new Product(name: 'laptop', price: 999), 
+    new Product(name: 'netbook', price: 395),
+    new Product(name: 'iPad', price: 200)
+]
+
+assert 1594 == products.sum().price
+</pre><p>EDIT: I like to thank the people that wrote a comment. The current solution focuses on the implementation of a <code>plus()</code> method in a class to get a sum value. But we can also use a closure for the <code>sum()</code>. In the closure we define the property to calculate the sum for. Or we can use the optional spread operator to get the price property of all products and invoke the <code>sum()</code> method.</p><pre class="brush:groovy">assert products.sum { it.price } == 1594
+assert products.price.sum() == 1594
+assert products*.price.sum() == 1594
+</pre
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

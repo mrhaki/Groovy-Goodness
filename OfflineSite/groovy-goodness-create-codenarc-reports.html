@@ -1,0 +1,758 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Create CodeNarc Reports with XSLT</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Create CodeNarc Reports with XSLT</h3>
+
+<div class="post">
+<p><a href="http://codenarc.sourceforge.net">CodeNarc</a> is a tool to analyze Groovy code for style issues, bad practices and defects. The default output after running CodeNarc is a HTML report. In this report we can see which packages and files have violated the rules. We can change the default HTML report output and set it to XML output. With the XML output we can create flexible reports using XSLT. Now we can replace the more basic HTML default output with our own defined HTML reports. For example we can include our own logo or only display rule information for the rules that are violated. In this post we see how we can create <a href="http://github.mrhaki.com/CodeNarc/samples/default.html">a custom HTML CodeNarc report</a>.</p>
+<div class="separator" style="clear: both; text-align: center;">
+<a href="http://2.bp.blogspot.com/_-vJw6r2W-bw/TSsURSE3THI/AAAAAAAAEYU/qdW__vgZDRA/s1600/sample-codenarc-report.png" imageanchor="1" style="margin-left:1em; margin-right:1em"><img border="0" height="320" width="162" src="http://2.bp.blogspot.com/_-vJw6r2W-bw/TSsURSE3THI/AAAAAAAAEYU/qdW__vgZDRA/s320/sample-codenarc-report.png" /></a></div>
+<a name='more'></a>
+<p>Suppose we have the following XML output from CodeNarc for a project:</p>
+<pre class="brush:xml">
+&lt;?xml version='1.0'?&gt;
+&lt;CodeNarc url='http://www.codenarc.org' version='0.11'&gt;
+    &lt;Report timestamp='Jan 10, 2011 2:05:22 PM'/&gt;
+    &lt;Project title='Sample Groovy Project by mrhaki'&gt;
+        &lt;SourceDirectory&gt;src/main/groovy&lt;/SourceDirectory&gt;
+    &lt;/Project&gt;
+    &lt;PackageSummary totalFiles='3' filesWithViolations='3' priority1='2' priority2='5' priority3='1'&gt;&lt;/PackageSummary&gt;
+    &lt;Package path='com' totalFiles='3' filesWithViolations='3' priority1='2' priority2='5' priority3='1'&gt;&lt;/Package&gt;
+    &lt;Package path='com/mrhaki' totalFiles='3' filesWithViolations='3' priority1='2' priority2='5'
+             priority3='1'&gt;&lt;/Package&gt;
+    &lt;Package path='com/mrhaki/app' totalFiles='3' filesWithViolations='3' priority1='2' priority2='5' priority3='1'&gt;
+        &lt;File name='App.groovy'&gt;
+            &lt;Violation ruleName='Println' priority='1' lineNumber='6'&gt;
+                &lt;SourceLine&gt;&lt;![CDATA[println 'Ready for running the App']]&gt;&lt;/SourceLine&gt;
+            &lt;/Violation&gt;
+            &lt;Violation ruleName='Println' priority='1' lineNumber='10'&gt;
+                &lt;SourceLine&gt;&lt;![CDATA[println "Found 'mrhaki': ${PersonService.findByNickname('mrhaki')}"]]&gt;&lt;/SourceLine&gt;
+            &lt;/Violation&gt;
+            &lt;Violation ruleName='VariableName' priority='2' lineNumber='8'&gt;
+                &lt;SourceLine&gt;&lt;![CDATA[def PersonService = new PersonService()]]&gt;&lt;/SourceLine&gt;
+            &lt;/Violation&gt;
+        &lt;/File&gt;
+        &lt;File name='Person.groovy'&gt;
+            &lt;Violation ruleName='PropertyName' priority='2' lineNumber='4'&gt;
+                &lt;SourceLine&gt;&lt;![CDATA[String NAME]]&gt;&lt;/SourceLine&gt;
+            &lt;/Violation&gt;
+        &lt;/File&gt;
+        &lt;File name='PersonService.groovy'&gt;
+            &lt;Violation ruleName='GStringAsMapKey' priority='2' lineNumber='8'&gt;
+                &lt;SourceLine&gt;
+                    &lt;![CDATA[new Person(NAME: 'Hubert Klein Ikkink', "${keyNickname}": 'mrhaki', country: 'The Netherlands')]]&gt;&lt;/SourceLine&gt;
+                &lt;Message&gt;&lt;![CDATA[GString as a key in a map is unsafe]]&gt;&lt;/Message&gt;
+            &lt;/Violation&gt;
+            &lt;Violation ruleName='GStringAsMapKey' priority='2' lineNumber='8'&gt;
+                &lt;SourceLine&gt;
+                    &lt;![CDATA[new Person(NAME: 'Hubert Klein Ikkink', "${keyNickname}": 'mrhaki', country: 'The Netherlands')]]&gt;&lt;/SourceLine&gt;
+                &lt;Message&gt;&lt;![CDATA[GString as a key in a map is unsafe]]&gt;&lt;/Message&gt;
+            &lt;/Violation&gt;
+            &lt;Violation ruleName='ParameterName' priority='2' lineNumber='12'&gt;
+                &lt;SourceLine&gt;&lt;![CDATA[return persons.find { P -&gt; nickname == P.nickname }]]&gt;&lt;/SourceLine&gt;
+            &lt;/Violation&gt;
+            &lt;Violation ruleName='UnnecessaryReturnKeyword' priority='3' lineNumber='12'&gt;
+                &lt;SourceLine&gt;&lt;![CDATA[return persons.find { P -&gt; nickname == P.nickname }]]&gt;&lt;/SourceLine&gt;
+            &lt;/Violation&gt;
+        &lt;/File&gt;
+    &lt;/Package&gt;
+    &lt;Rules&gt;
+        &lt;Rule name='AbcComplexity'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Checks the ABC metric of size/complexity for methods/classes.A method (or "closure field") with an ABC complexity value (score) greater than the maxMethodComplexity property (which defaults to 60) causes a violation. Likewise, a class that has an (average method) ABC complexityvalue greater than the maxClassAverageMethodComplexity property (which defaults to 60) causes a violation.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='AbstractClassName'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Verifies that the name of an abstract class matches a regular expression specified in the regex property. If that property is null or empty, then this rule is not applied (i.e., it does nothing). It defaults to null, so this rule must be explicitly configured to be active. This rule ignores interfaces.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='BigDecimalInstantiation'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Checks for calls to the BigDecimal constructors that take a double parameter, which may result in an unexpected BigDecimal value.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='BooleanInstantiation'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Use Boolean.valueOf() for variable values or Boolean.TRUE and Boolean.FALSE for constant values instead of calling the Boolean() constructor directly or calling Boolean.valueOf(true) or Boolean.valueOf(false).]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='BooleanMethodReturnsNull'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Method with Boolean return type returns explicit null. A method that returns either Boolean.TRUE, Boolean.FALSE or null is an accident waiting to happen. This method can be invoked as though it returned a value of type boolean, and the compiler will insert automatic unboxing of the Boolean value. If a null value is returned, this will result in a NullPointerException.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='CatchError'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Catching Error is dangerous; it can catch exceptions such as ThreadDeath and OutOfMemoryError.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='CatchException'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Catching Exception is often too broad or general. It should usually be restricted to framework or infrastructure code, rather than application code.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='CatchIllegalMonitorStateException'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Dubious catching of IllegalMonitorStateException. IllegalMonitorStateException is generally only thrown in case of a design flaw in your code (calling wait or notify on an object you do not hold a lock on).]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='CatchNullPointerException'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Catching NullPointerException is never appropriate. It should be avoided in the first place with proper null checking, and it can mask underlying errors.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='CatchRuntimeException'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Catching RuntimeException is often too broad or general. It should usually be restricted to framework or infrastructure code, rather than application code.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='CatchThrowable'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Catching Throwable is dangerous; it can catch exceptions such as ThreadDeath and OutOfMemoryError.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ClassName'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Verifies that the name of a class matches a regular expression. By default it checks that the class name starts with an uppercase letter and is followed by zero or more word characters (letters, numbers or underscores). The regex property specifies the regular expression used to validate the class name.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ClassSize'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Checks if the size of a class exceeds the number of lines specified by the maxLines property, which defaults to 1000.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='CloneableWithoutClone'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[A class that implements java.lang.Cloneable should define a clone() method.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ConfusingClassNamedException'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[This class is not derived from another exception, but ends with 'Exception'. This will be confusing to users of this class.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ConfusingMethodName'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Checks for confusing method names. The referenced methods have names that differ only by capitalization. This is very confusing because if the capitalization were identical then one of the methods would override the other.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ConstantIfExpression'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Checks for if statements with a constant value for the if expression, such as true, false, null, or a literal constant value.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ConstantTernaryExpression'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Checks for ternary expressions with a constant value for the boolean expression, such as true, false, null, or a literal constant value.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='CyclomaticComplexity'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Checks the cyclomatic complexity for methods/classes.A method (or "closure field") with a cyclomatic complexity value greater than the maxMethodComplexity property (which defaults to 20) causes a violation. Likewise, a class that has an (average method) cyclomatic complexityvalue greater than the maxClassAverageMethodComplexity property (which defaults to 20) causes a violation.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='DeadCode'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Dead code appears after a return statement or an exception is thrown. If code appears after one of these statements then it will never be executed and can be safely deleted. ]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='DoubleNegative'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[There is no point in using a double negative, it is always positive. For instance !!x can always be simplified to x. And !(!x) can as well.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='DuplicateCaseStatement'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Check for duplicate case statements in a switch block, such as two equal integers or strings.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='DuplicateImport'&gt;
+            &lt;Description&gt;&lt;![CDATA[Duplicate import statements are unnecessary.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='DuplicateNumberLiteral'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Code containing duplicate number literals can usually be improved by declaring the number as a constant field.  The ignoreNumbers property can optionally specify a comma-separated list of numbers to ignore.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='DuplicateStringLiteral'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Code containing duplicate String literals can usually be improved by declaring the String as a constant field. The ignoreStrings property can optionally specify a comma-separated list of Strings to ignore.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ElseBlockBraces'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Use braces for else blocks, even for a single statement. By default, braces are not required for an else if it is followed immediately by an if. Set the bracesRequiredForElseIf property to true to require braces is that situation as well.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='EmptyCatchBlock'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[In most cases, exceptions should not be caught and ignored (swallowed).]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='EmptyElseBlock'&gt;
+            &lt;Description&gt;&lt;![CDATA[Empty else blocks are confusing and serve no purpose.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='EmptyFinallyBlock'&gt;
+            &lt;Description&gt;&lt;![CDATA[Empty finally blocks are confusing and serve no purpose.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='EmptyForStatement'&gt;
+            &lt;Description&gt;&lt;![CDATA[Empty for statements are confusing and serve no purpose.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='EmptyIfStatement'&gt;
+            &lt;Description&gt;&lt;![CDATA[Empty if statements are confusing and serve no purpose.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='EmptySwitchStatement'&gt;
+            &lt;Description&gt;&lt;![CDATA[Empty switch statements are confusing and serve no purpose.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='EmptySynchronizedStatement'&gt;
+            &lt;Description&gt;&lt;![CDATA[Empty synchronized statements are confusing and serve no purpose.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='EmptyTryBlock'&gt;
+            &lt;Description&gt;&lt;![CDATA[Empty try blocks are confusing and serve no purpose.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='EmptyWhileStatement'&gt;
+            &lt;Description&gt;&lt;![CDATA[Empty while statements are confusing and serve no purpose.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='EqualsAndHashCode'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[If either the equals(Object) or the hashCode() methods are overridden within a class, then both must be overridden.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ExplicitArrayListInstantiation'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[This rule checks for the explicit instantiation of an ArrayList. In Groovy, it is best to write "new ArrayList()" as "[]", which creates the same object.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ExplicitCallToAndMethod'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[This rule detects when the and(Object) method is called directly in code instead of using the & operator. A groovier way to express this: a.and(b) is this: a & b]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ExplicitCallToCompareToMethod'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[This rule detects when the compareTo(Object) method is called directly in code instead of using the &lt;=&gt;, &gt;, &gt;=, &lt;, and &lt;= operators. A groovier way to express this: a.compareTo(b) is this: a &lt;=&gt; b, or using the other operators.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ExplicitCallToDivMethod'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[This rule detects when the div(Object) method is called directly in code instead of using the / operator. A groovier way to express this: a.div(b) is this: a / b]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ExplicitCallToEqualsMethod'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[This rule detects when the equals(Object) method is called directly in code instead of using the == or != operator. A groovier way to express this: a.equals(b) is this: a == b and a groovier way to express : !a.equals(b) is : a != b]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ExplicitCallToGetAtMethod'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[This rule detects when the getAt(Object) method is called directly in code instead of using the [] index operator. A groovier way to express this: a.getAt(b) is this: a[b]]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ExplicitCallToLeftShiftMethod'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[This rule detects when the leftShift(Object) method is called directly in code instead of using the &lt;&lt; operator. A groovier way to express this: a.leftShift(b) is this: a &lt;&lt; b]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ExplicitCallToMinusMethod'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[This rule detects when the minus(Object) method is called directly in code instead of using the - operator. A groovier way to express this: a.minus(b) is this: a - b]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ExplicitCallToModMethod'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[This rule detects when the mod(Object) method is called directly in code instead of using the % operator. A groovier way to express this: a.mod(b) is this: a % b]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ExplicitCallToMultiplyMethod'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[This rule detects when the minus(Object) method is called directly in code instead of using the * operator. A groovier way to express this: a.multiply(b) is this: a * b]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ExplicitCallToOrMethod'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[This rule detects when the or(Object) method is called directly in code instead of using the | operator. A groovier way to express this: a.or(b) is this: a | b]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ExplicitCallToPlusMethod'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[This rule detects when the plus(Object) method is called directly in code instead of using the + operator. A groovier way to express this: a.plus(b) is this: a + b]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ExplicitCallToPowerMethod'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[This rule detects when the power(Object) method is called directly in code instead of using the ** operator. A groovier way to express this: a.power(b) is this: a ** b]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ExplicitCallToRightShiftMethod'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[This rule detects when the rightShift(Object) method is called directly in code instead of using the &gt;&gt; operator. A groovier way to express this: a.rightShift(b) is this: a &gt;&gt; b]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ExplicitCallToXorMethod'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[This rule detects when the xor(Object) method is called directly in code instead of using the ^ operator. A groovier way to express this: a.xor(b) is this: a ^ b]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ExplicitHashMapInstantiation'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[This rule checks for the explicit instantiation of a HashMap. In Groovy, it is best to write "new HashMap()" as "[:]", which creates the same object.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ExplicitHashSetInstantiation'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[This rule checks for the explicit instantiation of a HashSet. In Groovy, it is best to write "new HashSet()" as "[] as Set", which creates the same object.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ExplicitLinkedListInstantiation'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[This rule checks for the explicit instantiation of a LinkedList. In Groovy, it is best to write "new LinkedList()" as "[] as Queue", which creates the same object.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ExplicitStackInstantiation'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[This rule checks for the explicit instantiation of a Stack. In Groovy, it is best to write "new Stack()" as "[] as Stack", which creates the same object.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ExplicitTreeSetInstantiation'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[This rule checks for the explicit instantiation of a TreeSet. In Groovy, it is best to write "new TreeSet()" as "[] as SortedSet", which creates the same object.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='FieldName'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Verifies that the name of each field matches a regular expression. By default it checks that non-'final' field names start with a lowercase letter and contains only letters or numbers, and 'final' field names start with an uppercase letter and contain only uppercase letters, numbers and underscores. The regex property specifies the default regular expression used to validate field names. The finalRegex property specifies the regular expression to validate 'final' field names. The staticRegex property specifies the regular expression to validate 'static' field names. The staticFinalRegex property specifies the regular expression to validate 'static final' field names.  The ignoreFieldNames property can specify field names that should be ignored, optionally containing wildcard characters ('*' or '?').]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ForStatementBraces'&gt;
+            &lt;Description&gt;&lt;![CDATA[Use braces for for statements, even for a single statement.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='GStringAsMapKey'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[A GString should not be used as a map key since its hashcode is not guaranteed to be stable. Consider calling key.toString().]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='IfStatementBraces'&gt;
+            &lt;Description&gt;&lt;![CDATA[Use braces for if statements, even for a single statement.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ImplementationAsType'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Checks for use of a predefined set of concrete classes (e.g. ArrayList, Hashtable, ConcurrentHashMap) when specifying the type of a method parameter, closure parameter, constructor parameter, method return type or field type. The associated interfaces should be used to specify the type instead.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ImportFromSamePackage'&gt;
+            &lt;Description&gt;&lt;![CDATA[An import of a class that is within the same package is unnecessary.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='InterfaceName'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Verifies that the name of an interface matches a regular expression specified in the regex property. If that property is null or empty, then this rule is not applied (i.e., it does nothing). It defaults to null, so this rule must be explicitly configured to be active.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='InvertedIfElse'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[An inverted if-else statement is one in which there is a single if statement with a single else branch and the boolean test of the if is negated. For instance "if (!x) false else true". It is usually clearer to write this as "if (x) true else false". ]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='MethodCount'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[A class with too many methods is probably a good suspect for refactoring, in order to reduce its complexity and find a way to have more fine grained objects. The &lt;em&gt;maxMethods&lt;/em&gt; property specifies the threshhold,which defaults to 30.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='MethodName'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Verifies that the name of each method matches a regular expression. By default it checks that the method name starts with a lowercase letter. The regex property specifies the regular expression to check the method name against.  The ignoreMethodNames property can specify method names that should be ignored, optionally containing wildcard characters ('*' or '?').]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='MethodSize'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Checks if the size of a method exceeds the number of lines specified by the maxLines property, which defaults to 100.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='NestedBlockDepth'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Checks for blocks or closures nested more than maxNestedBlockDepth levels deep, which defaults to 5.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='NestedSynchronization'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Nested synchronized statements should be avoided. Nested synchronized statements are either useless (if the lock objects are identical) or prone to deadlock.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ObjectOverrideMisspelledMethodName'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Verifies that the names of the most commonly overridden methods of Object: equals, hashCode and toString, are correct.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='PackageName'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Verifies that the package name for a class matches a regular expression. By default it checks that the package name consists of only lowercase letters, separated by periods. The regex property specifies the regular expression used to validate the package name. The packageNameRequired property indicates whether a package name declaration is required for all classes.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ParameterName'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Verifies that the name of each parameter matches a regular expression. This rule applies to method parameters, constructor parameters and closure parameters. By default it checks that parameter names start with a lowercase letter and contains only letters or numbers. The regex property specifies the default regular expression used to validate the parameter name.  The ignoreParameterNames property can specify parameter names that should be ignored, optionally containing wildcard characters ('*' or '?').]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='PrintStackTrace'&gt;
+            &lt;Description&gt;&lt;![CDATA[Checks for calls to printStackTrace().]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='Println'&gt;
+            &lt;Description&gt;&lt;![CDATA[Checks for calls to this.print(), this.println() or this.printf().]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='PropertyName'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Verifies that the name of each property matches a regular expression. By default it checks that property names other than 'static final' start with a lowercase letter and contains only letters or numbers, and 'static final' property names start with an uppercase letter and contain only uppercase letters, numbers and underscores. The regex property specifies the default regular expression used to validate property names. The finalRegex property specifies the regular expression to validate 'final' property names. The staticRegex property specifies the regular expression to validate 'static' property names. The staticFinalRegex property specifies the regular expression to validate 'static final' property names.  The ignorePropertyNames property can specify property names that should be ignored, optionally containing wildcard characters ('*' or '?').]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='RemoveAllOnSelf'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Don't use removeAll to clear a collection. If you want to remove all elements from a collection c, use c.clear, not c.removeAll(c). Calling c.removeAll(c) to clear a collection is less clear, susceptible to errors from typos, less efficient and for some collections, might throw a ConcurrentModificationException.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ReturnFromFinallyBlock'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Returning from a finally block is confusing and can hide the original exception.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ReturnNullFromCatchBlock'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Returning null from a catch block often masks errors and requires the client to handle error codes. In some coding styles this is discouraged. ]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ReturnsNullInsteadOfEmptyArray'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Consider returning a zero length array rather than null. It is often a better design to return a length zero array rather than a null reference to indicate that there are no results (i.e., an empty list of results). This way, no explicit check for null is needed by clients of the method.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ReturnsNullInsteadOfEmptyCollection'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Consider returning a zero length collection rather than null. It is often a better design to return a length zero collection rather than a null reference to indicate that there are no results (i.e., an empty list of results). This way, no explicit check for null is needed by clients of the method.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='SerialVersionUID'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[A serialVersionUID is normally intended to be used with Serialization. It needs to be of type long, static, and final. Also, it should have a visibility modifier such as public or private. Providing no modifier creates a Property and Groovy generates a getter, which is probably not intended.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='StringInstantiation'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Use a String literal (e.g., "...") instead of calling the corresponding String constructor (new String("..")) directly.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='SynchronizedMethod'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[This rule reports uses of the synchronized keyword on methods. Synchronized methods are the same as synchronizing on 'this', which effectively make your synchronization policy public and modifiable by other objects. To avoid possibilities of deadlock, it is better to synchronize on internal objects.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='SynchronizedOnGetClass'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Synchronization on getClass rather than class literal. This instance method synchronizes on this.getClass(). If this class is subclassed, subclasses will synchronize on the class object for the subclass, which isn't likely what was intended.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='SynchronizedOnThis'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[This rule reports uses of the synchronized blocks where the synchronization reference is 'this'. Doing this effectively makes your synchronization policy public and modifiable by other objects. To avoid possibilities of deadlock, it is better to synchronize on internal objects.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='SystemErrPrint'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Checks for calls to System.err.print(), System.err.println() or System.err.printf().]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='SystemOutPrint'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Checks for calls to System.out.print(), System.out.println() or System.out.printf().]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='SystemRunFinalizersOnExit'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Method calls to System.runFinalizersOnExit() should not be allowed. This method is inherently non-thread-safe, may result in data corruption, deadlock, and may effect parts of the program far removed from it's call point. It is deprecated, and it's use strongly discouraged.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ThreadLocalNotStaticFinal'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[ThreadLocal fields should be static and final. In the most common case a java.lang.ThreadLocal instance associates state with a thread. A non-static non-final java.lang.ThreadLocal field associates state with an instance-thread combination. This is seldom necessary and often a bug which can cause memory leaks and possibly incorrect behavior.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ThreadYield'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Method calls to Thread.yield() should not be allowed. This method has no useful guaranteed semantics, and is often used by inexperienced programmers to mask race conditions.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ThrowError'&gt;
+            &lt;Description&gt;&lt;![CDATA[Checks for throwing an instance of java.lang.Error.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ThrowException'&gt;
+            &lt;Description&gt;&lt;![CDATA[Checks for throwing an instance of java.lang.Exception.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ThrowExceptionFromFinallyBlock'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Throwing an exception from a finally block is confusing and can hide the original exception.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ThrowNullPointerException'&gt;
+            &lt;Description&gt;&lt;![CDATA[Checks for throwing an instance of java.lang.NullPointerException.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ThrowRuntimeException'&gt;
+            &lt;Description&gt;&lt;![CDATA[Checks for throwing an instance of java.lang.RuntimeException.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='ThrowThrowable'&gt;
+            &lt;Description&gt;&lt;![CDATA[Checks for throwing an instance of java.lang.Throwable.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='UnnecessaryBooleanExpression'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Checks for unnecessary boolean expressions, including ANDing (&&) or ORing (||) with true, false, null, or a Map/List/String/Number literal. Also checks for negation (!) of true, false, null, or a Map/List/String/Number literal.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='UnnecessaryCollectionCall'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Useless call to collections. This call doesn't make sense. For any collection c, calling c.containsAll(c) should always be true, and c.retainAll(c) should have no effect.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='UnnecessaryConstructor'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[This rule detects when a constructor is not necessary; i.e., when there's only one constructor, it's public, has an empty body, and takes no arguments.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='UnnecessaryGroovyImport'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[A Groovy file does not need to include an import for classes from java.lang, java.util, java.io, java.net, groovy.lang and groovy.util, as well as the classes java.math.BigDecimal and java.math.BigInteger.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='UnnecessaryIfStatement'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Checks for if statements where the if and else blocks are merely returning true and false constants. These cases can be replaced by a simple return statement.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='UnnecessaryOverridingMethod'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[The overriding method merely calls the same method defined in a superclass]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='UnnecessaryReturnKeyword'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[In Groovy, the return keyword is often optional. If a statement is the last line in a method or closure then you do not need to have the return keyword.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='UnnecessaryTernaryExpression'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Checks for ternary expressions where the conditional expression always evaluates to a boolean and the true and false expressions are merely returning true and false constants. Also checks for ternary expressions where both expressions are the same constant or variable.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='UnusedArray'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Checks for array allocations that are not assigned or used, unless it is the last statement within a block.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='UnusedImport'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Imports for a class that is never referenced within the source file is unnecessary.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='UnusedObject'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Checks for object allocations that are not assigned or used, unless it is the last statement within a block.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='UnusedPrivateField'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Checks for private fields that are not referenced within the same class.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='UnusedPrivateMethod'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Checks for private methods that are not referenced within the same class.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='UnusedVariable'&gt;
+            &lt;Description&gt;&lt;![CDATA[Checks for variables that are never referenced.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='UseOfNotifyMethod'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[This code calls notify() rather than notifyAll(). Java monitors are often used for multiple conditions. Calling notify() only wakes up one thread, meaning that the thread woken up might not be the one waiting for the condition that the caller just satisfied.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='VariableName'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Verifies that the name of each method matches a regular expression. By default it checks that non-'final' variable names start with a lowercase letter and contains only letters or numbers, and 'final' variable names start with an uppercase letter and contain only uppercase letters, numbers and underscores. The regex property specifies the default regular expression used to validate a non-'final' variable name. The finalRegex property specifies the regular expression used to validate 'final' variable names. The ignoreVariableNames property can specify variable names that should be ignored, optionally containing wildcard characters ('*' or '?').]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='VolatileLongOrDoubleField'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Long or double fields should not be declared as volatile. Java specifies that reads and writes from such fields are atomic, but many JVM's have violated this specification. Unless you are certain of your JVM, it is better to synchronize access to such fields rather than declare them volatile. This rule flags fields marked volatile when their type is double or long or the name of their type is "Double" or "Long".]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+        &lt;Rule name='WhileStatementBraces'&gt;
+            &lt;Description&gt;&lt;![CDATA[Use braces for while statements, even for a single statement.]]&gt;&lt;/Description&gt;
+        &lt;/Rule&gt;
+    &lt;/Rules&gt;
+&lt;/CodeNarc&gt;
+</pre>
+<p>With the following XSLT file (inspired by Checkstyle reports and the Github website) we can transform the XML to <a href="http://github.mrhaki.com/CodeNarc/samples/default.html">a custom HTML CodeNarc report</a>:</p>
+<pre class="brush:xslt">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"&gt;
+    &lt;xsl:output method="html" indent="yes"/&gt;
+    &lt;xsl:decimal-format decimal-separator="." grouping-separator=","/&gt;
+
+    &lt;xsl:key name="violations" match="Violation" use="@ruleName"/&gt;
+
+    &lt;xsl:template match="CodeNarc"&gt;
+        &lt;html&gt;
+            &lt;head&gt;
+                &lt;title&gt;&lt;xsl:value-of select="Project/@title"/&gt;&lt;/title&gt;
+                &lt;link rel="stylesheet" href="default.css" type="text/css"/&gt;
+            &lt;/head&gt;
+            &lt;body&gt;
+                &lt;a name="top"&gt;&lt;/a&gt;
+
+                &lt;div class="header"&gt;
+                    &lt;h1&gt;
+                        &lt;img src="haki-logo.png" width="48" height="48"/&gt;
+                        &lt;xsl:value-of select="Project/@title"/&gt;
+                     &lt;/h1&gt;
+                &lt;/div&gt;
+
+                &lt;div class="rule"&gt;&lt;/div&gt;
+
+                &lt;div class="summary"&gt;
+                    &lt;div class="first"&gt;
+                        &lt;dl&gt;
+                            &lt;dt&gt;Generated&lt;/dt&gt;
+                            &lt;dd&gt;&lt;xsl:value-of select="Report/@timestamp"/&gt;&lt;/dd&gt;
+                        &lt;/dl&gt;
+                        &lt;dl&gt;
+                            &lt;dt&gt;Tool&lt;/dt&gt;
+                            &lt;dd&gt;&lt;a href="{@url}"&gt;CodeNarc&lt;/a&gt;&lt;/dd&gt;
+                        &lt;/dl&gt;
+                        &lt;dl&gt;
+                            &lt;dt&gt;Version&lt;/dt&gt;
+                            &lt;dd&gt;&lt;xsl:value-of select="@version"/&gt;&lt;/dd&gt;
+                        &lt;/dl&gt;
+
+                        &lt;dl&gt;
+                            &lt;dt&gt;Sources&lt;/dt&gt;
+                            &lt;dl&gt;
+                            &lt;xsl:for-each select="Project/SourceDirectory"&gt;
+                                &lt;xsl:value-of select="."/&gt;
+                                &lt;br /&gt;
+                            &lt;/xsl:for-each&gt;
+                            &lt;/dl&gt;
+                        &lt;/dl&gt;
+                    &lt;/div&gt;
+                    &lt;div class="last"&gt;
+                        &lt;xsl:apply-templates select="PackageSummary"/&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+
+                &lt;div class="rule"&gt;&lt;/div&gt;
+
+                &lt;xsl:apply-templates select="." mode="summary"/&gt;
+
+                &lt;div class="rule"&gt;&lt;/div&gt;
+
+                &lt;xsl:apply-templates select="." mode="full"/&gt;
+
+                &lt;div class="rule"&gt;&lt;/div&gt;
+
+                &lt;xsl:apply-templates select="Rules"/&gt;
+
+                &lt;div class="rule"&gt;&lt;/div&gt;
+
+                &lt;p&gt;XSLT created by &lt;a href="http://www.mrhaki.com"&gt;Hubert A. Klein Ikkink (mrhaki)&lt;/a&gt;&lt;/p&gt;
+
+            &lt;/body&gt;
+        &lt;/html&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template match="PackageSummary"&gt;
+        &lt;ul&gt;
+            &lt;li&gt;
+                &lt;strong&gt;
+                    &lt;xsl:value-of select="@totalFiles"/&gt;
+                &lt;/strong&gt;
+                &lt;span&gt;total files&lt;/span&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+                &lt;strong&gt;
+                    &lt;xsl:value-of select="@filesWithViolations"/&gt;
+                &lt;/strong&gt;
+                &lt;span&gt;file violations&lt;/span&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+                &lt;strong&gt;
+                    &lt;xsl:value-of select="@priority1"/&gt;
+                &lt;/strong&gt;
+                &lt;span&gt;priority 1&lt;/span&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+                &lt;strong&gt;
+                    &lt;xsl:value-of select="@priority2"/&gt;
+                &lt;/strong&gt;
+                &lt;span&gt;priority 2&lt;/span&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+                &lt;strong&gt;
+                    &lt;xsl:value-of select="@priority3"/&gt;
+                &lt;/strong&gt;
+                &lt;span&gt;priority 3&lt;/span&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template match="Rules"&gt;
+        &lt;h2&gt;Rules&lt;/h2&gt;
+
+        &lt;table border="0" width="100%" cellpadding="0" cellspacing="0"&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Name&lt;/th&gt;
+            &lt;th&gt;Description&lt;/th&gt;
+            &lt;th&gt;Violations&lt;/th&gt;
+        &lt;/tr&gt;
+
+        &lt;xsl:apply-templates select="Rule"/&gt;
+
+        &lt;/table&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template match="Rule"&gt;
+        &lt;xsl:variable name="ruleName" select="@name"/&gt;
+        &lt;xsl:variable name="violationCount" select="count(key('violations', $ruleName))"/&gt;
+        &lt;xsl:if test="$violationCount &gt; 0"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;a name="r-{$ruleName}"&gt; &lt;/a&gt;
+                &lt;xsl:value-of select="$ruleName"/&gt;
+            &lt;/td&gt;
+            &lt;td&gt;
+                &lt;xsl:value-of select="Description"/&gt;
+            &lt;/td&gt;
+            &lt;td&gt;
+                &lt;xsl:value-of select="$violationCount"/&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;/xsl:if&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template match="CodeNarc" mode="summary"&gt;
+        &lt;h2&gt;Files&lt;/h2&gt;
+
+        &lt;table border="0" width="100%" cellpadding="0" cellspacing="0"&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Name&lt;/th&gt;
+            &lt;th&gt;Violations&lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;xsl:for-each select="Package/File"&gt;
+            &lt;xsl:sort select="@name"/&gt;
+            &lt;xsl:apply-templates select="." mode="summary"/&gt;
+        &lt;/xsl:for-each&gt;
+        &lt;/table&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template match="CodeNarc" mode="full"&gt;
+        &lt;xsl:for-each select="Package/File"&gt;
+            &lt;xsl:sort select="@name"/&gt;
+            &lt;xsl:apply-templates select="." mode="full"/&gt;
+            &lt;p/&gt;
+            &lt;p/&gt;
+        &lt;/xsl:for-each&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template match="File" mode="summary"&gt;
+        &lt;xsl:variable name="violationCount" select="count(Violation)"/&gt;
+        &lt;tr&gt;
+            &lt;td&gt;&lt;a href="#f-{@name}"&gt;&lt;xsl:value-of select="../@path"/&gt;/&lt;xsl:value-of select="@name"/&gt;&lt;/a&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;xsl:value-of select="$violationCount"/&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template match="File" mode="full"&gt;
+        &lt;a name="f-{@name}"&gt;&lt;/a&gt;
+        &lt;h3&gt;
+            File
+            &lt;xsl:value-of select="@name"/&gt;
+        &lt;/h3&gt;
+
+        &lt;table border="0" width="100%" cellpadding="0" cellspacing="0"&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Priority&lt;/th&gt;
+                &lt;th&gt;Rule&lt;/th&gt;
+                &lt;th&gt;Violation Description&lt;/th&gt;
+                &lt;th&gt;Line&lt;/th&gt;
+                &lt;th&gt;Source&lt;/th&gt;
+            &lt;/tr&gt;
+            &lt;xsl:for-each select="Violation"&gt;
+                &lt;xsl:sort select="@priority"/&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;
+                        &lt;xsl:value-of select="@priority"/&gt;
+                    &lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;a href="#r-{@ruleName}"&gt;
+                            &lt;xsl:value-of select="@ruleName"/&gt;
+                        &lt;/a&gt;
+                    &lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;xsl:value-of select="Message"/&gt;
+                    &lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;xsl:value-of select="@lineNumber"/&gt;
+                    &lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;code&gt;
+                            &lt;xsl:value-of select="SourceLine"/&gt;
+                        &lt;/code&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/xsl:for-each&gt;
+        &lt;/table&gt;
+        &lt;a href="#top"&gt;Back to top&lt;/a&gt;
+    &lt;/xsl:template&gt;
+
+&lt;/xsl:stylesheet&gt;
+</pre>
+<p>Here is an image of the resulting HTML report:</p>
+<div class="separator" style="clear: both; text-align: center;">
+<a href="http://2.bp.blogspot.com/_-vJw6r2W-bw/TSsURSE3THI/AAAAAAAAEYU/qdW__vgZDRA/s1600/sample-codenarc-report.png" imageanchor="1" style="margin-left:1em; margin-right:1em"><img border="0" height="320" width="162" src="http://2.bp.blogspot.com/_-vJw6r2W-bw/TSsURSE3THI/AAAAAAAAEYU/qdW__vgZDRA/s320/sample-codenarc-report.png" /></a></div>
+<p>The XSLT source file and supporting CSS and images are at <a href="https://github.com/mrhaki/CodeNarc/tree/master/styles/styles">Github</a>.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

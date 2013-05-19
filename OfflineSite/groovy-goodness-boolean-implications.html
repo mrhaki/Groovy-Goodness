@@ -1,0 +1,53 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Boolean Implications</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Boolean Implications</h3>
+
+<div class="post">
+<div><p>Since Groovy 1.8.3 we can use the <code>implies()</code> method on <code>Boolean</code> types. The <code>implies()</code> method implements a logical implication. This means that if we have two <code>Boolean</code> variables A and B, that if <em>A is <code>true</code>, then B is <code>true</code></em>. So if A is <code>true</code> then it is implied B is <code>true</code> as well. If A is <code>false</code> then B can be either <code>true</code> or <code>false</code>. We could rewrite the implication as <code>!A or B</code>.</p><pre class="brush:groovy">def a = true
+def b = true
+
+assert a.implies(b)
+assert !(a.implies(false))
+
+assert a.implies(b) == ((!a).or(b))
+
+assert true.implies(true)
+assert false.implies(true)
+assert false.implies(false)
+assert !true.implies(false)
+</pre><p><em>(Code written with Groovy 2.0.4)</em></p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

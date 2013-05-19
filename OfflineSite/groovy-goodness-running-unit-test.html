@@ -25,22 +25,17 @@
 <h3 class="post-title">Groovy Goodness: Running a Unit Test</h3>
 
 <div class="post">
-<p>If we create a unit test class extending <code>GroovyTestCase</code> we can run the test with the <code>groovy</code> command. This is a very easy way to execute a test.</p>
-<pre class="brush:groovy">
-class SimpleTest extends GroovyTestCase {
-    void testGroovy {
+<p>If we create a unit test class extending <code>GroovyTestCase</code> we can run the test with the <code>groovy</code> command. This is a very easy way to execute a test.</p><pre class="brush:groovy">class SimpleTest extends GroovyTestCase {
+    void testGroovy() {
         assertEquals 'Run with groovy', 10, 5 + 5
     }
 }
-</pre>
-<p>We can run this test with the following command:</p>
-<pre class="brush:shell;light:true">
-$ groovy SimpleTest.groovy
+</pre><p>We can run this test with the following command:</p><pre class="brush:shell;light:true">$ groovy SimpleTest.groovy
 .
 Time: 0.125
 
 OK (1 test)
-</pre>
+</pre
 </div>
 
 <script language="javascript"> 

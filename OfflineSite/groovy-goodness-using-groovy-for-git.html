@@ -1,0 +1,84 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Using Groovy for Git Hooks</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Using Groovy for Git Hooks</h3>
+
+<div class="post">
+<p>Git supports hooks, which are scripts that are fired when certain events happens. The scripts are simply shell scripts and we can use Groovy to run those scripts. We must make Groovy the script language with the hash-bang (<code>#!</code>) header in the Git hook script file. And then we are ready to go and use Groovy as the script language for the Git hooks.</p><p>Git hooks are placed in the <code>.git/hooks</code> directory of our project. We create an example script that will use <code>growlnotify</code> to create a notification message with information from the Git commit action. <code>growlnotify</code> is a command-line tool for Mac OSX to send out messages to Growl. Other operating systems also have tools to create notification message from the command-line.</p><p>We must create the file <code>post-commit</code> in the directory <code>.git/hooks</code>. The file must have execute rights: <code>$ chmod +x post-commit</code>. In the first line of the file we make sure Groovy is used. In the rest of the script we use Groovy to invoke <code>git log</code> and get information about the commit. Then we create a message and invoke <code>growlnotify</code> with the correct arguments so Growl can show the message.</p><pre class="brush:groovy">#!/usr/bin/env groovy
+
+// Arguments for git log command.
+def logArgs = ['max-count': '1', 'pretty': 'format:%an commited %s {%h}']
+
+// Invoke git log command.
+def gitLog = logArgs.inject(['git', 'log']) { cmd, k, v -&gt; 
+    cmd &lt;&lt; "--$k=$v" 
+}.execute()
+
+// Get git log message to be used as notification message.
+def message = gitLog.text
+
+// Set icon and title for message.
+def iconPath = '/Users/mrhaki/Pictures/git-icon-black.png'
+def title = 'Git commit'
+
+// Notify user of commit with growlnotify.
+def notifyArgs = [message: message, title: title, image: iconPath]
+notifyArgs.inject(['growlnotify']) { cmd, k, v -&gt;
+    cmd &lt;&lt; "--$k" &lt;&lt; v
+}.execute()
+</pre><p>In the following screenshot we see the output shown with Growl:</p><div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/-m2M82vWTYPs/UHLkIop2nII/AAAAAAAAFlk/kiDQv9y8T6Q/s1600/growlnotify-git.png" imageanchor="1" style="margin-left:1em; margin-right:1em"><img border="0" height="74" width="264" src="http://1.bp.blogspot.com/-m2M82vWTYPs/UHLkIop2nII/AAAAAAAAFlk/kiDQv9y8T6Q/s320/growlnotify-git.png" /></a></div><p>Some script hook files take an argument. We can use the argument in our Groovy code and write code to handle it. In the following example we check if the commit message is empty. If the message is empty we return with an exit code that is not <code>0</code>. Git will terminate the commit until the script return <code>0</code>. We write a simple implementation of the <code>commit-msg</code> hook:<br />
+<pre class="brush:groovy">#!/usr/bin/env groovy
+
+import static java.lang.System.*
+
+// First argument is the name of the 
+// temporary commit message file.
+def msgFileName = args[0]
+
+// Get the commit message file.
+def msgFile = new File(msgFileName)
+
+// Read commit message from file.
+def commitMessage = msgFile.text
+
+if (!commitMessage) {
+    err.println 'Commit message is empty'
+    exit 1
+}
+
+exit 0
+</pre><p><em>(Written with Groovy 2.0.4 and Git 1.7.5.4)</em></p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

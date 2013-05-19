@@ -1,0 +1,56 @@
+<html>
+<head>
+
+<title>Groovy Goodness:  Recursion with Closure Trampoline Capability</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness:  Recursion with Closure Trampoline Capability</h3>
+
+<div class="post">
+<p>When we write recursive code we might get a stack overflow exception, because calls are placed on the stack to be resolved. Since Groovy 1.8 we can use the trampoline capability of closures to overcome this problem.</p>
+<p>We invoke a <code>trampoline()</code> method on a closure and our original closure is now wrapped in <code>TrampolineClosure</code> instance. Calls to the <code>TrampolineClosure</code> are executed sequentially invoking the original closure, until the original closure returns something else then a <code>TrampolineClosure</code> instance. This way the stack isn't filled and we won't get the stack overflow exceptions.</p>
+<pre class="brush:groovy">
+def sizeList
+sizeList = { list, counter = 0 ->
+    if (list.size() == 0) {
+        counter
+    } else {
+        sizeList.trampoline(list.tail(), counter + 1)
+    }
+}
+sizeList = sizeList.trampoline()
+
+assert sizeList(1..10000) == 10000
+</pre>
+<p>Try with <a href="http://groovyconsole.appspot.com/script/472001">Groovy web console</a>.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

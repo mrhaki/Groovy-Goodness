@@ -27,12 +27,12 @@
 <div class="post">
 <p>Groovy has added the <code>minus()</code> method to the String class. And because the <code>minus()</code> method is used by the <code>-</code> operator we can remove parts of a String with this operator. The argument can be a String or a regular expression Pattern. The first occurrence of the String or Pattern is then removed from the original String.</p>
 <pre class="brush:groovy">
-?def s = 'Groovy and Strings are fun and versatile.'
+​def s = 'Groovy and Strings are fun and versatile.'
 
 assert 'Groovy and Strings are fun' == s - ' and versatile.'
 assert 'Groovy and Strings are fun.' == s.minus(" and versatile")
 assert 'Groovy  Strings are fun and versatile.' == s - ~/\b\w{3}\b/
-</pre>
+</pre
 </div>
 
 <script language="javascript"> 

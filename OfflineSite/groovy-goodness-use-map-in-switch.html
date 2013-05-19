@@ -1,0 +1,67 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Use Map in Switch Statement</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Use Map in Switch Statement</h3>
+
+<div class="post">
+<p>Since Groovy 1.7.6 we can use a <code>Map</code> as a case in a switch statement. Groovy adds the <code>isCase()</code> method where the switch operand is used to find map elements. Groovy tries to find a key with the given switch operand in the <code>Map</code> and if it is found true is returned.</p>
+<pre class="brush:groovy">
+def testSwitch(val) {
+    def result
+    switch (val) {
+        // New in Groovy 1.7.6: Map support.
+        case [groovy: 'Rocks!', version: '1.7.6']:
+            result = "Map contains key '$val'"
+            break
+        case 60..90:
+            result = "Range contains $val"
+            break
+        case [21, 'test', 9.12]:
+            result = "List contains '$val'"
+            break
+        default:
+            result = 'Default'
+            break
+    }    
+    result
+}
+
+assert testSwitch('groovy') == "Map contains key 'groovy'"
+assert testSwitch(70) == 'Range contains 70'
+assert testSwitch('test') == "List contains 'test'"
+assert testSwitch('default') == 'Default'
+</pre
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

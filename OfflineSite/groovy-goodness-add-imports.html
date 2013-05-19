@@ -1,0 +1,91 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Add Imports Transparently to Scripts with ImportCustomizer</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Add Imports Transparently to Scripts with ImportCustomizer</h3>
+
+<div class="post">
+<p>Since Groovy 1.8.0 we can easily setup import statements for a Groovy compilation unit (for example a Groovy script file) <em>without</em> adding the imports to the script source. For example we have created domain classes in our own package. The script authors shouldn't know about the packages and just pretend the classes are accessible from the 'default' package.</p>
+<p>We define an <code>ImportCustomizer</code> and use the <code>addImport</code> methods to add packages, classes, aliases to our script. The configured <code>ImportCustomizer</code> is added to a <code>CompilerConfiguration</code> object. We will see in future blog posts how we can even add more customizers to the <code>CompilerConfiguration</code>. We use the configuration when we create a <code>GroovyShell</code> and the information is applied to scripts we run with the created shell.
+</p>
+<p>First we create a class and enum in the <code>com.mrhaki.blog</code> package. We compile the code so we have class files we can add to a classpath of another application.</p>
+<pre class="brush:groovy">
+// File: Post.groovy
+// Compile with groovyc Post.groovy
+package com.mrhaki.blog
+
+class Post {
+    String title
+    Type type = Type.BLOG
+}
+
+enum Type {
+    BLOG, NEWS
+}
+</pre>
+<p>Next we create a Groovy script that will execute the following code:
+</p>
+<pre class="brush:groovy">
+// File: sample.groovy
+// Article is imported as alias for com.mrhaki.blog.Post
+def article = new Article(title: 'Groovy Goodness')
+
+assert article.title == 'Groovy Goodness'
+// BLOG is statically imported from com.mrhaki.blog.Type.*
+assert article.type == BLOG
+assert article.class.name == 'com.mrhaki.blog.Post'
+</pre>
+<p>Now we are ready to create a small application that will execute <em>sample.groovy</em>. We must add the <code>com.mrhaki.blog.Post</code> and <code>com.mrhaki.blog.Type</code> compiled classes to the classpath if we run the following script:</p>
+<pre class="brush:groovy">
+// File: RunScript.groovy
+// Run with groovy -cp . RunScript
+import org.codehaus.groovy.control.customizers.ImportCustomizer
+import org.codehaus.groovy.control.CompilerConfiguration
+
+// Add imports for script.
+def importCustomizer = new ImportCustomizer()
+// import static com.mrhaki.blog.Type.*
+importCustomizer.addStaticStars 'com.mrhaki.blog.Type'
+// import com.mrhaki.blog.Post as Article
+importCustomizer.addImport 'Article', 'com.mrhaki.blog.Post'
+
+def configuration = new CompilerConfiguration()
+configuration.addCompilationCustomizers(importCustomizer)
+
+// Create shell and execute script.
+def shell = new GroovyShell(configuration)
+shell.evaluate new File('sample.groovy')
+</pre
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

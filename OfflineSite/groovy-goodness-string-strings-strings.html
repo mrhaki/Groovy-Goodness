@@ -25,7 +25,7 @@
 <h3 class="post-title">Groovy Goodness: 'String', "Strings", /Strings/ and GStrings</h3>
 
 <div class="post">
-<p>Compared to Java we have a lot of ways to represent <a href="http://groovy.codehaus.org/JN1525-Strings">strings</a>. We can use single quotes, double quotes and slashes. So the following statements all are string literals:</p>
+<p>Compared to Java we have a lot of ways to represent <a href="http://groovy.codehaus.org/JN1525-Strings">strings</a>. We can use single quotes, double quotes, slashes and dollar slashes. So the following statements all are string literals:</p>
 <pre class="brush:groovy">
 
 // Single quotes:
@@ -41,8 +41,14 @@ With three double quotes we can have a multi-line string,
 and we don't need to add extra + signs. Very easy for 
 copy-paste."""
 
-// Slashy:
-def s3 = /Well almost everyting goes in a "slashy" 'string' without escaping. Good for readable regular expressions!/
+// Slashy (also multi-line possible):
+def s3 = /Well almost everything goes in a "slashy" 'string' without escaping. Good for readable regular expressions!/
+
+// Dollar slashy:
+def s4 = $/
+Like a 'slashy' string, but with different escaping rules
+for slashes ("/")
+/$
 </pre>
 <p>If we use a double quoted string and it contains an Groovy expression with the <code>${expression}</code> syntax we have a <a href="http://groovy.codehaus.org/api/groovy/lang/GString.html">GString</a>. This is a different kind of class. So a GString is not the same as a String. GStrings are very handy if we want some templating done without using a complete template engine:</p>
 <pre class="brush:groovy">
@@ -78,7 +84,7 @@ user.name = 'changed username'
 user.email = 'changed email'
 println directEval // Output: Current name value is mrhaki and email is mail@email.com.
 println lazyEval // Output: Current name value is changed username and email is changed email.
-</pre>
+</pre
 </div>
 
 <script language="javascript"> 

@@ -1,0 +1,91 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Streaming JSON with StreamingJsonBuilder</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Streaming JSON with StreamingJsonBuilder</h3>
+
+<div class="post">
+<p>Since Groovy 1.8 we can use <a href="http://mrhaki.blogspot.com/2011/04/groovy-goodness-build-json-with.html">JSONBuilder</a> to create JSON data structures. With Groovy 1.8.1 we have a variant of <code>JsonBuilder</code> that will not create a data structure in memory, but will stream directly to a writer the JSON structure: <code>StreamingJsonBuilder</code>. This is useful in situations where we don't have to change the structure and need a memory efficient way to write JSON.</p><pre class="brush:groovy">import groovy.json.*
+
+def jsonWriter = new StringWriter()
+def jsonBuilder = new StreamingJsonBuilder(jsonWriter)
+jsonBuilder.message {
+    header {
+        from(author: 'mrhaki')  
+        to 'Groovy Users', 'Java Users'
+    }
+    body "Check out Groovy's gr8 JSON support."
+}
+def json = jsonWriter.toString()
+assert json == '{"message":{"header":{"from":{"author":"mrhaki"},"to":["Groovy Users","Java Users"]},"body":"Check out Groovy\'s gr8 JSON support."}}'
+
+def prettyJson = JsonOutput.prettyPrint(json)
+assert prettyJson == '''{
+    "message": {
+        "header": {
+            "from": {
+                "author": "mrhaki"
+            },
+            "to": [
+                "Groovy Users",
+                "Java Users"
+            ]
+        },
+        "body": "Check out Groovy's gr8 JSON support."
+    }
+}'''
+
+
+new StringWriter().withWriter { sw ->
+    def builder = new StreamingJsonBuilder(sw)
+
+    // Without root element.
+    builder name: 'Groovy', supports: 'JSON'
+
+    assert sw.toString() == '{"name":"Groovy","supports":"JSON"}'
+}
+
+new StringWriter().with { sw ->
+    def builder = new StreamingJsonBuilder(sw)
+
+    // Combine named parameters and closures.
+    builder.user(name: 'mrhaki') {
+        active true
+    }
+    
+    assert sw.toString() == '{"user":{"name":"mrhaki","active":true}}'    
+}
+</pre
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

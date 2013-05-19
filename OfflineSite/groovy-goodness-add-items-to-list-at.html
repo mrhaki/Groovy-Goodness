@@ -1,0 +1,52 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Add Items to a List at Specified Position</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Add Items to a List at Specified Position</h3>
+
+<div class="post">
+<p>Since Groovy 1.8 we can create a new list from two lists, where the second list is 'inserted' at a specified index position in the first list. The original lists are not changed: the result is a new list. Groovy also adds the <code>addAll()</code> method to List objects (since Groovy 1.7.2), but then the original list object is changed.</p>
+<pre class="brush:groovy">
+def list = ['Gr', 'vy']
+
+assert list.plus(1, 'oo') == ['Gr', 'oo', 'vy']
+assert list == ['Gr', 'vy']
+
+list.addAll(1, 'oo') 
+assert list == ['Gr', 'oo', 'vy']
+
+assert (1..10).plus(5, 6..7) == [1,2,3,4,5,6,7,6,7,8,9,10]
+</pre
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

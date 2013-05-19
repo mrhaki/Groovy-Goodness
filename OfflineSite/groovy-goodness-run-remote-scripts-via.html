@@ -1,0 +1,63 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Run Remote Scripts via URL</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Run Remote Scripts via URL</h3>
+
+<div class="post">
+<p>Since Groovy 1.8.3 we can run remote Groovy scripts. We can use an URL to refer to the Groovy script that we want to execute. This can be very useful to build a library of Groovy scripts and publish them on a web server or a code repository like Github. Then we can run those scripts by referring the scripts by URL.</p><pre class="brush:groovy">// File:
+// http://www.mrhaki.com/samples/remotesample.groovy
+
+printMessage 'Remote Groovy script @ http://www.mrhaki.com/samples/remotesample.groovy'
+
+['Groovy', 'rocks'].each {
+    print "${it.toUpperCase()} "
+}
+println '!'
+
+def printMessage(message) {
+    def LINE_LENGTH = message.size() + 4
+    println '*' * LINE_LENGTH
+    println "* $message *"
+    println '*' * LINE_LENGTH
+}
+</pre><p>On a command line we run <code>$ groovy http://www.mrhaki.com/samples/remotesample.groovy</code> and we get the following output:</p><pre class="brush:plain">$ groovy http://www.mrhaki.com/samples/remotesample.groovy
+****************************************************************************
+* Remote Groovy script @ http://www.mrhaki.com/samples/remotesample.groovy *
+****************************************************************************
+GROOVY ROCKS !
+$
+</pre
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

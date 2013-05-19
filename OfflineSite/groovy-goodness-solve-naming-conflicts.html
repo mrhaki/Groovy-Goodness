@@ -1,0 +1,125 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Solve Naming Conflicts with Builders</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Solve Naming Conflicts with Builders</h3>
+
+<div class="post">
+<p>With Groovy we can use for example the MarkupBuilder or JSONBuilder to create XML or JSON content. The builders are a very elegant way to create the content. Most builders in Groovy use the <code>invokeMethod</code> and <code>getProperty</code> and <code>setProperty</code> methods to dynamically build the contents. But this also means that if we have builder node names that are the same as method or property names in the local context of our code running the builder, that we have a naming conflict. Let's see this with a simple sample:</p><pre class="brush:groovy">import groovy.xml.*
+
+def body = []
+
+def writer = new StringWriter()
+def builder = new MarkupBuilder(writer)
+builder.message {
+    body(contentType: 'plain') {
+        text 'Simple message'
+    }
+}
+
+def contents = writer.toString()
+println contents
+</pre><p>When we run this code we get an error message:</p><pre class="brush:plain;light:true">groovy.lang.MissingMethodException: No signature of method: java.util.ArrayList.call() is applicable for argument types: (java.util.LinkedHashMap, xmlmessage$_run_closure1_closure2) values: [[contentType:plain], xmlmessage$_run_closure1_closure2@50502819]
+Possible solutions: tail(), wait(), last(), any(), max(), clear()
+ at xmlmessage$_run_closure1.doCall(xmlmessage.groovy:7)
+ at xmlmessage$_run_closure1.doCall(xmlmessage.groovy)
+ at xmlmessage.run(xmlmessage.groovy:6)
+</pre><p>Groovy tries to use the <code>ArrayList</code> class of our books variable to execute a <code>call</code> method with two parameters of type <code>LinkedHashMap</code> and closure. So our local variable is found by the builder and the builder tries to use this variable, which results in the shown error.</p><p>The following sample shows what happens if we have a local method with the same name as a node in the builder:</p><pre class="brush:groovy">import groovy.xml.*
+
+def body(value) {
+    println "body contents is $value"
+}
+
+def writer = new StringWriter()
+def builder = new MarkupBuilder(writer)
+builder.message {
+    body {
+        text 'Simple message'
+    }
+}
+
+def contents = writer.toString()
+println contents
+</pre><p>We get the following output if we run this script:</p><pre class="brush:plain;light:true">body contents is 
+&lt;message&gt;
+  &lt;text&gt;Simple message&lt;/text&gt;
+&lt;/message&gt;
+</pre><p>Our method with the name body has the same signature and name as the body node in the builder. Our local method is invoked and we see the output of the <code>println</code> statement.</p><p>To solve this naming conflict we can change the name of our local variable or method. But this is not always possible or desired. Imagine the method or variable is dynamically added to our class than we cannot change the name. But we can also change our builder syntax slightly to get what we want.</p><p>To force our builder to use the builder's code to create the contents we can prepend the node name with <code>delegate</code>. Delegate is the closure context of our builder. This way our builder will not use any already defined variable or method names to create the content.</p><pre class="brush:groovy">import groovy.xml.*
+
+def body = []
+
+def writer = new StringWriter()
+def builder = new MarkupBuilder(writer)
+builder.message {
+    delegate.body(contentType: 'plain') {
+        text 'Simple message'
+    }
+}
+
+def contents = writer.toString()
+println contents
+</pre><p>When we run the script we get the following output:</p><pre class="brush:plain;light:true">&lt;message&gt;
+  &lt;body contentType='plain'&gt;
+    &lt;text&gt;Simple message&lt;/text&gt;
+  &lt;/body&gt;
+&lt;/message&gt;
+</pre><p>And that is the output we want.</p><p>If we are using Grails and use the <code>render</code> method to create XML or JSON we must be aware that methods are also dynamically available in a controller. For example the <code>message</code> method from the Grails tag libraries is a method in a controller:</p><pre class="brush:groovy">package builder.naming
+
+class SampleController {
+
+    def index() {
+        render(contenType: 'text/xml') {
+            message {
+                content 'Contents'
+            }
+        }
+    }
+}
+</pre><p>If we invoke this controller we get the following XML output:</p><pre class="brush:plain;light:true">&lt;content&gt;Contents&lt;/content&gt;
+</pre><p>But if we change the code to:</p><pre class="brush:groovy">package builder.naming
+
+class SampleController {
+
+    def index() {
+        render(contenType: 'text/xml') {
+            delegate.message {
+                content 'Contents'
+            }
+        }
+    }
+}
+</pre><p>We get the following output:</p><pre class="brush:plain;light:true">&lt;message&gt;&lt;content&gt;Contents&lt;/content&gt;&lt;/message&gt;
+</pre
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

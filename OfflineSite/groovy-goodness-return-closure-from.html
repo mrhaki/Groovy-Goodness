@@ -1,0 +1,68 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Return Closure From Another Closure or Method</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Return Closure From Another Closure or Method</h3>
+
+<div class="post">
+<p>Groovy closures are powerful. A closure can be passed to methods as argument or defined as a variable. We can even return closures from methods or other closures. We can use the returned closure to execute the logic from the closure with the explicit <code>call()</code> method or the implicit syntax with just the closure object followed by opening and closing parentheses (<code>()</code>).</p><pre class="brush:groovy">// Method returns a closure. Method could
+// also have been another closure to return
+// the closure.
+def repeater(times) {
+    { value -> value * times }
+}
+
+// Use explicit call() method on the return closure
+// object from the repeater() method.
+assert repeater(2).call('mrhaki') == 'mrhakimrhaki'
+
+// Use implicit call() method on the return closure
+// object from the repeater() method. This
+// might looks strange at first...
+assert repeater(2)('mrhaki') == 'mrhakimrhaki'
+</pre><p>We can even use a closure parameter and use it in the return closure code. We rewrite the previous example and this time use a closure instead of method to define <code>repeater</code>:<br />
+<pre class="brush:groovy">// Extra transformer argument with default 
+// closure implementation.
+def repeater = { times, transformer = { it } ->
+    { value -> transformer(value) * times }
+}
+
+assert repeater(2).call('mrhaki') == 'mrhakimrhaki'
+assert repeater(2)('mrhaki') == 'mrhakimrhaki'
+
+assert repeater(2) { it.toUpperCase() } ('mrhaki') == 'MRHAKIMRHAKI'
+assert repeater(2, { it.reverse() })('mrhaki') == 'ikahrmikahrm'
+</pre><p>Notice we define a <code>transformer</code> parameter that has a default closure that simply returns the argument of the closure, so the old assertions still work. At lines 9 and 10 we pass a closure as argument to the <code>repeater</code> closure using two different syntaxes.</p><p><em>(Code written with Groovy 2.0.4)</em></p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

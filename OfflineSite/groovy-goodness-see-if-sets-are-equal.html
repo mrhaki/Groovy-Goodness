@@ -1,0 +1,51 @@
+<html>
+<head>
+
+<title>Groovy Goodness: See if Sets are Equal</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: See if Sets are Equal</h3>
+
+<div class="post">
+<p>Since Groovy 1.8 we can use the <code>equals()</code> method to compare the contents of two <code>Set</code> collections. The two sets are equals if they have the same size and all elements are in both sets.</p>
+<pre class="brush:groovy">
+def set1 = ['Java', 42, true] as Set
+def set2 = ['Groovy', 42, true, 'Java'] as Set
+def set3 = [42L, true, 'Java'] as Set
+
+assert set1.equals(set3)
+assert set1 == set3
+assert !set1.equals(set2)
+assert set2 != set3
+</pre
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

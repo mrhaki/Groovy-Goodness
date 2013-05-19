@@ -1,0 +1,125 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Easy toString Creation for Our Classes</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Easy toString Creation for Our Classes</h3>
+
+<div class="post">
+<p>Since Groovy 1.8 we can use the <code>@ToString</code> annotation for easy creation of a <code>toString()</code> method. We only have to add the annotation to our class definition and we get a nicely formatted output of the properties of our class.</p>
+<p>We can even customize what we want to see in the output. We can see the names of the properties of our class in the <code>toString()</code> output if we add the attribute <code>includeNames=true</code>. By default only properties are added to the output, but we can include fields as well with the annotation attribute <code>includeFields=true</code>.
+To exclude properties we use the attribute <code>excludes</code> and assign the names of the properties we don't want in the output separated by a comma.</p>
+<p>Finally we can include properties from a super class with the annotation atribute <code>includeSuper=true</code>.</p>
+<p>Let's see the <code>@ToString</code> in action with a few samples:</p>
+<pre class="brush:groovy">
+// Most simple implementation of toString.
+import groovy.transform.ToString
+
+@ToString
+class Person {
+    String name
+    List likes
+    private boolean active = false
+}
+
+def person = new Person(name: 'mrhaki', likes: ['Groovy', 'Java'])
+
+assert person.toString() == 'Person(mrhaki, [Groovy, Java])'
+</pre>
+<pre class="brush:groovy">
+// includeNames to output the names of the properties.
+import groovy.transform.ToString
+
+@ToString(includeNames=true)
+class Person {
+    String name
+    List likes
+    private boolean active = false
+}
+
+def person = new Person(name: 'mrhaki', likes: ['Groovy', 'Java'])
+
+assert person.toString() == 'Person(name:mrhaki, likes:[Groovy, Java])'
+</pre>
+<pre class="brush:groovy">
+// includeFields to not only output properties, but also field values.
+import groovy.transform.ToString
+
+@ToString(includeNames=true, includeFields=true)
+class Person {
+    String name
+    List likes
+    private boolean active = false
+}
+
+def person = new Person(name: 'mrhaki', likes: ['Groovy', 'Java'])
+
+assert person.toString() == 'Person(name:mrhaki, likes:[Groovy, Java], active:false)'
+</pre>
+<pre class="brush:groovy">
+// Use includeSuper to include properties from super class in output.
+import groovy.transform.ToString
+
+@ToString(includeNames=true)
+class Person {
+    String name
+    List likes
+    private boolean active = false
+}
+
+@ToString(includeSuper=true, includeNames=true)
+class Student extends Person {
+    List courses
+}
+
+def student = new Student(name: 'mrhaki', likes: ['Groovy', 'Java'], courses: ['IT', 'Business'])
+
+assert student.toString() == 'Student(courses:[IT, Business], super:Person(name:mrhaki, likes:[Groovy, Java]))'
+</pre>
+<pre class="brush:groovy">
+// excludes active field and likes property from output
+import groovy.transform.ToString
+
+@ToString(includeNames=true, includeFields=true, excludes='active,likes')
+class Person {
+    String name
+    List likes
+    private boolean active = false
+}
+
+def person = new Person(name: 'mrhaki', likes: ['Groovy', 'Java'])
+
+assert person.toString() == 'Person(name:mrhaki)'
+</pre
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

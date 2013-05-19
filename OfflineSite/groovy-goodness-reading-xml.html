@@ -58,9 +58,10 @@ assert 11 == books.breadthFirst().size()
 assert 'Groovy in Action' == books.book[0].title.text()
 assert 'Groovy Programming' == books.book.find { it.'@id' == '2' }.title.text()
 assert 'Groovy Programming' == books.book.find { it.attribute('id') == '2' }.title.text()
-assert [1, 2, 3] ==  books.book.findAll { it.title.text() =~ /Groovy/ }.'@id'
+assert [1, 2, 3] ==  books.book.findAll { it.title.text() =~ /Groovy/ }.'@id'*.toInteger()
 assert ['1-932394-84-2', '0123725070'] == books.book[ns.isbn].inject([]) { result, v -&gt; result &lt;&lt; v.text() }
 </pre>
+<p>We can try the code in <a href="http://groovyconsole.appspot.com/script/489002">Groovy Web Console</a>.</p>
 <p>Next we use <code>XmlSlurper</code> to parse the same XML.</p>
 <pre class="brush:groovy">
 import groovy.xml.*
@@ -89,11 +90,12 @@ def books = new XmlSlurper().parseText(xml).declareNamespace([meta:'http://meta/
 assert books instanceof groovy.util.slurpersupport.GPathResult
 assert 4 == books.book.size()
 assert 11 == books.breadthFirst().size()
-assert 'Groovy in Action' == books.book[0].title
-assert 'Groovy Programming' == books.book.find { it.@id == '2' }.title
-assert [1, 2, 3] == books.book.findAll { it.title =~ /Groovy/ }.'@id'.list()
-assert ['1-932394-84-2', '0123725070'] == books.book.'meta:isbn'.list()
+assert 'Groovy in Action' == books.book[0].title.text()
+assert 'Groovy Programming' == books.book.find { it.@id == '2' }.title as String
+assert [1, 2, 3] == books.book.findAll { it.title =~ /Groovy/ }.'@id'*.toInteger()
+assert ['1-932394-84-2', '0123725070'] == books.book.'meta:isbn'*.toString()
 </pre>
+<p>We can try the code in <a href="http://groovyconsole.appspot.com/script/485003">Groovy Web Console</a>.</p
 </div>
 
 <script language="javascript"> 

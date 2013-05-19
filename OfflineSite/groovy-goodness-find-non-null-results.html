@@ -1,0 +1,52 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Find Non-Null Results After Transformation in a Collection</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Find Non-Null Results After Transformation in a Collection</h3>
+
+<div class="post">
+<p>Since Groovy 1.8.1 we can use the <code>findResults</code> method and pass a closure to transform elements in a collection and get all non-null elements after transformation. We also have the <a href="http://mrhaki.blogspot.com/2010/12/groovy-goodness-find-first-non-null.html"><code>findResult</code></a> method to return the first non-null transformed element, but with <code>findResults</code> we get all non-null elements.</p><pre class="brush:groovy">def stuff = ['Groovy', 'Griffon', 'Gradle', 'Spock', 'Grails', 'GContracts']
+def stuffResult = stuff.findResults { it.size() == 6 ? "$it has 6 characters" : null }
+
+assert stuffResult == ['Groovy has 6 characters', 
+                       'Gradle has 6 characters',
+                       'Grails has 6 characters']
+                        
+def map = [what: 'Finish blog post', priority: 1, when: new Date()]
+def mapResult = map.findResults { it.value instanceof String ? "Key $it.key is of type String" : null }
+
+assert mapResult == ['Key what is of type String']
+</pre
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Determine Min and Max Entries in a Map</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Determine Min and Max Entries in a Map</h3>
+
+<div class="post">
+<p>Since Groovy 1.7.6 we can use the <code>min()</code> and <code>max()</code> methods on a <code>Map</code>. We use a closure to define the condition for a minimum or maximum value. If we use two parameters in the closure we must do a classic comparison. We return a negative value if the first parameters is less than the second, zero if they are both equal, or a positive value if the first parameter is greater than the second parameter. If we use a single parameter we can return a value that is used as <code>Comparable</code> for determining the maximum or minimum entry in the <code>Map</code>.</p>
+<pre class="brush:groovy">
+def money = [cents: 5, dime: 2, quarter: 3]
+
+// Determine max entry.
+assert money.max { it.value }.value == 5
+assert money.max { it.key }.key == 'quarter'  // Use String comparison for key.
+assert money.max { a, b ->
+    a.key.size() <=> b.key.size() 
+}.key == 'quarter'  // Use Comparator and compare key size.
+
+// Determine min entry.
+assert money.min { it.value }.value == 2
+assert money.min { it.key }.key == 'cents'  // Use String comparison for key.
+assert money.min { a, b ->
+    a.key.size() <=> b.key.size() 
+}.key == 'dime'  // Use Comparator and compare key size.
+</pre
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Group and Count Elements in Collection or Map</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Group and Count Elements in Collection or Map</h3>
+
+<div class="post">
+<p>Since Groovy 1.8 we can group items in a collection, map or array and count the number of elements in a group. We use a closure to define the keys for the grouping. Then the number of elements in the group are counted and that is the value of the grouping key.</p>
+<pre class="brush:groovy">
+def list = ['Groovy', 'Grails', 'Java']
+assert list.countBy { it[0] } == ['G': 2, 'J': 1]  // 2 items start with G, 1 with J.
+
+def numbers = [1,2,3,4,5] as Integer[]
+assert numbers.countBy { it % 2 } == [0: 2, 1: 3]  // 2 even, 3 uneven numbers
+
+def map = [user: 'mrhaki', city: 'Tilburg', age: 37]
+assert map.countBy { key, value -> value.class } == [(String.class): 2, (Integer.class): 1]  // 2 values of type String and 1 of type Integer
+</pre
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

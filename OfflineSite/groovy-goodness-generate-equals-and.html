@@ -1,0 +1,67 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Generate equals and hashcode Methods with EqualsAndHashCode Annotation</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Generate equals and hashcode Methods with EqualsAndHashCode Annotation</h3>
+
+<div class="post">
+<p>There are a lot of new bytecode generation annotation in Groovy 1.8. One of them is the <code>@EqualsAndHashCode</code> annotation. With this annotation an <code>equals()</code> and <code>hashCode()</code> method is generated for a class. The <code>hashCode()</code> method is implemented using Groovy's <code>org.codehaus.groovy.util.HashCodeHelper</code> (following an algorithm from the book <em>Effective Java</em>). The <code>equals()</code> method looks at all the single properties of a class to see of both objects are the same.</p>
+<p>We can even include class fields instead of only properties for generating both methods. We only have to use <code>includeFields=true</code> when we assign the annotation.</p>
+<p>To include calls to a super class we use the annotation attribute <code>callSuper</code> and assign the value <code>true</code>. Finally we can also exclude properties or fields from hashcode calculation or equal comparisons. We use the annotation attribute <code>excludes</code> for this and we can assign a list of property and field names.</p>
+<pre class="brush:groovy">
+import groovy.transform.EqualsAndHashCode
+
+@EqualsAndHashCode(includeFields=true)
+class User {
+    String name
+    boolean active
+    List likes
+    private int age = 37
+}
+
+def user = new User(name: 'mrhaki', active: false, likes: ['Groovy', 'Java'])
+def mrhaki = new User(name: 'mrhaki', likes: ['Groovy', 'Java'])
+def hubert = new User(name: 'Hubert Klein Ikkink', likes: ['Groovy', 'Java'])
+
+assert user == mrhaki
+assert mrhaki != hubert
+
+Set users = new HashSet()
+users.add user
+users.add mrhaki
+users.add hubert
+assert users.size() == 2
+</pre
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

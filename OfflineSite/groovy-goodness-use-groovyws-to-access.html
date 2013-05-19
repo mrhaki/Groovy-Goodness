@@ -1,0 +1,243 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Use GroovyWS to Access SOAP Web Services</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Use GroovyWS to Access SOAP Web Services</h3>
+
+<div class="post">
+<p>With the <a href="http://groovy.codehaus.org/GroovyWS">GroovyWS</a> module we can consume SOAP web services. Under the hood GroovyWS uses CXF to dynamically create all required classes from a WSDL file. These classes are available via the classloader in our code. So we don't need to convert a WSDL file first to source files, but the classes are generated dynamically and can be used directly in our code. This means that if we can access the WSDL for a web service we can invoke the web service without any explicit code generation.</p>
+<p>In this blog post we first write a SOAP web service with <a href="http://www.grails.org">Grails</a> and the XFire plugin. Next we create a <a href="http://www.gradle.org">Gradle</a> project with the client code to invoke and use the SOAP web service we just created. We use <a href="http://code.google.com/p/spock/">Spock</a> to write a specification where we really invoke the web service client and check the results. That is a lot of Groovyness in our project!</p>
+
+<b>Grails SOAP webservice</b>
+
+<p>We start by creating a new Grails project and install the XFire plugin. Then we create a new Grails service, <code>BlogService</code>, and use the plugin to expose the service as SOAP webservice. We create one method in our service: <code>Author findAuthor(SearchRequest search)</code>. The parameter <code>search</code> is of type <code>SearchRequest</code> and contains the property <code>authorName</code>, which is used to find an Author object. We define this type to show how we can dynamically create an instance with GroovyWS in the client code.</p>
+<p>We also create two domain classes: <code>Author</code> and <code>BlogItem</code>. An <code>Author</code> has a one-to-many relation with <code>BlogItem</code>. Finally we write code in the <code>BootStrap</code> to create a single author with two blog items.</p>
+<pre class="brush:plain;light:true">
+$ grails create-app server
+$ cd server
+$ grails install-plugin xfire
+$ grails create-service com.mrhaki.groovyws.server.Blog
+$ grails create-domain-class com.mrhaki.groovyws.server.Author
+$ grails create-domain-class com.mrhaki.groovyws.server.BlogItem
+</pre>
+<pre class="brush:groovy">
+// File: grails-app/services/com/mrhaki/groovyws/server/BlogService.groovy
+package com.mrhaki.groovyws.server
+
+class BlogService {
+
+    // Make this service a SOAP web service.
+    static expose = ['xfire']
+
+    static transactional = true
+
+    Author findAuthor(SearchRequest search) {
+        Author.findByName(search.authorName)
+    }
+
+}
+</pre>
+<pre class="brush:groovy">
+// File: grails-app/domain/com/mrhaki/groovyws/server/Author.groovy
+package com.mrhaki.groovyws.server
+
+class Author {
+
+    String name
+
+    static hasMany = [blogItems: BlogItem]
+
+    static mapping = {
+        blogItems lazy: false, sort: 'title'
+    }
+
+}
+</pre>
+<pre class="brush:groovy">
+// File: grails-app/domain/com/mrhaki/groovyws/server/BlogItem.groovy
+package com.mrhaki.groovyws.server
+
+class BlogItem {
+
+    String text
+    String title
+
+    static belongsTo = [author: Author]
+
+    // We must use xmlTransients so belongsTo doesn't
+    // cause a StackOverflowError by the XFire plugin.
+    static xmlTransients = ['author']
+
+}
+</pre>
+<pre class="brush:groovy">
+// File: src/groovy/com/mrhaki/groovyws/server/SearchRequest.groovy
+package com.mrhaki.groovyws.server
+
+class SearchRequest {
+    String authorName
+}
+</pre>
+<pre class="brush:groovy">
+// File: grails-app/conf/BootStrap.groovy
+import com.mrhaki.groovyws.server.*
+
+class BootStrap {
+
+    def init = { servletContext ->
+        def blogItem1 = new BlogItem(title: 'Title1', text: 'Sample blogitem one.')
+        def blogItem2 = new BlogItem(title: 'Title2', text: 'Sample blogitem two.')
+        def author = new Author(name: 'mrhaki')
+        author.addToBlogItems(blogItem1)
+        author.addToBlogItems(blogItem2)
+        author.save()
+    }
+
+    def destroy = {
+    }
+}
+</pre>
+<p>We are ready to start our Grails application and we open the url <code>http://localhost:8080/server/services/blog?wsdl</code> to see the generated WSDL file. If we see the WSDL contents we know everything works.</p>
+
+<b>GroovyWS client</b>
+
+<p>Okay we are halfway. Now it is time to write the client code to access our Grails webservice. We create a Gradle project build file with the required dependencies. Next we create the file <code>BlogWSClient.groovy</code>. In this file we use GroovyWS to create the client code. And finally we create a Spock specification to invoke <code>BlogWSClient</code>: <code>BlogWSClientSpec.groovy</code>.</p>
+<pre class="brush:groovy">
+// File: build.gradle
+apply plugin:'groovy'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    groovy 'org.codehaus.groovy:groovy-all:1.7.5'
+    compile 'org.codehaus.groovy.modules:groovyws:0.5.2'  // GroovyWS dependency.
+    testCompile 'org.spockframework:spock-core:0.4-groovy-1.7'
+}
+</pre>
+<pre class="brush:groovy">
+// File: src/main/groovy/com/mrhaki/groovyws/client/BlogWSClient.groovy
+package com.mrhaki.groovyws.client
+
+import groovyx.net.ws.WSClient
+import javax.xml.bind.JAXBElement
+import javax.xml.namespace.QName
+
+class BlogWSClient {
+
+    String wsdlUrl
+
+    def proxy
+
+    def findAuthor(String name) {
+        createProxy()
+        def searchRequest = createSearchRequest(name)
+        invokeWebservice searchRequest
+    }
+
+    private def invokeWebservice(SearchRequest searchRequest) {
+        // Invoke webservice method.
+        proxy.findAuthor searchRequest
+    }
+
+    private def createSearchRequest(String name) {
+        // SearchRequest class is dynamically created by GroovyWS,
+        // so we must use the proxy.create() method to create a new
+        // instance.
+        def searchRequest = proxy.create('com.mrhaki.groovyws.server.SearchRequest')
+
+        // The authorName property of SearchRequest can be null, so
+        // we must use JAXBElement to set the value.
+        searchRequest.authorName = new JAXBElement(new QName("http://server.groovyws.mrhaki.com", "authorName"), String, name)
+
+        searchRequest
+    }
+
+    private void createProxy() {
+        if (!proxy) {
+            // Use GroovyWS to create a client proxy.
+            proxy = new WSClient(wsdlUrl, this.class.classLoader)
+
+            // Make sure all required classes are created and available.
+            proxy.initialize()
+        }
+    }
+
+}
+</pre>
+<pre class="brush:groovy">
+// File: src/test/groovy/com/mrhaki/groovyws/client/BlogWSClientSpec.groovy
+package com.mrhaki.groovyws.client
+
+import spock.lang.Specification
+
+class BlogWSClientSpec extends Specification {
+
+    def "get author with name mrhaki"() {
+        given:
+        def client = new BlogWSClient(wsdlUrl: 'http://localhost:8080/server/services/blog?wsdl')
+
+        when:
+        def author = client.findAuthor('mrhaki')
+
+        then:
+        // JAXBElement is returned, so we must use 
+        // the value property of this element 
+        // to get the real type and value.
+        'mrhaki' == author.name.value  
+        def arrayOfBlogItems = author.blogItems.value
+        def blogItems = arrayOfBlogItems.blogItem
+        2 == blogItems.size()
+        'Title1' == blogItems[0].title.value
+        'Title2' == blogItems[1].title.value
+        'Sample blogitem one.' == blogItems[0].text.value
+        'Sample blogitem two.' == blogItems[1].text.value
+   }
+}
+</pre>
+<p>We have all the files and are ready to run the test:</p>
+<pre class="brush:plain;light:true">
+$ gradle -q test
+</pre>
+<p>After the test has succesfully run we can open the test report HTML file. It is a good idea to take a look at the System.err output. The output shows which classes are generated by GroovyWS dynamically:</p>
+<pre class="brush:plain;light:true">
+...
+Nov 11, 2010 9:09:33 PM org.apache.cxf.jaxb.JAXBUtils logGeneratedClassNames
+INFO: Created classes: com.mrhaki.groovyws.server.ArrayOfBlogItem, com.mrhaki.groovyws.server.Author, com.mrhaki.groovyws.server.BlogItem, com.mrhaki.groovyws.server.FindAuthor, com.mrhaki.groovyws.server.FindAuthorResponse, com.mrhaki.groovyws.server.ObjectFactory, com.mrhaki.groovyws.server.SearchRequest, com.mrhaki.groovyws.server.This$Dist$Get$2, com.mrhaki.groovyws.server.This$Dist$Get$2Response, com.mrhaki.groovyws.server.This$Dist$Invoke$2, com.mrhaki.groovyws.server.This$Dist$Invoke$2Response, com.mrhaki.groovyws.server.This$Dist$Set$2, com.mrhaki.groovyws.server.This$Dist$Set$2Response
+</pre>
+<p>This code shows how easy it is to invoke a SOAP web service with GroovyWS. Even if the web service has complex objects as a reponse or as input parameter.
+In a <a href="http://mrhaki.blogspot.com/2010/11/groovy-goodness-use-groovyws-to-access_14.html">future post</a> we first see how we can configure the Grails SOAP web service so we don't need to use JAXBElement objects. This makes the client code even more readable and easier to create. And we will take a look at how we can <a href="http://mrhaki.blogspot.com/2010/11/groovy-goodness-use-groovyws-to-access_15.html">change the logging</a> for the generated client code.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

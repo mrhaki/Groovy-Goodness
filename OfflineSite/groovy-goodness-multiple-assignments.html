@@ -39,6 +39,11 @@ String streetname
 assert 42 == housenr
 assert 'Old Street' == streetname
 
+// We can also use type declerations.
+def (String streetName, int houseNumber) = ['Old Street', 42]
+assert 42 == houseNumber
+assert 'Old Street' == streetName
+
 // Return value of method can be assigned to multiple variables.
 def iAmHere() {
     [29.20090, 12.90391]
@@ -66,7 +71,7 @@ def (exp, amount, currency) = (money =~ regexp)[0]
 assert '12' == amount
 assert 'Euro' == currency
 
-</pre>
+</pre
 </div>
 
 <script language="javascript"> 
