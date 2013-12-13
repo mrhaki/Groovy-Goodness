@@ -1,0 +1,102 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Implicit Closure Coercion</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Implicit Closure Coercion</h3>
+
+<div class="post">
+<p>Groovy is awesome and closures are cool. In Java 8 we will see lambdas which are similar like closures. A Java lambda will be automatically converted to an interface type if the interface contains only one single abstract method (SAM). In Groovy we can convert a closure into an interface type <a href="http://mrhaki.blogspot.com/2009/09/groovy-goodness-as-keyword.html">by using the <code>as</code> keyword</a>. But since Groovy 2.2 we don't have to use the <code>as</code> keyword, but let Groovy, like Java lambdas, convert a closure implicitly to an interface type. This works for interfaces with a single method, but Groovy wouldn't be Groovy if it didn't work for abstract classes with one abstract method. So, yes, it also works for abstract classes with a single abstract method.</p><p>In the following code we define a new class <code>User</code> and make the class send out <code>PropertyChangeEvent</code> events when a property value changes by applying the <code>@Bindable</code> AST transformation to the class. The <code>@Bindable</code> annotation will make sure all code is generated in the class file to inform classes implementing the <code>PropertyChangeListener</code> interface of changes in property values. The nice thing about the <code>PropertyChangeListener</code> interface is that is contains a single method and applies to Single Abstract Method (SAM). In the sample we use a closure that is automatically converted to a <code>PropertyChangeListener</code> type.</p><pre class="brush:groovy">import groovy.beans.*
+import java.beans.*
+
+@Bindable
+class User {
+    String name, email
+}
+
+def u = new User(name: 'mrhaki', email: 'mrhaki@mrhaki.com')
+
+// Since Groovy 2.2 we don't have to use the as keyword like
+// { ... } as PropertyChangeListener,
+// but we can rely on implicit coercion.
+u.addPropertyChangeListener { event ->
+    println "Changed property $event.propertyName from $event.oldValue to $event.newValue"
+}
+
+u.name = 'Hubert A. Klein Ikkink'
+// Output: Changed property name from mrhaki to Hubert A. Klein Ikkink
+
+u.email = 'hubert@mrhaki.com'
+// Output: Changed property email from mrhaki@mrhaki.com to hubert@mrhaki.com
+</pre><p>In the next sample we define an abstract class <code>ChangedProperty</code> with a single abstract method (SAM) as listener implementation. When we define an instance we can use a closure and it will automatically be the implementation of the abstract method:</p><pre class="brush:groovy">import groovy.beans.*
+import java.beans.*
+
+@Bindable
+class User {
+    String name, email
+}
+
+def u = new User(name: 'mrhaki', email: 'mrhaki@mrhaki.com')
+
+// Assign closure as implementation of single abstract method onPropertyChange
+// in abstract class ChangedProperty.
+ChangedProperty changedProperty = { event -> 
+    println "Changed property $event.propertyName from $event.oldValue to $event.newValue" 
+}
+u.addPropertyChangeListener changedProperty
+
+u.name = 'Hubert A. Klein Ikkink'
+// Output: Changed property name from mrhaki to Hubert A. Klein Ikkink
+
+u.email = 'hubert@mrhaki.com'
+// Output: Changed property email from mrhaki@mrhaki.com to hubert@mrhaki.com
+
+assert changedProperty.events.size() == 2
+assert changedProperty.events.first().oldValue == 'mrhaki'
+assert changedProperty.events.first().newValue == 'Hubert A. Klein Ikkink'
+
+abstract class ChangedProperty implements PropertyChangeListener {
+
+    List&lt;PropertyChangeEvent&gt; events = []
+
+    void propertyChange(PropertyChangeEvent event) {
+        events &lt;&lt; event
+        onPropertyChange(event);
+    }
+    
+    abstract void onPropertyChange(PropertyChangeEvent event)
+
+}
+</pre><p>Code written with Groovy 2.2.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

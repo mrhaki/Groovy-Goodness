@@ -1,0 +1,73 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Create CopyWith Method with Immutable Annotation </title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Create CopyWith Method with Immutable Annotation </h3>
+
+<div class="post">
+<p><a href="http://mrhaki.blogspot.com/2009/09/groovy-goodness-making-class-immutable.html">For a long time</a> we can annotate a class with the <code>@Immutable</code> AST transformation so only an immutable instance of a class can be created. Since Groovy 2.2 we can use the annotation parameter <code>copyWith</code>. If we set the value of this parameter to <code>true</code> the AST transformation generates a new method <code>copyWith()</code> in the class. The method returns a new immutable instance of the class. We can pass a map with property names and values we want to set in the newly created instance.</p><p>In the following sample code we create a new immutable class <code>User</code> and we use the <code>@Immutable</code> annotation and set the parameter <code>copyWith</code> to <code>true</code>:</p><pre class="brush:groovy">import groovy.transform.Immutable
+
+@Immutable(copyWith = true)
+class User {
+    String name
+    String email
+}
+
+// Create immutable instance of User.
+def mrhaki = new User('mrhaki', 'mrhaki@mrhaki.com')
+
+mrhaki.with {
+    assert name == 'mrhaki'
+    assert email == 'mrhaki@mrhaki.com'
+}
+
+// Use new copyWith method to create a new immutable
+// instance of the User class where name property
+// is changed and email property is unchanged.
+def hubert = mrhaki.copyWith(name: 'Hubert A. Klein Ikkink')
+
+hubert.with {
+    assert name == 'Hubert A. Klein Ikkink'
+    assert email == 'mrhaki@mrhaki.com'
+}
+
+// The properties are still immutable:
+try {
+    hubert.email = 'new-mail@host.nl'
+} catch (ReadOnlyPropertyException e) {
+    assert 'Cannot set readonly property: email for class: User' == e.message
+}
+</pre><p>Code written with Groovy 2.2.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

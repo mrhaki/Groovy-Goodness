@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<title>Groovy Goodness: Apply Method to All Elements in a List</title>
+<title>Groovy Goodness: Replace Characters in a String with CollectReplacements</title>
 
 <script language="javascript" src="scripts/shCore.js"></script> 
 <script language="javascript" src="scripts/shLegacy.js"></script> 
@@ -22,22 +22,26 @@
 
 <a href="index.html">Back to index</a>
 
-<h3 class="post-title">Groovy Goodness: Apply Method to All Elements in a List</h3>
+<h3 class="post-title">Groovy Goodness: Replace Characters in a String with CollectReplacements</h3>
 
 <div class="post">
-<p>In Groovy we have several ways to achieve the same thing. For example we can apply a method to all elements in a list with the <code>collect()</code> method or with <code>*.</code>.</p><pre class="brush:groovy">class User { 
-    String name 
-    String aloud() { name.toUpperCase() }
-    String toString() { name }
+<p>We can use the <code>collectReplacements(Closure)</code> method to replace characters in a <code>String</code>. We pass a closure to the method and the closure is invoked for each character in the <code>String</code> value. If we return <code>null</code> the character is not transformed, otherwise we can return the replacement character.</p><pre class="brush:groovy">def s = 'Gr00vy is gr8'
+
+def replacement = {
+    // Change 8 to eat
+    if (it == '8') {
+        'eat'
+    // Change 0 to o
+    } else if (it == '0') {
+        'o'
+    // Do not transform
+    } else {
+        null
+    }
 }
 
-def users = [new User(name: 'mrhaki'), new User(name: 'hubert')]
-
-assert ['mrhaki', 'hubert'] == users*.toString()
-assert ['MRHAKI', 'HUBERT'] == users*.aloud()
-assert ['mrhaki', 'hubert'] == users.collect { it.toString() }
-assert ['MRHAKI', 'HUBERT'] == users.collect { it.aloud() }
-</pre
+assert s.collectReplacements(replacement) == 'Groovy is great'
+</pre><p>Code written with Groovy 2.1.6</p
 </div>
 
 <script language="javascript"> 

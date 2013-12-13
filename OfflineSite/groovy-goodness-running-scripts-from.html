@@ -1,0 +1,57 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Running Scripts from a JAR Archive</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Running Scripts from a JAR Archive</h3>
+
+<div class="post">
+<p>We can run Groovy scripts from the command-line with the <code>groovy</code> command followed by the name of Groovy script file. We could already run script with the <code>http:</code> protocol as described in <a href="http://mrhaki.blogspot.com/2011/10/groovy-goodness-run-remote-scripts-via.html">this blog post</a>. Since Groovy 2.1 we can even run scripts that are packaged in an archive with the <code>jar:</code> protocol.</p><p>Let's create first a simple Groovy script and package it in a <code>sample.jar</code> file.</p><pre class="brush:groovy">// File: cookies.groovy
+
+println 'Running from inside a JAR: '
+def cookies = ['Cookie', 'Biscuit'].collect { it.toUpperCase() }.join(',')
+println cookies
+</pre><p>We can use the <code>jar</code> command to place the file <code>cookies.groovy</code> in <code>sample.jar</code>:</p><pre class="brush:plain;light:true">$ jar cvf sample.jar cookies.groovy
+added manifest
+adding: cookies.groovy(in = 153) (out= 126)(deflated 17%)
+$ jar tvf sample.jar
+     0 Fri Sep 06 14:50:24 CEST 2013 META-INF/
+    68 Fri Sep 06 14:50:24 CEST 2013 META-INF/MANIFEST.MF
+   153 Fri Sep 06 14:48:44 CEST 2013 cookies.groovy
+$
+</pre><p>We now have a single Groovy script, but we can place more scripts inside the JAR file if we want to. To run a specific Groovy script file we must use the <code>jar:</code> protocol. We must specify the location of the JAR file with the <code>file:</code> or <code>http:</code> protocols followed by <code>!/</code>. In some shells the <code>!</code> symbol is a special character and we might need to escape it. For example on Mac OSX we need to invoke the following command to run our script placed in the JAR file:</p><pre class="brush:plain;light:true">$ groovy jar:file:sample.jar'!'/cookies.groovy
+Running from inside a JAR:
+COOKIE,BISCUIT
+</pre><p>We can place the JAR file on a web server and use the <code>jar:http://&lt;address&gt;/sample.jar!/cookies.groovy</code> syntax to run the scripts remotely.</p><p>Code written with Groovy 2.1.6</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

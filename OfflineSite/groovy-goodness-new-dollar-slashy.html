@@ -25,9 +25,7 @@
 <h3 class="post-title">Groovy Goodness: New Dollar Slashy Strings</h3>
 
 <div class="post">
-<p>Groovy already has a lot of ways to define a String value, and with Groovy 1.8 we have another one: the dollar slashy String. This is closely related to the slashy String definition we already knew (which also can be multi-line by the way, added in Groovy 1.8), but with different escaping rules. We don't have to escape a slash if we use the dollar slashy String format, which we would have to do otherwise.</p>
-<pre class="brush:groovy">
-def source = 'Read more about "Groovy" at http://mrhaki.blogspot.com/'
+<p>Groovy already has a lot of ways to define a String value, and with Groovy 1.8 we have another one: the dollar slashy String. This is closely related to the slashy String definition we already knew (which also can be multi-line by the way, added in Groovy 1.8), but with different escaping rules. We don't have to escape a slash if we use the dollar slashy String format, which we would have to do otherwise.</p><pre class="brush:groovy">def source = 'Read more about "Groovy" at http://mrhaki.blogspot.com/'
 
 // 'Normal' slashy String, we need to escape / with \/
 def regexp = /.*"(.*)".*\/(.*)\//  
@@ -40,8 +38,8 @@ assert matcher[0][2] == 'mrhaki.blogspot.com'
 def regexpDollar = $/.*"(.*)".*/(.*)//$  
 
 def matcherDollar = source =~ regexpDollar
-assert matcher[0][1] == 'Groovy'
-assert matcher[0][2] == 'mrhaki.blogspot.com'
+assert matcherDollar[0][1] == 'Groovy'
+assert matcherDollar[0][2] == 'mrhaki.blogspot.com'
 
 def multiline = $/
 Also multilines 

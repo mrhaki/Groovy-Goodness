@@ -27,9 +27,7 @@
 <div class="post">
 <p>The easiest way to pretty print an XML structure is with the <code><a href="http://groovy.codehaus.org/api/groovy/xml/XmlUtil.html">XmlUtil</a></code> class. The class has a <code>serialize()</code> method which is overloaded for several parameter types like <code>String</code>, <code>GPathResult</code> and <code>Node</code>. We can pass an <code>OutputSteam</code> or <code>Writer</code> object as argument to write the pretty formatted XML to. If we don't specify these the <code>serialize()</code> method return a <code>String</code> value.</p><pre class="brush:groovy">import groovy.xml.*
 
-def prettyXml = '''\
-&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;languages&gt;
+def prettyXml = '''\&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;languages&gt;
   &lt;language id="1"&gt;Groovy&lt;/language&gt;
   &lt;language id="2"&gt;Java&lt;/language&gt;
   &lt;language id="3"&gt;Scala&lt;/language&gt;

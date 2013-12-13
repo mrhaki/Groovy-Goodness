@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<title>Groovy Goodness: Apply Method to All Elements in a List</title>
+<title>Groovy Goodness: Remove Part of String With Regular Expression Pattern</title>
 
 <script language="javascript" src="scripts/shCore.js"></script> 
 <script language="javascript" src="scripts/shLegacy.js"></script> 
@@ -22,22 +22,23 @@
 
 <a href="index.html">Back to index</a>
 
-<h3 class="post-title">Groovy Goodness: Apply Method to All Elements in a List</h3>
+<h3 class="post-title">Groovy Goodness: Remove Part of String With Regular Expression Pattern</h3>
 
 <div class="post">
-<p>In Groovy we have several ways to achieve the same thing. For example we can apply a method to all elements in a list with the <code>collect()</code> method or with <code>*.</code>.</p><pre class="brush:groovy">class User { 
-    String name 
-    String aloud() { name.toUpperCase() }
-    String toString() { name }
-}
+<p>Since Groovy 2.2 we can subtract a part of a String value using a regular expression pattern. The first match found is replaced with an empty String. In the following sample code we see how the first match of the pattern is removed from the String:</p><pre class="brush:groovy">// Define regex pattern to find words starting with gr (case-insensitive).
+def wordStartsWithGr = ~/(?i)\s+Gr\w+/
 
-def users = [new User(name: 'mrhaki'), new User(name: 'hubert')]
+assert ('Hello Groovy world!' - wordStartsWithGr) == 'Hello world!'
+assert ('Hi Grails users' - wordStartsWithGr) == 'Hi users'
 
-assert ['mrhaki', 'hubert'] == users*.toString()
-assert ['MRHAKI', 'HUBERT'] == users*.aloud()
-assert ['mrhaki', 'hubert'] == users.collect { it.toString() }
-assert ['MRHAKI', 'HUBERT'] == users.collect { it.aloud() }
-</pre
+
+// Remove first match of a word with 5 characters.
+assert ('Remove first match of 5 letter word' - ~/\b\w{5}\b/) == 'Remove  match of 5 letter word'
+
+
+// Remove first found numbers followed by a whitespace character.
+assert ('Line contains 20 characters' - ~/\d+\s+/) == 'Line contains characters'
+</pre><p>Code written with Groovy 2.2.</p
 </div>
 
 <script language="javascript"> 

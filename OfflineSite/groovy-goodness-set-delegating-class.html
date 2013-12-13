@@ -1,0 +1,109 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Set Delegating Class for Script</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Set Delegating Class for Script</h3>
+
+<div class="post">
+<p>Since Groovy 2.2 we can assign the <code>DelegatingScript</code> class to a <code>Script</code> as a base script class. We use the <code>CompilerConfiguration</code> to set the base script class. After we have assigned the <code>DelegatingScript</code> class we can then set a delegate class for the <code>Script</code>. And this delegate class is then used to evaluate the script contents. This is a very easy setup for DSL scripts.</p><pre class="brush:groovy">import org.codehaus.groovy.control.CompilerConfiguration
+ 
+// Simple Car class to save state and distance.
+class Car {
+    String state
+    Long distance = 0
+}
+
+// Custom Script with methods that change the Car's state.
+// The Car object is passed via the constructor.
+class CarScript {
+
+    private final car
+    
+    CarScript(final car) {
+        this.car = car
+    }
+
+    def start() {
+        car.state = 'started'
+    }
+
+    def stop() {
+        car.state = 'stopped'
+    }
+
+    def drive(distance) {
+        car.distance += distance
+    }
+}
+
+// Create CompilerConfiguration and assign
+// the DelegatingScript class as the base script class.
+def compilerConfiguration = new CompilerConfiguration()
+compilerConfiguration.scriptBaseClass = DelegatingScript.class.name
+
+// Configure the GroovyShell and pass the compiler configuration.
+def shell = new GroovyShell(this.class.classLoader, new Binding(), compilerConfiguration)
+
+
+// Simple DSL to start, drive and stop the car.
+// The methods are defined in the CarScript class.
+def carDsl = '''
+start()
+drive 200
+stop()
+'''
+
+
+// Define Car object here, 
+// so we can use it in assertions later on.
+def car = new Car()
+
+// Define CarScript instance so we can use it as delegate
+// for the script.
+def carScript = new CarScript(car)
+
+// Set delegate carScript to script, so the DSL
+// can be executed.
+def script = shell.parse(carDsl)
+script.setDelegate(carScript)
+
+// Run DSL script.
+script.run()
+
+// Checks to see that Car object has changed.
+assert car.distance == 200
+assert car.state == 'stopped'
+</pre><p>Code written with Groovy 2.2.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>
