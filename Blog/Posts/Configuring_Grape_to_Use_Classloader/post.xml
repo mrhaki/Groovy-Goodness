@@ -1,0 +1,22 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-91086010691681950202010-04-18T08:35:00.004+02:002010-11-26T11:15:12.869+01:00Groovy Goodness: Configuring Grape to Use Classloader<p>Groovy has Grape to define dependencies which are necessary for our code to be downloaded by Ivy. This way we don't have to distribute third-party libraries with our code, but we only have to define the dependencies in our code. We can define these dependencies with the <code>@Grab</code> annotations. If we want to define multiple <code>@Grab</code> annotation we can group them together within a <code>@Grapes</code> annotation.</p>
+<p>By default the dependencies are available in the same classloader as our Groovy script or application. But sometimes this is not enough. For example if we have a script with a dependency on a SQL database driver and in our code <code>java.sql.DriverManager.getConnection()</code> is used we want our driver class to be on the system classloader. That is because the <code>DriverManager</code> class only can 'see' classes in the system classloader and not other classloaders. A possible exception we get is <code>java.sql.SQLException: No suitable driver found</code>.</p>
+<p>To support this scenario we add the <code>@GrabConfig</code> annotation and define that the dependency is part of the system classloader. And we are ready to use the dependency in our script.</p>
+<pre class="brush:groovy">
+@Grapes([
+ @Grab('org.slf4j:slf4j-simple:1.5.11'),
+ @Grab('mysql:mysql-connector-java:5.1.12'),
+ @GrabConfig(systemClassLoader = true)
+])
+import org.slf4j.*
+import groovy.sql.*
+
+def logger = LoggerFactory.getLogger('sql')
+
+logger.info 'Initialize SQL'
+
+def username = args[0]  // First argument passed to script.
+def password = args[1]  // Second argument passed to script is password.
+def sql = Sql.newInstance('jdbc:mysql://localhost/test', username, password, 'com.mysql.jdbc.Driver')
+
+logger.info "Got myself a SQL connection: $sql"
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

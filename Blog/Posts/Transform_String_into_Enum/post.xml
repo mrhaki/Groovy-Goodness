@@ -1,0 +1,21 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-35581958395249963942010-12-16T13:58:00.000+01:002010-12-16T13:58:08.626+01:00Groovy Goodness: Transform String into Enum<p>After reading <a href="http://www.slideshare.net/glaforge/groovy-state-of-the-union-groovy-grails-exchange-2010-guillaume-laforge-6190839">Groovy, State of the Union - Groovy Grails eXchange 2010 by Guillaume Laforge</a> I discovered that in Groovy 1.7.6 we can transform a String into a Enum value. We can use type coersion or the <code>as</code> keyword to turn a String or GString into a corresponding Enum value (if possible).</p>
+<pre class="brush:groovy">
+enum Compass {
+    NORTH, EAST, SOUTH, WEST
+}
+
+// Coersion with as keyword.
+def north = 'NORTH' as Compass
+assert north == Compass.NORTH
+
+// Coersion by type.
+Compass south = 'south'.toUpperCase()
+assert south == Compass.SOUTH
+
+def result = ['EA', 'WE'].collect {
+    // Coersion of GString to Enum.
+    "${it}ST" as Compass
+}
+assert result[0] == Compass.EAST
+assert result[1] == Compass.WEST
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

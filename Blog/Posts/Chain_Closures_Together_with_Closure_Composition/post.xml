@@ -1,0 +1,20 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-92157815519392664012011-04-27T22:36:00.002+02:002011-04-28T09:02:50.205+02:00Groovy Goodness: Chain Closures Together with Closure Composition<p>There are a lot of new features in Groovy 1.8. One of them is the possibility to compose a new closure by chaining two other closures together. We use the leftShift and rightShift operators (&lt;&lt; and &gt;&gt;) to combine multiple closures to create a new closure.</p>
+<pre class="brush:groovy">
+def convert = { new Expando(language: it) }
+def upper = { it.toUpperCase() }
+
+// Composition.
+def upperConvert = convert << upper
+
+def languages = ['Groovy', 'Scala', 'Clojure'].collect(upperConvert)
+println languages // Output: [{language=GROOVY}, {language=SCALA}, {language=CLOJURE}]
+assert languages[0].language == 'GROOVY'
+assert languages[1].language == 'SCALA'
+assert languages[2].language == 'CLOJURE'
+
+// Reverse composition.
+def lastLetter = { it[-1] }
+def firstLetters = ['Groovy', 'Clojure', 'Scala'].collect(upper >> lastLetter)
+assert firstLetters.join() == 'YEA'
+</pre>
+<p>Try with <a href="http://groovyconsole.appspot.com/script/473001">Groovy web console</a>.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

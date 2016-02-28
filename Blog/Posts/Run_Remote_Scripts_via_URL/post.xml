@@ -1,0 +1,23 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-90178683850037718692011-10-18T13:03:00.002+02:002011-10-18T13:03:31.095+02:00Groovy Goodness: Run Remote Scripts via URL<p>Since Groovy 1.8.3 we can run remote Groovy scripts. We can use an URL to refer to the Groovy script that we want to execute. This can be very useful to build a library of Groovy scripts and publish them on a web server or a code repository like Github. Then we can run those scripts by referring the scripts by URL.</p><pre class="brush:groovy">// File:
+// http://www.mrhaki.com/samples/remotesample.groovy
+
+printMessage 'Remote Groovy script @ http://www.mrhaki.com/samples/remotesample.groovy'
+
+['Groovy', 'rocks'].each {
+    print "${it.toUpperCase()} "
+}
+println '!'
+
+def printMessage(message) {
+    def LINE_LENGTH = message.size() + 4
+    println '*' * LINE_LENGTH
+    println "* $message *"
+    println '*' * LINE_LENGTH
+}
+</pre><p>On a command line we run <code>$ groovy http://www.mrhaki.com/samples/remotesample.groovy</code> and we get the following output:</p><pre class="brush:plain">$ groovy http://www.mrhaki.com/samples/remotesample.groovy
+****************************************************************************
+* Remote Groovy script @ http://www.mrhaki.com/samples/remotesample.groovy *
+****************************************************************************
+GROOVY ROCKS !
+$
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

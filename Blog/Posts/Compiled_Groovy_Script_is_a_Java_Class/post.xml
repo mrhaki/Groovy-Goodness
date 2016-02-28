@@ -1,0 +1,13 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-37038388067454645552009-11-26T08:16:00.001+01:002010-11-26T11:15:13.011+01:00Groovy Goodness: Compiled Groovy Script is a Java Class<p>A Groovy script has no class declaration or <code>main()</code> method, but if we compile the script class to Java bytecode, it has. This means we can write a Groovy script, compile the source and use the resulting class in Java.</p>
+<pre class="brush:groovy">
+// File: Sample.groovy
+package com.mrhaki.blog
+
+println 'Hello from Groovy'
+</pre>
+<p>Next we can compile this script and use Java to invoke the class. We must make sure we add the Groovy library to the classpath, but that is all.</p>
+<pre class="brush:plain;light:true">
+$ groovyc Sample.groovy
+$ java -cp .:$GROOVY_HOME/embeddable/groovy-all-1.6.5.jar com.mrhaki.blog.Sample
+Hello from Groovy
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

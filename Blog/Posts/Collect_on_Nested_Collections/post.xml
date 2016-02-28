@@ -1,0 +1,11 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-81241540253410909522011-09-19T05:51:00.000+02:002011-09-19T05:51:38.829+02:00Groovy Goodness: Collect on Nested Collections<p><a href="http://mrhaki.blogspot.com/2009/12/groovy-goodness-apply-closure-to-all.html">The <code>collect()</code> method</a> has been around in Groovy for a long time and it is very useful. With the <code>collect()</code> method we can iterate through a collection and transform each element with a Closure to another value. To <a href="http://mrhaki.blogspot.com/2009/12/groovy-goodness-recursively-collect.html">apply a transformation to collections in collections</a> we can use the <code>collectAll()</code> method. Since Groovy 1.8.1 the <code>collectAll()</code> method is deprecated in favor of the new <code>collectNested()</code> method. So with <code>collectNested()</code> we can transform elements in a collection and even in nested collections and the result will be a collection (with nested collections) with transformed elements.<br />
+We can pass an initial collection to the method to which the transformed elements are added.</p><pre class="brush:groovy">def list = [10, 20, [1, 2, [25, 50]], ['Groovy']]
+
+assert list.collectNested { it * 2 } == [20, 40, [2, 4, [50, 100]], ['GroovyGroovy']]
+assert list.collectNested(['1.8.1', [0]]) { it * 2 } == ['1.8.1', [0], 20, 40, [2, 4, [50, 100]], ['GroovyGroovy']]
+assert list.collectNested([]) { it * 2 } == [20, 40, [2, 4, [50, 100]], ['GroovyGroovy']]
+
+// Simple collect will duplicate the nested collection instead
+// of elements in the nested collection.
+assert list.collect { it * 2 } == [20, 40, [1, 2, [25, 50], 1, 2, [25, 50]], ['Groovy', 'Groovy']]
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

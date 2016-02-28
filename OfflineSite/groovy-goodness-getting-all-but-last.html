@@ -1,0 +1,50 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Getting All But the Last Element in a Collection with Init Method</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Getting All But the Last Element in a Collection with Init Method</h3>
+
+<div class="post">
+<p>In Groovy we can use the <code>head</code> and <code>tail</code> methods for a long time on <code>Collection</code> objects. With <code>head</code> we get the first element and with <code>tail</code> the remaining elements of a collection. Since Groovy 2.4 we have a new method <code>init</code> which returns all elements but the last in a collection.</p><p>In the following example we have a simple list and apply the different methods:</p><pre class="brush:groovy">def gr8Tech = ['Groovy', 'Grails', 'Spock', 'Gradle', 'Griffon']
+
+// Since Groovy 2.4 we can use the init method.
+assert gr8Tech.init() == ['Groovy', 'Grails', 'Spock', 'Gradle']
+assert gr8Tech.last() == 'Griffon'
+
+
+assert gr8Tech.head() == 'Groovy'
+assert gr8Tech.tail() == ['Grails', 'Spock', 'Gradle', 'Griffon']
+</pre><p>Code written with Groovy 2.4.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

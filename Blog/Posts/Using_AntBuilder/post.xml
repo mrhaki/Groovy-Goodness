@@ -1,0 +1,24 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-20498818747809082942009-10-13T08:11:00.005+02:002010-11-26T11:15:13.178+01:00Groovy Goodness: Using AntBuilder<p>Groovy 1.6.5 includes Ant 1.7.1 and we can use Ant from our Groovy code with the <a href="http://groovy.codehaus.org/gapi/groovy/util/AntBuilder.html">AntBuilder</a> class. The AntBuilder provides a nice DSL to create Ant tasks and to execute them. The following piece of code shows some samples of what we can do with the AntBuilder:</p>
+<pre class="brush:groovy">
+// Create AntBuilder.
+def ant = new AntBuilder()
+
+// Simple echo task.
+def world = 'Groovy'
+ant.echo("Hello $world")  // Output: [echo] Hello Groovy
+
+// Ant task properties are defined as a map.
+def options = [src: 'http://mrhaki.blogspot.com', dest: 'blog.html']
+ant.get(options)
+// is the same as
+ant.get(src: 'http://mrhaki.blogspot.com', dest: 'blog.html']
+
+// Nice builder syntax for tasks with for example filesets.
+def zipfile = 'test.zip'
+def current = '.'
+ant.zip(destfile: zipfile) {
+    fileset(dir: current) {
+        include(name: '**/*.txt')
+    }
+}
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

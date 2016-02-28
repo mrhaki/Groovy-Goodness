@@ -1,0 +1,10 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-38688435894659499962010-06-15T07:02:00.001+02:002010-11-26T11:15:12.800+01:00Groovy Goodness: Represent a List as String<p>In Groovy we can use the <code>toListString()</code> method to get a String representation for a given collection. And since Groovy 1.7.3 we can use a parameter to determine a maximum size of the resulting String. This value is used to stop the String representation after approximately the given size and append three dots (...) to the result.</p>
+<pre class="brush:groovy">
+def list = ['Groovy', 'Clojure', 'Java']
+
+def listString = list.toListString()
+def abbreviated = list.toListString(12)
+
+assert '[Groovy, Clojure, Java]' == listString
+assert '[Groovy, Clojure, ...]' == abbreviated
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com4

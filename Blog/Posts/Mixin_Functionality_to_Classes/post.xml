@@ -1,0 +1,31 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-76938708553935535412009-10-03T07:00:00.002+02:002010-11-26T11:15:13.198+01:00Groovy Goodness: Mixin Functionality to Classes<p>In a previous blog post we learned how to use <code>Categories</code> to add functionality to existing class. We had to use the <code>use</code> keyword to define a block in which the <code>Category</code> was valid. But we can also add new functionality with the <code>@Mixin</code> compile-time annotation or at runtime with the <code>mixin()</code> method (GDK extension to <a href="http://groovy.codehaus.org/groovy-jdk/java/lang/Class.html"><code>Class</code></a>).</p>
+<pre class="brush:groovy">
+class Pirate {
+    def talk(text) {
+        "Aargh, walk the plank. ${text}"
+    }
+}
+
+// Compile time mixin to Talk class. This add all
+// methods from Pirate to Talk.
+@Mixin(Pirate)  
+class Talk {}
+
+assert 'Aargh, walk the plank. Give me a bottle of rum.' == new Talk().talk("Give me a bottle of rum.")
+</pre>
+<pre class="brush:groovy">
+import org.apache.commons.lang.StringUtils
+
+class Parrot {
+    static String speak(String text) {
+        /Parrot says "$text"/
+    }
+}
+
+// Runtime mixin on String class. 
+// mixin() is a GDK extension to Class.
+String.mixin Parrot, StringUtils
+
+assert 'Parrot says "mrhaki"' == 'mrhaki'.speak()
+assert 'Groovy is so much...' == 'Groovy is so much fun.'.abbreviate(20)  // StringUtils mixin.
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com4

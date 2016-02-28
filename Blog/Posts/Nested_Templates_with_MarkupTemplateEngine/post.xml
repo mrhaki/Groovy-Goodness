@@ -1,0 +1,70 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-56323712538954837342014-08-07T10:54:00.000+02:002014-08-07T10:54:50.492+02:00Groovy Goodness: Nested Templates with MarkupTemplateEngine<p>Since Groovy 2.3 we can use the <code>MarkupTemplateEngine</code> to generate XML/HTML. We can write our templates using a builder syntax. Inside our templates we can define nested templates. These nested templates contain builder syntax code and can use objects that are passed as attributes to the nested template. To invoke a nested template we must use the <code>fragment</code> method and pass a <code>Map</code> with attributes that is used in the nested template. We can re-use nested templates inside our template.</p><p>In the following sample code we define two nested templates: <code>faIcon</code> and <code>list</code>. Inside our template we use the <code>fragment</code> method to call these nested templates and we set values to the attributes that are used in the nested templates:</p><pre class="brush:groovy">import groovy.text.*
+import groovy.text.markup.*
+
+// Create configuration for engine.
+TemplateConfiguration config = new TemplateConfiguration(
+    useDoubleQuotes:true, expandEmptyElements: true)
+
+// Create engine with configuration.
+MarkupTemplateEngine engine = new MarkupTemplateEngine(config)     
+
+// Create template with template fragment
+// to display the FontAwesome markup.
+Template template = engine.createTemplate('''
+
+    // Nested template to generate
+    // FontAwesome markup. 
+    // The fragment expect a model attribute
+    // with the name icon.
+    def faIcon = 'span(class: "fa fa-${icon}")'
+    
+    // Nested template to generate
+    // a unordered list for given items,
+    // specified with the items model attribute.
+    String list = """ul {
+        items.each { item -&gt;
+            li item
+        }
+    }
+    """
+    
+    
+    // Use fragment method.
+    fragment list, items: ['A', 'B', 'C']
+    
+    
+    ul {
+        ['cloud', 'home', 'pencil'].each { iconValue ->
+            // Generate output with predefined
+            // fragment faIcon. Pass value
+            // for model attribute icon.
+            // We must use ${stringOf{...}} because we apply
+            // the fragment as inline element. 
+            li "${stringOf {fragment(faIcon, icon: iconValue)}}"
+        }
+    }
+    
+    // Reuse fragment in other parts of the template.
+    p "This is a ${stringOf {fragment(faIcon, icon: 'cog')}} settings icon."
+''')    
+
+// Render output for template.
+Writer writer = new StringWriter()                          
+Writable output = template.make([:])  
+output.writeTo(writer)   
+String result = writer.toString()
+
+
+// This is what we would expect as a result.
+def expected = $/\
+&lt;ul&gt;&lt;li&gt;A&lt;/li&gt;&lt;li&gt;B&lt;/li&gt;&lt;li&gt;C&lt;/li&gt;&lt;/ul&gt;\
+&lt;ul&gt;\
+&lt;li&gt;&lt;span class="fa fa-cloud"&gt;&lt;/span&gt;&lt;/li&gt;\
+&lt;li&gt;&lt;span class="fa fa-home"&gt;&lt;/span&gt;&lt;/li&gt;\
+&lt;li&gt;&lt;span class="fa fa-pencil"&gt;&lt;/span&gt;&lt;/li&gt;\
+&lt;/ul&gt;\
+&lt;p&gt;This is a &lt;span class="fa fa-cog"&gt;&lt;/span&gt; settings icon.&lt;/p&gt;\
+/$
+
+assert result == expected
+</pre><p>Code written with Groovy 2.3.6.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

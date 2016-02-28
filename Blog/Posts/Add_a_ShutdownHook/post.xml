@@ -1,0 +1,14 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-56239875112716274072010-01-05T07:00:00.000+01:002010-11-26T11:15:12.908+01:00Groovy Goodness: Add a ShutdownHook<p>If we want to execute some code when our Groovy script or application is stopped we can use the <code>addShutdownHook()</code> method. We pass a closure to this method, which is executed when our Groovy script or application stops. This can be a normal termination, but the closure is also executed when the application is stopped by user input (<code>Ctrl+C</code>) or a system event like a shutdown.</p>
+<pre class="brush:groovy">
+addShutdownHook {
+    println ''  
+    println 'Script is ended.'
+}
+
+println 'Script is started.'
+println 'Press Ctrl+C to stop this script or wait 10 seconds.'
+(1..10).each {
+    print "..$it"
+    Thread.sleep 1000
+}
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

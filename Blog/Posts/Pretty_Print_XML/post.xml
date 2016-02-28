@@ -1,0 +1,115 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-23669480710377099452012-10-25T12:03:00.000+02:002013-11-01T05:37:04.625+01:00Groovy Goodness: Pretty Print XML<p>The easiest way to pretty print an XML structure is with the <code><a href="http://groovy.codehaus.org/api/groovy/xml/XmlUtil.html">XmlUtil</a></code> class. The class has a <code>serialize()</code> method which is overloaded for several parameter types like <code>String</code>, <code>GPathResult</code> and <code>Node</code>. We can pass an <code>OutputSteam</code> or <code>Writer</code> object as argument to write the pretty formatted XML to. If we don't specify these the <code>serialize()</code> method return a <code>String</code> value.</p><pre class="brush:groovy">import groovy.xml.*
+
+def prettyXml = '''\&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;languages&gt;
+  &lt;language id="1"&gt;Groovy&lt;/language&gt;
+  &lt;language id="2"&gt;Java&lt;/language&gt;
+  &lt;language id="3"&gt;Scala&lt;/language&gt;
+&lt;/languages&gt;
+'''
+
+
+// Pretty print a non-formatted XML String.
+def xmlString = '&lt;languages&gt;&lt;language id="1"&gt;Groovy&lt;/language&gt;&lt;language id="2"&gt;Java&lt;/language&gt;&lt;language id="3"&gt;Scala&lt;/language&gt;&lt;/languages&gt;'
+assert XmlUtil.serialize(xmlString) == prettyXml
+
+// Use Writer object as extra argument.
+def xmlOutput = new StringWriter()
+XmlUtil.serialize xmlString, xmlOutput
+assert xmlOutput.toString() == prettyXml
+
+// Pretty print a Node.
+Node languagesNode = new XmlParser().parseText(xmlString)
+assert XmlUtil.serialize(languagesNode) == prettyXml
+
+
+// Pretty print a GPathResult.
+def langagesResult = new XmlSlurper().parseText(xmlString)
+assert XmlUtil.serialize(langagesResult) == prettyXml
+
+
+// Pretty print org.w3c.dom.Element.
+org.w3c.dom.Document doc = DOMBuilder.newInstance().parseText(xmlString)
+org.w3c.dom.Element root = doc.documentElement
+assert XmlUtil.serialize(root) == prettyXml
+
+
+// Little trick to pretty format
+// the result of StreamingMarkupBuilder.bind(). 
+def languagesXml = {
+    languages {
+        language id: 1, 'Groovy'
+        language id: 2, 'Java'
+        language id: 3, 'Scala'
+    }
+}
+def languagesBuilder = new StreamingMarkupBuilder()
+assert XmlUtil.serialize(languagesBuilder.bind(languagesXml)) == prettyXml
+</pre><p>If we already have a <code>groovy.util.Node</code> object we can also use the <code><a href="http://groovy.codehaus.org/api/groovy/util/XmlNodePrinter.html">XmlNodePrinter</a></code>. For example if we use <code>XmlParser</code> to parse XML we get a <code>Node</code> object. We create a new instance of the <code>XmlNodePrinter</code> and use the <code>print()</code> method to output the node with child nodes. If we don't specify a <code>Writer</code> object the output is send to <code>System.out</code>.</p><pre class="brush:groovy">import groovy.xml.*
+
+// Get groovy.util.Node value.
+def xmlString = '&lt;languages&gt;&lt;language id="1"&gt;Groovy&lt;/language&gt;&lt;language id="2"&gt;Java&lt;/language&gt;&lt;language id="3"&gt;Scala&lt;/language&gt;&lt;/languages&gt;'
+Node languages = new XmlParser().parseText(xmlString)
+
+
+// Create output with all default settings.
+def xmlOutput = new StringWriter()
+def xmlNodePrinter = new XmlNodePrinter(new PrintWriter(xmlOutput))
+xmlNodePrinter.print(languages)
+
+assert xmlOutput.toString() == '''\
+&lt;languages&gt;
+  &lt;language id="1"&gt;
+    Groovy
+  &lt;/language&gt;
+  &lt;language id="2"&gt;
+    Java
+  &lt;/language&gt;
+  &lt;language id="3"&gt;
+    Scala
+  &lt;/language&gt;
+&lt;/languages&gt;
+'''
+
+
+// Create output and set indent character
+// one space.
+// (can also by \t for tabs, or other characters)
+xmlOutput = new StringWriter()
+xmlNodePrinter = new XmlNodePrinter(new PrintWriter(xmlOutput), " " /* indent */)
+xmlNodePrinter.print(languages)
+
+assert xmlOutput.toString() == '''\
+&lt;languages&gt;
+ &lt;language id="1"&gt;
+  Groovy
+ &lt;/language&gt;
+ &lt;language id="2"&gt;
+  Java
+ &lt;/language&gt;
+ &lt;language id="3"&gt;
+  Scala
+ &lt;/language&gt;
+&lt;/languages&gt;
+'''
+
+
+// Use properties preserveWhitespace,
+// expandEmptyElements and quote to
+// change the formatting.
+xmlOutput = new StringWriter()
+xmlNodePrinter = new XmlNodePrinter(new PrintWriter(xmlOutput))
+xmlNodePrinter.with {
+    preserveWhitespace = true
+    expandEmptyElements = true
+    quote = "'" // Use single quote for attributes
+}
+xmlNodePrinter.print(languages)
+
+assert xmlOutput.toString() == """\
+&lt;languages&gt;
+  &lt;language id='1'&gt;Groovy&lt;/language&gt;
+  &lt;language id='2'&gt;Java&lt;/language&gt;
+  &lt;language id='3'&gt;Scala&lt;/language&gt;
+&lt;/languages&gt;
+"""
+</pre><p><em>Code written with Groovy 2.0.5</em></p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com3

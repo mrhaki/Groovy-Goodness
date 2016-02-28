@@ -1,0 +1,16 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-8214140119835413662009-10-05T07:00:00.001+02:002010-11-26T11:15:13.194+01:00Groovy Goodness: GroovyCollections Utility Class<p>Groovy has a utility class to make combinations of lists or arrays, or to tranpose lists or arrays: <a href="http://groovy.codehaus.org/api/groovy/util/GroovyCollections.html">GroovyCollections</a>. The class also contains <code>min()</code>, <code>max()</code> and <code>sum()</code> methods, but these are already available as methods on lists and arrays. Let's see the class in action:</p>
+<pre class="brush:groovy">
+def methods = ['min', 'max', 'sum']
+def classes = ['Object[]', 'Collection']
+
+def combinations = GroovyCollections.combinations([classes, methods])
+assert 2 * 3 == combinations.size()
+assert [['Object[]', 'min'], ['Collection', 'min'], ['Object[]', 'max'], ['Collection', 'max'], ['Object[]', 'sum'], ['Collection', 'sum']] == combinations
+assert 3 == combinations.findAll { it[0] == 'Collection' }.size()
+
+def keys = ['username', 'email']
+def values = ['mrhaki', 'email@host.com', 'not-tranposed']
+def transpose = GroovyCollections.transpose([keys, values, [0, 1]])
+assert 2 == transpose.size()
+assert [['username', 'mrhaki', 0], ['email', 'email@host.com', 1]] == transpose
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

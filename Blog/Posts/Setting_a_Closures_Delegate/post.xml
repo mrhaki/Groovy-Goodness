@@ -1,0 +1,26 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-75766172565328518402009-11-24T08:38:00.001+01:002010-11-26T11:15:13.015+01:00Groovy Goodness: Setting a Closure's Delegate<p>Closures are reusable code blocks in Groovy. The code of the closure is executed against the delegate of the closure. By default the owner of the closure is the same as the delegate, but we can change this. We can define which object is the delegate for a closure, so we can change the object the closure is executed for.</p>
+<pre class="brush:groovy">
+// Simple class.
+class Post {
+    int count
+    def info() { "This is Groovy Goodness post #$count!" }
+}
+
+// Script variable and method.
+count = 0
+def info() {
+    "Count value is $count."
+}
+
+// Closure to increment a count variable and invoke a info() method.
+def printInfo = { 
+    count++
+    info() 
+}
+
+assert "Count value is 1." == printInfo() // Delegate is by default set to owner, so the script in this case.
+
+printInfo.resolveStrategy = Closure.DELEGATE_FIRST  // Change closure resolver so first the delegate is used.
+printInfo.delegate = new Post(count: 100)  // Set delegate to Post object.
+assert "This is Groovy Goodness post #101!" == printInfo()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

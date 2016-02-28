@@ -1,0 +1,18 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-85399991588420661352010-06-14T22:23:00.004+02:002010-11-26T11:15:12.807+01:00Groovy Goodness: Create New Date from Old Date with Updates<p>Groovy 1.7.3 adds the <code>updated()</code> method to the <code>Date</code> and <code>Calendar</code> classes. We pass a <code>Map</code> as parameter to this method to define which fields are updated. The fields that are not mentioned are unchanged. The result is a new <code>Date</code> or <code>Calendar</code> object, our original object stays the same.</p>
+<pre class="brush:groovy">
+import static java.util.Calendar.*
+
+def cal = Calendar.instance
+cal[MONTH] = DECEMBER
+def calNextMonth = cal.updated(month: cal[MONTH] + 1, year: 2012)
+
+assert JANUARY == calNextMonth[MONTH]
+assert 2013 == calNextMonth[YEAR]
+
+def date = new Date()
+date.set(year: 2011, month: MAY, date: 5)
+def dateTenYearsAgo = date.updated(year: date[YEAR] - 10)
+
+assert '2011-5-5' == date.format('yyyy-M-d')
+assert '2001-5-5' == dateTenYearsAgo.format('yyyy-M-d')
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

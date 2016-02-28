@@ -1,0 +1,27 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-63732110325371459432009-10-07T22:12:00.001+02:002010-11-26T11:15:13.190+01:00Groovy Goodness: Reading URL Content<p>Groovy adds some methods to the <code>URL</code> class which make reading data from an URL easy. For example the <code>text</code> property returns the complete contents of the document that is identified by the URL. Or we can use the <code>eachLine()</code> method to loop through each line of the document. Groovy also adds a <code>toURL()</code> to the <code>String</code> class to make a <code>URL</code> object.</p>
+<pre class="brush:groovy">
+// Contents of http://www.mrhaki.com/url.html:
+// Simple test document
+// for testing URL extensions
+// in Groovy.
+
+def url = &quot;http://www.mrhaki.com/url.html&quot;.toURL()
+
+assert '''\
+Simple test document
+for testing URL extensions
+in Groovy.
+''' == url.text
+
+def result = []
+url.eachLine {
+    if (it =~ /Groovy/) {
+        result &lt;&lt; it
+    }
+}
+assert ['in Groovy.'] == result
+
+url.withReader { reader -&gt;
+    assert 'Simple test document' == reader.readLine()
+}
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

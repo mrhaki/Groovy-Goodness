@@ -1,0 +1,71 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-67895471906463680992009-10-12T07:00:00.002+02:002011-05-26T10:19:06.555+02:00Groovy Goodness: Reading XML<p>In a previous Groovy Goodness post we learned how to write XML with builders. In this post we learn how to read XML with the <a href="http://groovy.codehaus.org/api/groovy/util/XmlParser.html"><code>XmlParser</code></a> and <a href="http://groovy.codehaus.org/api/groovy/util/XmlSlurper.html"><code>XmlSlurper</code></a> classes. The main difference between both parsers is that the <code>XmlParser</code> return a list of <a href="http://groovy.codehaus.org/api/groovy/util/NodeList.html"><code>NodeList</code></a> and <a href="http://groovy.codehaus.org/api/groovy/util/Node.html"><code>Node</code></a> objects and the <code>XmlSlurper</code> return a <a href="http://groovy.codehaus.org/api/groovy/util/slurpersupport/GPathResult.html"><code>GPathResult</code></a>.</p>
+<p>First we parse the XML with the <code>XmlParser</code>. We define a namespace so we can access the meta.isbn elements with a namespace syntax.</p>
+<pre class="brush:groovy">
+import groovy.xml.*
+
+def xml = '''
+&lt;books xmlns:meta=&quot;http://meta/book/info&quot; count=&quot;3&quot;&gt;
+  &lt;book id=&quot;1&quot;&gt;
+    &lt;title lang=&quot;en&quot;&gt;Groovy in Action&lt;/title&gt;
+    &lt;meta:isbn&gt;1-932394-84-2&lt;/meta:isbn&gt;
+  &lt;/book&gt;
+  &lt;book id=&quot;2&quot;&gt;
+    &lt;title lang=&quot;en&quot;&gt;Groovy Programming&lt;/title&gt;
+    &lt;meta:isbn&gt;0123725070&lt;/meta:isbn&gt;
+  &lt;/book&gt;
+  &lt;book id=&quot;3&quot;&gt;
+    &lt;title&gt;Groovy &amp;amp; Grails&lt;/title&gt;
+    &lt;!--Not yet available.--&gt;
+  &lt;/book&gt;
+  &lt;book id=&quot;4&quot;&gt;
+    &lt;title&gt;Griffon Guide&lt;/title&gt;
+  &lt;/book&gt;
+&lt;/books&gt;
+'''
+
+def ns = new Namespace('http://meta/book/info', 'meta')
+def books = new XmlParser().parseText(xml)
+assert books instanceof Node
+assert 4 == books.book.size()
+assert 11 == books.breadthFirst().size()
+assert 'Groovy in Action' == books.book[0].title.text()
+assert 'Groovy Programming' == books.book.find { it.'@id' == '2' }.title.text()
+assert 'Groovy Programming' == books.book.find { it.attribute('id') == '2' }.title.text()
+assert [1, 2, 3] ==  books.book.findAll { it.title.text() =~ /Groovy/ }.'@id'*.toInteger()
+assert ['1-932394-84-2', '0123725070'] == books.book[ns.isbn].inject([]) { result, v -&gt; result &lt;&lt; v.text() }
+</pre>
+<p>We can try the code in <a href="http://groovyconsole.appspot.com/script/489002">Groovy Web Console</a>.</p>
+<p>Next we use <code>XmlSlurper</code> to parse the same XML.</p>
+<pre class="brush:groovy">
+import groovy.xml.*
+
+def xml = '''
+&lt;books xmlns:meta=&quot;http://meta/book/info&quot; count=&quot;3&quot;&gt;
+  &lt;book id=&quot;1&quot;&gt;
+    &lt;title lang=&quot;en&quot;&gt;Groovy in Action&lt;/title&gt;
+    &lt;meta:isbn&gt;1-932394-84-2&lt;/meta:isbn&gt;
+  &lt;/book&gt;
+  &lt;book id=&quot;2&quot;&gt;
+    &lt;title lang=&quot;en&quot;&gt;Groovy Programming&lt;/title&gt;
+    &lt;meta:isbn&gt;0123725070&lt;/meta:isbn&gt;
+  &lt;/book&gt;
+  &lt;book id=&quot;3&quot;&gt;
+    &lt;title&gt;Groovy &amp;amp; Grails&lt;/title&gt;
+    &lt;!--Not yet available.--&gt;
+  &lt;/book&gt;
+  &lt;book id=&quot;4&quot;&gt;
+    &lt;title&gt;Griffon Guide&lt;/title&gt;
+  &lt;/book&gt;
+&lt;/books&gt;
+'''
+
+def books = new XmlSlurper().parseText(xml).declareNamespace([meta:'http://meta/book/info'])
+assert books instanceof groovy.util.slurpersupport.GPathResult
+assert 4 == books.book.size()
+assert 11 == books.breadthFirst().size()
+assert 'Groovy in Action' == books.book[0].title.text()
+assert 'Groovy Programming' == books.book.find { it.@id == '2' }.title as String
+assert [1, 2, 3] == books.book.findAll { it.title =~ /Groovy/ }.'@id'*.toInteger()
+assert ['1-932394-84-2', '0123725070'] == books.book.'meta:isbn'*.toString()
+</pre>
+<p>We can try the code in <a href="http://groovyconsole.appspot.com/script/485003">Groovy Web Console</a>.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

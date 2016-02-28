@@ -1,0 +1,15 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-76917622620658637372012-10-09T14:16:00.000+02:002012-10-09T14:16:37.118+02:00Groovy Goodness: Getting the First and Last Element of an Iterable<p>Since Groovy 1.8.7 we can use the <code>first()</code> and <code>last()</code> methods on <code>Iterable</code> objects. With the <code>first()</code> method we get the first element and with the <code>last()</code> method we get the last element:</p><pre class="brush:groovy">def list = 0..100
+
+assert list.first() == 0
+assert list.last() == 100
+
+def abc = 'abc' as Character[]
+
+assert abc.first() == 'a'
+assert abc.last() == 'c'
+
+def s = ['Groovy', 'Gradle', 'Grails', 'Rocks'] as Set
+
+assert s.first() == 'Groovy'
+assert s.last() == 'Rocks'
+</pre><p><em>(Written with Groovy 2.0.5)</em></p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

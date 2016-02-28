@@ -1,0 +1,20 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-72921860303302042232009-12-24T07:00:00.001+01:002010-11-26T11:15:12.940+01:00Groovy Goodness: Looping Through Each Permutation in a Collection<p>Groovy 1.7 adds news methods to the standard Java classes. One of the new methods is <code>eachPermutation()</code>. With this method we can loop through all permutations of a collection and run a closure for the iterations. To get all permutations for a collection we can use the <code>permutations()</code> method.</p>
+<pre class="brush:groovy">
+def languages = ['Groovy', 'Clojure', 'Scala']
+
+def result = []
+languages.eachPermutation {
+    result &lt;&lt; it
+}
+
+assert 6 == result.size()
+assert ['Groovy', 'Clojure', 'Scala'] == result[0]
+assert ['Groovy', 'Scala', 'Clojure'] == result[1]
+assert [['Clojure', 'Groovy', 'Scala'], ['Clojure', 'Scala', 'Groovy']] == result.findAll { it[0] == 'Clojure' }
+
+// We can also get the complete list of permutations as Set.
+def list = [true, false]
+def permutations = list.permutations()
+assert 2 == permutations.size()
+assert [[false,true], [true,false]] as Set == permutations
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

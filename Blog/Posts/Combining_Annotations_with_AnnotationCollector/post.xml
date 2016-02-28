@@ -1,0 +1,82 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-78798287868227930522013-02-08T06:15:00.001+01:002013-02-08T12:36:20.154+01:00Groovy Goodness: Combining Annotations with AnnotationCollector<p>Groovy 2.1 introduces a new annotation to group multiple annotations and define an alias for the group. The new <code><a href="http://groovy.codehaus.org/api/groovy/transform/AnnotationCollector.html">@AnnotationCollector</a></code> annotation is an AST transformation. If we repeatedly have to add multiple annotations we can now create an alias for the multiple annotations and use it in our code.</p><p>We can define the group of annotations as an argument for the <code>@AnnotationCollector</code> annotations. For example in the next sample code we create an annotation to apply the <code>@EqualsAndHashCode</code> and <code>@ToString</code> annotations and use the alias <code>Simple</code>. We pass a list of annotations to the <code>@AnnotationColletor</code>:</p><pre class="brush:groovy">@AnnotationCollector([EqualsAndHashCode, ToString])
+@interface Simple {}
+
+
+@Simple
+class User {
+    String username
+    int age
+}
+
+def user = new User(username: 'mrhaki', age: 39)
+assert user.toString() == 'User(mrhaki, 39)'
+
+// We still have 2 annotations:
+assert User.class.annotations.size() == 2
+
+
+// We can use the attributes from the 
+// grouped annotations.
+@Simple(excludes = 'street') 
+class Address {
+    String street, town
+}
+
+def address = new Address(street: 'Evergreen Terrace', town: 'Springfield') 
+assert address.toString() == 'Address(Springfield)'
+</pre><p>Notice we can also use the attributes from the grouped annotations. If an attribute cannot be mapped to the existing attributes of the grouped annotations we get an error. We can write custom code to handle new attributes in a so-called processor class. In the processor we can define how we want to handle the attributes. In the following sample we define a custom attribute <code>dontUse</code> and we use the value for the <code>excludes</code> attribute of the grouped annotations:</p><pre class="brush:groovy">import org.codehaus.groovy.transform.*
+import org.codehaus.groovy.ast.*
+import org.codehaus.groovy.control.*
+
+class SimpleProcessor extends AnnotationCollectorTransform {
+
+    public List&lt;AnnotationNode&gt; visit(AnnotationNode collector, 
+                                      AnnotationNode aliasAnnotationUsage, 
+                                      AnnotatedNode aliasAnnotated, 
+                                      SourceUnit source) {
+                                      
+        // Get attributes and attribute value for dontUse.
+        def attributes = aliasAnnotationUsage.getMembers()
+        def dontUse = attributes.get('dontUse')
+        attributes.remove('dontUse')
+        
+        if (dontUse) {
+            // Assign value of dontUse to excludes attributes.
+            aliasAnnotationUsage.addMember("excludes", dontUse)
+        }
+        
+        super.visit(collector, aliasAnnotationUsage, aliasAnnotated, source)
+    }    
+    
+}
+
+new GroovyShell(this.class.classLoader).evaluate '''
+import groovy.transform.*
+
+@AnnotationCollector(value = [EqualsAndHashCode, ToString], processor = 'SimpleProcessor')
+@interface Simple {}
+
+
+@Simple(dontUse = 'age')
+class User {
+    String username
+    int age
+}
+
+def user = new User(username: 'mrhaki', age: 39)
+assert user.toString() == 'User(mrhaki)'
+'''
+</pre><p>Another way to define an alias for a group of annotations is to simply define an annotation, add the annotations we want to group and as last annotation we add the <code>@AnnotationCollector</code>. In the next sample we combine the <code>@EqualsAndHashCode</code> and <code>@ToString</code> annotations into the alias <code>Simple</code>:</p><pre class="brush:groovy">@EqualsAndHashCode
+@ToString
+@AnnotationCollector
+@interface Simple {}
+
+
+@Simple
+class User {
+    String username
+}
+
+def user = new User(username: 'mrhaki')
+assert user.toString() == 'User(mrhaki)'
+</pre><p>More info and samples are also available on <a href="http://blog.andresteingress.com/2013/01/25/groovy-2-1-the-annotationcollector-annotation/">the blog of Andres Steingress</a>.</p><p>Written with Groovy 2.1.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

@@ -1,0 +1,51 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-12539709399646620392011-09-21T05:44:00.000+02:002011-09-21T16:09:29.276+02:00Groovy Goodness: Streaming JSON with StreamingJsonBuilder<p>Since Groovy 1.8 we can use <a href="http://mrhaki.blogspot.com/2011/04/groovy-goodness-build-json-with.html">JSONBuilder</a> to create JSON data structures. With Groovy 1.8.1 we have a variant of <code>JsonBuilder</code> that will not create a data structure in memory, but will stream directly to a writer the JSON structure: <code>StreamingJsonBuilder</code>. This is useful in situations where we don't have to change the structure and need a memory efficient way to write JSON.</p><pre class="brush:groovy">import groovy.json.*
+
+def jsonWriter = new StringWriter()
+def jsonBuilder = new StreamingJsonBuilder(jsonWriter)
+jsonBuilder.message {
+    header {
+        from(author: 'mrhaki')  
+        to 'Groovy Users', 'Java Users'
+    }
+    body "Check out Groovy's gr8 JSON support."
+}
+def json = jsonWriter.toString()
+assert json == '{"message":{"header":{"from":{"author":"mrhaki"},"to":["Groovy Users","Java Users"]},"body":"Check out Groovy\'s gr8 JSON support."}}'
+
+def prettyJson = JsonOutput.prettyPrint(json)
+assert prettyJson == '''{
+    "message": {
+        "header": {
+            "from": {
+                "author": "mrhaki"
+            },
+            "to": [
+                "Groovy Users",
+                "Java Users"
+            ]
+        },
+        "body": "Check out Groovy's gr8 JSON support."
+    }
+}'''
+
+
+new StringWriter().withWriter { sw ->
+    def builder = new StreamingJsonBuilder(sw)
+
+    // Without root element.
+    builder name: 'Groovy', supports: 'JSON'
+
+    assert sw.toString() == '{"name":"Groovy","supports":"JSON"}'
+}
+
+new StringWriter().with { sw ->
+    def builder = new StreamingJsonBuilder(sw)
+
+    // Combine named parameters and closures.
+    builder.user(name: 'mrhaki') {
+        active true
+    }
+    
+    assert sw.toString() == '{"user":{"name":"mrhaki","active":true}}'    
+}
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com6

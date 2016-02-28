@@ -1,0 +1,20 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-62882463308176538592009-10-02T07:00:00.002+02:002010-11-26T11:15:13.201+01:00Groovy Goodness: Expando as Dynamic Bean<p>The <code>Expando</code> class in Groovy is sort of a dynamic bean. We can add properties and we can add closures as methods to an instance of the <code>Expando</code> class. This is useful if we don't want to create a new class for a simple bean.</p>
+<pre class="brush:groovy">
+def user = new Expando(username: 'mrhaki')
+assert 'mrhaki' == user.username
+
+// Add an extra property.
+user.email = 'email@host.com'
+assert 'email@host.com' == user.email
+
+// Assign closure as method. The closure can
+// take parameters.
+user.printInfo = { writer -&gt;
+    writer &lt;&lt; &quot;Username: $username&quot;
+    writer &lt;&lt; &quot;, email: $email&quot;
+}
+
+def sw = new StringWriter()
+user.printInfo(sw)
+assert 'Username: mrhaki, email: email@host.com' == sw.toString()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

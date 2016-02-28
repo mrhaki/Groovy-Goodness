@@ -1,0 +1,6 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-84497794474154391482010-06-14T20:07:00.004+02:002010-11-26T11:15:12.819+01:00Groovy Goodness: Capitalize Strings<p>Groovy 1.7.3 adds the <code>capitalize()</code> method to the <code>String</code> class. This will capitalize the first letter of the String:</p>
+<pre class="brush:groovy">
+assert 'MrHaki' == 'mrHaki'.capitalize()
+assert 'Groovy' == 'groovy'.capitalize()
+assert 'Groovy is Gr8!' == 'groovy is Gr8!'.capitalize()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

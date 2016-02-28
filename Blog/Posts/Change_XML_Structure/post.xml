@@ -1,0 +1,90 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-27540225148849364152011-05-26T05:30:00.004+02:002011-05-26T20:06:03.865+02:00Groovy Goodness: Change XML Structure<p>We know how easy it is to <a href="http://mrhaki.blogspot.com/2009/10/groovy-goodness-reading-xml.html">read XML</a> and to <a href="http://mrhaki.blogspot.com/2009/10/groovy-goodness-creating-xml-with.html">write XML</a>. Recently someone asked during a workshop if it is possible to change the XML structure as easy. I found the answer on the <a href="http://groovy.codehaus.org/Updating+XML+with+XmlSlurper">Groovy website</a>. It turns out we can simple use <code>XmlSlurper</code> and we can traverse the structure to change existing node values and attributes. We use <code>appendNode()</code> and <code>replaceNode()</code> to work with nodes using a builder syntax.
+</p>
+<pre class="brush:groovy">
+@Grapes(
+    @Grab(group='xmlunit', module='xmlunit', version='1.3')
+)
+import org.custommonkey.xmlunit.*
+import groovy.xml.*
+
+def xml = '''
+&lt;todo&gt;
+    &lt;item priority="2"&gt;
+        &lt;title&gt;Look into GPars&lt;/title&gt;
+    &lt;/item&gt;
+    &lt;item priority="1"&gt;
+        &lt;title&gt;Start developing Griffon App&lt;/title&gt;
+    &lt;/item&gt;
+    &lt;item priority="2"&gt;
+        &lt;title&gt;Grails 1.4 M1&lt;/title&gt;
+    &lt;/item&gt;
+    &lt;item priority="3"&gt;
+        &lt;title&gt;GWT Sample&lt;/title&gt;
+    &lt;/item&gt;
+&lt;/todo&gt;
+'''
+
+def todo = new XmlSlurper().parseText(xml)
+
+// Change node values.
+def items = todo.item.findAll { 
+   it.@priority.toInteger() &lt; 3 
+}
+items.each { item -&gt; 
+    item.title = "DO: " + item.title 
+}
+
+// Change attribute value.
+def gpars= todo.item.find { 
+    it.title =~ /.*GPars.*/ 
+}
+gpars.@priority = '1'
+
+// Add extra item node.
+todo.appendNode {
+    item(priority: 2) {
+        title 'Work on blog post'
+    }
+}
+
+// Change node.
+def grailsItem = todo.item.find { 
+    it.title.toString().contains('Grails') 
+}
+grailsItem.replaceNode { node -&gt;
+    item(who: 'mrhaki', priority: node.@priority) {
+        title 'Download Grails 1.4 M1'       
+    }
+}
+
+// Remove node. Index value based on result directly after parsing.
+// So here we remove the item about GWT.
+todo.item[3].replaceNode {}
+
+// Create output.
+def newTodo = new StreamingMarkupBuilder().bind { 
+    mkp.yield todo 
+}.toString()
+
+def expected = '''
+&lt;todo&gt;
+    &lt;item priority="1"&gt;
+        &lt;title&gt;DO: Look into GPars&lt;/title&gt;
+    &lt;/item&gt;
+    &lt;item priority="1"&gt;
+        &lt;title&gt;DO: Start developing Griffon App&lt;/title&gt;
+    &lt;/item&gt;
+    &lt;item who="mrhaki" priority="2"&gt;
+        &lt;title&gt;Download Grails 1.4 M1&lt;/title&gt;
+    &lt;/item&gt;
+    &lt;item priority="2"&gt;
+        &lt;title&gt;Work on blog post&lt;/title&gt;
+    &lt;/item&gt;
+&lt;/todo&gt;
+'''
+
+// Check to see expected XML equals new todo XML.
+XMLUnit.ignoreWhitespace = true
+def difference = new Diff(newTodo, expected)
+assert difference.similar()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com6

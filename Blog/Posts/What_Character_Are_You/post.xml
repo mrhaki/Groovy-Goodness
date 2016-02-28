@@ -1,0 +1,14 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-22045702212804999152009-12-29T09:20:00.002+01:002010-11-26T11:15:12.925+01:00Groovy Goodness: What Character Are You?<p>Groovy adds a couple of methods to the <code>Character</code> class to determine of the character is a letter, digit, whitespace, upper- or lowercase.</p>
+<pre class="brush:groovy">
+def str = 'a1cB \n.9'
+def characters = str.chars  // Convert to char[]
+
+assert characters[0].isLetter()  // 'a'
+assert characters[1].isDigit()  // '1'
+assert characters[2].isLowerCase()  // 'c'
+assert characters[3].isUpperCase()  // 'B'
+assert characters[4].isWhitespace()  // ' '
+assert characters[5].isWhitespace()  // '\n'
+assert !characters[6].isLetterOrDigit()  // '.'
+assert characters[7].isLetterOrDigit()  // '9'
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

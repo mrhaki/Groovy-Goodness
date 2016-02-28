@@ -1,0 +1,977 @@
+<?xml version='1.0' encoding='UTF-8'?><?xml-stylesheet href="https://www.blogger.com/styles/atom.css" type="text/css"?><feed xmlns='http://www.w3.org/2005/Atom' xmlns:openSearch='http://a9.com/-/spec/opensearchrss/1.0/' xmlns:gd='http://schemas.google.com/g/2005' xmlns:georss='http://www.georss.org/georss' xmlns:thr='http://purl.org/syndication/thread/1.0' xmlns:blogger='http://schemas.google.com/blogger/2008'><id>tag:blogger.com,1999:blog-6671019398434141469</id><updated>2015-10-04T02:20:23.793+02:00</updated><category term='NetBeans 6.1'/><category term='GradleGoodness:Java'/><category term='Gr8Conf2013'/><category term='GroovyGoodness:MOP'/><category term='GrailsGoodness:Configuration'/><category term='Grails CLI'/><category term='Awesome:Asciidoctor'/><category term='GrailsGoodness:Database'/><category term='GrailsGoodness:SQL'/><category term='Ratpacked:Logging'/><category term='GroovyGoodness:Closure'/><category term='Java'/><category term='GroovyGoodness:Testing'/><category term='SOAP web services'/><category term='Database'/><category term='Ratpacked:Groovy'/><category term='IntelliJ IDEA 12'/><category term='IntelliJ IDEA 14 CE'/><category term='UI:Reference'/><category term='GroovyGoodness:Scripts'/><category term='GroovyGoodness:'/><category term='Groovy 2.1.3'/><category term='CodeNarc'/><category term='GradleGoodness:Tasks'/><category term='Grails 3.0.7'/><category term='Grails 2.2.4'/><category term='JCenter'/><category term='JSON'/><category term='Grails 1.1'/><category term='CXF'/><category term='GrailsGoodness:Testing'/><category term='GradleGoodness:Configuration'/><category term='Groovy 2.4'/><category term='Ratpacked:Syntax'/><category term='Tomcat'/><category term='Gradle 1.0'/><category term='Gradle 1.0-rc-3'/><category term='GrailsGoodness:Intermediate'/><category term='Javascript'/><category term='IntelliJ IDEA 13'/><category term='Sass'/><category term='Alfresco 3.4.d'/><category term='Asciidoctor'/><category term='Groovy 1.7.3'/><category term='GroovyGoodness:XML'/><category term='griffon'/><category term='Gradle 2.7'/><category term='IntelliJ'/><category term='Fitnesse'/><category term='Git'/><category term='IntelliJ IDEA 14'/><category term='Ratpacked'/><category term='GroovyGoodness:Traits'/><category term='Asciidoc'/><category term='Gr8Conf2012'/><category term='Wicket'/><category term='XML'/><category term='NetBeans'/><category term='Maven2'/><category term='Iterables'/><category term='Grails Goodness Notebook'/><category term='Gradle 2.6'/><category term='Grails 2.0.4'/><category term='jQuery'/><category term='NextBuild'/><category term='Groovy 1.7.4'/><category term='Google Guava'/><category term='Grails 2.5.0'/><category term='Spring'/><category term='GradleGoodness:Groovy'/><category term='GrailsGoodness:CommandLine'/><category term='STS'/><category term='Conference'/><category term='Spring 3'/><category term='Gradle 2.2.1'/><category term='Eclipse'/><category term='Video'/><category term='GroovyGoodness:IO'/><category term='Gaelyk'/><category term='GrailsGoodness:Taglib'/><category term='YUI'/><category term='Android'/><category term='Madrid'/><category term='GSP'/><category term='GoogleGuava:Goodness'/><category term='GrailsGoodness: Spring'/><category term='Tomcat7'/><category term='Maven:Reference'/><category term='GroovyGoodness:GDK'/><category term='Griffon:Goodness'/><category term='GrailsGoodness:Domain'/><category term='Groovy 1.7.9'/><category term='Alfresco Web Quick Start'/><category term='Weekly Sightings'/><category term='Grails'/><category term='GrailsGoodness:URLMapping'/><category term='GroovyGoodness:Collections'/><category term='GroovyGoodness:CodeNarc'/><category term='GroovyGoodness:Functional'/><category term='GroovyGoodness:Builders'/><category term='Flex:Reference'/><category term='Grails 1.0.x'/><category term='Groovy 1.8.3'/><category term='Groovy 2.2.1'/><category term='Tomcat6'/><category term='Gradle 0.9'/><category term='GroovyGoodness:API'/><category term='GroovyGoodness:Files'/><category term='Groovy 2.3.6'/><category term='Groovy'/><category term='Grails 1.2'/><category term='OSX'/><category term='Grails 3.0.8'/><category term='GrailsGoodness:Scripting'/><category term='Hudson'/><category term='Grails:Plugin'/><category term='GroovyGoodness:Beginner'/><category term='MySQL'/><category term='GMetrics 0.3'/><category term='Asciidoctor 0.1.4'/><category term='Cocoon'/><category term='XSLT'/><category term='CloudFoundry:Coolness'/><category term='Grails3'/><category term='Gradle 1.2'/><category term='GrailsGoodness:IDE'/><category term='GroovyGoodness:Date'/><category term='Groovy 2'/><category term='Gradle 0.8'/><category term='Alfresco Web Editor'/><category term='CSS:Reference'/><category term='Groovy 1.8.1'/><category term='Apache Camel'/><category term='GroovyGoodness:Templating'/><category term='NetBeans 6.7.1'/><category term='Guava'/><category term='Groovy Server Page'/><category term='Spring Sweets'/><category term='Google App Egine'/><category term='GroovyGoodness:Annotations'/><category term='Groovy 2.4.1'/><category term='Sass 3.2.5'/><category term='Logback'/><category term='Groovy:Grassroots'/><category term='Java:Lambdas'/><category term='Spock'/><category term='Spring 4'/><category term='Groovy 2.3.7'/><category term='GradleGoodness:BuildScript'/><category term='Spock 1.0-SNAPSHOT'/><category term='Gradle 2.2'/><category term='GoogleGuavaGoodness:Collections'/><category term='Greach'/><category term='Spocklight'/><category term='Gradle'/><category term='GroovyGoodness:GKD'/><category term='GroovyGoodness:Operators'/><category term='Ratpacked:Configuration'/><category term='Grails 1.1.1'/><category term='GroovyGoodness:Notebook'/><category term='AwesomeAsciidoctor:Macros'/><category term='Grails 2.3.5'/><category term='CloudFoundry'/><category term='SpringSweets:Gradle'/><category term='Gradle 2.1'/><category term='Groovy:Goodness'/><category term='Groovy 1.8.6'/><category term='Greachconf'/><category term='GPars'/><category term='CodeNarc 0.11'/><category term='GrailsGoodness:Validation'/><category term='NetBeans 6.7'/><category term='Mercurial'/><category term='Ratpack 1.0.0'/><category term='Gradle:Goodness'/><category term='GradleGoodness:Plugins'/><category term='GrailsGoodness:Controllers'/><category term='Mac'/><category term='IntelliJ IDEA'/><category term='GMetrics'/><category term='Groovy 2.0'/><category term='Groovy 2.4.3'/><category term='Gradle 2.0'/><category term='CSS'/><category term='Grails 2.3.7'/><category term='Gradle 1.6'/><category term='Grails:Goodness'/><category term='AsiidoctorJ'/><category term='GroovyGoodness:SDK'/><category term='Subversion'/><category term='Groovy 1.8.4'/><category term='Groovy 2.2.2'/><category term='SpringSweets:SpringBoot'/><category term='GradleGoodness:Commandline'/><category term='Ratpack'/><category term='Alfresco'/><category term='Groovy 2.4.4'/><category term='Spock:Spotlight'/><category term='Javascript:Reference'/><category term='Testing'/><category term='Gr8Conf'/><category term='GroovyGoodness:String'/><category term='plugin'/><category term='Spring Boot'/><category term='DSL'/><category term='Grails 2.0'/><category term='Book Review'/><category term='NetBeans:Samples'/><category term='Grails 1.1.2'/><category term='RESTful webservices'/><category term='Asciidoctor 1.5.0'/><category term='Log4j'/><category term='Gradle Goodness Notebook'/><category term='GrailsGoodness:GORM'/><category term='GroovyGoodness:DSL'/><category term='GrailsGoodness:Logging'/><category term='IntelliJ IDEA CE'/><category term='GroovyGoodness:JMX'/><category term='Groovy 1.8'/><category term='GrailsGoodness:Spring'/><category term='Spring:Sweets'/><category term='Groovy Goodness Notebook'/><category term='Spocklight Notebook'/><category term='Grails 2.2.1'/><category term='Grails 2'/><category term='GroovyGoodness:Advanced'/><category term='HTML'/><category term='GrailsGoodness:Marshalling'/><category term='NetBeans 6.5'/><category term='GradleGoodness:Testing'/><category term='JDriven'/><category term='Groovy 2.3.1'/><category term='GrailsGoodness:Prompt'/><category term='Groovy:Goodness GroovyGoodness:GDK'/><category term='Grails 2.4'/><category term='Cocoon 2.2'/><category term='GradleGoodness:Dependencies'/><category term='IDEA'/><category term='GradleGoodness:Enterprise'/><category term='Groovy 2.1'/><category term='Grails 2.4.2'/><category term='Maven'/><category term='Groovy 1.6.8'/><category term='IDE'/><category term='Linux'/><category term='Groovy 1.7'/><category term='Grails 2.3.8'/><category term='GriffonGoodness:CommandLine'/><category term='Groovy 1.7.2'/><category term='Asciidoctor 1.5.1'/><category term='Spain'/><category term='GrailsGoodness:REST'/><category term='Firefox'/><category term='GradleGoodness:IDE'/><category term='Gr8Conf2011'/><category term='GroovyGoodness:Intermediate'/><category term='Gradle 0.9.1'/><category term='Hamcrest'/><category term='Grails 2.2.0'/><category term='GroovyGoodness:IDE'/><category term='Terminal'/><category term='Grails 3.0.1'/><category term='Asciidoctor 1.5.2'/><category term='Groovy:Goodness GroovyGoodness:XML'/><category term='GroovyGoodness:Java'/><category term='SLF4J'/><category term='Groovy 1.8.7'/><category term='SpringSource Tool Suite'/><category term='GroovyGoodness:AST'/><category term='Groovy Server Pages'/><category term='Spock 0.7'/><category term='GroovyGoodness:Grape'/><category term='GroovyGoodness:JSON'/><category term='Flex:Samples'/><category term='GrailsGoodness:Security'/><category term='GrailsGoodness:DataBinding'/><category term='Leanpub'/><category term='GrailsGoodness:Plugins'/><category term='GroovyGoodness:CommandLine'/><category term='Groovy 2.3'/><category term='Grails 2.4.4'/><category term='Gradle 2.3'/><category term='GroovyGoodness:Syntax'/><category term='AwesomeAsciidoctor:Structure'/><category term='Logging'/><category term='Groovy 2.0.4'/><category term='Groovy programming'/><category term='Software:Toolbox'/><category term='GrailsGoodness:GSP'/><category term='Spock 1.0'/><category term='Grails 2.2.2'/><category term='Groovy 2.0.5'/><category term='GrailsGoodness:Tomcat'/><category term='Grails 3'/><category term='Spring Boot 1.2.5'/><category term='Mockito'/><category term='Jenkins'/><category term='Yahoo Pipes'/><category term='GroovyGoodness:SQL'/><category term='GrailsGoodness:Gradle'/><category term='GradleGoodness:Ant'/><category term='GroovyGoodness:GPars'/><category term='Scala'/><category term='Bintray'/><category term='Ubuntu'/><category term='GrailsGoodness:Request'/><category term='Groovy 2.2'/><category term='Grails 1.3.7'/><category term='Grails 2.3'/><category term='GriffonGoodness:Beginner'/><title type='text'>Messages from mrhaki</title><subtitle type='html'>A blog about Groovy, Grails, Gradle and other cool developer subjects.</subtitle><link rel='http://schemas.google.com/g/2005#feed' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/-/Groovy%3AGoodness'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/-/Groovy%3AGoodness'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/search/label/Groovy%3AGoodness'/><link rel='hub' href='http://pubsubhubbub.appspot.com/'/><link rel='next' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/-/Groovy%3AGoodness/-/Groovy%3AGoodness?start-index=26&amp;max-results=25'/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><generator version='7.00' uri='https://www.blogger.com'>Blogger</generator><openSearch:totalResults>336</openSearch:totalResults><openSearch:startIndex>1</openSearch:startIndex><openSearch:itemsPerPage>25</openSearch:itemsPerPage><entry><id>tag:blogger.com,1999:blog-6671019398434141469.post-6664115215357813960</id><published>2015-09-22T11:02:00.000+02:00</published><updated>2015-09-22T11:05:37.892+02:00</updated><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:Syntax'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy 2.4.4'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy'/><title type='text'>Groovy Goodness: Defining Public Accessible Constant Fields </title><content type='html'>&lt;p&gt;There is a catch when we define a constant field in Groovy. Rob Fletcher blogged about this in the post &lt;a href="http://blog.freeside.co/2013/02/17/groovy-the-public-keyword/"&gt;Groovy the public keyword&lt;/a&gt; a while ago. When we omit the &lt;code&gt;public&lt;/code&gt; keyword for a method then the method is still accessible as public method, because Groovy makes the method public when the class is compiled. When we leave out the &lt;code&gt;public&lt;/code&gt; keyword for fields Groovy creates a getter and setter method for the field at compile time and turns it into a property that applies to the Java Bean specification. This is also true if the field is static. So if we define a constant value as &lt;code&gt;static final&lt;/code&gt; we must keep in mind that Groovy will generate a getter method so the constant value is a read only property according to Java Bean specification.&lt;/p&gt;&lt;p&gt;Let's create a simple class with a constant field &lt;code&gt;DEFAULT&lt;/code&gt;, a property &lt;code&gt;message&lt;/code&gt; and a &lt;code&gt;message&lt;/code&gt; method. We leave out any &lt;code&gt;public&lt;/code&gt; keyword:&lt;/p&gt;&lt;pre class="brush:groovy"&gt;// File: sample.groovy
+// Groovy makes class public.
+class Sample {
+    // Groovy adds getDEFAULT and no setDEFAULT.
+    static final String DEFAULT = 'default'
+  
+    // Groovy adds setMessage/getMessage
+    String message
+
+    // Groovy makes method public.
+    void message(final String newMessage) {
+        this.message = message
+    }
+}
+&lt;/pre&gt;&lt;p&gt;If we compile this class we get the following methods and fields (using &lt;code&gt;javap&lt;/code&gt; to inspect the class):&lt;/p&gt;&lt;pre class="brush:plain;light:true"&gt;$ javap -p -constants Sample
+Compiled from "sample.groovy"
+public class Sample implements groovy.lang.GroovyObject {
+  private static final java.lang.String DEFAULT = "default";
+  private java.lang.String message;
+  ...
+  public void message(java.lang.String);
+  ...
+  public static final java.lang.String getDEFAULT();
+  public java.lang.String getMessage();
+  public void setMessage(java.lang.String);
+}
+&lt;/pre&gt;&lt;p&gt;If we want to access the constant field in Groovy we can still use &lt;code&gt;Sample.DEFAULT&lt;/code&gt;, but from Java code this doesn't work. You can see in the generated class file we should invoke &lt;code&gt;getDEFAULT()&lt;/code&gt;, because this method is public. To overcome this we simply add &lt;code&gt;public&lt;/code&gt; to our constant field definition. This way Groovy will leave the field unchanged and in the generated class file it is still public. Then from Java we can use &lt;code&gt;Sample.DEFAULT&lt;/code&gt; to access the constant value. Let's see the output of &lt;code&gt;javap&lt;/code&gt; when we make the &lt;code&gt;DEFAULT&lt;/code&gt; field public:&lt;/p&gt;&lt;pre class="brush:plain;light:true"&gt;$ javap -p -constants Sample
+Compiled from "sample.groovy"
+public class Sample implements groovy.lang.GroovyObject {
+  public static final java.lang.String DEFAULT = "default";
+  private java.lang.String message;
+  ...
+  public void message(java.lang.String);
+  ...
+  public java.lang.String getMessage();
+  public void setMessage(java.lang.String);
+}
+&lt;/pre&gt;&lt;p&gt;This also helps an IDE, like IntelliJ IDEA, to do a proper &lt;code&gt;import static&lt;/code&gt; based on the constant field.&lt;/p&gt;&lt;p&gt;Written with Groovy 2.4.4.&lt;/p&gt;</content><link rel='replies' type='application/atom+xml' href='http://mrhaki.blogspot.com/feeds/6664115215357813960/comments/default' title='Post Comments'/><link rel='replies' type='text/html' href='http://mrhaki.blogspot.com/2015/09/groovy-goodness-defining-public.html#comment-form' title='0 Comments'/><link rel='edit' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/6664115215357813960'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/6664115215357813960'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/2015/09/groovy-goodness-defining-public.html' title='Groovy Goodness: Defining Public Accessible Constant Fields '/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><thr:total>0</thr:total><gd:extendedProperty name='commentSource' value='1'/><gd:extendedProperty name='commentModerationMode' value='FILTERED_POSTMOD'/></entry><entry><id>tag:blogger.com,1999:blog-6671019398434141469.post-7493019499384694666</id><published>2015-09-21T15:28:00.000+02:00</published><updated>2015-09-21T15:28:07.332+02:00</updated><category scheme='http://www.blogger.com/atom/ns#' term='IntelliJ IDEA 14 CE'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness'/><category scheme='http://www.blogger.com/atom/ns#' term='IntelliJ'/><category scheme='http://www.blogger.com/atom/ns#' term='IntelliJ IDEA'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:IDE'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy'/><title type='text'>Groovy Goodness: Turn Method Parameters Into Named Map Arguments With IntelliJ IDEA</title><content type='html'>&lt;p&gt;A very useful feature in Groovy is the use of named arguments. Instead of a list of arguments for a method or constructor we can use a &lt;code&gt;Map&lt;/code&gt; argument. If the argument is the first in the list of arguments then Groovy allows use to use named arguments when we invoke the method or constructor. This means all key/value arguments are gathered together and assigned to the &lt;code&gt;Map&lt;/code&gt; argument. Inside our method or constructor we can then access the &lt;code&gt;Map&lt;/code&gt; argument and get the values for the keys. This leads to better readable code and that is very useful. IntelliJ IDEA has a Groovy intention to turn method parameters into a &lt;code&gt;Map&lt;/code&gt; parameter for named arguments with a few mouse clicks.&lt;/p&gt;&lt;p&gt;Suppose we have the following source code with a &lt;code&gt;simple&lt;/code&gt; method definition, 2 arguments, and the invocation of the method:&lt;/p&gt;&lt;div class="separator" style="clear: both; text-align: center;"&gt;&lt;a href="http://4.bp.blogspot.com/-d1IKOQ4a-iw/VgAFcSB1tOI/AAAAAAAALVs/oUxpf7SvY5E/s1600/idea-args-map1.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://4.bp.blogspot.com/-d1IKOQ4a-iw/VgAFcSB1tOI/AAAAAAAALVs/oUxpf7SvY5E/s400/idea-args-map1.png" /&gt;&lt;/a&gt;&lt;/div&gt;&lt;p style="clear:both;"&gt;Now we activate the Groovy intentions (for me it is &lt;kbd&gt;Alt+Enter&lt;/kbd&gt; or try &lt;kdb&gt;Shift+Shift&lt;/kdb&gt; and type &lt;em&gt;Show intentions actions&lt;/em&gt;) while we place the cursor on the parameter &lt;code&gt;greeting&lt;/code&gt;. We select the option &lt;em&gt;Convert parameter to map entry&lt;/em&gt;:&lt;/p&gt;&lt;div class="separator" style="clear: both; text-align: center;"&gt;&lt;a href="http://1.bp.blogspot.com/-PzAKX7HudOg/VgAFlKPDSiI/AAAAAAAALVw/WLt_VioAKnk/s1600/idea-args-map1a.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://1.bp.blogspot.com/-PzAKX7HudOg/VgAFlKPDSiI/AAAAAAAALVw/WLt_VioAKnk/s400/idea-args-map1a.png" /&gt;&lt;/a&gt;&lt;/div&gt;&lt;p style="clear:both;"&gt;IntelliJ IDEA opens a new dialog. Here we can choose to create a new &lt;code&gt;Map&lt;/code&gt; parameter for named arguments. If our method would have a &lt;code&gt;Map&lt;/code&gt; argument already we can re-use it. We can let IDEA add the &lt;code&gt;Map&lt;/code&gt; type or leave it out. Finally we can change the name of the parameter. In our example we have changed it to &lt;code&gt;conf&lt;/code&gt;:&lt;/p&gt;&lt;div class="separator" style="clear: both; text-align: center;"&gt;&lt;a href="http://4.bp.blogspot.com/-f2tFC9eorDk/VgAFotSZIfI/AAAAAAAALV4/ZSFI1E8IQP0/s1600/idea-args-map2.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://4.bp.blogspot.com/-f2tFC9eorDk/VgAFotSZIfI/AAAAAAAALV4/ZSFI1E8IQP0/s400/idea-args-map2.png" /&gt;&lt;/a&gt;&lt;/div&gt;&lt;p style="clear:both;"&gt;When we click the &lt;em&gt;OK&lt;/em&gt; button we see our source code has changed. Not only the method signature of the &lt;code&gt;simple&lt;/code&gt; method, but also the invocation has changed:&lt;/p&gt;&lt;div class="separator" style="clear: both; text-align: center;"&gt;&lt;a href="http://3.bp.blogspot.com/-DOgUWSyo1wE/VgAFsSV42GI/AAAAAAAALWA/fyAkOhvNhVk/s1600/idea-args-map3.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://3.bp.blogspot.com/-DOgUWSyo1wE/VgAFsSV42GI/AAAAAAAALWA/fyAkOhvNhVk/s400/idea-args-map3.png" /&gt;&lt;/a&gt;&lt;/div&gt;&lt;p style="clear:both;"&gt;We can re-apply the same intention for the &lt;code&gt;username&lt;/code&gt; parameter and we get the following code:&lt;/p&gt;&lt;div class="separator" style="clear: both; text-align: center;"&gt;&lt;a href="http://1.bp.blogspot.com/-oE4YbBm-M4c/VgAFveNzIoI/AAAAAAAALWI/DQXTUL3hf7A/s1600/idea-args-map4.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://1.bp.blogspot.com/-oE4YbBm-M4c/VgAFveNzIoI/AAAAAAAALWI/DQXTUL3hf7A/s400/idea-args-map4.png" /&gt;&lt;/a&gt;&lt;/div&gt;&lt;p style="clear:both;"&gt;Written with IntelliJ IDEA CE 14.1.4.&lt;/p&gt;</content><link rel='replies' type='application/atom+xml' href='http://mrhaki.blogspot.com/feeds/7493019499384694666/comments/default' title='Post Comments'/><link rel='replies' type='text/html' href='http://mrhaki.blogspot.com/2015/09/groovy-goodness-turn-method-parameters.html#comment-form' title='0 Comments'/><link rel='edit' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/7493019499384694666'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/7493019499384694666'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/2015/09/groovy-goodness-turn-method-parameters.html' title='Groovy Goodness: Turn Method Parameters Into Named Map Arguments With IntelliJ IDEA'/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><media:thumbnail xmlns:media='http://search.yahoo.com/mrss/' url='http://4.bp.blogspot.com/-d1IKOQ4a-iw/VgAFcSB1tOI/AAAAAAAALVs/oUxpf7SvY5E/s72-c/idea-args-map1.png' height='72' width='72'/><thr:total>0</thr:total><gd:extendedProperty name='commentSource' value='1'/><gd:extendedProperty name='commentModerationMode' value='FILTERED_POSTMOD'/></entry><entry><id>tag:blogger.com,1999:blog-6671019398434141469.post-2969092395362200669</id><published>2015-09-21T14:10:00.000+02:00</published><updated>2015-09-21T14:12:54.927+02:00</updated><category scheme='http://www.blogger.com/atom/ns#' term='IntelliJ IDEA 14 CE'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness'/><category scheme='http://www.blogger.com/atom/ns#' term='IntelliJ'/><category scheme='http://www.blogger.com/atom/ns#' term='IntelliJ IDEA'/><category scheme='http://www.blogger.com/atom/ns#' term='IDEA'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:IDE'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy'/><title type='text'>Groovy Goodness: Turn Map Into Class With IntelliJ IDEA</title><content type='html'>&lt;p&gt;IntelliJ IDEA has very good Groovy support. It also provides some intentions especially for the Groovy language. For example we can turn a map definition into a Groovy class definition with a few simple clicks.&lt;/p&gt;&lt;p&gt;The following screenshot shows a simple map declaration with two keys: &lt;code&gt;username&lt;/code&gt; and &lt;code&gt;alias&lt;/code&gt;. If we use the shortcut for intentions (&lt;kbd&gt;Alt+Enter&lt;/kbd&gt; on my computer) we can choose the &lt;em&gt;Convert to Class&lt;/em&gt; option:&lt;/p&gt;&lt;div class="separator" style="clear: both; text-align: center;"&gt;&lt;a href="http://2.bp.blogspot.com/-d0Ql2e3I0IQ/Vf_zY2Q813I/AAAAAAAALU4/AY_AgVxFogE/s1600/idea-map-convert.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://2.bp.blogspot.com/-d0Ql2e3I0IQ/Vf_zY2Q813I/AAAAAAAALU4/AY_AgVxFogE/s400/idea-map-convert.png" /&gt;&lt;/a&gt;&lt;/div&gt;&lt;p style="clear:both"&gt;IDEA opens a new dialog window where we can type the name of the class we want to generate and a package name:&lt;/p&gt;&lt;div class="separator" style="clear: both; text-align: center;"&gt;&lt;a href="http://3.bp.blogspot.com/-1k6G-31zXkc/Vf_zc9WzBqI/AAAAAAAALVA/HDTND0KEZqI/s1600/idea-map-convert1.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://3.bp.blogspot.com/-1k6G-31zXkc/Vf_zc9WzBqI/AAAAAAAALVA/HDTND0KEZqI/s400/idea-map-convert1.png" /&gt;&lt;/a&gt;&lt;/div&gt;&lt;p style="clear:both;"&gt;When we click the &lt;em&gt;OK&lt;/em&gt; button IDEA generates a new Groovy class file in our project:&lt;/p&gt;&lt;div class="separator" style="clear: both; text-align: center;"&gt;&lt;a href="http://3.bp.blogspot.com/-z53H8pkVCQE/Vf_0EG39baI/AAAAAAAALVY/vwS-qUg75cE/s1600/idea-map-convert2.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://3.bp.blogspot.com/-z53H8pkVCQE/Vf_0EG39baI/AAAAAAAALVY/vwS-qUg75cE/s320/idea-map-convert2.png" /&gt;&lt;/a&gt;&lt;/div&gt;&lt;p style="clear:both;"&gt;Also our original source where we declared the map is changed. Now the constructor of the new class is declared and the original values from the map are assigned to the correct properties of the class:&lt;/p&gt;&lt;div class="separator" style="clear: both; text-align: center;"&gt;&lt;a href="http://4.bp.blogspot.com/-PB-UIkJQqfg/Vf_zj6ntz3I/AAAAAAAALVQ/tx18wQ-0QCQ/s1600/idea-map-convert3.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://4.bp.blogspot.com/-PB-UIkJQqfg/Vf_zj6ntz3I/AAAAAAAALVQ/tx18wQ-0QCQ/s400/idea-map-convert3.png" /&gt;&lt;/a&gt;&lt;/div&gt;&lt;p style="clear:both;"&gt;Written with IntelliJ IDEA CE 14.1.4.&lt;/p&gt;</content><link rel='replies' type='application/atom+xml' href='http://mrhaki.blogspot.com/feeds/2969092395362200669/comments/default' title='Post Comments'/><link rel='replies' type='text/html' href='http://mrhaki.blogspot.com/2015/09/groovy-goodness-turn-map-into-class.html#comment-form' title='0 Comments'/><link rel='edit' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/2969092395362200669'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/2969092395362200669'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/2015/09/groovy-goodness-turn-map-into-class.html' title='Groovy Goodness: Turn Map Into Class With IntelliJ IDEA'/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><media:thumbnail xmlns:media='http://search.yahoo.com/mrss/' url='http://2.bp.blogspot.com/-d0Ql2e3I0IQ/Vf_zY2Q813I/AAAAAAAALU4/AY_AgVxFogE/s72-c/idea-map-convert.png' height='72' width='72'/><thr:total>0</thr:total><gd:extendedProperty name='commentSource' value='1'/><gd:extendedProperty name='commentModerationMode' value='FILTERED_POSTMOD'/></entry><entry><id>tag:blogger.com,1999:blog-6671019398434141469.post-522931575494483510</id><published>2015-09-16T12:59:00.000+02:00</published><updated>2015-09-16T13:03:20.217+02:00</updated><category scheme='http://www.blogger.com/atom/ns#' term='IntelliJ IDEA 14 CE'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness'/><category scheme='http://www.blogger.com/atom/ns#' term='IntelliJ IDEA'/><category scheme='http://www.blogger.com/atom/ns#' term='IntelliJ IDEA CE'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:IDE'/><category scheme='http://www.blogger.com/atom/ns#' term='IntelliJ IDEA 14'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy'/><title type='text'>Groovy Goodness: IntelliJ IDEA Intentions For String Values</title><content type='html'>&lt;p&gt;The best IDE to use when developing Groovy code is &lt;a href="http://www.jetbrains.com"&gt;IntelliJ IDEA&lt;/a&gt;. The Groovy plugin has some nice intentions for us that we can use to optimise and refactor our code. We will look at some of the intentions that deal with String values in this blog post. The intentions shown here work in the free Community Edition as well in the paid Ultimate Edition. To see the possible intentions in IDEA we must select the &lt;em&gt;Show Intentions Action&lt;/em&gt;. We need to check our shortcut keys to see the assigned shortcut. On my Mac it is for example &lt;kbd&gt;Alt+Enter&lt;/kbd&gt;. Alternatively we can press the &lt;kdb&gt;Shift&lt;/kbd&gt; key twice and type in &lt;em&gt;Show intentions&lt;/em&gt;. IDEA will show the action with the shortcut key for us.&lt;/p&gt;&lt;p&gt;Suppose we have assigned a String value to a variable in our code. We used the double quoted syntax to do so, like in Java. But we want to change it to a single quoted String value, so to make it explicit the value cannot be a GString implementation. In the following screenshot we see our variable &lt;code&gt;s&lt;/code&gt; with a value. We use our shortcut key to open the suggested intentions. We type &lt;kbd&gt;convert&lt;/kbd&gt; to shorten the list with only conversion options. We see that we can change our String value to dollar slashy, regular expression, multiline or plain String syntax:&lt;/p&gt;&lt;div class="separator" style="clear: both; text-align: center;"&gt;&lt;a href="http://4.bp.blogspot.com/-R7NV9p4epZA/VflKi2NVP3I/AAAAAAAALTU/x2IyUiES6-g/s1600/idea-intention-convert-string.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://4.bp.blogspot.com/-R7NV9p4epZA/VflKi2NVP3I/AAAAAAAALTU/x2IyUiES6-g/s640/idea-intention-convert-string.png" /&gt;&lt;/a&gt;&lt;/div&gt;&lt;p style="clear:both"&gt;When we select &lt;em&gt;Convert to String&lt;/em&gt; IntelliJ IDEA changed our value assignment:&lt;/p&gt;&lt;div class="separator" style="clear: both; text-align: center;"&gt;&lt;a href="http://1.bp.blogspot.com/-9qsqVoEDhMM/VflLErnPxeI/AAAAAAAALTc/s5NjfIfD-5M/s1600/idea-intention.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://1.bp.blogspot.com/-9qsqVoEDhMM/VflLErnPxeI/AAAAAAAALTc/s5NjfIfD-5M/s640/idea-intention.png" /&gt;&lt;/a&gt;&lt;/div&gt;&lt;p style="clear:both"&gt;We can also apply the conversion the other way around:&lt;/p&gt;&lt;div class="separator" style="clear: both; text-align: center;"&gt;&lt;a href="http://4.bp.blogspot.com/-qp-7TMxMkq8/VflLKPz_NdI/AAAAAAAALTk/oxLVrOxKAOM/s1600/idea-intention-convert.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://4.bp.blogspot.com/-qp-7TMxMkq8/VflLKPz_NdI/AAAAAAAALTk/oxLVrOxKAOM/s640/idea-intention-convert.png" /&gt;&lt;/a&gt;&lt;/div&gt;&lt;p style="clear:both"&gt;Another useful intention, especially when we copy-past some Java code in our Groovy source files, is to convert a String concatenation with the &lt;code&gt;+&lt;/code&gt; operator to a GString value. We can select one of the elements of the concatenation and open the &lt;em&gt;Show Intentions Action&lt;/em&gt;. Now we see the option &lt;em&gt;Convert to GString&lt;/em&gt;:&lt;/p&gt;&lt;div class="separator" style="clear: both; text-align: center;"&gt;&lt;a href="http://3.bp.blogspot.com/-spMi6fYcvz4/VflLOavabLI/AAAAAAAALTs/yDdsP9ZdtK8/s1600/idea-intention-gstring-concat.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://3.bp.blogspot.com/-spMi6fYcvz4/VflLOavabLI/AAAAAAAALTs/yDdsP9ZdtK8/s640/idea-intention-gstring-concat.png" /&gt;&lt;/a&gt;&lt;/div&gt;&lt;p style="clear:both"&gt;When we select the option IDEA will turn the statement into a GString with the variable value replaced as an expression:&lt;/p&gt;&lt;div class="separator" style="clear: both; text-align: center;"&gt;&lt;a href="http://3.bp.blogspot.com/-CQiJcTUOmCI/VflLRmCH4qI/AAAAAAAALT0/gT8sJmT2YsU/s1600/idea-intention-gstring-concatted.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://3.bp.blogspot.com/-CQiJcTUOmCI/VflLRmCH4qI/AAAAAAAALT0/gT8sJmT2YsU/s640/idea-intention-gstring-concatted.png" /&gt;&lt;/a&gt;&lt;/div&gt;&lt;p style="clear:both"&gt;Also when we already have a GString value in our code we can remove unnecessary braces. In Groovy we can leave out the curly braces for dotted expression or the expression is a single value. We select the option &lt;em&gt;Remove unnecessary braces in GString&lt;/em&gt; from the intentions to make this work:&lt;/p&gt;&lt;div class="separator" style="clear: both; text-align: center;"&gt;&lt;a href="http://2.bp.blogspot.com/-4ujfa9YEK_0/VflLWvsP_bI/AAAAAAAALT8/ukaml4N2T9k/s1600/idea-intention-gstring-braces.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://2.bp.blogspot.com/-4ujfa9YEK_0/VflLWvsP_bI/AAAAAAAALT8/ukaml4N2T9k/s640/idea-intention-gstring-braces.png" /&gt;&lt;/a&gt;&lt;/div&gt;&lt;p style="clear:both;"&gt;The result is that the braces are removed:&lt;/p&gt;&lt;div class="separator" style="clear: both; text-align: center;"&gt;&lt;a href="http://2.bp.blogspot.com/-_nr5qPYOlx0/VflLeWU1ErI/AAAAAAAALUE/Ec1GX5ANwSk/s1600/idea-intention-gstring-concatted.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://2.bp.blogspot.com/-_nr5qPYOlx0/VflLeWU1ErI/AAAAAAAALUE/Ec1GX5ANwSk/s640/idea-intention-gstring-concatted.png" /&gt;&lt;/a&gt;&lt;/div&gt;&lt;p style="clear:both;"&gt;Finally we take a look at the intention to turn a String value with end of line characters in it to a multiline String value:&lt;/p&gt;&lt;div class="separator" style="clear: both; text-align: center;"&gt;&lt;a href="http://4.bp.blogspot.com/-pGwELm4IFpk/VflLiv8qF1I/AAAAAAAALUM/kqjmnnJmAqs/s1600/idea-intention-multiline.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://4.bp.blogspot.com/-pGwELm4IFpk/VflLiv8qF1I/AAAAAAAALUM/kqjmnnJmAqs/s640/idea-intention-multiline.png" /&gt;&lt;/a&gt;&lt;/div&gt;&lt;p style="clear:both;"&gt;If we have selected the option &lt;em&gt;Convert to Multiline&lt;/em&gt; IDEA turns our original String value to a multiline String value:&lt;/p&gt;&lt;div class="separator" style="clear: both; text-align: center;"&gt;&lt;a href="http://1.bp.blogspot.com/-35V1iBbqgRo/VflLl0jqP7I/AAAAAAAALUU/biWUzsYNEuU/s1600/idea-intention-multiline-result.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"&gt;&lt;img border="0" src="http://1.bp.blogspot.com/-35V1iBbqgRo/VflLl0jqP7I/AAAAAAAALUU/biWUzsYNEuU/s640/idea-intention-multiline-result.png" /&gt;&lt;/a&gt;&lt;/div&gt;&lt;p style="clear:both;"&gt;Written with Groovy 2.4.4 and IntelliJ IDEA CE 14.1.4&lt;/p&gt;</content><link rel='replies' type='application/atom+xml' href='http://mrhaki.blogspot.com/feeds/522931575494483510/comments/default' title='Post Comments'/><link rel='replies' type='text/html' href='http://mrhaki.blogspot.com/2015/09/groovy-goodness-intellij-idea.html#comment-form' title='0 Comments'/><link rel='edit' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/522931575494483510'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/522931575494483510'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/2015/09/groovy-goodness-intellij-idea.html' title='Groovy Goodness: IntelliJ IDEA Intentions For String Values'/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><media:thumbnail xmlns:media='http://search.yahoo.com/mrss/' url='http://4.bp.blogspot.com/-R7NV9p4epZA/VflKi2NVP3I/AAAAAAAALTU/x2IyUiES6-g/s72-c/idea-intention-convert-string.png' height='72' width='72'/><thr:total>0</thr:total><gd:extendedProperty name='commentSource' value='1'/><gd:extendedProperty name='commentModerationMode' value='FILTERED_POSTMOD'/></entry><entry><id>tag:blogger.com,1999:blog-6671019398434141469.post-3149478693795082687</id><published>2015-09-15T14:06:00.000+02:00</published><updated>2015-09-15T14:08:51.415+02:00</updated><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy 2.4.4'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy'/><category scheme='http://www.blogger.com/atom/ns#' term='Spring'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:Grape'/><title type='text'>Groovy Goodness: Exclude Transitive Dependencies With Grape</title><content type='html'>&lt;p&gt;The built-in dependency mechanism in Groovy is Grape. With Grape we can define dependencies in our code and Groovy will download them and make them available when we run our Groovy application. The easiest way to use it is with the &lt;code&gt;@Grab&lt;/code&gt; annotation with a dependency as the value. If we want to exclude a transitive dependency we use the &lt;code&gt;@GrabExclude&lt;/code&gt; annotation. We must specify the attributes &lt;code&gt;group&lt;/code&gt; and &lt;code&gt;module&lt;/code&gt; of the annotation with the dependency we want to exclude. An alternative syntax is a shorthand version where the &lt;code&gt;group&lt;/code&gt; and &lt;code&gt;module&lt;/code&gt; are combined into a single String value separated by a colon (&lt;code&gt;:&lt;/code&gt;).&lt;/p&gt;&lt;p&gt;In the following Groovy script we have a very simple Spring application with Java (Groovy) based configuration. So we need a dependency on the &lt;em&gt;spring-context&lt;/em&gt; module. But we don't want to use the standard Spring logging. Spring used Apache Commons logging and we want to replace it with an SLF4J API implementation: Logback. So we use the &lt;code&gt;@GrabExclude&lt;/code&gt; annotation to exclude the commons logging dependency. And we add two extra dependencies to replace it: &lt;code&gt;org.slf4j:jcl-over-slf4j&lt;/code&gt; and &lt;code&gt;ch.qos.logback:logback-classic&lt;/code&gt;.&lt;/p&gt;&lt;pre class="brush:groovy"&gt;package com.mrhaki
+
+@Grab('org.springframework:spring-context:4.2.1.RELEASE')
+// Exclude the commons-logging dependency 
+// as Spring transitive dependency.
+@GrabExclude(group = 'commons-logging', module='commons-logging') // Or 'commons-logging:commons-logging'
+// Replace commons-logging with SLF4J 
+// implementation Logback.
+@Grab('org.slf4j:jcl-over-slf4j:1.7.12')
+@Grab('ch.qos.logback:logback-classic:1.1.3')
+import org.springframework.context.ApplicationContext
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.AnnotationConfigApplicationContext
+
+
+// Define Spring Java (Groovy) configuration class.
+@Configuration
+class AppConfig {
+
+    // Simple bean is a String.
+    @Bean
+    String obvious() {
+        'Groovy is gr8!'
+    }
+}
+
+// Create new Spring application context and use
+// our Groovy configuration class
+final ApplicationContext appContext = 
+    new AnnotationConfigApplicationContext(AppConfig)
+
+// Check that bean is in application context.
+assert appContext.getBean('obvious') == 'Groovy is gr8!'
+&lt;/pre&gt;&lt;p&gt;Written with Groovy 2.4.4.&lt;/p&gt;</content><link rel='replies' type='application/atom+xml' href='http://mrhaki.blogspot.com/feeds/3149478693795082687/comments/default' title='Post Comments'/><link rel='replies' type='text/html' href='http://mrhaki.blogspot.com/2015/09/groovy-goodness-exclude-transitive.html#comment-form' title='0 Comments'/><link rel='edit' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/3149478693795082687'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/3149478693795082687'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/2015/09/groovy-goodness-exclude-transitive.html' title='Groovy Goodness: Exclude Transitive Dependencies With Grape'/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><thr:total>0</thr:total><gd:extendedProperty name='commentSource' value='1'/><gd:extendedProperty name='commentModerationMode' value='FILTERED_POSTMOD'/></entry><entry><id>tag:blogger.com,1999:blog-6671019398434141469.post-1586362785424201395</id><published>2015-09-14T15:05:00.001+02:00</published><updated>2015-09-14T15:05:55.062+02:00</updated><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy 2.4.4'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:Grape'/><title type='text'>Groovy Goodness: See More Info About Downloading With Grape</title><content type='html'>&lt;p&gt;Groovy has a advanced feature to define and download dependencies automatically for our code: grape. To get more information about the progress of the dependency resolution and downloading of the dependencies we must use the Java system property &lt;code&gt;groovy.grape.report.downloads&lt;/code&gt; and set it to &lt;code&gt;true&lt;/code&gt;. Groovy uses Ivy under the hood to handle the dependency management. We can get Ivy logging messages by setting the system property &lt;code&gt;ivy.message.logger.level&lt;/code&gt; to a numeric value. The value 4 gives the most logging and value 0 only shows error messages.&lt;/p&gt;&lt;p&gt;In the following example code we use &lt;code&gt;-Dgroovy.grape.report.downloads=true&lt;/code&gt; when we invoke a simple Groovy script with a dependency on Apache Commons library:&lt;/p&gt;&lt;pre class="brush:groovy"&gt;import org.apache.commons.lang3.SystemUtils
+import static org.apache.commons.lang3.JavaVersion.JAVA_1_8 as Java8
+
+@Grab(group='org.apache.commons', module='commons-lang3', version='3.4')
+def printInfo() {
+    if (SystemUtils.isJavaVersionAtLeast(Java8)) {
+        println 'We are ready to use the Stream API in our code.'
+    } else {
+        println 'We cannot use the Stram API in our code.'
+    }
+}
+
+printInfo()
+&lt;/pre&gt;&lt;p&gt;Now we run the script with extra logging information:&lt;/p&gt;&lt;pre class="brush:plain;light:true"&gt;$ groovy -Dgroovy.grape.report.downloads=true sample.groovy
+Resolving dependency: org.apache.commons#commons-lang3;3.4 {default=[default]}
+Preparing to download artifact org.apache.commons#commons-lang3;3.4!commons-lang3.jar
+Downloaded 424 Kbytes in 414ms:
+  [SUCCESSFUL ] org.apache.commons#commons-lang3;3.4!commons-lang3.jar (408ms)
+We are ready to use the Stream API in our code.
+$ groovy -Dgroovy.grape.report.downloads=true sample.groovy
+Resolving dependency: org.apache.commons#commons-lang3;3.4 {default=[default]}
+Preparing to download artifact org.apache.commons#commons-lang3;3.4!commons-lang3.jar
+We are ready to use the Stream API in our code.
+&lt;/pre&gt;&lt;p&gt;Notice that the second time we run the script the logging shows the JAR file is not downloaded. That is because grape use the downloaded file from the &lt;code&gt;USER_HOME/.groovy/grapes&lt;/code&gt; directory.&lt;/p&gt;&lt;p&gt;Written with Groovy 2.4.4.&lt;/p&gt;</content><link rel='replies' type='application/atom+xml' href='http://mrhaki.blogspot.com/feeds/1586362785424201395/comments/default' title='Post Comments'/><link rel='replies' type='text/html' href='http://mrhaki.blogspot.com/2015/09/groovy-goodness-see-more-info-about.html#comment-form' title='0 Comments'/><link rel='edit' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/1586362785424201395'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/1586362785424201395'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/2015/09/groovy-goodness-see-more-info-about.html' title='Groovy Goodness: See More Info About Downloading With Grape'/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><thr:total>0</thr:total><gd:extendedProperty name='commentSource' value='1'/><gd:extendedProperty name='commentModerationMode' value='FILTERED_POSTMOD'/></entry><entry><id>tag:blogger.com,1999:blog-6671019398434141469.post-6276122557921419492</id><published>2015-09-14T14:57:00.001+02:00</published><updated>2015-09-14T14:57:43.633+02:00</updated><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy 2.4.4'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:Grape'/><title type='text'>Groovy Goodness: Change Directory For Saving Dependencies Grape</title><content type='html'>&lt;p&gt;With &lt;a href="http://mrhaki.blogspot.com/2009/09/groovy-goodness-grab-that-dependency.html"&gt;Grape&lt;/a&gt; in Groovy we can add dependency management for our code. Especially the &lt;code&gt;@Grab&lt;/code&gt; annotation is very useful to specify dependencies directly in our code. Groovy will download the dependencies if needed and store them in the &lt;code&gt;USER_HOME/.groovy/grapes&lt;/code&gt; directory. If we want to change this directory we must set the Java system property &lt;code&gt;grape.root&lt;/code&gt;. We specify the new directory to store the downloaded dependencies as a value.&lt;/p&gt;&lt;p&gt;In the following example we have a simple script with a dependency on the Apache Commons library. We use the &lt;code&gt;-Dgrape.root&lt;/code&gt; command line option when we run the script and specify the directory &lt;code&gt;deps&lt;/code&gt;. After we have run the script we can see the contents of the &lt;code&gt;deps&lt;/code&gt; directory to see the downloaded files.&lt;/p&gt;&lt;pre class="brush:plain;light:true"&gt;$ groovy -Dgrape.root=deps/ sample.groovy
+$ tree deps
+deps
+└── grapes
+    └── org.apache.commons
+        └── commons-lang3
+            ├── ivy-3.4.xml
+            ├── ivy-3.4.xml.original
+            ├── ivydata-3.4.properties
+            └── jars
+                └── commons-lang3-3.4.jar
+
+4 directories, 4 files
+&lt;/pre&gt;&lt;p&gt;Written with Groovy 2.4.4.&lt;/p&gt;</content><link rel='replies' type='application/atom+xml' href='http://mrhaki.blogspot.com/feeds/6276122557921419492/comments/default' title='Post Comments'/><link rel='replies' type='text/html' href='http://mrhaki.blogspot.com/2015/09/groovy-goodness-change-directory-for.html#comment-form' title='0 Comments'/><link rel='edit' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/6276122557921419492'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/6276122557921419492'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/2015/09/groovy-goodness-change-directory-for.html' title='Groovy Goodness: Change Directory For Saving Dependencies Grape'/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><thr:total>0</thr:total><gd:extendedProperty name='commentSource' value='1'/><gd:extendedProperty name='commentModerationMode' value='FILTERED_POSTMOD'/></entry><entry><id>tag:blogger.com,1999:blog-6671019398434141469.post-1869690640402415485</id><published>2015-09-11T16:19:00.000+02:00</published><updated>2015-09-11T16:19:21.504+02:00</updated><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:Syntax'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy 2.4.4'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy'/><title type='text'>Groovy Goodness: Operator Overloading in Reverse</title><content type='html'>&lt;p&gt;One of the very nice features of Groovy is that we can &lt;a href="http://gr8labs.org/getting-groovy/#_operator_overloading"&gt;implement operator overloading&lt;/a&gt;. This blog post is not about &lt;a href="http://mrhaki.blogspot.com/2012/06/groovy-goodness-multiple-overloaded.html"&gt;how to implement operator overloading&lt;/a&gt;, but Groovy's operator overloading also means that operators we know in Java have corresponding methods, which are not available in Java. So instead of using operators in our code we can use the corresponding methods.&lt;/p&gt;&lt;p&gt;The following sample code shows some operators we know in Java and the corresponding methods in Groovy:&lt;/p&gt;&lt;pre class="brush:groovy"&gt;def a = true
+def b = false
+
+assert a | b
+// Java Boolean has no or method.
+assert a.or(b) 
+
+assert !(a &amp;amp; b)
+assert !(a.and(b))
+
+
+def x = 100
+def y = 10
+
+assert x + y == 110
+// Java Integer has no plus method.
+assert x.plus(y) == 110 
+
+assert ++x == 101  
+// ++ maps to next method.
+assert x.next() == 102
+
+assert --y == 9
+assert y.previous() == 8
+&lt;/pre&gt;&lt;p&gt;Written with Groovy 2.4.4.&lt;/p&gt;</content><link rel='replies' type='application/atom+xml' href='http://mrhaki.blogspot.com/feeds/1869690640402415485/comments/default' title='Post Comments'/><link rel='replies' type='text/html' href='http://mrhaki.blogspot.com/2015/09/groovy-goodness-operator-overloading-in.html#comment-form' title='0 Comments'/><link rel='edit' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/1869690640402415485'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/1869690640402415485'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/2015/09/groovy-goodness-operator-overloading-in.html' title='Groovy Goodness: Operator Overloading in Reverse'/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><thr:total>0</thr:total><gd:extendedProperty name='commentSource' value='1'/><gd:extendedProperty name='commentModerationMode' value='FILTERED_POSTMOD'/></entry><entry><id>tag:blogger.com,1999:blog-6671019398434141469.post-1301225630830737348</id><published>2015-09-11T15:45:00.001+02:00</published><updated>2015-09-11T15:45:31.506+02:00</updated><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy 2.4.4'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:GDK'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy'/><title type='text'>Groovy Goodness: Inspect Method Returns Nicely Formatted Object Values</title><content type='html'>&lt;p&gt;Groovy adds the &lt;code&gt;inspect&lt;/code&gt; method to the &lt;code&gt;Object&lt;/code&gt;. This means it is available on all objects in our application. It is like the &lt;code&gt;toString&lt;/code&gt; method, but adds some extra formatting. The most notable is the addition of single quotes to String values.&lt;/p&gt;&lt;p&gt;In the following example we see the output of the &lt;code&gt;inspect&lt;/code&gt; method on different objects:&lt;/p&gt;&lt;pre class="brush:groovy"&gt;def username = "mrhaki"
+// String value is enclosed in 
+// single quotes.
+assert username.inspect() == "'mrhaki'"
+
+
+def user = "${username}" 
+// user is GStringImpl not a String object,
+// so no single quotes are added by
+// inspect() to show value is a String object.
+assert user.inspect() == "mrhaki"
+
+
+def multiline = '''Hello mrhaki,
+how you're doing?'''
+// Special characters like tab,
+// line feed and single quotes
+// are escaped.
+assert multiline.inspect() == /'Hello mrhaki,\nhow you\'re doing?'/
+
+
+def list = [42, '1', ['Groovy rocks!']]
+// String values in the list are
+// enclosed in single quotes.
+assert list.inspect() == "[42, '1', ['Groovy rocks!']]"
+
+
+def range = 21..&lt;24
+// Ranges are shown 
+// with .. or ..&lt;.
+assert range.inspect() == '21..&lt;24'
+
+
+def m = [a: 1, b: '1']
+// Map keys and values are shown
+// as their base type. Mostly
+// keys are String values, so with
+// inspect() they are enclosed in quotes.
+assert m.inspect() == "['a':1, 'b':'1']"
+
+
+import org.w3c.dom.Document
+import org.w3c.dom.Element
+import groovy.xml.DOMBuilder
+
+def xmlString = '&lt;sample&gt;&lt;username&gt;mrhaki&lt;/username&gt;&lt;/sample&gt;'
+Document doc = DOMBuilder.newInstance().parseText(xmlString)
+Element root = doc.documentElement.firstChild
+// XML Element objects are shown as 
+// textual XML.
+assert root.inspect().trim() == '&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;username&gt;mrhaki&lt;/username&gt;'
+&lt;/pre&gt;&lt;p&gt;Written with Groovy 2.4.4.&lt;/p&gt;</content><link rel='replies' type='application/atom+xml' href='http://mrhaki.blogspot.com/feeds/1301225630830737348/comments/default' title='Post Comments'/><link rel='replies' type='text/html' href='http://mrhaki.blogspot.com/2015/09/groovy-goodness-inspect-method-returns.html#comment-form' title='0 Comments'/><link rel='edit' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/1301225630830737348'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/1301225630830737348'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/2015/09/groovy-goodness-inspect-method-returns.html' title='Groovy Goodness: Inspect Method Returns Nicely Formatted Object Values'/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><thr:total>0</thr:total><gd:extendedProperty name='commentSource' value='1'/><gd:extendedProperty name='commentModerationMode' value='FILTERED_POSTMOD'/></entry><entry><id>tag:blogger.com,1999:blog-6671019398434141469.post-1006792895332774982</id><published>2015-09-11T14:49:00.000+02:00</published><updated>2015-09-11T14:50:29.296+02:00</updated><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:Collections'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy 2.4.4'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:GDK'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy'/><title type='text'>Groovy Goodness: Removing Elements From a Collection</title><content type='html'>&lt;p&gt;There are a lot of methods added to the Java collection classes by Groovy. For example to remove elements from a collection, and indeed modify the collection itself, we can use the &lt;code&gt;removeAll&lt;/code&gt; and &lt;code&gt;removeElement&lt;/code&gt; methods. With the &lt;code&gt;removeAll&lt;/code&gt; method we define a closure with a condition that needs to be true for an element to be removed from the collection. The &lt;code&gt;removeElement&lt;/code&gt; method is added to overcome any ambiguity with the standard overloaded &lt;code&gt;remove&lt;/code&gt; method for collections with integer values. The &lt;code&gt;remove&lt;/code&gt; method accepts both an &lt;code&gt;Object&lt;/code&gt; or &lt;code&gt;int&lt;/code&gt; value, to remove either an element or an element at the specified index. When the collection contains integer values than the argument is interpreted as index value. The &lt;code&gt;removeElement&lt;/code&gt; method will use the &lt;code&gt;remove(Object)&lt;/code&gt; method implementation. When the collection is a &lt;code&gt;List&lt;/code&gt; Groovy adds the &lt;code&gt;removeAt&lt;/code&gt; method. We need to specify the index value of the element we want to remove.&lt;/p&gt;&lt;pre class="brush:groovy"&gt;def list = ['Groovy', '=', 'gr8!']
+
+// Groovy adds removeAll method
+// to remove items from collection
+// that apply to the condition we 
+// define in the closure.
+list.removeAll { it.toLowerCase().startsWith('g') }
+
+// All values starting with a G or g
+// are now removed.
+// Remember the collection we use the
+// removeAll method on is changed.
+assert list == ['=']
+
+// Java 8 adds removeIf method with
+// a predicate. In Groovy we can implement
+// the predicate as closure.
+list.removeIf { it instanceof String }
+
+assert list.size() == 0
+
+
+def values = ['Hello', 'world']
+
+// Groovy adds removeAll(Object[]) 
+// to remove multiple elements
+// from a collection.
+values.removeAll(['world', 'Hello'] as Object[])
+
+assert values.empty
+
+
+def items = [1, 2, 3]
+
+// remove method is overloaded
+// for Object and index value.
+// Because Groovy wraps int to
+// Integer object, the method call
+// is ambiguous for Integer collections.
+items.remove(1)
+
+// We want to remove object
+// Integer(1) from the list,
+// but item with index 1 is removed.
+assert items == [1, 3]
+
+// Groovy adds removeElement
+// as alias for remove(Object).
+items.removeElement(1)
+
+assert items == [3]
+
+// When the collection is a List
+// we can use the removeAt method
+// to remove based on index value.
+items.removeAt(0)
+
+assert !items
+&lt;/pre&gt;&lt;p&gt;Instead of removing elements with a any of the &lt;code&gt;remove...&lt;/code&gt; methods we can also use the &lt;code&gt;retainAll&lt;/code&gt; method in Groovy. Any elements that don't apply to the condition we specify in the closure are removed from the collection. See the following example code with some usages of the &lt;code&gt;retainAll&lt;/code&gt; methods:&lt;/p&gt;&lt;pre class="brush:groovy"&gt;def list = ['Groovy', 42, 'gr8!', 5.2, new Date()]
+
+// Groovy adds retainAll method
+// to remove items from collection
+// that do not apply to the condition we 
+// define in the closure and keep those
+// items that do apply to the condition.
+list.retainAll { it instanceof String }
+
+// All values that are not a String
+// object are removed.
+// Remember the collection we use the
+// retainAll method on is changed.
+assert list == ['Groovy', 'gr8!']
+
+
+def values = ['Hello', 'world', 'from', 'Groovy']
+
+// Groovy adds retainAll(Object[]) 
+// to keep multiple elements
+// in a collection and remove all
+// the other elements.
+values.retainAll(['world', 'Hello'] as Object[])
+
+assert values.join(' ') == 'Hello world'
+&lt;/pre&gt;&lt;p&gt;Written with Groovy 2.4.4.&lt;/p&gt;</content><link rel='replies' type='application/atom+xml' href='http://mrhaki.blogspot.com/feeds/1006792895332774982/comments/default' title='Post Comments'/><link rel='replies' type='text/html' href='http://mrhaki.blogspot.com/2015/09/groovy-goodness-removing-elements-from.html#comment-form' title='0 Comments'/><link rel='edit' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/1006792895332774982'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/1006792895332774982'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/2015/09/groovy-goodness-removing-elements-from.html' title='Groovy Goodness: Removing Elements From a Collection'/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><thr:total>0</thr:total><gd:extendedProperty name='commentSource' value='1'/><gd:extendedProperty name='commentModerationMode' value='FILTERED_POSTMOD'/></entry><entry><id>tag:blogger.com,1999:blog-6671019398434141469.post-6808036845118524337</id><published>2015-05-01T13:40:00.002+02:00</published><updated>2015-05-01T13:54:39.711+02:00</updated><category scheme='http://www.blogger.com/atom/ns#' term='Groovy 2.4.3'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:GPars'/><category scheme='http://www.blogger.com/atom/ns#' term='GPars'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy'/><title type='text'>Groovy Goodness: Share Data in Concurrent Environment with Dataflow Variables</title><content type='html'>&lt;p&gt;To work with data in a concurrent environment can be complex. Groovy includes GPars, yes we don't have to download any dependencies, to provide some models to work easily with data in a concurrent environment. In this blog post we are going to look at an example where we use dataflow variables to exchange data between concurrent tasks. In a dataflow algorithm we define certain functions or tasks that have an input and output. A task is started when the input is available for the task. So instead of defining an imperative sequence of tasks that need to be executed, we define a series of tasks that will start executing when their input is available. And the nice thing is that each of these tasks are independent and can run in parallel if needed.&lt;br /&gt;
+&lt;br /&gt;
+The data that is shared between tasks is stored in dataflow variables. The value of a dataflow variable can only be set once, but it can be read multiple times. When a task wants to read the value, but it is not yet available, the task will wait for the value in a non-blocking way.&lt;/p&gt;&lt;p&gt;In the following example Groovy script we use the &lt;code&gt;Dataflows&lt;/code&gt; class. This class provides an easy way to set multiple dataflow variables and get their values. In the script we want to get the temperature in a city in both Celcius and Fahrenheit and we are using remote web services to the data:&lt;/p&gt;&lt;pre class="brush:groovy"&gt;import groovyx.gpars.dataflow.Dataflows
+import static groovyx.gpars.dataflow.Dataflow.task
+
+// Create new Dataflows instance to hold
+// dataflow variables.
+final Dataflows data = new Dataflows()
+
+// Convert temperature from Celcius to Fahrenheit.
+task {
+    println "Task 'convertTemperature' is waiting for dataflow variable 'cityWeather'"
+
+    // Get dataflow variable cityWeather value from
+    // Dataflows data object. The value
+    // is set by findCityWeather task.
+    // If the value is not set yet, wait.
+    final cityWeather = data.cityWeather
+    final cityTemperature = cityWeather.temperature
+
+    println "Task 'convertTemperature' got dataflow variable 'cityWeather'"
+
+    // Convert value with webservice at
+    // www.webservicex.net.
+    final params = 
+        [Temperature: cityTemperature, 
+         FromUnit: 'degreeCelsius', 
+         ToUnit: 'degreeFahrenheit']
+    final url = "http://www.webservicex.net/ConvertTemperature.asmx/ConvertTemp"
+    final result = downloadData(url, params)
+
+    // Assign converted value to dataflow variable
+    // temperature in Dataflows data object.
+    data.temperature = result.text()
+}
+
+// Find temperature for city.
+task {
+    println "Task 'findCityWeather' is waiting for dataflow variable 'searchCity'"
+
+    // Get value for city attribute in
+    // Dataflows data object. This is 
+    // set in another task (startSearch) 
+    // at another time.
+    // If the value is not set yet, wait.
+    final city = data.searchCity
+
+    println "Task 'findCityWeather' got dataflow variable 'searchCity'"
+
+    // Get temperature for city with 
+    // webservice at api.openweathermap.org.
+    final params = 
+        [q: city, 
+         units: 'metric', 
+         mode: 'xml']
+    final url = "http://api.openweathermap.org/data/2.5/find"
+    final result = downloadData(url, params)
+    final temperature = result.list.item.temperature.@value
+
+    // Assign map value to cityWeather dataflow 
+    // variable in Dataflows data object. 
+    data.cityWeather = [city: city, temperature: temperature]
+}
+
+// Get city part from search string.
+task {
+    println "Task 'parseCity' is waiting for dataflow variable 'searchCity'"
+
+    // Get value for city attribute in
+    // Dataflows data object. This is 
+    // set in another task (startSearch) 
+    // at another time.
+    // If the value is not set yet, wait.
+    final city = data.searchCity
+    
+    println "Task 'parseCity' got dataflow variable 'searchCity'"
+
+    final cityName = city.split(',').first()
+
+    // Assign to dataflow variable in Dataflows object.
+    data.cityName = cityName
+}
+
+final startSearch = task {
+    // Use command line argument to set
+    // city dataflow variable in 
+    // Dataflows data object.
+    // Any code that reads this value
+    // was waiting, but will start now,
+    // because of this assigment.
+    data.searchCity = args[0]  
+}
+
+// When a variable is bound we log it. 
+final printValueBound = { dataflowVar, value -&gt;
+    println "Variable '$dataflowVar' bound to '$value'" 
+}
+data.searchCity printValueBound.curry('searchCity')
+data.cityName printValueBound.curry('cityName')
+data.cityWeather printValueBound.curry('cityWeather')
+data.temperature printValueBound.curry('temperature')
+
+
+// Here we read the dataflow variables cityWeather and temperature
+// from Dataflows data object. Notice once the value is
+// is set it is not calculated again. For example cityWeather 
+// will not do a remote call again, because the value is already known
+// by now.
+println "Main thread is waiting for dataflow variables 'cityWeather', 'temperature' and 'cityName'"
+final cityInfo = 
+    data.cityWeather + [tempFahrenheit: data.temperature] + [cityName: data.cityName]
+
+
+println """\
+
+Temperature in city $cityInfo.cityName (searched with $cityInfo.city):
+$cityInfo.temperature Celcius
+$cityInfo.tempFahrenheit Fahrenheit
+"""
+
+
+// Helper method to get XML response from URL
+// and parse it using XmlSlurper. Returns GPathResult.
+def downloadData(requestUrl, requestParams) {
+    final params = requestParams.collect { it }.join('&amp;')
+    final url = "${requestUrl}?${params}"
+
+    final response = new XmlSlurper().parseText(url.toURL().text)
+    response
+}
+&lt;/pre&gt;&lt;p&gt;Now when we run the script we get the following output:&lt;/p&gt;&lt;pre class="brush:plain;light:true"&gt;$ groovy citytemp.groovy Tilburg,NL
+Task 'convertTemperature' is waiting for dataflow variable 'cityWeather'
+Task 'parseCity' is waiting for dataflow variable 'searchCity'
+Task 'findCityWeather' is waiting for dataflow variable 'searchCity'
+Task 'findCityWeather' got dataflow variable 'searchCity'
+Task 'parseCity' got dataflow variable 'searchCity'
+Main thread is waiting for dataflow variables 'cityWeather', 'temperature' and 'cityName'
+Variable 'searchCity' bound to 'Tilburg,NL'
+Variable 'cityName' bound to 'Tilburg'
+Task 'convertTemperature' got dataflow variable 'cityWeather'
+Variable 'cityWeather' bound to '[city:Tilburg,NL, temperature:11.76]'
+Variable 'temperature' bound to '53.167999999999985'
+
+Temperature in city Tilburg (searched with Tilburg,NL):
+11.76 Celcius
+53.167999999999985 Fahrenheit
+&lt;/pre&gt;&lt;p&gt;Notice how tasks are waiting for values and continue when they receive their input. The order of the definition of the tasks is not important, because they will wait for their input to start the real work.&lt;/p&gt;&lt;p&gt;Written with Groovy 2.4.3.&lt;/p&gt;</content><link rel='replies' type='application/atom+xml' href='http://mrhaki.blogspot.com/feeds/6808036845118524337/comments/default' title='Post Comments'/><link rel='replies' type='text/html' href='http://mrhaki.blogspot.com/2015/05/groovy-goodness-share-data-in.html#comment-form' title='0 Comments'/><link rel='edit' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/6808036845118524337'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/6808036845118524337'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/2015/05/groovy-goodness-share-data-in.html' title='Groovy Goodness: Share Data in Concurrent Environment with Dataflow Variables'/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><thr:total>0</thr:total><gd:extendedProperty name='commentSource' value='1'/><gd:extendedProperty name='commentModerationMode' value='FILTERED_POSTMOD'/></entry><entry><id>tag:blogger.com,1999:blog-6671019398434141469.post-265910474518070017</id><published>2015-04-15T10:09:00.000+02:00</published><updated>2015-04-15T10:09:09.548+02:00</updated><category scheme='http://www.blogger.com/atom/ns#' term='Java'/><category scheme='http://www.blogger.com/atom/ns#' term='Java:Lambdas'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:Collections'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:Closure'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy'/><title type='text'>Groovy Goodness: Use Closures as Java Lambda Expressions</title><content type='html'>&lt;p&gt;Java 8 introduced lambda expressions we can use for example with the new Java Streams API. The Groovy syntax doesn't support the lambda expressions, but we can rely on closure coersion to use Groovy closures as Java lambda expressions in our code.&lt;/p&gt;&lt;p&gt;In the following sample we use the Java Streams API. Instead of lambda expressions for the &lt;code&gt;filter&lt;/code&gt; and &lt;code&gt;map&lt;/code&gt; methods we use Groovy closures. They are automatically transformed to lambda expressions, so it is very easy to use Java streams from Groovy code.&lt;/p&gt;&lt;pre class="brush:groovy"&gt;import groovy.transform.*
+
+/**
+ * Simple class to describe
+ * a Building.
+ */
+@Canonical
+class Building {
+    String name
+    int floors
+    boolean officeSpace
+}
+
+// Create Building objects.
+def officeSpace = new Building('Initech office', 3, true)
+def theOffice = new Building('Wernham Hogg Paper Company', 4, true)
+def coffeeShop = new Building('Hunter Green', 1, false)
+
+// And add to a list.
+def buildings = [officeSpace, theOffice, coffeeShop]
+
+// Create a closure which we will use 
+// later in our code.
+def mapBuildingName = { building -&gt; building.name }
+
+
+// Invoke Java Streams API with lambda methods,
+// but we use Groovy closures.
+def officeBuildingNames = 
+    buildings
+        .stream() // Get Java streams.
+        .filter { building -&gt; 
+            building.officeSpace &amp;&amp; building.floors &gt; 2 
+        } // 'anonymous' closure.
+        .map(mapBuildingName) // Predefined closure.
+        .collect()
+        
+assert officeBuildingNames == ['Initech office', 'Wernham Hogg Paper Company']
+&lt;/pre&gt;&lt;p&gt;Code written with Groovy 2.4.3.&lt;/p&gt;</content><link rel='replies' type='application/atom+xml' href='http://mrhaki.blogspot.com/feeds/265910474518070017/comments/default' title='Post Comments'/><link rel='replies' type='text/html' href='http://mrhaki.blogspot.com/2015/04/groovy-goodness-use-closures-as-java.html#comment-form' title='0 Comments'/><link rel='edit' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/265910474518070017'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/265910474518070017'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/2015/04/groovy-goodness-use-closures-as-java.html' title='Groovy Goodness: Use Closures as Java Lambda Expressions'/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><thr:total>0</thr:total><gd:extendedProperty name='commentSource' value='1'/><gd:extendedProperty name='commentModerationMode' value='FILTERED_POSTMOD'/></entry><entry><id>tag:blogger.com,1999:blog-6671019398434141469.post-2121318432830514940</id><published>2015-03-26T06:48:00.001+01:00</published><updated>2015-03-26T06:48:27.893+01:00</updated><category scheme='http://www.blogger.com/atom/ns#' term='Groovy 2.4.3'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:Intermediate'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy 2.4'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:Collections'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:GDK'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy'/><title type='text'>Groovy Goodness: New Methods to Sort and Remove Duplicates From Collection</title><content type='html'>&lt;p&gt;In Groovy we can use the &lt;a href="http://mrhaki.blogspot.com/2011/09/groovy-goodness-sort-or-remove.html"&gt;&lt;code&gt;sort&lt;/code&gt; and &lt;code&gt;unique&lt;/code&gt; methods&lt;/a&gt; to sort a collection or remove duplicates from a collection. These methods alter the collection on which they are invoked. This is a side effect we might want to avoid. Therefore the &lt;code&gt;sort&lt;/code&gt; and &lt;code&gt;unique&lt;/code&gt; methods where changed and we could pass a &lt;code&gt;boolean&lt;/code&gt; argument to indicate if the original collection should be changed or that we must have a new collection as the result of the methods, leaving the original collection untouched. Since Groovy 2.4 we have two new methods which by default return a new collection: &lt;code&gt;toSorted&lt;/code&gt; and &lt;code&gt;toUnique&lt;/code&gt;.&lt;/p&gt;&lt;p&gt;In the following sample we see the new methods in action:&lt;/p&gt;&lt;pre class="brush:groovy"&gt;@groovy.transform.Sortable
+@groovy.transform.ToString
+class User {
+    String username, email
+}
+
+def mrhaki1 = new User(username: 'mrhaki', email: 'mrhaki@localhost')
+def mrhaki2 = new User(username: 'mrhaki', email: 'user@localhost')
+def hubert1 = new User(username: 'hubert', email: 'user@localhost')
+def hubert2 = new User(username: 'hubert', email: 'hubert@localhost')
+
+
+// We make the list immutable,
+// so we check the toSorted and toUnique methods
+// do not alter it.
+def users = [mrhaki1, mrhaki2, hubert1, hubert2].asImmutable()
+
+
+// toSorted 
+def sortedUsers = users.toSorted()
+
+// @Sortable adds a compareTo method 
+// to User class to sort first by username
+// and then email.
+assert sortedUsers == [hubert2, hubert1, mrhaki1, mrhaki2]
+
+// Original list is unchanged.
+assert users == [mrhaki1, mrhaki2, hubert1, hubert2]
+
+// Use toSorted with closure.
+def sortedByEmail = users.toSorted { a, b -&gt; a.email &lt;=&gt; b.email }
+assert sortedByEmail == [hubert2, mrhaki1, mrhaki2, hubert1]
+
+// Or use toSorted with Comparator.
+// @Sortable added static comparatorByProperty
+// methods.
+def sortedByEmailComparator = users.toSorted(User.comparatorByEmail())
+assert sortedByEmailComparator == [hubert2, mrhaki1, mrhaki2, hubert1]
+
+
+// toUnique with Comparator.
+def uniqueUsers = users.toUnique(User.comparatorByUsername())
+assert uniqueUsers == [mrhaki1, hubert1]
+assert users == [mrhaki1, mrhaki2, hubert1, hubert2]
+
+// toUnique with Closure.
+def uniqueByEmail = users.toUnique { a, b -&gt; a.email &lt;=&gt; b.email }
+assert uniqueByEmail == [mrhaki1, mrhaki2, hubert2]
+&lt;/pre&gt;&lt;p&gt;Written with Groovy 2.4.3.&lt;/p&gt;</content><link rel='replies' type='application/atom+xml' href='http://mrhaki.blogspot.com/feeds/2121318432830514940/comments/default' title='Post Comments'/><link rel='replies' type='text/html' href='http://mrhaki.blogspot.com/2015/03/groovy-goodness-new-methods-to-sort-and.html#comment-form' title='0 Comments'/><link rel='edit' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/2121318432830514940'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/2121318432830514940'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/2015/03/groovy-goodness-new-methods-to-sort-and.html' title='Groovy Goodness: New Methods to Sort and Remove Duplicates From Collection'/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><thr:total>0</thr:total><gd:extendedProperty name='commentSource' value='1'/><gd:extendedProperty name='commentModerationMode' value='FILTERED_POSTMOD'/></entry><entry><id>tag:blogger.com,1999:blog-6671019398434141469.post-537811497550422626</id><published>2015-03-23T06:20:00.000+01:00</published><updated>2015-03-23T06:20:00.061+01:00</updated><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:Collections'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:Functional'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy 2.4.1'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:GDK'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy'/><title type='text'>Groovy Goodness: Combine Elements Iterable with Index</title><content type='html'>&lt;p&gt;Since Groovy 2.4.0 we can get &lt;a href="http://mrhaki.blogspot.com/2015/01/groovy-goodness-getting-indices-of.html"&gt;the indices from the elements&lt;/a&gt; in a collection with the &lt;code&gt;indices&lt;/code&gt; method. In addition to this method we can also use the &lt;code&gt;withIndex&lt;/code&gt; to combine an &lt;code&gt;Iterable&lt;/code&gt; with the indices directly. The output is a &lt;code&gt;List&lt;/code&gt; of tuples where the first item is the value of the &lt;code&gt;Iterable&lt;/code&gt; and the second the index value. We can pass an optional argument to the &lt;code&gt;withIndex&lt;/code&gt; which is the starting point for the index values.&lt;br /&gt;Another alternative is the &lt;code&gt;indexed&lt;/code&gt; method. The &lt;code&gt;indexed&lt;/code&gt; method returns a &lt;code&gt;Map&lt;/code&gt;, where the key of the entry is the index value and the entry value is the &lt;code&gt;Iterable&lt;/code&gt; value.&lt;/p&gt;&lt;p&gt;In the following example we use the &lt;code&gt;withIndex&lt;/code&gt; method. The sample of the alphabet is the same as in the &lt;a href="http://mrhaki.blogspot.com/2015/01/groovy-goodness-getting-indices-of.html"&gt;blog post about indices&lt;/a&gt;, but rewritten with the &lt;code&gt;withIndex&lt;/code&gt; method:&lt;/p&gt;&lt;pre class="brush:groovy"&gt;def list = [3, 20, 10, 2, 1]
+assert list.withIndex() == [[3, 0], [20, 1], [10, 2], [2, 3], [1, 4]]
+
+
+def alphabet = 'a'..'z'
+
+// Combine letters in alphabet
+// with position and start at 1.
+def alphabetIndices = alphabet.withIndex(1)
+
+// alphabetIndices = [['a', 1], ['b', 2], ...]
+assert alphabetIndices[0..2] == [['a', 1], ['b', 2], ['c', 3]]
+
+// Find position of each letter
+// from 'groovy' in alphabet.
+def positionInAlphabet = 'groovy'.inject([]) { result, value -&gt;
+    result &lt;&lt; alphabetIndices.find { it[0] == value }[1]
+    result
+}
+
+assert positionInAlphabet == [7, 18, 15, 15, 22, 25]
+&lt;/pre&gt;
+&lt;p&gt;In the next example we use the &lt;code&gt;indexed&lt;/code&gt; method:&lt;/p&gt;&lt;pre class="brush:groovy"&gt;def list = [3, 20, 10, 2, 1]
+assert list.indexed() == [0: 3, 1: 20, 2: 10, 3: 2, 4: 1]
+
+
+def alphabet = 'a'..'z'
+
+// Combine letters in alphabet
+// with position and start at 1.
+def alphabetIndices = alphabet.indexed(1)
+
+// alphabetIndices = [1: 'a', 2: 'b', ...]
+assert alphabetIndices.findAll { key, value -&gt; key &lt; 4} == [1: 'a', 2: 'b', 3: 'c']
+
+// Find position of each letter
+// from 'groovy' in alphabet.
+def positionInAlphabet = 'groovy'.inject([]) { result, value -&gt;
+    result &lt;&lt; alphabetIndices.find { it.value == value }.key
+    result
+}
+
+assert positionInAlphabet == [7, 18, 15, 15, 22, 25]
+&lt;/pre&gt;
+&lt;p&gt;Written with Groovy 2.4.1.&lt;/p&gt;</content><link rel='replies' type='application/atom+xml' href='http://mrhaki.blogspot.com/feeds/537811497550422626/comments/default' title='Post Comments'/><link rel='replies' type='text/html' href='http://mrhaki.blogspot.com/2015/03/groovy-goodness-combine-elements.html#comment-form' title='0 Comments'/><link rel='edit' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/537811497550422626'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/537811497550422626'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/2015/03/groovy-goodness-combine-elements.html' title='Groovy Goodness: Combine Elements Iterable with Index'/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><thr:total>0</thr:total><gd:extendedProperty name='commentSource' value='1'/><gd:extendedProperty name='commentModerationMode' value='FILTERED_POSTMOD'/></entry><entry><id>tag:blogger.com,1999:blog-6671019398434141469.post-4065848182661336275</id><published>2015-03-23T05:00:00.000+01:00</published><updated>2015-03-23T05:00:04.835+01:00</updated><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:Collections'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy 2.4.1'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:GDK'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy'/><title type='text'>Groovy Goodness: Swapping Elements in a Collection</title><content type='html'>&lt;p&gt;Groovy already has so many extra methods for working with collections. If we have to need to swap two elements in a collection we can use the &lt;code&gt;swap&lt;/code&gt; method. We provide the two index values of the elements we want to swap and Groovy swaps the elements.&lt;/p&gt;&lt;p&gt;In the following sample we have a simple list and swap all elements by invoking the &lt;code&gt;swap&lt;/code&gt; method two times:&lt;/p&gt;&lt;pre class="brush:groovy"&gt;def saying = ['Groovy', 'is', 'great']
+
+def yodaSays = saying.swap(2, 1).swap(0, 1)
+
+assert yodaSays.join(' ') == 'great Groovy is'
+&lt;/pre&gt;&lt;p&gt;Written with Groovy 2.4.1.&lt;/p&gt;</content><link rel='replies' type='application/atom+xml' href='http://mrhaki.blogspot.com/feeds/4065848182661336275/comments/default' title='Post Comments'/><link rel='replies' type='text/html' href='http://mrhaki.blogspot.com/2015/03/groovy-goodness-swapping-elements-in.html#comment-form' title='0 Comments'/><link rel='edit' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/4065848182661336275'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/4065848182661336275'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/2015/03/groovy-goodness-swapping-elements-in.html' title='Groovy Goodness: Swapping Elements in a Collection'/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><thr:total>0</thr:total><gd:extendedProperty name='commentSource' value='1'/><gd:extendedProperty name='commentModerationMode' value='FILTERED_POSTMOD'/></entry><entry><id>tag:blogger.com,1999:blog-6671019398434141469.post-6456922512871149911</id><published>2015-03-19T18:32:00.001+01:00</published><updated>2015-03-19T18:32:39.812+01:00</updated><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness GroovyGoodness:GDK'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:MOP'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy'/><title type='text'>Groovy Goodness: Use Constructor as Method Pointer</title><content type='html'>&lt;p&gt;In Java 8 we can create a constructor reference. We must use the syntax &lt;code&gt;Class::new&lt;/code&gt; and we get a constructor reference. This syntax is not supported in Groovy, but we can use the method pointer or reference syntax &lt;code&gt;.&amp;amp;&lt;/code&gt; to turn a method into a closure. We can even turn a constructor into a closure and use it everywhere where closures are allowed.&lt;/p&gt;&lt;p&gt;In the following sample code we have a &lt;code&gt;User&lt;/code&gt; class with some properties. Via the &lt;code&gt;User.metaClass&lt;/code&gt; we can get a reference to the method &lt;code&gt;invokeConstructor&lt;/code&gt; and turn it into a method closure:&lt;/p&gt;&lt;pre class="brush:groovy"&gt;@groovy.transform.Immutable
+class User {
+    String name
+    int age
+}
+
+
+// Initial list with user defined
+// using a map or Object array.
+def userList = [
+    // User defined as map, keys
+    // are properties of User class.
+    [name: 'mrhaki', age: 41], 
+    
+    // Object array with name and
+    // age properties for User class.
+    ['john', 30] as Object[]
+]
+
+// Create constructor reference.
+// Result is a closure we can use in our code.
+def createUser = User.metaClass.&amp;invokeConstructor
+
+// Invoke the collect method with our
+// constructor reference. At the end
+// all elements of the userList 
+// are converted to new User objects.
+def users = userList.collect(createUser)
+
+
+assert users.name == ['mrhaki', 'john']
+assert users.age == [41, 30]
+&lt;/pre&gt;&lt;p&gt;Code written with Groovy 2.4.1.&lt;/p&gt;</content><link rel='replies' type='application/atom+xml' href='http://mrhaki.blogspot.com/feeds/6456922512871149911/comments/default' title='Post Comments'/><link rel='replies' type='text/html' href='http://mrhaki.blogspot.com/2015/03/groovy-goodness-use-constructor-as.html#comment-form' title='0 Comments'/><link rel='edit' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/6456922512871149911'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/6456922512871149911'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/2015/03/groovy-goodness-use-constructor-as.html' title='Groovy Goodness: Use Constructor as Method Pointer'/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><thr:total>0</thr:total><gd:extendedProperty name='commentSource' value='1'/><gd:extendedProperty name='commentModerationMode' value='FILTERED_POSTMOD'/></entry><entry><id>tag:blogger.com,1999:blog-6671019398434141469.post-7963497067931450780</id><published>2015-02-19T07:18:00.000+01:00</published><updated>2015-02-19T07:18:48.120+01:00</updated><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:IO'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy 2.4'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy'/><title type='text'>Groovy  Goodness: Access XML-RPC API</title><content type='html'>&lt;p&gt;Recently I had to access the XML-RPC WordPress API for a small project. Luckily with Groovy we can access a XML-RPC server in a Groovy way. We need to use the Groovy XML-RPC module, which is a separate dependency. The module provides code to write a XML-RPC server, but also code to access a XML-RPC server as client. We use the class &lt;code&gt;XMLRPCServerProxy&lt;/code&gt; in the package &lt;code&gt;groovy.net.xmlrpc&lt;/code&gt; to act as a client to a XML-RPC API. The &lt;code&gt;XMLRPCServerProxy&lt;/code&gt; class only needs to know the URL to access the API. All API methods are dynamically dispatched to the server, so it is very flexible.&lt;/p&gt;&lt;p&gt;In the following Groovy script we use the WordPress XML-RPC API to access posts:&lt;/p&gt;&lt;pre class="brush:groovy"&gt;@Grab('org.codehaus.groovy:groovy-xmlrpc:0.8')
+import groovy.net.xmlrpc.*
+
+// Use correct blog identifier.
+def blogId = 0 
+
+// Use correct URL for XML-RPC API.
+def blogUrl = 'http://blog/xmlrpc' 
+
+def blogUsername = 'mrhaki'
+def blogPassword = 'secret'
+
+// Create client access for XML-RPC API.
+// The second parameter is set to true
+// to autodetect encoding. Default encoding
+// is ISO-8859-1.
+def wordPress = new XMLRPCServerProxy(blogUrl, true)
+
+// Now we can access the API methods from WordPress.
+// Notice the API method wp.getPosts is dynamically
+// available from the XMLRPCServerProxy instance.
+def latestFivePost = 
+    wordPress
+        ."wp.getPosts"(
+             blogId,
+             blogUsername,
+             blogPassword,       
+             [number: 5, post_type: 'post'],
+             ['post_id', 'post_title'])
+
+latestFivePosts.each { post -&gt;
+    println "Blog post (#${post.post_id}): ${post.post_title}"
+}
+&lt;/pre&gt;&lt;p&gt;Written with Groovy 2.4.&lt;/p&gt;</content><link rel='replies' type='application/atom+xml' href='http://mrhaki.blogspot.com/feeds/7963497067931450780/comments/default' title='Post Comments'/><link rel='replies' type='text/html' href='http://mrhaki.blogspot.com/2015/02/groovy-goodness-access-xml-rpc-api.html#comment-form' title='0 Comments'/><link rel='edit' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/7963497067931450780'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/7963497067931450780'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/2015/02/groovy-goodness-access-xml-rpc-api.html' title='Groovy  Goodness: Access XML-RPC API'/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><thr:total>0</thr:total><gd:extendedProperty name='commentSource' value='1'/><gd:extendedProperty name='commentModerationMode' value='FILTERED_POSTMOD'/></entry><entry><id>tag:blogger.com,1999:blog-6671019398434141469.post-5070296306917530880</id><published>2015-01-28T16:54:00.000+01:00</published><updated>2015-01-28T16:54:38.164+01:00</updated><category scheme='http://www.blogger.com/atom/ns#' term='Groovy 2.4'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:Collections'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:GDK'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy'/><title type='text'>Groovy Goodness: Getting the Indices of a Collection</title><content type='html'>&lt;p&gt;Since Groovy 2.4 we can use the &lt;code&gt;indices&lt;/code&gt; property on a &lt;code&gt;Collection&lt;/code&gt; to get the indices of the elements in the collection. We get an &lt;code&gt;IntRange&lt;/code&gt; object as a result.&lt;/p&gt;&lt;pre class="brush:groovy"&gt;def list = [3, 20, 10, 2, 1]
+assert list.indices == 0..4
+
+
+// Combine letters in alphabet
+// with position (zero-based).
+def alphabet = 'a'..'z'
+def alphabetIndices = [alphabet, alphabet.indices].transpose()
+// alphabetIndices = [['a', 0], ['b', 1], ...]
+
+// Find position of each letter
+// from 'groovy' in alphabet.
+def positionInAlphabet = 'groovy'.inject([]) { result, value -&gt;
+    result &lt;&lt; alphabetIndices.find { it[0] == value }[1] + 1
+    result
+}
+
+assert positionInAlphabet == [7, 18, 15, 15, 22, 25]
+&lt;/pre&gt;
+&lt;p&gt;Code written with Groovy 2.4.&lt;/p&gt;</content><link rel='replies' type='application/atom+xml' href='http://mrhaki.blogspot.com/feeds/5070296306917530880/comments/default' title='Post Comments'/><link rel='replies' type='text/html' href='http://mrhaki.blogspot.com/2015/01/groovy-goodness-getting-indices-of.html#comment-form' title='1 Comments'/><link rel='edit' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/5070296306917530880'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/5070296306917530880'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/2015/01/groovy-goodness-getting-indices-of.html' title='Groovy Goodness: Getting the Indices of a Collection'/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><thr:total>1</thr:total><gd:extendedProperty name='commentSource' value='1'/><gd:extendedProperty name='commentModerationMode' value='FILTERED_POSTMOD'/></entry><entry><id>tag:blogger.com,1999:blog-6671019398434141469.post-1268128385210197644</id><published>2015-01-28T16:32:00.000+01:00</published><updated>2015-01-28T16:32:05.509+01:00</updated><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:Collections'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:Beginner'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:GDK'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy'/><title type='text'>Groovy Goodness: Pop And Push Items In a List</title><content type='html'>&lt;p&gt;Groovy adds the &lt;code&gt;pop&lt;/code&gt; and &lt;code&gt;push&lt;/code&gt; methods to the &lt;code&gt;List&lt;/code&gt; class. With the &lt;code&gt;pop&lt;/code&gt; method we remove the last element of the list. And with the &lt;code&gt;push&lt;/code&gt; method we add an element to the end of the list.&lt;/p&gt;&lt;pre class="brush:groovy"&gt;def list = ['Groovy', 'is', 'great!']
+
+// Remove last item from list
+// with pop().
+assert list.pop() == 'great!'
+assert list == ['Groovy', 'is']
+
+// Remove last item
+// which is now 'is'.
+list.pop()
+
+// Add new item to end of
+// the list (equivalent for add()).
+list.push('rocks!')
+
+assert list == ['Groovy', 'rocks!']
+&lt;/pre&gt;&lt;p&gt;Code written with Groovy 2.4.&lt;/p&gt;</content><link rel='replies' type='application/atom+xml' href='http://mrhaki.blogspot.com/feeds/1268128385210197644/comments/default' title='Post Comments'/><link rel='replies' type='text/html' href='http://mrhaki.blogspot.com/2015/01/groovy-goodness-pop-and-push-items-in.html#comment-form' title='0 Comments'/><link rel='edit' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/1268128385210197644'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/1268128385210197644'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/2015/01/groovy-goodness-pop-and-push-items-in.html' title='Groovy Goodness: Pop And Push Items In a List'/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><thr:total>0</thr:total><gd:extendedProperty name='commentSource' value='1'/><gd:extendedProperty name='commentModerationMode' value='FILTERED_POSTMOD'/></entry><entry><id>tag:blogger.com,1999:blog-6671019398434141469.post-1468701942192132411</id><published>2015-01-28T06:26:00.000+01:00</published><updated>2015-01-28T06:26:29.609+01:00</updated><category scheme='http://www.blogger.com/atom/ns#' term='Groovy 2.4'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:Collections'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:GDK'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy'/><title type='text'>Groovy Goodness: Getting All But the Last Element in a Collection with Init Method</title><content type='html'>&lt;p&gt;In Groovy we can use the &lt;code&gt;head&lt;/code&gt; and &lt;code&gt;tail&lt;/code&gt; methods for a long time on &lt;code&gt;Collection&lt;/code&gt; objects. With &lt;code&gt;head&lt;/code&gt; we get the first element and with &lt;code&gt;tail&lt;/code&gt; the remaining elements of a collection. Since Groovy 2.4 we have a new method &lt;code&gt;init&lt;/code&gt; which returns all elements but the last in a collection.&lt;/p&gt;&lt;p&gt;In the following example we have a simple list and apply the different methods:&lt;/p&gt;&lt;pre class="brush:groovy"&gt;def gr8Tech = ['Groovy', 'Grails', 'Spock', 'Gradle', 'Griffon']
+
+// Since Groovy 2.4 we can use the init method.
+assert gr8Tech.init() == ['Groovy', 'Grails', 'Spock', 'Gradle']
+assert gr8Tech.last() == 'Griffon'
+
+
+assert gr8Tech.head() == 'Groovy'
+assert gr8Tech.tail() == ['Grails', 'Spock', 'Gradle', 'Griffon']
+&lt;/pre&gt;&lt;p&gt;Code written with Groovy 2.4.&lt;/p&gt;</content><link rel='replies' type='application/atom+xml' href='http://mrhaki.blogspot.com/feeds/1468701942192132411/comments/default' title='Post Comments'/><link rel='replies' type='text/html' href='http://mrhaki.blogspot.com/2015/01/groovy-goodness-getting-all-but-last.html#comment-form' title='1 Comments'/><link rel='edit' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/1468701942192132411'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/1468701942192132411'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/2015/01/groovy-goodness-getting-all-but-last.html' title='Groovy Goodness: Getting All But the Last Element in a Collection with Init Method'/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><thr:total>1</thr:total><gd:extendedProperty name='commentSource' value='1'/><gd:extendedProperty name='commentModerationMode' value='FILTERED_POSTMOD'/></entry><entry><id>tag:blogger.com,1999:blog-6671019398434141469.post-175648972148718646</id><published>2015-01-26T11:53:00.000+01:00</published><updated>2015-01-26T11:53:34.537+01:00</updated><category scheme='http://www.blogger.com/atom/ns#' term='Groovy 2.4'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:Collections'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:GDK'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy'/><title type='text'>Groovy Goodness: Take Or Drop Last Items From a Collection</title><content type='html'>&lt;p&gt;We know Groovy has a lot of nice methods for working with collections. For example in previous blog posts we have &lt;a href="http://mrhaki.blogspot.com/2011/09/groovy-goodness-take-and-drop-items.html"&gt;seen how to take or drop elements from a list&lt;/a&gt; and &lt;a href="http://mrhaki.blogspot.com/2012/10/groovy-goodness-drop-or-take-elements.html"&gt;even with a condition&lt;/a&gt;. Since Groovy 2.4 we can now also use the &lt;code&gt;dropRight&lt;/code&gt; and &lt;code&gt;takeRight&lt;/code&gt; methods to take or drop elements from the end of the list.&lt;/p&gt;&lt;p&gt;In the following example we have a simple list and we use the &lt;code&gt;dropRight&lt;/code&gt; and &lt;code&gt;takeRight&lt;/code&gt; methods to get elements from the list:&lt;/p&gt;&lt;pre class="brush:groovy"&gt;def list = ['Simple', 'list', 'with', 5, 'items']
+
+assert list.takeRight(1) == ['items']
+assert list.takeRight(2) == [5, 'items']
+assert list.takeRight(0) == []
+// Whole list, because we take more items then the size of list
+assert list.takeRight(6) == ['Simple', 'list', 'with', 5, 'items']
+
+assert list.dropRight(1) == ['Simple', 'list', 'with', 5]
+assert list.dropRight(3) == ['Simple', 'list']
+assert list.dropRight(5) == []
+assert list.dropRight(0) == ['Simple', 'list', 'with', 5, 'items']
+assert list == ['Simple', 'list', 'with', 5, 'items']
+
+def array = ['Rock on!', 'Groovy baby!'] as String[]
+assert array.takeRight(1) == ['Groovy baby!'] as String[]
+assert array.dropRight(1) == ['Rock on!'] as String[]
+
+def range = 0..10
+assert range.takeRight(2) == [9,10]
+assert range.takeRight(4) == 7..10
+assert range.dropRight(5) == 0..5
+&lt;/pre&gt;&lt;p&gt;Written with Groovy 2.4.&lt;/p&gt;</content><link rel='replies' type='application/atom+xml' href='http://mrhaki.blogspot.com/feeds/175648972148718646/comments/default' title='Post Comments'/><link rel='replies' type='text/html' href='http://mrhaki.blogspot.com/2015/01/groovy-goodness-take-or-drop-last-items.html#comment-form' title='0 Comments'/><link rel='edit' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/175648972148718646'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/175648972148718646'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/2015/01/groovy-goodness-take-or-drop-last-items.html' title='Groovy Goodness: Take Or Drop Last Items From a Collection'/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><thr:total>0</thr:total><gd:extendedProperty name='commentSource' value='1'/><gd:extendedProperty name='commentModerationMode' value='FILTERED_POSTMOD'/></entry><entry><id>tag:blogger.com,1999:blog-6671019398434141469.post-2055675504637495598</id><published>2014-10-14T06:01:00.000+02:00</published><updated>2014-10-14T07:33:56.461+02:00</updated><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:Intermediate'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy 2.3.7'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:Closure'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy'/><title type='text'>Groovy Goodness: Closure as a Class</title><content type='html'>&lt;p&gt;When we write Groovy code there is a big chance we also write some closures. If we are working with collections for example and use the &lt;code&gt;each&lt;/code&gt;, &lt;code&gt;collect&lt;/code&gt; or &lt;code&gt;find&lt;/code&gt; methods we use closures as arguments for these methods. We can assign closures to variables and use the variable name to reference to closure. But we can also create a subclass of the &lt;code&gt;Closure&lt;/code&gt; class to implement a closure. Then we use an instance of the new closure class wherever a closure can be used.&lt;/p&gt;&lt;p&gt;To write a closure as a class we must subclass &lt;code&gt;Closure&lt;/code&gt; and implement a method with the name &lt;code&gt;doCall&lt;/code&gt;. The method can accept arbitrary arguments and the return type can be defined by us. So we are not overriding a method &lt;code&gt;doCall&lt;/code&gt; from the superclass &lt;code&gt;Closure&lt;/code&gt;. But Groovy will look for a method with the name &lt;code&gt;doCall&lt;/code&gt; to execute the closure logic and internally use methods from the &lt;code&gt;Closure&lt;/code&gt; superclass.&lt;/p&gt;&lt;p&gt;In the following sample we write a very simple closure as a class to check if an object is a number. Then we use an instance of the class with the &lt;code&gt;findAll&lt;/code&gt; method for a collection of objects:&lt;/p&gt;&lt;pre class="brush:groovy"&gt;class IsNumber extends Closure&amp;lt;Boolean&amp;gt; /* return type for closure as generic type */ {
+
+    IsNumber() {
+        super(null)
+    }
+
+    /**
+     * Implementation of closure.
+     */
+    Boolean doCall(final Object value) {
+        // Check if value is a number, if so
+        // return true, otherwise false.
+        value in Number
+    }
+
+}
+
+def list = ['a', 100, 'Groovy', 1, 8, 42.0, true]
+
+def numbers = list.findAll(new IsNumber())
+
+assert numbers == [100, 1, 8, 42.0]
+&lt;/pre&gt;&lt;p&gt;Code written with Groovy 2.3.7.&lt;/p&gt;</content><link rel='replies' type='application/atom+xml' href='http://mrhaki.blogspot.com/feeds/2055675504637495598/comments/default' title='Post Comments'/><link rel='replies' type='text/html' href='http://mrhaki.blogspot.com/2014/10/groovy-goodness-closure-as-class.html#comment-form' title='0 Comments'/><link rel='edit' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/2055675504637495598'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/2055675504637495598'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/2014/10/groovy-goodness-closure-as-class.html' title='Groovy Goodness: Closure as a Class'/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><thr:total>0</thr:total><gd:extendedProperty name='commentSource' value='1'/><gd:extendedProperty name='commentModerationMode' value='FILTERED_POSTMOD'/></entry><entry><id>tag:blogger.com,1999:blog-6671019398434141469.post-3238043136573095014</id><published>2014-08-11T16:45:00.001+02:00</published><updated>2014-08-11T22:06:47.487+02:00</updated><category scheme='http://www.blogger.com/atom/ns#' term='Groovy 2.3'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:Templating'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:XML'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy 2.3.6'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy'/><title type='text'>Groovy Goodness: Using Layouts with MarkupTemplateEngine</title><content type='html'>&lt;p&gt;The &lt;code&gt;MarkupTemplateEngine&lt;/code&gt; added in Groovy 2.3 is very powerful. We can define layout templates with common markup we want to be used in multiple other templates. In the layout template we define placeholders for variables and content blocks surrounded by shared markup. We define values for these variables and content blocks in the actual template. We even can choose to propagate model attributes from the template to the layout template.&lt;/p&gt;&lt;p&gt;Let's first create a layout template with the name &lt;code&gt;main.tpl&lt;/code&gt;:&lt;/p&gt;&lt;pre class="brush:groovy"&gt;// File: main.tpl
+html {
+    head {
+        // Use pageTitle layout property.
+        title(pageTitle)
+    }
+    body {
+        section(id: 'main') {
+            // Render mainContents layout property.
+            mainContents()
+        }
+
+        section(id: 'actions') {
+            // Render actions layout property.
+            actions()
+        }
+
+        footer {
+            // A template is also Groovy code, we can
+            // define new variables or methods.
+            // pubDate should be set via original template
+            // model.
+            def generatedOn = pubDate ?: new Date()
+            p("Generated on ${dateFormat(generatedOn)}")
+        }
+    }
+}
+
+def dateFormat(date) {
+    date.format('dd-MM-yyyy')
+}
+&lt;/pre&gt;&lt;p&gt;Now we can write the template that uses this layout and create a result:&lt;/p&gt;&lt;pre class="brush:groovy"&gt;// File: LayoutTemplate.groovy
+import groovy.text.*
+import groovy.text.markup.*
+
+// Create engine with configuration.
+TemplateConfiguration config = new TemplateConfiguration()
+MarkupTemplateEngine engine = new MarkupTemplateEngine(config)     
+
+// Create template with layout reference
+// and values for layout variables.
+Template template = engine.createTemplate('''\
+layout 'main.tpl', 
+    pageTitle: 'Welcome',
+    mainContents: contents {
+        h1 'Home'
+    },
+    actions: contents {
+        ul(class: 'actions') {
+            ['Home', 'About'].each { li it }
+        }
+    }
+''')    
+
+
+// Render output for template.
+Writer writer = new StringWriter()                          
+Writable output = template.make([:])  
+output.writeTo(writer)   
+String result = writer.toString()
+
+// This is what we would expect as a result.
+def expected = $/\
+&amp;lt;html&amp;gt;&amp;lt;head&amp;gt;&amp;lt;title&amp;gt;Welcome&amp;lt;/title&amp;gt;&amp;lt;/head&amp;gt;\
+&amp;lt;body&amp;gt;\
+&amp;lt;section id='main'&amp;gt;&amp;lt;h1&amp;gt;Home&amp;lt;/h1&amp;gt;&amp;lt;/section&amp;gt;\
+&amp;lt;section id='actions'&amp;gt;&amp;lt;ul&amp;gt;&amp;lt;li&amp;gt;Home&amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;About&amp;lt;/li&amp;gt;&amp;lt;/ul&amp;gt;&amp;lt;/section&amp;gt;\
+&amp;lt;footer&amp;gt;&amp;lt;p&amp;gt;Generated on 11-08-2014&amp;lt;/p&amp;gt;&amp;lt;/footer&amp;gt;\
+&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;\
+/$
+
+assert result == expected
+&lt;/pre&gt;&lt;p&gt;Notice we can assign directly a value to a layout property (&lt;em&gt;pageTitle&lt;/em&gt;) or we can use the &lt;code&gt;contents&lt;/code&gt; method with a closure (&lt;code&gt;mainContents&lt;/code&gt; and &lt;code&gt;actions&lt;/code&gt;). The value of the &lt;code&gt;contents&lt;/code&gt; method is assigned to the layout property when the template is generated. This is useful when the value of a layout property is a closure we don't want to evaluate immediately, but when the template is generated.&lt;/p&gt;&lt;p&gt;We didn't specify a value for the template model property &lt;code&gt;pubDate&lt;/code&gt;. If we want to use this property on our layout template as well, we must specify an extra argument with the &lt;code&gt;layout&lt;/code&gt; method. The second argument must be &lt;code&gt;true&lt;/code&gt; to instruct the layout that model properties are propagated. The default value is &lt;code&gt;false&lt;/code&gt;:&lt;/p&gt;&lt;pre class="brush:groovy;highlight:[11,26]"&gt;// File: LayoutTemplate.groovy
+import groovy.text.*
+import groovy.text.markup.*
+
+// Create engine with configuration.
+TemplateConfiguration config = new TemplateConfiguration()
+MarkupTemplateEngine engine = new MarkupTemplateEngine(config)     
+
+// Create template with layout reference
+// and values for layout variables.
+Template template = engine.createTemplate('''\
+layout 'main.tpl', true,
+    pageTitle: 'Welcome',
+    mainContents: contents {
+        h1 'Home'
+    },
+    actions: contents {
+        ul(class: 'actions') {
+            ['Home', 'About'].each { li it }
+        }
+    }
+''')    
+
+
+// Render output for template.
+Writer writer = new StringWriter()                          
+Writable output = template.make(pubDate: Date.parse('yyyyMMdd', '20140801'))  
+//Writable output = template.make([:])  
+output.writeTo(writer)   
+String result = writer.toString()
+
+// This is what we would expect as a result.
+def expected = $/\
+&amp;lt;html&amp;gt;&amp;lt;head&amp;gt;&amp;lt;title&amp;gt;Welcome&amp;lt;/title&amp;gt;&amp;lt;/head&amp;gt;\
+&amp;lt;body&amp;gt;\
+&amp;lt;section id='main'&amp;gt;&amp;lt;h1&amp;gt;Home&amp;lt;/h1&amp;gt;&amp;lt;/section&amp;gt;\
+&amp;lt;section id='actions'&amp;gt;&amp;lt;ul&amp;gt;&amp;lt;li&amp;gt;Home&amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;About&amp;lt;/li&amp;gt;&amp;lt;/ul&amp;gt;&amp;lt;/section&amp;gt;\
+&amp;lt;footer&amp;gt;&amp;lt;p&amp;gt;Generated on 01-08-2014&amp;lt;/p&amp;gt;&amp;lt;/footer&amp;gt;\
+&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;\
+/$
+
+assert result == expected
+&lt;/pre&gt;&lt;p&gt;Code written with Groovy 2.3.6.&lt;/p&gt;</content><link rel='replies' type='application/atom+xml' href='http://mrhaki.blogspot.com/feeds/3238043136573095014/comments/default' title='Post Comments'/><link rel='replies' type='text/html' href='http://mrhaki.blogspot.com/2014/08/groovy-goodness-using-layouts-with.html#comment-form' title='0 Comments'/><link rel='edit' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/3238043136573095014'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/3238043136573095014'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/2014/08/groovy-goodness-using-layouts-with.html' title='Groovy Goodness: Using Layouts with MarkupTemplateEngine'/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><thr:total>0</thr:total><gd:extendedProperty name='commentSource' value='1'/><gd:extendedProperty name='commentModerationMode' value='FILTERED_POSTMOD'/></entry><entry><id>tag:blogger.com,1999:blog-6671019398434141469.post-5632371253895483734</id><published>2014-08-07T10:54:00.000+02:00</published><updated>2014-08-07T10:54:50.492+02:00</updated><category scheme='http://www.blogger.com/atom/ns#' term='Groovy 2.3'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:XML'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy 2.3.6'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy'/><title type='text'>Groovy Goodness: Nested Templates with MarkupTemplateEngine</title><content type='html'>&lt;p&gt;Since Groovy 2.3 we can use the &lt;code&gt;MarkupTemplateEngine&lt;/code&gt; to generate XML/HTML. We can write our templates using a builder syntax. Inside our templates we can define nested templates. These nested templates contain builder syntax code and can use objects that are passed as attributes to the nested template. To invoke a nested template we must use the &lt;code&gt;fragment&lt;/code&gt; method and pass a &lt;code&gt;Map&lt;/code&gt; with attributes that is used in the nested template. We can re-use nested templates inside our template.&lt;/p&gt;&lt;p&gt;In the following sample code we define two nested templates: &lt;code&gt;faIcon&lt;/code&gt; and &lt;code&gt;list&lt;/code&gt;. Inside our template we use the &lt;code&gt;fragment&lt;/code&gt; method to call these nested templates and we set values to the attributes that are used in the nested templates:&lt;/p&gt;&lt;pre class="brush:groovy"&gt;import groovy.text.*
+import groovy.text.markup.*
+
+// Create configuration for engine.
+TemplateConfiguration config = new TemplateConfiguration(
+    useDoubleQuotes:true, expandEmptyElements: true)
+
+// Create engine with configuration.
+MarkupTemplateEngine engine = new MarkupTemplateEngine(config)     
+
+// Create template with template fragment
+// to display the FontAwesome markup.
+Template template = engine.createTemplate('''
+
+    // Nested template to generate
+    // FontAwesome markup. 
+    // The fragment expect a model attribute
+    // with the name icon.
+    def faIcon = 'span(class: "fa fa-${icon}")'
+    
+    // Nested template to generate
+    // a unordered list for given items,
+    // specified with the items model attribute.
+    String list = """ul {
+        items.each { item -&amp;gt;
+            li item
+        }
+    }
+    """
+    
+    
+    // Use fragment method.
+    fragment list, items: ['A', 'B', 'C']
+    
+    
+    ul {
+        ['cloud', 'home', 'pencil'].each { iconValue -&gt;
+            // Generate output with predefined
+            // fragment faIcon. Pass value
+            // for model attribute icon.
+            // We must use ${stringOf{...}} because we apply
+            // the fragment as inline element. 
+            li "${stringOf {fragment(faIcon, icon: iconValue)}}"
+        }
+    }
+    
+    // Reuse fragment in other parts of the template.
+    p "This is a ${stringOf {fragment(faIcon, icon: 'cog')}} settings icon."
+''')    
+
+// Render output for template.
+Writer writer = new StringWriter()                          
+Writable output = template.make([:])  
+output.writeTo(writer)   
+String result = writer.toString()
+
+
+// This is what we would expect as a result.
+def expected = $/\
+&amp;lt;ul&amp;gt;&amp;lt;li&amp;gt;A&amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;B&amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;C&amp;lt;/li&amp;gt;&amp;lt;/ul&amp;gt;\
+&amp;lt;ul&amp;gt;\
+&amp;lt;li&amp;gt;&amp;lt;span class="fa fa-cloud"&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/li&amp;gt;\
+&amp;lt;li&amp;gt;&amp;lt;span class="fa fa-home"&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/li&amp;gt;\
+&amp;lt;li&amp;gt;&amp;lt;span class="fa fa-pencil"&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/li&amp;gt;\
+&amp;lt;/ul&amp;gt;\
+&amp;lt;p&amp;gt;This is a &amp;lt;span class="fa fa-cog"&amp;gt;&amp;lt;/span&amp;gt; settings icon.&amp;lt;/p&amp;gt;\
+/$
+
+assert result == expected
+&lt;/pre&gt;&lt;p&gt;Code written with Groovy 2.3.6.&lt;/p&gt;</content><link rel='replies' type='application/atom+xml' href='http://mrhaki.blogspot.com/feeds/5632371253895483734/comments/default' title='Post Comments'/><link rel='replies' type='text/html' href='http://mrhaki.blogspot.com/2014/08/groovy-goodness-nested-templates-with.html#comment-form' title='0 Comments'/><link rel='edit' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/5632371253895483734'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/5632371253895483734'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/2014/08/groovy-goodness-nested-templates-with.html' title='Groovy Goodness: Nested Templates with MarkupTemplateEngine'/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><thr:total>0</thr:total><gd:extendedProperty name='commentSource' value='1'/><gd:extendedProperty name='commentModerationMode' value='FILTERED_POSTMOD'/></entry><entry><id>tag:blogger.com,1999:blog-6671019398434141469.post-5798351768218284989</id><published>2014-08-07T10:01:00.001+02:00</published><updated>2014-08-07T10:06:20.316+02:00</updated><category scheme='http://www.blogger.com/atom/ns#' term='Groovy 2.3'/><category scheme='http://www.blogger.com/atom/ns#' term='GroovyGoodness:XML'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy 2.3.6'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy:Goodness'/><category scheme='http://www.blogger.com/atom/ns#' term='Groovy'/><title type='text'>Groovy Goodness: Use Custom Template Class with MarkupTemplateEngine</title><content type='html'>&lt;p&gt;Since Groovy 2.3 we can use the new &lt;code&gt;MarkupTemplateEngine&lt;/code&gt; to generate XML/HTML content. The engine compiles the template for better performance and optionally provides type checking on model attributes used in the template. We can configure the template engine to use a custom base template class instead of the default &lt;code&gt;BaseTemplate&lt;/code&gt;. In our custom template class we can add new methods that can be invoked from our template content.&lt;/p&gt;&lt;p&gt;Let's create a new base template class with an &lt;code&gt;icon&lt;/code&gt; method to output valid &lt;a href="http://fortawesome.github.io/Font-Awesome/"&gt;FontAwesome&lt;/a&gt; markup:&lt;/p&gt;&lt;pre class="brush:groovy"&gt;// File: FontAwesomeTemplate.groovy
+package com.mrhaki.groovy.tmpl
+
+import groovy.text.markup.*
+import groovy.text.*
+
+abstract class FontAwesomeTemplate extends BaseTemplate {
+
+    FontAwesomeTemplate(
+        final MarkupTemplateEngine templateEngine, 
+        final Map model, 
+        final Map&amp;lt;String,String&amp;gt; modelTypes, 
+        final TemplateConfiguration configuration) {
+        super(templateEngine, model, modelTypes, configuration)
+    }
+
+    /**
+     * Generate FontAwesome markup. 
+     *
+     * @param icon Name of the icon, will be prefixed with 'fa-'.
+     * @param attributes Optional extra attributes, will be added to markup
+     *                   and prefixed with 'fa-'.
+     * @return Span element with class attribute value for FontAwesome
+     */
+    String icon(final String icon, final String[] attributes = []) {
+        // Prefix attribute names with fa-.
+        final faAttributes = attributes.collect { "fa-$it" }
+
+        // Create markup.
+        $/&amp;lt;span class="fa fa-${icon} ${faAttributes.join(' ')}"&amp;gt;&amp;lt;/span&amp;gt;/$
+    }
+
+}
+&lt;/pre&gt;&lt;p&gt;Now we can create a new &lt;code&gt;MarkupTemplateEngine&lt;/code&gt; and use our &lt;code&gt;FontAwesomeTemplate&lt;/code&gt; class as the base template. We assign our template class to the &lt;code&gt;baseTemplateClass&lt;/code&gt; property of &lt;code&gt;TemplateConfiguration&lt;/code&gt;:&lt;/p&gt;&lt;pre class="brush:groovy"&gt;import com.mrhaki.groovy.tmpl.*
+import groovy.text.*
+import groovy.text.markup.*
+
+
+// Create configuration and set 
+// base template class to
+// FontAwesomeTemplate.
+TemplateConfiguration config = new TemplateConfiguration(
+    baseTemplateClass: FontAwesomeTemplate
+)
+
+// Create engine with configuration.
+MarkupTemplateEngine engine = new MarkupTemplateEngine(config)     
+
+// Create template with text using
+// the icon method.
+Template template = engine.createTemplate('''
+    ul {
+        // Use the name of the icon as argument
+        // for the icon method.
+        li icon('cloud')
+
+        // Any extra arguments are assumed
+        // to be FontAwesome attributes.
+        li icon('pencil', 'large', 'rotate-90')
+    }
+
+    // If we want to use the icon method in between
+    // text we must use the ${stringOf notation}.
+    p "This is a ${stringOf {icon('home')}} home icon."
+
+    // Or use yieldUnescaped method.
+    p {
+        yield "This is a "
+        yieldUnescaped icon('cog')
+        yield " settings icon."
+    }
+
+''')    
+
+// Render output for template.
+Writer writer = new StringWriter()                          
+Writable output = template.make([:])  
+output.writeTo(writer)   
+String result = writer.toString()
+
+
+// This is what we would expect as a result.
+// (/ is the continuation character, so it is 
+//  actually all one line)
+def expected = $/\
+&amp;lt;ul&amp;gt;\
+&amp;lt;li&amp;gt;&amp;lt;span class="fa fa-cloud "&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/li&amp;gt;\
+&amp;lt;li&amp;gt;&amp;lt;span class="fa fa-pencil fa-large fa-rotate-90"&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/li&amp;gt;\
+&amp;lt;/ul&amp;gt;\
+&amp;lt;p&amp;gt;This is a &amp;lt;span class="fa fa-home "&amp;gt;&amp;lt;/span&amp;gt; home icon.&amp;lt;/p&amp;gt;\
+&amp;lt;p&amp;gt;This is a &amp;lt;span class="fa fa-cog "&amp;gt;&amp;lt;/span&amp;gt; settings icon.&amp;lt;/p&amp;gt;\
+/$
+
+assert result == expected
+&lt;/pre&gt;&lt;p&gt;Code written with Groovy 2.3.6.&lt;/p&gt;</content><link rel='replies' type='application/atom+xml' href='http://mrhaki.blogspot.com/feeds/5798351768218284989/comments/default' title='Post Comments'/><link rel='replies' type='text/html' href='http://mrhaki.blogspot.com/2014/08/groovy-goodness-use-custom-template.html#comment-form' title='0 Comments'/><link rel='edit' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/5798351768218284989'/><link rel='self' type='application/atom+xml' href='https://www.blogger.com/feeds/6671019398434141469/posts/default/5798351768218284989'/><link rel='alternate' type='text/html' href='http://mrhaki.blogspot.com/2014/08/groovy-goodness-use-custom-template.html' title='Groovy Goodness: Use Custom Template Class with MarkupTemplateEngine'/><author><name>Hubert Klein Ikkink</name><uri>https://plus.google.com/116304108087638220732</uri><email>noreply@blogger.com</email><gd:image rel='http://schemas.google.com/g/2005#thumbnail' width='32' height='32' src='//lh4.googleusercontent.com/-VhI52jWYsR8/AAAAAAAAAAI/AAAAAAAAGXU/0_QYtbZ0LyA/s32-c/photo.jpg'/></author><thr:total>0</thr:total><gd:extendedProperty name='commentSource' value='1'/><gd:extendedProperty name='commentModerationMode' value='FILTERED_POSTMOD'/></entry></feed>

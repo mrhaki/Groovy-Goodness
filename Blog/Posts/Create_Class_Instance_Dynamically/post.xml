@@ -1,0 +1,26 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-4884623314727914382010-06-03T14:24:00.004+02:002010-11-26T11:15:12.823+01:00Groovy Goodness: Create Class Instance Dynamically<p>The <code>Class</code> method in Groovy has a <code>newInstance()</code> to dynamically create a new instance of a given class. We can use an Object array or Map as argument if we want to invoke the non-default constructor of the class.</p>
+<pre class="brush:groovy">
+class Blog {
+    String name
+    String subject
+    
+    Blog() {}
+    
+    Blog(String name, String subject) {
+        this.name = name
+        this.subject = subject
+    }
+}
+
+def blog = Blog.newInstance()
+assert !blog.name, 'Name has no value'
+assert !blog.subject, 'Subject has no value'
+
+def blog2 = Blog.newInstance(['mrhaki', 'Groovy'] as Object[])
+assert 'mrhaki' == blog2.name
+assert 'Groovy' == blog2.subject
+
+def blog3 = Blog.newInstance([name:'mrhaki', subject: 'Groovy'])
+assert 'mrhaki' == blog3.name
+assert 'Groovy' == blog3.subject
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

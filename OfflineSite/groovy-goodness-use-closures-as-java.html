@@ -1,0 +1,79 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Use Closures as Java Lambda Expressions</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Use Closures as Java Lambda Expressions</h3>
+
+<div class="post">
+<p>Java 8 introduced lambda expressions we can use for example with the new Java Streams API. The Groovy syntax doesn't support the lambda expressions, but we can rely on closure coersion to use Groovy closures as Java lambda expressions in our code.</p><p>In the following sample we use the Java Streams API. Instead of lambda expressions for the <code>filter</code> and <code>map</code> methods we use Groovy closures. They are automatically transformed to lambda expressions, so it is very easy to use Java streams from Groovy code.</p><pre class="brush:groovy">import groovy.transform.*
+
+/**
+ * Simple class to describe
+ * a Building.
+ */
+@Canonical
+class Building {
+    String name
+    int floors
+    boolean officeSpace
+}
+
+// Create Building objects.
+def officeSpace = new Building('Initech office', 3, true)
+def theOffice = new Building('Wernham Hogg Paper Company', 4, true)
+def coffeeShop = new Building('Hunter Green', 1, false)
+
+// And add to a list.
+def buildings = [officeSpace, theOffice, coffeeShop]
+
+// Create a closure which we will use 
+// later in our code.
+def mapBuildingName = { building -> building.name }
+
+
+// Invoke Java Streams API with lambda methods,
+// but we use Groovy closures.
+def officeBuildingNames = 
+    buildings
+        .stream() // Get Java streams.
+        .filter { building -> 
+            building.officeSpace && building.floors > 2 
+        } // 'anonymous' closure.
+        .map(mapBuildingName) // Predefined closure.
+        .collect()
+        
+assert officeBuildingNames == ['Initech office', 'Wernham Hogg Paper Company']
+</pre><p>Code written with Groovy 2.4.3.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

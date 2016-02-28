@@ -1,0 +1,33 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-40999180832295639712014-05-05T16:15:00.000+02:002014-05-05T16:15:00.349+02:00Groovy Goodness: Extra Methods for NIO Path<p>Groovy adds a lot of extra methods to the <code>File</code> object to work with the contents or find and filter files in a directory. These methods are now also added to the <code>java.nio.file.Path</code> class since Groovy 2.3.</p><pre class="brush:groovy">import java.nio.file.*
+
+final Path newFile = Paths.get('output.txt')
+if (Files.exists(newFile)) {
+    Files.delete(newFile)
+}
+
+// Different ways to add content.
+newFile.write 'START'
+newFile.write System.getProperty('line.separator')
+newFile << 'Just a line of text'
+newFile.withWriterAppend { writer -&gt;
+    writer.println()
+    writer.println 'END'
+}
+
+
+// Read contents.
+final Path readFile = Paths.get('output.txt')
+
+assert readFile.readLines().join(';') == 'START;Just a line of text;END'
+assert readFile.filterLine { it.contains('text') }.toString().normalize() == 'Just a line of text\n'
+
+
+// Work with Path objects,
+// like with File GDK extensions with
+// eachFile, eachDir, eachFileRecursive...
+final Path root = Paths.get('.')
+def paths = root.eachFileMatch(~/.*\.txt$/) {
+    assert it.toFile().name == 'output.txt'
+}
+</pre>
+<p>Code written with Groovy 2.3.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

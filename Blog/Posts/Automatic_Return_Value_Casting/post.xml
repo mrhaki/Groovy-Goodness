@@ -1,0 +1,19 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-83968087054835848102009-12-02T07:55:00.003+01:002010-11-26T11:15:12.996+01:00Groovy Goodness: Automatic Return Value Casting<p>If Groovy knows the return type of a method it will automatically cast our return value to that type. We don't have to explicitly cast our value.</p>
+<pre class="brush:groovy">
+String simple() {
+    42
+}
+assert 'java.lang.String' == simple().class.name 
+assert '42' == simple()
+
+class User {
+    String name, email
+}
+
+User createUser() { 
+    [name: 'mrhaki', email: 'mail@host.com']
+}
+assert createUser() instanceof User
+assert 'mrhaki' == createUser().name
+assert 'mail@host.com' == createUser().email
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

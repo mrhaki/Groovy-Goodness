@@ -1,0 +1,16 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-19134796180748116342011-09-27T05:00:00.000+02:002011-09-27T05:00:04.724+02:00Groovy Goodness: Use inject Method on a Map<p>The <a href="http://mrhaki.blogspot.com/2009/09/groovy-goodness-using-inject-method.html"><code>inject()</code> method</a> is since Groovy 1.8.1 also available for Map objects. The closure arguments accepts two or three arguments. With the three-argument variant we get the key and value separately as arguments. Otherwise we get a map entry as closure argument.</p><pre class="brush:groovy">// 3-argument closure with key, value.
+def m = [user: 'mrhaki', likes: 'Groovy']
+def sentence = m.inject('Message: ') { s, k, v ->
+    s += "${k == 'likes' ? 'loves' : k} $v "
+}
+
+assert sentence.trim() == 'Message: user mrhaki loves Groovy'
+
+// 2-argument closure with entry. 
+def map = [sort: 'name', order: 'desc']
+def equalSizeKeyValue = map.inject([]) { list, entry ->
+    list << (entry.key.size() == entry.value.size())
+}
+
+assert equalSizeKeyValue == [true, false]
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

@@ -1,0 +1,14 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-31184797826403476162013-12-12T14:03:00.000+01:002013-12-12T14:03:42.441+01:00Groovy Goodness Notebook Updated with New Groovy 2.2 Features<p><a href="https://leanpub.com/groovy-goodness-notebook/">Groovy Goodness Notebook</a> was released in June 2013. Now I have updated the book with extra subjects, which were published on this blog. The updated book now includes the following new subjects, including new Groovy 2.2 features:</p><ul><li>Check if a String Only Contains Whitespaces</li>
+<li>Remove Part of String With Regular Expression Pattern</li>
+<li>Replace Characters in a String with CollectReplacements</li>
+<li>Cache Methods Invocations with Memoize Annotation</li>
+<li>Choose Which Delegated Methods to Use</li>
+<li>Create CopyWith Method with Immutable Annotation&nbsp;</li>
+<li>Create New Date or Calendar from Existing and Set Property Value</li>
+<li>Loop Through Date and Calendar Ranges</li>
+<li>Enhancements for Iterable Implementations</li>
+<li>Implicit Closure Coercion</li>
+<li>Running Scripts from a JAR Archive</li>
+<li>Set Delegating Class for Script</li>
+<li>Set Script Class with BaseScript Annotation</li>
+</ul><p>According to Leanpub the updates to the book should be free for those that already purchased the book. Enjoy reading.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

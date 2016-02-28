@@ -1,0 +1,33 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-22042040516879878462009-09-26T07:00:00.001+02:002010-11-26T11:15:13.213+01:00Groovy Goodness: Grab That Dependency<p>In Groovy scripts we can automatically download dependencies with <a href="http://groovy.codehaus.org/Grapes+and+grab()">Grape</a>. Grape can be used as annotation (for a method or parameter) or with a plain method call. <a href="http://ant.apache.org/ivy/">Apacy Ivy</a> is used by Grape to find and download the dependencies. This means we can also use all Maven2 dependency repositories. If we want to add new repositories we must create a file <code>~/.groovy/grapeConfig.xml</code> which is an Ivy configuration file and in it we can add a new repository. The downloaded files are saved in <code>~/.groovy/grapes</code>.</p><p>The command-line <code>grape</code> command can be used to download dependencies or to list the already downloaded dependencies. For example with <code>$ grape list</code> we get a list of all dependencies on our local computer.</p>
+<pre class="brush:groovy">
+import org.apache.commons.lang.SystemUtils
+
+@Grab(group='commons-lang', module='commons-lang', version='2.4')
+def printInfo() {
+    if (SystemUtils.isJavaVersionAtLeast(5)) {
+        println 'We are ready to use annotations in our Groovy code.'
+    } else {
+        println 'We cannot use annotations in our Groovy code.'
+    }
+}
+
+printInfo()
+</pre>
+<p>Default Grape configuration file:</p>
+<pre class="brush:xml">
+&lt;ivysettings&gt;
+  &lt;settings defaultResolver=&quot;downloadGrapes&quot;/&gt;
+  &lt;resolvers&gt;
+    &lt;chain name=&quot;downloadGrapes&quot;&gt;
+      &lt;filesystem name=&quot;cachedGrapes&quot;&gt;
+        &lt;ivy pattern=&quot;${user.home}/.groovy/grapes/[organisation]/[module]/ivy-[revision].xml&quot;/&gt;
+        &lt;artifact pattern=&quot;${user.home}/.groovy/grapes/[organisation]/[module]/[type]s/[artifact]-[revision](-[classifier]).[ext]&quot;/&gt;
+      &lt;/filesystem&gt;
+      &lt;!-- todo add 'endorsed groovy extensions' resolver here --&gt;
+      &lt;ibiblio name=&quot;codehaus&quot; root=&quot;http://repository.codehaus.org/&quot; m2compatible=&quot;true&quot;/&gt;
+      &lt;ibiblio name=&quot;ibiblio&quot; m2compatible=&quot;true&quot;/&gt;
+      &lt;ibiblio name=&quot;java.net2&quot; root=&quot;http://download.java.net/maven/2/&quot; m2compatible=&quot;true&quot;/&gt;
+    &lt;/chain&gt;
+  &lt;/resolvers&gt;
+&lt;/ivysettings&gt;
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

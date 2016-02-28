@@ -1,0 +1,11 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-4095820647712442392009-08-17T07:22:00.004+02:002010-11-26T11:15:13.321+01:00Groovy Goodness: the Elvis Operator ?:<p>Groovy is good at shortening normal Java statements. The Elvis operator is to shorten the ternary operator. If we have a sensible default when the value is null or false (following Groovy truth rules) we can use the Elvis operator. And why is it called the Elvis operator? Turn your head to the left and you will know.</p>
+<pre class="brush:groovy">
+def sampleText
+
+// Normal ternary operator.
+def ternaryOutput = (sampleText != null) ? sampleText : 'Hello Groovy!'
+
+// The Elvis operator in action. We must read: 'If sampleText is not null assign
+// sampleText to elvisOuput, otherwise assign 'Viva Las Vegas!' to elvisOutput.
+def elvisOutput = sampleText ?: 'Viva Las Vegas!'
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com4

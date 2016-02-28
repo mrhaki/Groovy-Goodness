@@ -1,0 +1,96 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Using Package Scoped Methods, Fields and Classes</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Using Package Scoped Methods, Fields and Classes</h3>
+
+<div class="post">
+<p>Groovy uses the Java package protected scope visibility rules to turn methods and classes into public scoped variants and fields into properties. In Java package scope visibility is applied to any field, method or class that has no explicit scope set, like <code>public</code>, <code>protected</code> or <code>private</code>. To get the same scope in Groovy we must use the AST transformation <code>@PackageScope</code> to explicitly define a field, method or class to have package scope.</p><p>In the following code we want to define a simple <code>User</code> class with an accessor method to change the <code>username</code> property. Only classes in the same package as the <code>User</code> class must be allowed to use this method. The method may not be invoked by classes in other packages or subclasses.</p><pre class="brush:groovy">package com.mrhaki.groovy.domain
+
+import groovy.transform.*
+
+class User {
+    private String username
+    
+    User(final String username) {
+        this.username = username
+    }
+
+    @PackageScope 
+    void changeUsername(final String newUsername) {
+        this.username = newUsername
+    }
+
+    String getUsername() {
+        username
+    }
+}
+</pre><p>If we create a new class in another package and we want to invoke the method <code>changeUsername()</code> we get an error if we use <code>@CompileStatic</code>. We can also write a Java class to use our Groovy <code>User</code> class and then the compiler will also give an error.</p><pre class="brush:groovy">// File: App.groovy
+package com.mrhaki.groovy.app
+
+import groovy.transform.*
+import com.mrhaki.groovy.domain.User
+
+@CompileStatic
+def changeUsername() {
+    final User user = new User('mrhaki')
+    user.changeUsername 'Hubert A. Klein Ikkink'
+}
+
+changeUsername()
+</pre><p>If we run the script with Groovy we get an <code>IllegalAccessError</code>:</p><pre class="brush:plain;light:true">$ groovyc User.groovy
+$ groovy App.groovy
+Caught: java.lang.IllegalAccessError: tried to access method com.mrhaki.groovy.domain.User.changeUsername(Ljava/lang/String;)V from class com.mrhaki.groovy.app.App
+java.lang.IllegalAccessError: tried to access method com.mrhaki.groovy.domain.User.changeUsername(Ljava/lang/String;)V from class com.mrhaki.groovy.app.App
+ at com.mrhaki.groovy.app.App.changeUser(App.groovy:10)
+ at com.mrhaki.groovy.app.App.run(App.groovy:13)
+</pre><p>If we write a Java class to invoke the package scoped method we get an error when we compile the class:</p><pre class="brush:java">package com.mrhaki.groovy.app;
+
+import com.mrhaki.groovy.domain.User;
+
+public class Application {
+    public static void main(final String[] args) {
+        final User user = new User("mrhaki");
+        user.changeUsername("Hubert A. Klein Ikkink");
+    }
+}
+</pre><p>The compilation error:</p><pre class="brush:plain;light:true">$ javac -cp . Application.java
+Application.java:8: error: changeUsername(String) is not public in User; cannot be accessed from outside package
+        user.changeUsername("Hubert A. Klein Ikkink");
+            ^
+1 error
+</pre><p>The <code>@PackageScope</code> annotation can be used at class, field and method level. We can also add an argument to the annotation if applied at class level. We can then use the constants in <code>groovy.transform.PackageScopeTarget</code> to make all fields package scoped with <code>FIELDS</code>, all methods with <code>METHODS</code> and the class with <code>CLASS</code>.<br />
+<p>Code written with Groovy 2.2.1.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

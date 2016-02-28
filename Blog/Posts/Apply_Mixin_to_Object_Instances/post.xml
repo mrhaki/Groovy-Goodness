@@ -1,0 +1,20 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-63025910591167442982013-02-04T22:36:00.002+01:002013-02-04T22:36:28.023+01:00Groovy Goodness: Apply Mixin to Object Instances<p>In Groovy we can add extra functionality to a class with <a href="http://mrhaki.blogspot.com/2009/10/groovy-goodness-mixin-functionality-to.html">so-called mixins</a>. In the <a href="http://mrhaki.blogspot.com/2009/10/groovy-goodness-mixin-functionality-to.html">previous blog post</a> we added extra functionality to a class, but we can also apply run-time mixins to an object instance. The syntax is slightly different, because we must use the <code>mixin()</code> method on the <code>metaClass</code> property of the object.</p><pre class="brush:groovy">class Parrot {
+    static String speak(Message text) {
+        /"$text" Polly wants a cracker!/
+    }
+}
+
+// Runtime mixin on String object instead of class. 
+String s = 'Groovy is Gr8'
+s.metaClass.mixin Parrot
+
+assert s.speak() == '"Groovy is Gr8" Polly wants a cracker!'
+
+
+String other = 'Groovy and Grails'
+try {
+    other.speak()
+} catch (MissingMethodException e) {
+    assert e.message.startsWith('No signature of method: java.lang.String.speak() is applicable for argument types: () values: []')
+}
+</pre><p>Written with Groovy 2.1</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

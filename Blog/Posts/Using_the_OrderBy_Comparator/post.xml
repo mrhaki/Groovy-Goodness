@@ -1,0 +1,24 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-75251166486115901842009-12-26T08:18:00.001+01:002010-11-26T11:15:12.935+01:00Groovy Goodness: Using the OrderBy Comparator<p>The <code>OrderBy</code> class in Groovy implements the <code>Comparator</code> interface. We provide one or more closures to an <code>OrderBy</code> object, which are executed for comparing values. We can use this object whenever we need a comparator, for example if we invoke the <code>sort()</code> method on a collection.</p>
+<pre class="brush:groovy">
+class Language {
+    String name
+    boolean dynamic
+    String toString() { "name: $name, dynamic: $dynamic" }
+}
+
+def languages = [
+    new Language(name: 'Groovy', dynamic: true),
+    new Language(name: 'Java', dynamic: false),
+    new Language(name: 'Clojure', dynamic: true)
+]
+
+// We order first on dynamic property and then name property.
+def orderByDynamicAndName = new OrderBy([{ it.dynamic }, { it.name }])
+def sortedLanguages = languages.sort(orderByDynamicAndName)
+
+assert 'Java' == sortedLanguages[0].name
+assert !sortedLanguages[0].dynamic
+assert 'Clojure' == sortedLanguages[1].name 
+assert 'Groovy' == sortedLanguages[2].name
+assert sortedLanguages[1].dynamic && sortedLanguages[2].dynamic
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com4

@@ -1,0 +1,50 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-11417947105309684512010-06-27T08:23:00.004+02:002010-11-26T11:15:12.789+01:00Groovy Goodness: Synchronized Annotation for Synchronizing Methods<p>Since Groovy 1.7.3 we have a new AST transformation: <a href="http://projectlombok.org/features/Synchronized.html">@Synchronized</a>. This annotation is based on the <a href="http://projectlombok.org/features/Synchronized.html">Project Lombok Synchronized annotation</a>. We can use the annotation on instance and static methods. The annotation will create a lock variable in our class (or we can use an existing variable) and the code is synchronized on that lock variable. Normally with the <code>synchronized</code> keyword the lock is on <code>this</code>, but that can have side-effects.</p>
+<pre class="brush:groovy">
+import groovy.transform.Synchronized
+
+class Util {
+    private counter = 0
+    
+    private def list = ['Groovy']
+    
+    private Object listLock = new Object[0]
+    
+    @Synchronized
+    void workOnCounter() {
+        assert 0 == counter
+        counter++
+        assert 1 == counter
+        counter --
+        assert 0 == counter
+    }
+    
+    @Synchronized('listLock')
+    void workOnList() {
+        assert 'Groovy' == list[0]
+        list << 'Grails'
+        assert 2 == list.size()
+        list = list - 'Grails'
+        assert 'Groovy' == list[0]
+    }
+}
+
+def util = new Util()
+def tc1 = Thread.start { 
+    100.times { 
+        util.workOnCounter()
+        sleep 20 
+        util.workOnList()
+        sleep 10
+    } 
+}
+def tc2 = Thread.start { 
+    100.times { 
+        util.workOnCounter()
+        sleep 10 
+        util.workOnList()
+        sleep 15
+    } 
+}
+tc1.join()
+tc2.join()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

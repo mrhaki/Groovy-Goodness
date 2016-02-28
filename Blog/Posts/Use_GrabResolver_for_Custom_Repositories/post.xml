@@ -1,0 +1,10 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-18430442768201187232010-05-28T21:08:00.005+02:002010-11-26T11:15:12.827+01:00Groovy Goodness: Use GrabResolver for Custom Repositories<p>In Groovy we can use the @Grab annotation to define dependencies and automatically download them from public repositories. But maybe we have created our own package and we want to use it in our Groovy script. Our own package is deployed to a customer Maven 2 compatible repository with the url <em>http://customserver/repo</em>, so it is not available to the general public. We can use @GrabResolver to add this repository as a source to look for dependencies in our script. In the following sample code we assume the module <em>groovy-samples</em>, version 1.0 is deployed in the repository accessible via <em>http://customserver/repo</em>:
+</p>
+<pre class="brush:groovy">
+@GrabResolver(name='custom', root='http://customserver/repo', m2Compatible='true')
+@Grab('com.mrhaki:groovy-samples:1.0')
+import com.mrhaki.groovy.Sample
+
+def s = new Sample()
+s.justToShowGrabResolver()  // Just a sample
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

@@ -1,0 +1,63 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Closure as a Class</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Closure as a Class</h3>
+
+<div class="post">
+<p>When we write Groovy code there is a big chance we also write some closures. If we are working with collections for example and use the <code>each</code>, <code>collect</code> or <code>find</code> methods we use closures as arguments for these methods. We can assign closures to variables and use the variable name to reference to closure. But we can also create a subclass of the <code>Closure</code> class to implement a closure. Then we use an instance of the new closure class wherever a closure can be used.</p><p>To write a closure as a class we must subclass <code>Closure</code> and implement a method with the name <code>doCall</code>. The method can accept arbitrary arguments and the return type can be defined by us. So we are not overriding a method <code>doCall</code> from the superclass <code>Closure</code>. But Groovy will look for a method with the name <code>doCall</code> to execute the closure logic and internally use methods from the <code>Closure</code> superclass.</p><p>In the following sample we write a very simple closure as a class to check if an object is a number. Then we use an instance of the class with the <code>findAll</code> method for a collection of objects:</p><pre class="brush:groovy">class IsNumber extends Closure&lt;Boolean&gt; /* return type for closure as generic type */ {
+
+    IsNumber() {
+        super(null)
+    }
+
+    /**
+     * Implementation of closure.
+     */
+    Boolean doCall(final Object value) {
+        // Check if value is a number, if so
+        // return true, otherwise false.
+        value in Number
+    }
+
+}
+
+def list = ['a', 100, 'Groovy', 1, 8, 42.0, true]
+
+def numbers = list.findAll(new IsNumber())
+
+assert numbers == [100, 1, 8, 42.0]
+</pre><p>Code written with Groovy 2.3.7.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

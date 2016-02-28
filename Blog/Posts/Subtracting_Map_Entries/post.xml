@@ -1,0 +1,9 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-47213598731642947562010-08-09T22:03:00.000+02:002010-11-26T11:15:12.759+01:00Groovy Goodness: Subtracting Map Entries<p>Groovy 1.7.4 adds the <code>minus()</code> method to the <code>Map</code> class. The result is a new map with the entries of the map minus the same entries from the second map.</p>
+<pre class="brush:groovy">
+def m1 = [user: 'mrhaki', age: 37]
+def m2 = [user: 'mrhaki', name: 'Hubert']
+def m3 = [user: 'Hubert', age: 37]
+
+assert [age: 37] == m1 - m2
+assert [user: 'mrhaki'] == m1 - m3
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

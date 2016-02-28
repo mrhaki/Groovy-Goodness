@@ -1,0 +1,111 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-18026231340268053562009-09-23T07:00:00.003+02:002010-11-26T11:15:13.219+01:00Groovy Goodness: Using GroovyMBeans for Easy JMX<p>JMX (Java Management eXtensions) is used to monitor and manage components. For example we can get information about the Java Virtual Machine memory usage or we can change log settings while the application is running. A JMX component is also called an MBean and Groovy makes it very easy to use these MBeans. Groovy adds the <a href="http://groovy.codehaus.org/api/groovy/util/GroovyMBean.html">GroovyMBean</a> class as a wrapper around MBeans. When the MBean is wrapped as a GroovyMBean accessing attributes is like accessing properties on a object and we can invoke a operation directly by its name.</p><p>In our example code we inspect some MBeans provided by the Jetty webserver. To enable JMX in Jetty we invoke the following startup command:</p>
+<pre class="brush:plain;light:true">
+$ export JMX_OPTS = -Dcom.sun.management.jmxremote -Djava.rmi.server.hostname=localhost -Dcom.sun.management.jmxremote.port=8090 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false 
+$ java $JMX_OPTS -jar start.jar etc/jetty-jmx.xml etc/jetty.xml
+</pre>
+<p>Jetty starts with an unsafe JMX connection. We can use it for this example, but for production system we must enable ssl and enable user authentication. Some Jetty components are now exposed as MBeans and in the following piece of code we inspect these MBeans. We see how to read and write attributes and how to invoke methods with GroovyMBean.</p>
+<pre class="brush:groovy">
+import javax.management.remote.*
+import javax.management.*
+import groovy.jmx.builder.*
+
+// Setup JMX connection.
+def connection = new JmxBuilder().client(port: 8090, host: 'localhost')
+connection.connect()
+
+// Get the MBeanServer.
+def mbeans = connection.MBeanServerConnection
+
+println "Total MBeans: ${mbeans.MBeanCount}\n"
+
+// Create GroovyMBean.
+def mbean = new GroovyMBean(mbeans, 'org.mortbay.jetty.webapp:type=webappcontext,name=test,id=0')
+println mbean  // Outputs all attributes and operations.
+
+assert mbean.running  // Get attribute value.
+assert '/test' == mbean.contextPath
+mbean.contextPath = '/changed'  // Set attribute value.
+assert '/changed' == mbean.contextPath
+mbean.stop()  // Invoke stop() method.
+assert !mbean.running
+mbean.setContextAttribute 'groovy', true  // Invoke setContextAttribute(String, Object) method.
+assert mbean.contextAttributes.groovy
+
+// Find MBeans with Groovy collection methods.
+def webBean = mbeans.queryNames(new ObjectName('org.mortbay.jetty.webapp:*'), null).find {
+    it.getKeyProperty('name') == 'test-jndi' &amp;&amp;
+    it.getKeyProperty('type') == 'webappcontext'
+}
+mbean = new GroovyMBean(mbeans, webBean)
+assert mbean
+
+// Classical way to invoke operations and access attributes,
+// which is less readable than the GroovyMBean version.
+assert mbeans.getAttribute(webBean, "running")
+mbeans.invoke(webBean, "setContextAttribute", ['groovy', Boolean.TRUE] as Object[], ['java.lang.String', 'java.lang.Object'] as String[])
+assert (mbeans.getAttribute(webBean, "contextAttributes").get("groovy"))
+mbeans.setAttribute(webBean, new Attribute("distributable", Boolean.TRUE))
+assert (mbeans.getAttribute(webBean, "distributable"))
+
+def gmbeans = mbeans.queryNames(new ObjectName('org.mortbay.jetty.webapp:*'), null).inject([]) { result, name ->
+    result << new GroovyMBean(mbeans, name)
+}
+println ''
+gmbeans.each { 
+    println "${it.displayName} is ${it.running ? 'running' : 'stopped'}" 
+}
+</pre>
+<p>When we run this script we get the following output:</p>
+<pre class="brush:plain;light:true">
+Total MBeans: 107
+
+MBean Name:
+  org.mortbay.jetty.webapp:id=0,name=test,type=webappcontext
+  
+Attributes:
+  (rw) [Ljava.lang.String; systemClasses
+  (rw) java.lang.String overrideDescriptor
+  (rw) java.lang.String descriptor
+  (rw) [Ljava.lang.String; configurationClasses
+  (rw) java.io.File tempDirectory
+  (rw) java.lang.String war
+  (rw) boolean extractWAR
+  (rw) [Ljava.lang.String; serverClasses
+  (rw) boolean distributable
+  (rw) boolean parentLoaderPriority
+  (rw) java.lang.String extraClasspath
+  (rw) java.lang.String defaultsDescriptor
+  (rw) boolean copyWebDir
+  (rw) javax.management.ObjectName securityHandler
+  (rw) javax.management.ObjectName servletHandler
+  (rw) javax.management.ObjectName sessionHandler
+  (rw) [Ljava.lang.String; connectorNames
+  (rw) java.util.Map initParams
+  (rw) java.lang.String resourceBase
+  (rw) [Ljava.lang.String; welcomeFiles
+  (r) java.util.Map contextAttributes
+  (rw) java.lang.String contextPath
+  (r) java.lang.String displayName
+  (rw) [Ljava.lang.String; virtualHosts
+  (rw) boolean shutdown
+  (rw) javax.management.ObjectName handler
+  (r) boolean stopped
+  (r) boolean failed
+  (r) boolean starting
+  (r) boolean started
+  (r) boolean stopping
+  (r) boolean running
+  (r) javax.management.ObjectName server
+Operations:
+  void setContextAttribute(java.lang.String name, java.lang.String value)
+  void setContextAttribute(java.lang.String name, java.lang.Object value)
+  void removeContextAttribute(java.lang.String name)
+  void stop()
+  void start()
+  void destroy()
+
+Test WebApp is stopped
+JAAS Test is running
+Cometd Test WebApp is running
+Test JNDI WebApp is running
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

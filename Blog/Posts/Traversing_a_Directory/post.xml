@@ -1,0 +1,36 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-18864428409031406622010-04-28T09:54:00.001+02:002010-11-26T11:15:12.846+01:00Groovy Goodness: Traversing a Directory<p>Groovy adds the <code>traverse()</code> method to the <code>File</code> class in version 1.7.2. We can use this method to traverse a directory tree and invoke a closure to process the files and directories. If we look at the documentation we see we can also pass a map with a lot of possible options to influence the processing.</p>
+<pre class="brush:groovy">
+import static groovy.io.FileType.*
+import static groovy.io.FileVisitResult.*
+
+def groovySrcDir = new File(System.env['GROOVY_HOME'], 'src/')
+
+def countFilesAndDirs = 0
+groovySrcDir.traverse {
+    countFilesAndDirs++
+}
+println "Total files and directories in ${groovySrcDir.name}: $countFilesAndDirs"
+
+def totalFileSize = 0
+def groovyFileCount = 0
+def sumFileSize = { 
+    totalFileSize += it.size()
+    groovyFileCount++
+}
+def filterGroovyFiles = ~/.*\.groovy$/
+groovySrcDir.traverse type: FILES, visit: sumFileSize, nameFilter: filterGroovyFiles
+println "Total file size for $groovyFileCount Groovy source files is: $totalFileSize"
+
+def countSmallFiles = 0
+def postDirVisitor = {
+    if (countSmallFiles > 0) {
+     println "Found $countSmallFiles files with small filenames in ${it.name}"
+ }
+    countSmallFiles = 0
+}
+groovySrcDir.traverse(type: FILES, postDir: postDirVisitor, nameFilter: ~/.*\.groovy$/) {
+    if (it.name.size() < 15) {
+     countSmallFiles++
+    }
+}
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

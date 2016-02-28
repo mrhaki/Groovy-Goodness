@@ -1,0 +1,43 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-1019982638103026882009-09-10T07:00:00.003+02:002010-11-26T11:15:13.250+01:00Groovy Goodness: Using the GroupBy Method<p>In Groovy we can group the elements of a Collection type in a map. We define the rule for grouping with a closure. The result is a map where the key is the grouping condition and the value contains the elements of the Collection type belonging to the key. Let's see the <code>groupBy</code> method in action:</p>
+<pre class="brush:groovy">
+class User {
+    String name
+    String city
+    Date birthDate
+    public String toString() { "$name" }
+}
+
+def users = [
+    new User(name:'mrhaki', city:'Tilburg', birthDate:new Date(73,9,7)),
+    new User(name:'bob', city:'New York', birthDate:new Date(63,3,30)),
+    new User(name:'britt', city:'Amsterdam', birthDate:new Date(80,5,12)),
+    new User(name:'kim', city:'Amsterdam', birthDate:new Date(83,3,30)),
+    new User(name:'liam', city:'Tilburg', birthDate:new Date(109,3,6))
+]
+
+// Helper closure for asserts.
+def userToString = { it.toString() }
+
+// Group by city property of user object:
+def usersByCity = users.groupBy({ user -> user.city })
+assert 2 == usersByCity["Tilburg"].size()
+assert ['mrhaki', 'liam'] == usersByCity["Tilburg"].collect(userToString) 
+assert ['bob'] == usersByCity["New York"].collect(userToString)
+assert ['britt', 'kim'] == usersByCity["Amsterdam"].collect(userToString)
+
+// Group by year of birthdate property of user object:
+def byYear = { u -> u.birthDate[Calendar.YEAR] }
+def usersByBirthDateYear = users.groupBy(byYear)
+assert ['mrhaki'] == usersByBirthDateYear[1973].collect(userToString)
+
+// Just a little fun with the closure:
+def groupByGroovy = { 
+    if (it =~ /y/) {
+        "Contains y"
+    } else {
+        "Doesn't contain y"
+    }
+}
+assert ["Contains y":["Groovy"], "Doesn't contain y":["Java", "Scala"]] == ['Groovy', 'Java', 'Scala'].groupBy(groupByGroovy)
+</pre>
+<p>Run this script in <a href="http://groovyconsole.appspot.com/?id=12005">GroovyConsole</a>.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

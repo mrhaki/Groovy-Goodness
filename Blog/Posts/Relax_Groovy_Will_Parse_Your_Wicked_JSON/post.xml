@@ -1,0 +1,27 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-12460133933747421682014-08-05T23:23:00.000+02:002014-08-05T23:23:26.241+02:00Groovy Goodness: Relax... Groovy Will Parse Your Wicked JSON<p>Since Groovy 2.3 the JSON parser has improved and is really a performant parser for JSON payload. JSON must be formatted in a strict way, for example all keys must be enclosed in double quotes. But what if we have JSON which not applies to the strict specification? For example a configuration file written in JSON and we want to add comments to this file. Or use single quotes for keys, or just leave all the quotes out. We can now specify the type <code>JsonParseType.LAX</code> for our JSON parser and we can now parse JSON which doesn't apply to the strict specification.</p><pre class="brush:groovy">import groovy.json.*
+import static groovy.json.JsonParserType.LAX as RELAX
+
+def jsonText = '''
+{
+    message: {
+        
+        /* Set header of message */
+        header: {
+            "from": 'mrhaki',
+            'to': ["Groovy Users", "Java Users"]
+        }
+        
+        # Include a little body for the message.
+        'body': "Check out Groovy's gr8 JSON support."
+    }
+}       
+'''
+
+def json = new JsonSlurper().setType(RELAX).parseText(jsonText)
+
+def header = json.message.header
+assert header.from == 'mrhaki'
+assert header.to[0] == 'Groovy Users'
+assert header.to[1] == 'Java Users'
+assert json.message.body == "Check out Groovy's gr8 JSON support."
+</pre><p>Code written with Groovy 2.3.6.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

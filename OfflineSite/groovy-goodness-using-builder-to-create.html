@@ -1,0 +1,83 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Using Builder to Create Fluent API for Other Classes</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Using Builder to Create Fluent API for Other Classes</h3>
+
+<div class="post">
+<p>In a <a href="http://mrhaki.blogspot.com/2014/04/groovy-goodness-use-builder-ast.html">previous post</a> we learned about the new <code>@Builder</code> AST transformation introduced in Groovy 2.3. We applied to the annotation to our class files and we got a nice fluent API to set property values. But what if we cannot change the class itself, for example if we want to create a fluent API for classes in an external library. Then we can still use the <code>@Builder</code> AST transformation but we use a different strategy. We can define the builder strategy via a annotation parameter.</p><p>In the following sample we assume the <code>Message</code> class is from an external library and we cannot or do not want to change the class definition. We create a new Groovy class and set the <code>@Builder</code> annotation on this new class. We use the annotation parameters <code> builderStrategy</code> to indicate the generated code is not for the new class, but for the class set with the annotation parameter <code>forClass</code>.</p><pre class="brush:groovy">import groovy.transform.builder.Builder
+import groovy.transform.builder.ExternalStrategy
+
+// We don't want to change the definition
+// of this class to get a fluent API.
+class Message {
+    String from, to, subject, body
+}
+
+// New builder class for the Message class.
+@Builder(builderStrategy = ExternalStrategy, forClass = Message)
+class MessageBuilder {}
+
+def message = new MessageBuilder()  // Create new instance.
+        .from('mrhaki@mrhaki.com')
+        .to('mail@host.nl')
+        .subject('Groovy 2.3 is released')
+        .body('Groovy rocks!')
+        .build()  // Return filled Message instance.
+
+assert message.body == 'Groovy rocks!'
+assert message.from == 'mrhaki@mrhaki.com'
+assert message.subject == 'Groovy 2.3 is released'
+</pre><p>We can also customize the prefix for the method names to set property values and we can change the name of the build method. And we can include or exclude properties with the <code>includes</code> and <code>excludes</code> properties:</p><pre class="brush:groovy">import groovy.transform.builder.Builder
+import groovy.transform.builder.ExternalStrategy
+
+class Message {
+    String from, to, subject, body
+}
+
+@Builder(builderStrategy = ExternalStrategy, forClass = Message,
+        prefix = 'assign', buildMethodName = 'create',
+        includes = 'from,subject')
+class MessageBuilder {}
+
+def message = new MessageBuilder()
+        .assignFrom('mrhaki@mrhaki.com')
+        .assignSubject('Groovy 2.3 is released')
+        .create()
+
+assert message.from == 'mrhaki@mrhaki.com'
+assert message.subject == 'Groovy 2.3 is released'
+</pre><p>Code written with Groovy 2.3.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

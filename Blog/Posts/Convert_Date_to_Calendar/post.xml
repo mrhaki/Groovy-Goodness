@@ -1,0 +1,15 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-81753755853442218772010-12-16T10:43:00.000+01:002010-12-16T10:43:18.368+01:00Groovy Goodness: Convert Date to Calendar<p>In Groovy version 1.7.6 we can convert a <code>Date</code> to a <code>Calendar</code> with the <code>toCalendar()</code> method. The <code>toCalendar()</code> method is added to the <code>Date</code> class by Groovy.</p>
+<pre class="brush:groovy">
+import static java.util.Calendar.*
+
+def date = new Date()
+date.set year: 2010, month: 11, date: 16
+
+def calendar = date.toCalendar()
+
+assert calendar[YEAR] == 2010
+assert calendar[MONTH] == Calendar.DECEMBER
+assert calendar[DATE] == 16
+assert calendar.format('dd-MM-yyyy') == '16-12-2010'
+assert calendar in Calendar
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

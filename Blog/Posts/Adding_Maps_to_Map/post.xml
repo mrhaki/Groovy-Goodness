@@ -1,0 +1,8 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-53964005504571915702010-04-21T13:27:00.000+02:002010-11-26T11:15:12.860+01:00Groovy Goodness: Adding Maps to Map<p>Since Groovy 1.7.2 we can use the <code>leftShift()</code> method (<code>&lt;&lt;</code> operator) to add a map to another map.</p>
+<pre class="brush:groovy">
+def m = [name: 'Java', max: 10, sort: 'name']
+def other = [name: 'Groovy', direction: 'asc']
+
+m << other
+assert [name: 'Groovy', max: 10, sort: 'name', direction: 'asc'] == m
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

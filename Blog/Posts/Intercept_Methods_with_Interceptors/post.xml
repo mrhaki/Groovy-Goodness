@@ -1,0 +1,43 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-80893470078429113932009-11-27T06:00:00.002+01:002010-11-26T11:15:13.009+01:00Groovy Goodness: Intercept Methods with Interceptors<p>We can intercept method invocations in Groovy in several ways. One way is to write an implementation for the <a href="http://groovy.codehaus.org/gapi/groovy/lang/Interceptor.html"><code>Interceptor</code></a> interface. Next we create a <a href="http://groovy.codehaus.org/gapi/groovy/lang/ProxyMetaClass.html"><code>ProxyMetaClass</code></a> for the class we want the methods to be intercepted for and assign the interceptor to the <code>ProxyMetaClass</code>. With the <code>use()</code> method we can run our methods and the interceptor is used for each method invocation.</p>
+<pre class="brush:groovy">
+class HelloInterceptor implements Interceptor {
+    boolean invokeMethod = true
+
+    boolean doInvoke() {
+        invokeMethod
+    }
+    
+    Object beforeInvoke(Object obj, String name, Object[] args) {
+        // We don't want the shout() method to be executed.
+        if (name == 'shout') {
+            invokeMethod = false
+        }
+    }
+    
+    Object afterInvoke(Object obj, String name, Object[] args, Object result) {
+        if (name == 'shout') {
+            invokeMethod = true
+            // Set an alternate result for the shout() method.
+            result = "sssshhh... You don't have to shout."
+        }
+        result
+    }
+}
+
+class Hello {
+    String say() { "Hello Groovy" }
+    String shout() { "HELLO GROOVY" }
+}
+
+// Create ProxyMetaClass and assign interceptor.
+def proxy = ProxyMetaClass.getInstance(Hello)
+def interceptor = new HelloInterceptor()
+proxy.interceptor = interceptor
+
+// Invoke Hello methods in use block so methods are intercepted.
+proxy.use {
+    def h = new Hello()
+    assert 'Hello Groovy' == h.say()
+    assert "sssshhh... You don't have to shout." == h.shout()
+}
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

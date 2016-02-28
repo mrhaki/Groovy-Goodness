@@ -1,0 +1,33 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-37365227232239245702010-04-27T08:30:00.000+02:002010-11-26T11:15:12.848+01:00Groovy Goodness: Working on Files or Directories (or Both) with FileType<p>Working with files in Groovy is very easy. We have a lot of useful methods available in the <code>File</code> class. For example we can run a Closure for each file that can be found in a directory with the <code>eachFile()</code> method. Since Groovy 1.7.1 we can define if we only want to process the directories, files or both. To do this we must pass a <code>FileType</code> constant to the method. See the following example code:</p>
+<pre class="brush:groovy">
+import groovy.io.FileType
+
+// First create sample dirs and files.
+(1..3).each { 
+ new File("dir$it").mkdir() 
+}
+(1..3).each { 
+ def file = new File("file$it")
+ file << "Sample content for ${file.absolutePath}"
+}
+
+def currentDir = new File('.')
+def dirs = []
+currentDir.eachFile FileType.DIRECTORIES, {
+    dirs << it.name
+}
+assert 'dir1,dir2,dir3' == dirs.join(',')
+
+def files = []
+currentDir.eachFile(FileType.FILES) {
+    files << it.name
+}
+assert 'file1,file2,file3' == files.join(',')
+
+def found = []
+currentDir.eachFileMatch(FileType.ANY, ~/.*2/) {
+   found << it.name
+}
+
+assert 'dir2,file2' == found.join(',')
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

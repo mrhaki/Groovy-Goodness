@@ -1,0 +1,18 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-75569130807498004452009-10-15T09:12:00.005+02:002010-11-26T11:15:13.174+01:00Groovy Goodness: Default Imports<p>Groovy allows to write dense code. For example we don't have to write explicit <code>import</code> statements for a lot of every day packages. The following packages are imported by default in Groovy:</p>
+<pre class="brush:groovy;light:true">
+java.io.* 
+java.lang.* 
+java.math.BigDecimal 
+java.math.BigInteger 
+java.net.* 
+java.util.* 
+groovy.lang.* 
+groovy.util.* 
+</pre>
+<p>So we can write code like this without an import statement:</p>
+<pre class="brush:groovy">
+def now = new Date()
+def file = new File(".")
+def url = new URL('http://mrhaki.blogspot.com')
+def list = new ArrayList()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

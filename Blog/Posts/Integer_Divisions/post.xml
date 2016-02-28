@@ -1,0 +1,13 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-66241986863302208142010-01-19T22:13:00.004+01:002010-11-26T11:15:12.892+01:00Groovy Goodness: Integer Divisions<p>In Groovy we can use two methods to divide two integers. The <code>div()</code> will return the result as <code>BigDecimal</code>. And if we use the method <code>intdiv()</code> we get the result as <code>Integer</code>, because an integer division is done.</p>
+<pre class="brush:groovy">
+def x = 26
+def y = 10
+
+def resultDiv = x.div(y)  // or x / y
+def resultIntDiv = x.intdiv(y)
+
+assert 2.6 == resultDiv
+assert 2 == resultIntDiv
+assert java.math.BigDecimal == resultDiv.class
+assert java.lang.Integer == resultIntDiv.class
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

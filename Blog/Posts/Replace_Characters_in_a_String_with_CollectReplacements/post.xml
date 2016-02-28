@@ -1,0 +1,17 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-56301925519893473612013-09-06T12:28:00.000+02:002013-09-06T12:28:19.039+02:00Groovy Goodness: Replace Characters in a String with CollectReplacements<p>We can use the <code>collectReplacements(Closure)</code> method to replace characters in a <code>String</code>. We pass a closure to the method and the closure is invoked for each character in the <code>String</code> value. If we return <code>null</code> the character is not transformed, otherwise we can return the replacement character.</p><pre class="brush:groovy">def s = 'Gr00vy is gr8'
+
+def replacement = {
+    // Change 8 to eat
+    if (it == '8') {
+        'eat'
+    // Change 0 to o
+    } else if (it == '0') {
+        'o'
+    // Do not transform
+    } else {
+        null
+    }
+}
+
+assert s.collectReplacements(replacement) == 'Groovy is great'
+</pre><p>Code written with Groovy 2.1.6</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com3

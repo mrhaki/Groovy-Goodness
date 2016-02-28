@@ -1,0 +1,23 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-70741168678800503812009-11-08T07:00:00.001+01:002010-11-26T11:15:13.101+01:00Groovy Goodness: Using def to Define a Variable<p>Groovy has the <code>def</code> keyword to replace a type name when we declare a variable. Basically it means we don't really want to define the type ourselves or we want to change the type along the ride.</p>
+<pre class="brush:groovy">
+def myvar = 42
+assert myvar instanceof Integer
+
+myvar = 'I am a String'  // String assignment changes type.
+assert myvar instanceof String
+
+String s = 'I am String'
+assert s instanceof String
+
+s = new Integer(100)  // Surprise, surprise, value is converted to String!
+assert s instanceof String
+
+int i = 42
+assert i instanceof Integer
+
+try {
+    i = 'test'  // Cannot assign String value to Integer.
+} catch (e) {
+    assert e instanceof org.codehaus.groovy.runtime.typehandling.GroovyCastException
+}
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

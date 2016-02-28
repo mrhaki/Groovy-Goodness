@@ -1,0 +1,73 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Extra Methods for NIO Path</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Extra Methods for NIO Path</h3>
+
+<div class="post">
+<p>Groovy adds a lot of extra methods to the <code>File</code> object to work with the contents or find and filter files in a directory. These methods are now also added to the <code>java.nio.file.Path</code> class since Groovy 2.3.</p><pre class="brush:groovy">import java.nio.file.*
+
+final Path newFile = Paths.get('output.txt')
+if (Files.exists(newFile)) {
+    Files.delete(newFile)
+}
+
+// Different ways to add content.
+newFile.write 'START'
+newFile.write System.getProperty('line.separator')
+newFile << 'Just a line of text'
+newFile.withWriterAppend { writer -&gt;
+    writer.println()
+    writer.println 'END'
+}
+
+
+// Read contents.
+final Path readFile = Paths.get('output.txt')
+
+assert readFile.readLines().join(';') == 'START;Just a line of text;END'
+assert readFile.filterLine { it.contains('text') }.toString().normalize() == 'Just a line of text\n'
+
+
+// Work with Path objects,
+// like with File GDK extensions with
+// eachFile, eachDir, eachFileRecursive...
+final Path root = Paths.get('.')
+def paths = root.eachFileMatch(~/.*\.txt$/) {
+    assert it.toFile().name == 'output.txt'
+}
+</pre>
+<p>Code written with Groovy 2.3.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

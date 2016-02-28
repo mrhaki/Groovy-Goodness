@@ -1,0 +1,46 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-38603746446141565552012-09-26T05:00:00.000+02:002012-09-26T05:00:01.192+02:00Groovy Goodness: Using Implicit call() Method<p>In Groovy we can invoke an implicit <code>call()</code> method on a Groovy object. We can leave out the <code>call</code> method name and just use <code>()</code>. We can use meta programming to add an implementation for the <code>call()</code> method to a class. In the following example script we add an implementation for the <code>call()</code> method with a single parameter to the <code>String</code> class. The implementation returns the element found at the range specified by the argument when we invoke the method:</p><pre class="brush:groovy">String.metaClass.call = { range -&gt;
+    delegate[range]
+}
+
+def value = 'Groovy is Gr8'
+assert value(0) == 'G'
+assert value(10) == 'G'
+assert value(4) == value[4]
+assert value.call(1) == value(1)
+assert value(0..5) == 'Groovy'
+</pre><p>Inspired by the examples <a href="http://groovyconsole.appspot.com/view.groovy?id=21006">http://groovyconsole.appspot.com/view.groovy?id=21006</a> and <a href="http://groovyconsole.appspot.com/script/21005">http://groovyconsole.appspot.com/script/21005</a> we can also write our own class and implement the <code>call()</code> method. This can for example be used in DSLs.</p><pre class="brush:groovy">class StringConverter {
+    def value
+    
+    def value(s) {
+        value = s
+        this
+    }
+
+    /** Convert characters in value property if cond is true */    
+    def upper(cond) {
+        value = value.collect { cond(it) ? it.toUpperCase() : it }.join()
+    }
+
+    def call(callable) {
+        callable
+    }
+}
+
+def converter = new StringConverter()
+converter.with {
+    value 'mrhaki' upper { it &lt; 'm' }
+    // Equivalent to:
+    // value('mrhaki') upper { it &lt; 'm' }
+    // or
+    // value('mrhaki').call(upper { it &lt; 'm' })
+    // or
+    // value('mrhaki').call(upper({ it &lt; 'm' }))
+}
+assert converter.value == 'mrHAKI'
+
+converter.with {
+    value('jdriven') upper { it == 'j' || it == 'd' }
+
+    assert value == 'JDriven'
+}
+</pre><p><em>(Code written with Groovy 2.0.4)</em></p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

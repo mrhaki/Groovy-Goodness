@@ -1,0 +1,155 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Using Layouts with MarkupTemplateEngine</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Using Layouts with MarkupTemplateEngine</h3>
+
+<div class="post">
+<p>The <code>MarkupTemplateEngine</code> added in Groovy 2.3 is very powerful. We can define layout templates with common markup we want to be used in multiple other templates. In the layout template we define placeholders for variables and content blocks surrounded by shared markup. We define values for these variables and content blocks in the actual template. We even can choose to propagate model attributes from the template to the layout template.</p><p>Let's first create a layout template with the name <code>main.tpl</code>:</p><pre class="brush:groovy">// File: main.tpl
+html {
+    head {
+        // Use pageTitle layout property.
+        title(pageTitle)
+    }
+    body {
+        section(id: 'main') {
+            // Render mainContents layout property.
+            mainContents()
+        }
+
+        section(id: 'actions') {
+            // Render actions layout property.
+            actions()
+        }
+
+        footer {
+            // A template is also Groovy code, we can
+            // define new variables or methods.
+            // pubDate should be set via original template
+            // model.
+            def generatedOn = pubDate ?: new Date()
+            p("Generated on ${dateFormat(generatedOn)}")
+        }
+    }
+}
+
+def dateFormat(date) {
+    date.format('dd-MM-yyyy')
+}
+</pre><p>Now we can write the template that uses this layout and create a result:</p><pre class="brush:groovy">// File: LayoutTemplate.groovy
+import groovy.text.*
+import groovy.text.markup.*
+
+// Create engine with configuration.
+TemplateConfiguration config = new TemplateConfiguration()
+MarkupTemplateEngine engine = new MarkupTemplateEngine(config)     
+
+// Create template with layout reference
+// and values for layout variables.
+Template template = engine.createTemplate('''\
+layout 'main.tpl', 
+    pageTitle: 'Welcome',
+    mainContents: contents {
+        h1 'Home'
+    },
+    actions: contents {
+        ul(class: 'actions') {
+            ['Home', 'About'].each { li it }
+        }
+    }
+''')    
+
+
+// Render output for template.
+Writer writer = new StringWriter()                          
+Writable output = template.make([:])  
+output.writeTo(writer)   
+String result = writer.toString()
+
+// This is what we would expect as a result.
+def expected = $/\
+&lt;html&gt;&lt;head&gt;&lt;title&gt;Welcome&lt;/title&gt;&lt;/head&gt;\
+&lt;body&gt;\
+&lt;section id='main'&gt;&lt;h1&gt;Home&lt;/h1&gt;&lt;/section&gt;\
+&lt;section id='actions'&gt;&lt;ul&gt;&lt;li&gt;Home&lt;/li&gt;&lt;li&gt;About&lt;/li&gt;&lt;/ul&gt;&lt;/section&gt;\
+&lt;footer&gt;&lt;p&gt;Generated on 11-08-2014&lt;/p&gt;&lt;/footer&gt;\
+&lt;/body&gt;&lt;/html&gt;\
+/$
+
+assert result == expected
+</pre><p>Notice we can assign directly a value to a layout property (<em>pageTitle</em>) or we can use the <code>contents</code> method with a closure (<code>mainContents</code> and <code>actions</code>). The value of the <code>contents</code> method is assigned to the layout property when the template is generated. This is useful when the value of a layout property is a closure we don't want to evaluate immediately, but when the template is generated.</p><p>We didn't specify a value for the template model property <code>pubDate</code>. If we want to use this property on our layout template as well, we must specify an extra argument with the <code>layout</code> method. The second argument must be <code>true</code> to instruct the layout that model properties are propagated. The default value is <code>false</code>:</p><pre class="brush:groovy;highlight:[11,26]">// File: LayoutTemplate.groovy
+import groovy.text.*
+import groovy.text.markup.*
+
+// Create engine with configuration.
+TemplateConfiguration config = new TemplateConfiguration()
+MarkupTemplateEngine engine = new MarkupTemplateEngine(config)     
+
+// Create template with layout reference
+// and values for layout variables.
+Template template = engine.createTemplate('''\
+layout 'main.tpl', true,
+    pageTitle: 'Welcome',
+    mainContents: contents {
+        h1 'Home'
+    },
+    actions: contents {
+        ul(class: 'actions') {
+            ['Home', 'About'].each { li it }
+        }
+    }
+''')    
+
+
+// Render output for template.
+Writer writer = new StringWriter()                          
+Writable output = template.make(pubDate: Date.parse('yyyyMMdd', '20140801'))  
+//Writable output = template.make([:])  
+output.writeTo(writer)   
+String result = writer.toString()
+
+// This is what we would expect as a result.
+def expected = $/\
+&lt;html&gt;&lt;head&gt;&lt;title&gt;Welcome&lt;/title&gt;&lt;/head&gt;\
+&lt;body&gt;\
+&lt;section id='main'&gt;&lt;h1&gt;Home&lt;/h1&gt;&lt;/section&gt;\
+&lt;section id='actions'&gt;&lt;ul&gt;&lt;li&gt;Home&lt;/li&gt;&lt;li&gt;About&lt;/li&gt;&lt;/ul&gt;&lt;/section&gt;\
+&lt;footer&gt;&lt;p&gt;Generated on 01-08-2014&lt;/p&gt;&lt;/footer&gt;\
+&lt;/body&gt;&lt;/html&gt;\
+/$
+
+assert result == expected
+</pre><p>Code written with Groovy 2.3.6.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

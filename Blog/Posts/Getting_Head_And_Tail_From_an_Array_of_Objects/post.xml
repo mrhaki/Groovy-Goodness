@@ -1,0 +1,9 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-18627406775951088112010-06-14T23:52:00.003+02:002010-11-26T11:15:12.802+01:00Groovy Goodness: Getting Head And Tail From an Array of Objects<p>We could already use the <code>head()</code> and <code>tail()</code> methods on <code>Collection</code> objects in Groovy, but in Groovy 1.7.3 we can use them on Object arrays as well.</p>
+<pre class="brush:groovy">
+String[] stringArray = ['Groovy', 'Grails', 'Spock']
+
+assert 'Groovy' == stringArray.head()
+assert ['Grails', 'Spock'] == stringArray.tail()
+assert 'Groovy' == stringArray.first()
+assert 'Spock' == stringArray.last()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

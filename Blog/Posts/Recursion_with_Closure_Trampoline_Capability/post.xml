@@ -1,0 +1,16 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-27984102729687198442011-04-28T08:59:00.000+02:002011-04-28T08:59:42.438+02:00Groovy Goodness:  Recursion with Closure Trampoline Capability<p>When we write recursive code we might get a stack overflow exception, because calls are placed on the stack to be resolved. Since Groovy 1.8 we can use the trampoline capability of closures to overcome this problem.</p>
+<p>We invoke a <code>trampoline()</code> method on a closure and our original closure is now wrapped in <code>TrampolineClosure</code> instance. Calls to the <code>TrampolineClosure</code> are executed sequentially invoking the original closure, until the original closure returns something else then a <code>TrampolineClosure</code> instance. This way the stack isn't filled and we won't get the stack overflow exceptions.</p>
+<pre class="brush:groovy">
+def sizeList
+sizeList = { list, counter = 0 ->
+    if (list.size() == 0) {
+        counter
+    } else {
+        sizeList.trampoline(list.tail(), counter + 1)
+    }
+}
+sizeList = sizeList.trampoline()
+
+assert sizeList(1..10000) == 10000
+</pre>
+<p>Try with <a href="http://groovyconsole.appspot.com/script/472001">Groovy web console</a>.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

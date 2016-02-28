@@ -1,0 +1,12 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-131349614931811662010-06-15T07:16:00.003+02:002010-11-26T11:15:12.797+01:00Groovy Goodness: Text Translation<p>In Groovy 1.7.3 the <code>tr()</code> method is added to the <code>String</code> class. With this method we can do translations in String values. We define a source set of characters that need to be replaced by a replacement set of characters. We can also use a regular expression style (remember it is not a real regular expression) to define a range of characters.</p>
+<p>If the replacement set is smaller than the source set, than the last character of the replacement set is used for the remaining source set characters.</p>
+<pre class="brush:groovy">
+// Source set and replacement set are equal size.
+assert 'I 10v3 9r00vy' == 'I love Groovy'.tr('loeG', '1039')
+
+// Regular expression style range
+assert 'mrHAKI' == 'mrhaki'.tr('a-k', 'A-K')
+
+// Replacement set is smaller than source set.
+assert 'Gr8888' == 'Groovy'.tr('ovy', '8')
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

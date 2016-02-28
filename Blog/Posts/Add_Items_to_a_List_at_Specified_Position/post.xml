@@ -1,0 +1,12 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-20117235836075622162011-04-27T21:08:00.000+02:002011-04-27T21:08:00.449+02:00Groovy Goodness: Add Items to a List at Specified Position<p>Since Groovy 1.8 we can create a new list from two lists, where the second list is 'inserted' at a specified index position in the first list. The original lists are not changed: the result is a new list. Groovy also adds the <code>addAll()</code> method to List objects (since Groovy 1.7.2), but then the original list object is changed.</p>
+<pre class="brush:groovy">
+def list = ['Gr', 'vy']
+
+assert list.plus(1, 'oo') == ['Gr', 'oo', 'vy']
+assert list == ['Gr', 'vy']
+
+list.addAll(1, 'oo') 
+assert list == ['Gr', 'oo', 'vy']
+
+assert (1..10).plus(5, 6..7) == [1,2,3,4,5,6,7,6,7,8,9,10]
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

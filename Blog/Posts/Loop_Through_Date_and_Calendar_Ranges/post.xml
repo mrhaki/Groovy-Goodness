@@ -1,0 +1,54 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-14793407032149658042013-11-18T21:32:00.000+01:002013-11-18T21:35:08.875+01:00Groovy Goodness: Loop Through Date and Calendar Ranges<p>Groovy already adds a lot of extra methods to the <code>Date</code> and <code>Calendar</code> classes. And since Groovy 2.2 we can use the <code>upto()</code> method and loop over a begin date up to another date. We pass a closure that is executed for each day. We can also iterate back using the <code>downto()</code> method.</p><pre class="brush:groovy">// We can loop from today
+// to nextWeek and invoke a closure for each day.
+def today = new Date().clearTime()
+def nextWeek = today + 7
+
+today.upto(nextWeek) {
+    // Print day of the week.
+    println it.format('EEEE')
+}
+
+println()
+
+nextweek.downto(today) {
+    prinltn it.format('EEEE')
+}
+</pre><p>When we run the code we get the following output:</p><pre class="brush:plain;light:true">Monday
+Tuesday
+Wednesday
+Thursday
+Friday
+Saturday
+Sunday
+Monday
+
+Monday
+Sunday
+Saturday
+Friday
+Thursday
+Wednesday
+Tuesday
+Monday
+</pre><p>In the next sample we use the <code>upto()</code> method on the <code>Calendar</code> class:</p><pre class="brush:groovy">// upto() also works on Calendar objects.
+def to = Calendar.instance
+to.set(year: 2013, month: Calendar.NOVEMBER, date: 18)
+
+def from = Calendar.instance
+from.set(year: 2013, month: Calendar.NOVEMBER, date: 13)
+
+from.upto(to) {
+    if (it[Calendar.DATE] % 2 == 0) {
+        print 'Even'
+    } else {
+        print 'Odd'
+    }
+    println ' date'
+}
+</pre><p>We get the following output:</p><pre class="brush:plain;light:true">Odd date
+Even date
+Odd date
+Even date
+Odd date
+Even date
+</pre><p>Code written with Groovy 2.2.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

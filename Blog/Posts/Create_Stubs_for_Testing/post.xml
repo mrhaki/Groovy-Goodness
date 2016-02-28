@@ -1,0 +1,47 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-46575974764237570662010-01-25T06:00:00.001+01:002010-11-26T11:15:12.886+01:00Groovy Goodness: Create Stubs for Testing<p>We can write unit tests with Groovy by simply extending the <code>GroovyTestCase</code> class. In the test we can use the default Groovy classes <code>MockFor</code> and <code>StubFor</code> to create mocks and stubs for classes and interfaces. We can create a mock or stub for Groovy classes, but also for Java classes. Once we have a mock or stub we can execute the code we want to test in the context of the mock or stub with the <code>use()</code> method.</p>
+<p>In this example we create a stub for a Groovy service class. We want to define our own return result for the method <code>findLanguages()</code>, so we can test the logic in the caller class.</p>
+<pre class="brush:groovy">
+import groovy.mock.interceptor.*
+
+class CallServiceTest extends GroovyTestCase {
+    def callService = new CallService()
+    
+    void testServiceCall() {
+        def stub = new StubFor(MyService.class)
+        stub.demand.findLanguages { ['Java', 'Groovy'] }  // Return one language with an 'a' and one without.
+        stub.use {
+            callService.myService = new MyService()
+            def result = callService.findLanguagesWithA()  // Will use method from stub.
+            assert 1 == result.size()
+            assert 'Java' == result[0]
+        }
+    }
+    
+    void testEmptyResult() {
+        def stub = new StubFor(MyService.class)
+        stub.demand.findLanguages { ['Groovy', 'Clojure'] }  // Return no languages with an 'a'.
+        stub.use {
+            callService.myService = new MyService()
+            def result = callService.findLanguagesWithA()  // Method from stub is invoked.
+            assert !result
+        }
+    }
+}
+
+class CallService {
+    def myService = new MyService()
+    
+    List findLanguagesWithA() {
+        def languages = myService.findLanguages()
+        languages.grep({ it.contains('a') })
+    }
+}
+class MyService {
+    List findLanguages() {
+        // Get real data from database for example.
+        // That is why we want to stub this class, so we don't rely on
+        // the database.
+        []
+    }
+}
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

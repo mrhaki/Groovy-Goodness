@@ -1,0 +1,183 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-77415581279857575712014-04-23T11:57:00.000+02:002014-04-24T09:02:39.369+02:00Groovy Goodness: Restricting Script Syntax With SecureASTCustomizer<p>Running Groovy scripts with <code>GroovyShell</code> is easy. We can for example incorporate a Domain Specific Language (DSL) in our application where the DSL is expressed in Groovy code and executed by <code>GroovyShell</code>. To limit the constructs that can be used in the DSL (which is Groovy code) we can apply a <code>SecureASTCustomizer</code> to the <code>GroovyShell</code> configuration. With the <code>SecureASTCustomizer</code> the Abstract Syntax Tree (AST) is inspected, we cannot define runtime checks here. We can for example disallow the definition of closures and methods in the DSL script. Or we can limit the tokens to be used to just a plus or minus token. To have even more control we can implement the <code>StatementChecker</code> and <code>ExpressionChecker</code> interface to determine if a specific statement or expression is allowed or not.</p><p>In the following sample we first use the properties of the <code>SecureASTCustomizer</code> class to define what is possible and not within the script:</p><pre class="brush:groovy">package com.mrhaki.blog
+
+import org.codehaus.groovy.control.customizers.SecureASTCustomizer
+import org.codehaus.groovy.control.CompilerConfiguration
+import org.codehaus.groovy.ast.stmt.*
+import org.codehaus.groovy.ast.expr.*
+import org.codehaus.groovy.control.MultipleCompilationErrorsException
+
+import static org.codehaus.groovy.syntax.Types.PLUS
+import static org.codehaus.groovy.syntax.Types.MINUS
+import static org.codehaus.groovy.syntax.Types.EQUAL
+
+// Define SecureASTCustomizer to limit allowed
+// language syntax in scripts.
+final SecureASTCustomizer astCustomizer = new SecureASTCustomizer(
+    // Do not allow method creation.
+    methodDefinitionAllowed: false,
+
+    // Do not allow closure creation.
+    closuresAllowed: false,
+
+    // No package allowed.
+    packageAllowed: false,
+
+    // White or blacklists for imports.
+    importsBlacklist: ['java.util.Date'],
+    // or importsWhitelist
+    staticImportsWhitelist: [],
+    // or staticImportBlacklist
+    staticStarImportsWhitelist: [],
+    // or staticStarImportsBlacklist
+
+    // Make sure indirect imports are restricted.
+    indirectImportCheckEnabled: true,
+
+    // Only allow plus and minus tokens.
+    tokensWhitelist: [PLUS, MINUS, EQUAL],
+    // or tokensBlacklist
+
+    // Disallow constant types.
+    constantTypesClassesWhiteList: [Integer, Object, String],
+    // or constantTypesWhiteList
+    // or constantTypesBlackList
+    // or constantTypesClassesBlackList
+    
+    // Restrict method calls to whitelisted classes.
+    // receiversClassesWhiteList: [],
+    // or receiversWhiteList
+    // or receiversClassesBlackList
+    // or receiversBlackList
+
+    // Ignore certain language statement by
+    // whitelisting or blacklisting them.
+    statementsBlacklist: [IfStatement],
+    // or statementsWhitelist
+
+    // Ignore certain language expressions by
+    // whitelisting or blacklisting them.
+    expressionsBlacklist: [MethodCallExpression]
+    // or expresionsWhitelist
+)
+
+// Add SecureASTCustomizer to configuration for shell.
+final conf = new CompilerConfiguration()
+conf.addCompilationCustomizers(astCustomizer)
+
+// Create shell with given configuration.
+final shell = new GroovyShell(conf)
+
+// All valid script.
+final result = shell.evaluate '''
+def s1 = 'Groovy'
+def s2 = 'rocks'
+"$s1 $s2!"
+'''
+
+assert result == 'Groovy rocks!'
+
+// Some invalid scripts.
+try {
+    // Importing [java.util.Date] is not allowed
+    shell.evaluate '''
+    new Date() 
+    '''
+} catch (MultipleCompilationErrorsException e) {
+    assert e.message.contains('Indirect import checks prevents usage of expression')
+}
+
+
+try {
+    // MethodCallExpression not allowed
+    shell.evaluate '''
+    println "Groovy rocks!" 
+    '''
+} catch (MultipleCompilationErrorsException e) {
+    assert e.message.contains('MethodCallExpressions are not allowed: this.println(Groovy rocks!)')
+}
+</pre><p>To have more fine-grained control on which statements and expression are allowed we can implement the <code>StatementChecker</code> and <code>ExpressionChecker</code> interfaces. These interfaces have one method <code>isAuthorized</code> with a <code>boolean</code> return type. We return true if a statement or expression is allowed and false if not.</p><pre class="brush:groovy">package com.mrhaki.blog
+
+import org.codehaus.groovy.control.customizers.SecureASTCustomizer
+import org.codehaus.groovy.control.CompilerConfiguration
+import org.codehaus.groovy.ast.stmt.*
+import org.codehaus.groovy.ast.expr.*
+import org.codehaus.groovy.control.MultipleCompilationErrorsException
+
+import static org.codehaus.groovy.control.customizers.SecureASTCustomizer.ExpressionChecker
+import static org.codehaus.groovy.control.customizers.SecureASTCustomizer.StatementChecker
+
+
+// Define SecureASTCustomizer.
+final SecureASTCustomizer astCustomizer = new SecureASTCustomizer()
+
+// Define expression checker to deny 
+// usage of variable names with length of 1.
+def smallVariableNames = { expr -&gt;
+    if (expr instanceof VariableExpression) {
+        expr.variable.size() &gt; 1
+    } else {
+        true
+    }
+} as ExpressionChecker
+
+astCustomizer.addExpressionCheckers smallVariableNames
+
+
+// In for loops the collection name
+// can only be 'names'.
+def forCollectionNames = { statement -&gt;
+    if (statement instanceof ForStatement) {
+        statement.collectionExpression.variable == 'names'
+    } else {    
+        true
+    }
+} as StatementChecker
+
+astCustomizer.addStatementCheckers forCollectionNames
+
+
+// Add SecureASTCustomizer to configuration for shell.
+final CompilerConfiguration conf = new CompilerConfiguration()
+conf.addCompilationCustomizers(astCustomizer)
+
+// Create shell with given configuration.
+final GroovyShell shell = new GroovyShell(conf)
+
+// All valid script.
+final result = shell.evaluate '''
+def names = ['Groovy', 'Grails']
+for (name in names) {
+    print "$name rocks! " 
+}
+
+def s1 = 'Groovy'
+def s2 = 'rocks'
+"$s1 $s2!"
+'''
+
+assert result == 'Groovy rocks!'
+
+// Some invalid scripts.
+try {
+    // Variable s has length 1, which is not allowed.
+    shell.evaluate '''
+    def s = 'Groovy rocks'
+    s
+    '''
+} catch (MultipleCompilationErrorsException e) {
+    assert e.message.contains('Expression [VariableExpression] is not allowed: s')
+}
+
+
+try {
+    // Only names as collection expression is allowed.
+    shell.evaluate '''
+    def languages = ['Groovy', 'Grails']
+    for (name in languages) {
+        println "$name rocks!" 
+    }
+    '''
+} catch (MultipleCompilationErrorsException e) {
+    assert e.message.contains('Statement [ForStatement] is not allowed')
+}
+</pre><p>Code written with Groovy 2.2.2.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

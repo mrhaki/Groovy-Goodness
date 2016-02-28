@@ -1,0 +1,11 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-43816960713662605522011-04-27T17:56:00.000+02:002011-04-27T17:56:00.095+02:00Groovy Goodness: Check if Maps are Equal<p>With Groovy 1.8 the <code>equals()</code> method is added to <code>Map</code>. This means we can check if maps are equals. They are equals if both maps have the same size, and keys and values are the same.</p>
+<pre class="brush:groovy">
+def map1 = [user: 'mrhaki', likes: 'Groovy', age: 37]
+def map2 = [age: 37.0, likes: 'Groovy', user: 'mrhaki']
+def map3 = [user: 'Hubert Klein Ikkink', likes: 'Groovy']
+
+assert map1.equals(map2)
+assert map1 == map2
+assert !map1.equals(map3)
+assert map2 != map3
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

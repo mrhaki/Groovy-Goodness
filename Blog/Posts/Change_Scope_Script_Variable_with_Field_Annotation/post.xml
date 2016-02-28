@@ -1,0 +1,33 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-52309424595968948952011-04-27T18:54:00.000+02:002011-04-27T18:54:00.107+02:00Groovy Goodness: Change Scope Script Variable with Field Annotation<p>The scope of a script variable changes once we add a type definition to the variable. Then the variable is no longer visible in methods of the script. To make a type variable visible in the entire script scope we add the annotation <code>@Field</code>. This way the variable has a type and can be used in methods of the script.</p>
+<pre class="brush:groovy">
+import groovy.transform.Field
+
+String stringValue = 'I am typed without @Field.'
+def i = 42
+@Field String stringField = 'I am typed with @Field.'
+counter = 0 // No explicit type definition.
+
+def runIt() {
+    try {
+        assert stringValue == 'I am typed without @Field.'
+    } catch (e) {
+        assert e instanceof MissingPropertyException
+    }
+    try {
+        assert i == 42
+    } catch (e) {
+        assert e instanceof MissingPropertyException
+    }
+    
+    assert stringField == 'I am typed with @Field.'
+    
+    assert counter++ == 0
+}
+
+runIt()
+
+assert stringValue == 'I am typed without @Field.'
+assert stringField == 'I am typed with @Field.'
+assert i == 42
+assert counter == 1
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

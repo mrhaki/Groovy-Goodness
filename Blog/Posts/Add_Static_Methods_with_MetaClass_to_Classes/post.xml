@@ -1,0 +1,15 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-23682456770726603782009-12-14T07:00:00.001+01:002010-11-26T11:15:12.968+01:00Groovy Goodness: Add Static Methods with MetaClass to Classes<p>Groovy's dynamic nature makes it easy to extend classes with new behaviour. One of the ways is to add methods or property to the <code>metaClass</code> property of a class. We can use the same mechanism to add static methods to the class. We only have to specify the keyword <code>'static'</code> when we define the new method.</p>
+<pre class="brush:groovy">
+class User {
+    String username, email
+    String toString() { "$username, $email" }
+}
+
+User.metaClass.static.new = { u, e ->
+    new User(username: u, email: e)
+}
+
+def u = User.new('mrhaki', 'mail@host.com')
+assert 'mrhaki' == u.username
+assert 'mail@host.com' == u.email
+​</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

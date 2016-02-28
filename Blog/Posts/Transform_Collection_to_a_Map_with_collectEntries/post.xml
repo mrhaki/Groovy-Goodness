@@ -1,0 +1,9 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-19404015905759512992011-09-12T05:59:00.001+02:002011-09-16T08:28:08.414+02:00Groovy Goodness: Transform Collection to a Map with collectEntries<p>Since Groovy 1.7.9 we can use the <code>collectEntries</code> method for a <code>Collection</code> to get a <code>Map</code>. We use a closure to transform the elements in the collection to a map entry. And the end result is a Map with all the map entries.</p><pre class="brush:groovy">def words = ['Groovy', 'Rocks', 'Big', 'Time']
+
+def result = words.collectEntries { 
+    [(it): it.contains('o')]
+}
+
+assert result.Groovy &amp;&amp; result.Rocks
+assert !result.Big &amp;&amp; !result.Time
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

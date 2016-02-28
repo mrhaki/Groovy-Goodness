@@ -1,0 +1,14 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-23944480829648035722010-05-20T23:45:00.004+02:002010-11-26T11:15:12.834+01:00Groovy Goodness: Multiple Assignments Revisited<p><a href="http://mrhaki.blogspot.com/2009/09/groovy-goodness-multiple-assignments.html">Multiple assignments</a> in Groovy is something already covered before in the Groovy Goodness series. But today at the <a href="http://www.gr8conf.org">Gr8Conf</a> I got some extra information about it's possibilities. First of all we can use type information in the multiple assignment. So we can assign the returning values to typed variables. The next thing is we can use multiple assignments basically for anything with a <code>getAt</code> method. And this works also for our own classes, we only have to provide an implementation for the <code>getAt</code> method.</p>
+<pre class="brush:groovy">
+class Size {
+    int x, y
+
+    Object getAt(int index) {
+        index == 0 ? x : y
+    }
+}
+
+def (int myX, int myY) = new Size(x: 12, y: 30)
+assert 12 == myX
+assert 30 == myY
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

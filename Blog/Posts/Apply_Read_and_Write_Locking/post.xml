@@ -1,0 +1,75 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-82539435774127559832011-05-28T05:44:00.000+02:002011-05-29T23:07:15.042+02:00Groovy Goodness: Apply Read and Write Locking<p>When we write applications with concurrency needs we can use the <code>ReentrantReadWriteLock</code> class to specify a lock on specific methods. Normally we have to add a field to our class of the type <code>ReentrantReadWriteLock</code> and then write code to get a read lock or write lock, do our stuff and finally release the lock again. Since Groovy 1.8 we can use the AST transformation annotations duo <code>WithReadLock</code> and <code>WithWriteLock</code>. Groovy will add a lock field and adds the code to acquire and release the locks again in our compiled class file. We don't have to write this code ourselves anymore.</p>
+<pre class="brush:groovy">
+import groovy.transform.*
+
+class Bucket {
+    final def items = []
+
+    @WithWriteLock
+    void add(String item) {
+        items &lt;&lt; item
+    }
+
+    @WithReadLock
+    List getAllItems() {
+        items
+    }
+}
+
+def bucket = new Bucket()
+
+// Create read/write threads that use the same
+// bucket instance.
+def allThreads = []
+3.times {
+    allThreads &lt;&lt; Thread.start {
+        5.times {
+            bucket.add Thread.currentThread().name + ': Groovy rocks'
+            println "&gt; ${Thread.currentThread().name} adds item to bucket."
+            sleep 100
+        }
+    }
+    
+    allThreads &lt;&lt; Thread.start {
+        3.times {
+            int numberOfItems = bucket.allItems.size()
+            println "&lt; ${Thread.currentThread().name} says $numberOfItems items are in the bucket."
+            sleep 150
+        }
+    }
+}
+
+allThreads.each { it.join() }
+
+assert bucket.items.size() == 15
+println bucket.items
+</pre>
+<p>The following output shows the results of running the code. This output will be different each time we run the code.</p>
+<pre class="brush:plain">
+&gt; Thread-482 adds item to bucket.
+&lt; Thread-483 says 1 items are in the bucket.
+&gt; Thread-484 adds item to bucket.
+&lt; Thread-485 says 2 items are in the bucket.
+&gt; Thread-486 adds item to bucket.
+&lt; Thread-487 says 3 items are in the bucket.
+&gt; Thread-482 adds item to bucket.
+&gt; Thread-484 adds item to bucket.
+&gt; Thread-486 adds item to bucket.
+&lt; Thread-483 says 6 items are in the bucket.
+&lt; Thread-485 says 6 items are in the bucket.
+&lt; Thread-487 says 6 items are in the bucket.
+&gt; Thread-482 adds item to bucket.
+&gt; Thread-484 adds item to bucket.
+&gt; Thread-486 adds item to bucket.
+&gt; Thread-482 adds item to bucket.
+&lt; Thread-483 says 10 items are in the bucket.
+&gt; Thread-484 adds item to bucket.
+&lt; Thread-485 says 11 items are in the bucket.
+&gt; Thread-486 adds item to bucket.
+&lt; Thread-487 says 12 items are in the bucket.
+&gt; Thread-482 adds item to bucket.
+&gt; Thread-484 adds item to bucket.
+&gt; Thread-486 adds item to bucket.
+[Thread-482: Groovy rocks, Thread-484: Groovy rocks, Thread-486: Groovy rocks, Thread-482: Groovy rocks, Thread-484: Groovy rocks, Thread-486: Groovy rocks, Thread-482: Groovy rocks, Thread-484: Groovy rocks, Thread-486: Groovy rocks, Thread-482: Groovy rocks, Thread-484: Groovy rocks, Thread-486: Groovy rocks, Thread-482: Groovy rocks, Thread-484: Groovy rocks, Thread-486: Groovy rocks]
+</pre>
+<p>The annotations also accept a name of an explicit lock field we have defined in our class ourselves. So we can use multiple locks within the same class.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

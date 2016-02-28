@@ -1,0 +1,6 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-24686688136250201972010-01-03T07:00:00.000+01:002010-11-26T11:15:12.913+01:00Groovy Goodness: Check if String is a Number<p>Groovy adds several methods to the <code>String</code> class to see if the string value is a number. We can check for all kind of number type like <code>Integer</code>, <code>Double</code>, <code>BigDecimal</code> and more.</p>
+<pre class="brush:groovy">
+assert '42'.isNumber()
+assert '42'.isInteger() && '42'.isLong() && '42'.isBigInteger()
+assert '42.42'.isDouble() && /42.42/.isBigDecimal() && '42.42'.isFloat()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com3

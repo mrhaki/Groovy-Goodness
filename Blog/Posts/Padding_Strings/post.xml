@@ -1,0 +1,59 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-88791517742986609152009-09-20T07:00:00.001+02:002010-11-26T11:15:13.225+01:00Groovy Goodness: Padding Strings<p>Groovy extends the <code>String</code> class with a couple of padding methods. These methods allows us to define a fixed width a <code>String</code> value must occupy. If the <code>String</code> itself is less than the fixed width then the space is padded with spaces or any other character or <code>String</code> we define. We can pad to the left or the right of the <code>String</code> or both left and right and put the <code>String</code> in the center.</p><p>These methods are especially useful when we create Groovy scripts that run on the console and we want to format some output.</p>
+<pre class="brush:groovy">
+assert '   Groovy   ' == 'Groovy'.center(12)
+assert 'Groovy      ' == "Groovy".padRight(12)
+assert '      Groovy' == /Groovy/.padLeft(12)
+
+assert '---Groovy---' == "Groovy".center(12, '-')
+assert 'Groovy * * *' == "Groovy".padRight(12, ' *')
+assert 'Groovy Groovy Groovy' == 'Groovy'.padLeft(20, 'Groovy ')
+
+def createOutput = {
+    def table = [
+        // Page,    Response time, Size
+        ['page1.html',        200, 1201],
+        ['page2.html',         42, 8853],
+        ['page3.html',         98, 3432],
+        ['page4.html',        432, 9081]
+    ]
+
+    def total = { data, index ->
+        data.inject(0) { result, row -> result += row[index] }
+    }
+    def totalTime = total.curry(table, 1)
+    def totalSize = total.curry(table, 2)
+
+    def out = new StringBuffer()
+    out &lt;&lt; ' Summary '.center(15, "*") &lt;&lt; '\n\n'
+    out &lt;&lt; 'Total pages:'.padRight(25)
+    out &lt;&lt; table.size().toString().padLeft(6) &lt;&lt; '\n'
+    out &lt;&lt; 'Total response time (ms):'.padRight(25)
+    out &lt;&lt; totalTime().toString().padLeft(6) &lt;&lt; '\n'
+    out &lt;&lt; 'Total size (KB):'.padRight(25)
+    out &lt;&lt; totalSize().toString().padLeft(6) &lt;&lt; '\n\n'
+
+    out &lt;&lt; ' Details '.center(15, "*") &lt;&lt; '\n\n'
+    table.each {
+        out &lt;&lt; it[0].padRight(14)
+        out &lt;&lt; it[1].toString().padLeft(5)
+        out &lt;&lt; it[2].toString().padLeft(8)
+        out &lt;&lt; '\n'
+    }
+    out.toString()
+}
+
+assert '''\
+*** Summary ***
+
+Total pages:                  4
+Total response time (ms):   772
+Total size (KB):          22567
+         
+*** Details ***
+
+page1.html      200    1201
+page2.html       42    8853
+page3.html       98    3432
+page4.html      432    9081
+''' == createOutput()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

@@ -1,0 +1,17 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-69888890891596577502010-04-19T07:40:00.000+02:002010-11-26T11:15:12.867+01:00Groovy Goodness: New Ways to Curry<p>A couple of weeks ago I gave a presentation about Groovy and the subject of closures and the <code>curry()</code> method was covered. Someone from the audience asked if the arguments could be 'curried' from right to left instead of from left to right. I had to say no, but since Groovy 1.7.2 this isn't true anymore. Groovy 1.7.2 adds the <code>rcurry()</code> method which uses a right to left order. And as a bonus we also have got the <code>ncurry()</code> method where we can supply a parameter value for an argument of the closure at a specific index.</p>
+<pre class="brush:groovy">
+@Grab('commons-lang:commons-lang:2.5')
+import org.apache.commons.lang.RandomStringUtils as RSU
+
+def randomClosure = { size, letters, numbers ->
+    // Invoke RandomStringUtils.random() method 
+    RSU.random size, letters, numbers
+}
+
+def randomNumbers = randomClosure.rcurry(false, true)  // letters = false, numbers = true
+def randomLetters = randomClosure.ncurry(1, true, false) // letters = true, numbers = false
+
+println randomClosure(10, true, true)  // Sample output: VG7mffNAdA
+println randomNumbers(10)              // Sample output: 8099670444
+println randomLetters(10)              // Sample output: ZOHlHewEPU
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

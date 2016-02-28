@@ -1,0 +1,26 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-14080915358453636182009-10-17T07:00:00.003+02:002010-11-26T11:15:13.168+01:00Groovy Goodness: Check If Method or Property is Available<p>In Groovy we can easily see if a method or property is available for an object. We can use the <code>respondsTo()</code> and <code>hasProperty()</code> methods to see if the method or property can be invoked or accessed. We can not check for methods or properties which are added by overriding the <code>methodMissing()/propertyMissing()</code> or <code>invokeMethod()/getProperty()</code> methods.</p>
+<pre class="brush:groovy">
+class Simple {
+    String language
+    
+    def whatDoYouSpeak() {  
+        language
+    }
+    
+    def say(String text) {
+        "You say $text in $language"
+    }
+}
+
+def s = new Simple(language: 'Groovy')
+
+assert s.metaClass.respondsTo(s, 'whatDoYouSpeak')
+assert Simple.metaClass.respondsTo(s, 'say')
+assert s.metaClass.respondsTo(s, 'say', String)
+assert !s.metaClass.respondsTo(s, 'say', Integer)  // No say(Integer) method.
+assert Simple.metaClass.respondsTo(s, 'toString')  // Method in parent object.
+
+assert s.metaClass.hasProperty(s, 'language')
+assert Simple.metaClass.respondsTo(s, 'getLanguage')  // Get/set methods are generated.
+assert s.metaClass.respondsTo(s, 'setLanguage')
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

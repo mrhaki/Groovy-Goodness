@@ -1,0 +1,15 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-46639903921835849112009-11-09T07:00:00.002+01:002010-11-26T11:15:13.099+01:00Groovy Goodness: withReader and withWriter<p>Normally when we are working with readers and writers in Java we must make sure we close the appropriate reader and writer. Groovy has several <code>with...()</code> methods for <code>File</code>, <code>URL</code> or streams and writers, where <code>...</code> is the name of the reader or writer. We pass a closure to these methods and Groovy makes sure all readers and writers are closed correctly, even if exceptions are thrown in the closure.</p>
+<pre class="brush:groovy">
+def file = new File('sample.txt')
+
+file.withWriter('UTF-8') {
+    it.writeLine 'Adding this text to the file.'
+}
+
+def s 
+file.withReader('UTF-8') {
+    s = it.readLine()
+}
+
+assert 'Adding this text to the file.' == s
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

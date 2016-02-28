@@ -1,0 +1,30 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-20664463348368892532009-12-15T07:10:00.003+01:002010-11-26T11:15:12.964+01:00Groovy Goodness: Groovy Mystic Expressions<p>With Groovy we can omit parenthesis in some cases, key-value parameters for a method are grouped into a group. If we combine all these features we can come up with some pretty mystic expressions. But it is also perfect for writing DSLs, because it doesn't look like real Java/Groovy code anymore. Here is a small sample of an expression that looks strange at first, but at a second look we can see the structure of method calls:</p>
+<pre class="brush:groovy">
+result = []
+
+// Mystic expressions: (see assert for outcome)
+say hello:world {
+    'Groovy'
+}
+say hello:world { 
+    'Java' 
+}
+
+assert "Say 'Hello Groovy world!'" == result[0]
+assert "Say 'Hello Java world!'" == result[1]
+
+// Actually we are invoking:
+// say([hello: world({ 'Groovy' })])
+// say([hello: world({ 'Java' })])
+// We notice two methods: save(map) and world(closure).
+
+// The methods:
+def world(callable) {
+    def result = callable()
+    "Hello $result world!"
+}
+
+def say(map) {
+    result &lt;&lt; "Say '${map.hello}'"
+}
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com7

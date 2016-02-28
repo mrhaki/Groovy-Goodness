@@ -1,0 +1,38 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-71930052842014901422009-10-10T07:00:00.003+02:002010-11-26T11:15:13.184+01:00Groovy Goodness: Using Groovy on the Command-Line<p>We can use Groovy on the command-line to evaluate one-line scripts and pipe output to other commands or use input from other commands. This makes for some command-line scripting. We invoke groovy with the <code>-e</code> argument to <em>evaluate</em> a simple script. We can even use arguments in the script.</p><p>Other arguments are <code>-n</code> and <code>-p</code> to process each line of input from a file or from another command. We can also iterate over a list of files, change the contents and use the <code>-i</code> argument to define a backup file pattern when saving the files.</p><p>The last argument is <code>-l</code> to start Groovy in listening mode. We can use for example a telnet client to connect to groovy and do some processing.</p>
+<pre class="brush:plain">
+// Pipe groovy output to grep.
+$ groovy -e "Locale.availableLocales.each { println it.displayName }" | grep English
+
+// Or do it all in Groovy.
+$ groovy -e "Locale.availableLocales.displayName.findAll { it =~ args[0] }.each { println it }" English
+
+// Using -n and -p to filter each line.
+$ groovy -e "Locale.availableLocales.each { println it.displayName }" | groovy -ne "if (line =~ 'English') println line"
+$ groovy -e "Locale.availableLocales.each { println it.displayName }" | groovy -pe "if (line =~ 'English') line"
+
+// All will output:
+English
+English (United States)
+English (Malta)
+English (United Kingdom)
+English (New Zealand)
+English (Philippines)
+English (South Africa)
+English (Ireland)
+English (India)
+English (Australia)
+English (Canada)
+English (Singapore)
+</pre>
+<p>Starting Groovy in listening mode:</p>
+<pre class="brush:bash">
+$ groovy -l 9000 -e "println 'You say: ' + line"
+groovy is listening on port 9000
+
+$ telnet localhost 9000
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+Groovy Rocks!
+You say: Groovy Rocks!
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

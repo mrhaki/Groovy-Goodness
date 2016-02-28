@@ -1,0 +1,31 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-73932030342355792812013-11-19T11:15:00.000+01:002013-11-19T11:15:49.264+01:00Groovy Goodness: Choose Which Delegated Methods to Use<p>In Groovy we can use the <code>@Delegate</code> annotation <a href="http://mrhaki.blogspot.com/2009/08/groovy-goodness-delegate-to-simplify.html">for some time now</a> to automatically include methods from a delegated class into our own class. When the method is invoked on our class, it will be delegated to the correct class. Since Groovy 2.2 we can use the <code>includes</code> and <code>excludes</code> annotation parameters to define which methods of the delegated class we want to use in our own class. If any required method from the delegated class, which can also be defined in an interface, is left out when we use <code>includes</code> and <code>excludes</code>, then we get a compilation error, telling us to implement the required method from the delegated class or interface.</p><p>In the following sample we define a <code>SimpleEvent</code> class with a <code>start</code> and <code>end</code> property we delegate to the <code>Date</code> class. For the <code>start</code> property we don't want the <code>after()</code> method to be delegated, because we want to delegate it to the <code>Date</code> object of the <code>end</code> property. And for the <code>end</code> property we want to delegate the <code>before()</code> delegated method of the <code>Date</code> object of the <code>start</code> property.</p><pre class="brush:groovy">@groovy.transform.ToString
+class SimpleEvent {
+    @Delegate(excludes=['after']) Date start
+    @Delegate(excludes=['before']) Date end
+    String description
+}
+
+def event = new SimpleEvent(description: 'Groovy seminar',
+                            start: nextWeek, 
+                            end: nextWeek + 3)
+
+// Delegate to Date start property.
+assert event.before(nextWeek + 1)
+assert !event.before(nextWeek - 1)
+assert !event.before(today)
+
+// Delegate to Date end property.
+assert event.after(today)        
+assert event.after(nextWeek + 1)     
+assert !event.after(nextWeek + 4)        
+
+
+// Helper get methods:
+def getToday() {
+    new Date().clearTime()
+}
+
+def getNextWeek() {
+    today + 7
+}
+</pre><p>Code written with Groovy 2.2.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

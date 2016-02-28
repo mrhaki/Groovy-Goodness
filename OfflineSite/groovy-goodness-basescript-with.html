@@ -1,0 +1,83 @@
+<html>
+<head>
+
+<title>Groovy Goodness: BaseScript with Abstract Run Script Method</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: BaseScript with Abstract Run Script Method</h3>
+
+<div class="post">
+<p>In a <a href="http://mrhaki.blogspot.com/2013/11/groovy-goodness-set-script-class-with.html">previous blog post</a> we have seen how we can use a <code>BaseScript</code> AST transformation to set a base script class for running scripts. Since Groovy 2.3 we can apply the <code>@BaseScript</code> annotation on <code>package</code> and <code>import</code> statements. Also we can implement a <code>run</code> method in our <code>Script</code> class in which we call an abstract method. The abstract method will actually run the script, so we can execute code before and after the script code runs by implementing logic in the <code>run</code> method.</p><p>In the following sample we create a <code>Script</code> class <code>CustomScript</code>. We implement the <code>run</code> method and add the abstract method <code>runCode</code>:</p><pre class="brush:groovy">// File: CustomScript.groovy
+package com.mrhaki.groovy.blog
+
+abstract class CustomScript extends Script {
+
+    def run() {
+        before()
+        try {
+
+            // Run actually script code.
+            final result = runCode()
+
+            println "Script says $result"
+        } finally {
+            println 'Script ended'
+        }
+    }
+
+    private void before() {
+        println 'Script starts'
+    }
+
+    // Abstract method as placeholder for
+    // the actual script code to run.
+    abstract def runCode()
+}
+</pre><p>Next we create a Groovy script where we use our new <code>CustomScript</code> class.</p><pre class="brush:groovy">// File: Sample.groovy
+// Since Groovy 2.3 we can apply the
+// @BaseScript annotation on package
+// and import statement.
+@groovy.transform.BaseScript(com.mrhaki.groovy.blog.CustomScript)
+package com.mrhaki.groovy.blog
+
+// Script code:
+final String value = 'Groovy rules'
+assert value.size() == 12
+
+// Return value
+value
+</pre><p>When we run our script we see the following output:</p><pre class="brush:plain;light:true">Before script runs
+Script says Groovy rules
+Script ended
+</pre><p>Code written with Groovy 2.3.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

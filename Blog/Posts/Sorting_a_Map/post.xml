@@ -1,0 +1,12 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-5818872041169271882010-04-20T07:15:00.000+02:002010-11-26T11:15:12.865+01:00Groovy Goodness: Sorting a Map<p>Maps don't have an order for the elements, but we may want to sort the entries in the map. Since Groovy 1.7.2 we can use the <code>sort()</code> method which uses the natural ordering of the keys to sort the entries. Or we can pass a Comparator to the <code>sort()</code> method to define our own sorting algorithm for the keys.</p>
+<pre class="brush:groovy">
+def m = [sort: 'asc', name: 'test', paginate: true, max: 100]
+
+def expectedKeys = ['max', 'name', 'paginate', 'sort'] 
+assert expectedKeys == m.sort()*.key  // Since 1.7.2
+assert expectedKeys == m.sort( { k1, k2 -&gt; k1 &lt;=&gt; k2 } as Comparator )*.key // Since 1.7.2
+
+// Sorting before Groovy 1.7.2
+assert expectedKeys == new TreeMap(m)*.key
+assert expectedKeys == m.sort { e1, e2 -&gt; e1.key &lt;=&gt; e2.key }*.key  // Sort by closure.
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

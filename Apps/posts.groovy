@@ -3,15 +3,15 @@ import groovy.xml.*
 baseDir = '../Blog/Posts'
 
 def bloggerId = '6671019398434141469'
-def baseURI = "http://www.blogger.com/feeds/$bloggerId/posts/default/-/Groovy%3AGoodness" 
+def baseURI = "https://www.blogger.com/feeds/$bloggerId/posts/default/-/Groovy%3AGoodness"
 
-def nextLink = baseURI 
+def nextLink = baseURI
 
 while (nextLink) {
     println "Getting posts from $nextLink"
     feed = new XmlSlurper().parse(nextLink)
-    feed.entry.each { 
-        handleEntry(it) 
+    feed.entry.each {
+        handleEntry(it)
     }
     nextLink = feed.link.find { it.@rel == 'next' }.@href.toString() - '/-/Groovy%3AGoodness'
 }
@@ -22,12 +22,17 @@ def handleEntry(entry) {
     handleInfo entry, dir
 }
 
+def savePost(entry, dir) {
+    def postFile = new File(dir, 'post.xml')
+    postFile.text = entry
+}
+
 def handleInfo(entry, dir) {
     def link = entry.link.find { it.@rel == 'alternate' }.@href
     def infoFile = new File(dir, 'info.groovy')
     infoFile.delete()
     if (!infoFile.exists()) {
-        infoFile << "url=$link" 
+        infoFile << "url=$link"
         infoFile << "\n"
         infoFile << "title=$entry.title"
     }
@@ -40,17 +45,17 @@ def handleText(content, dir) {
         println "Saving sample code in $sample."
         pres.each {
             def first = true
-            it[1].eachLine { line -> 
+            it[1].eachLine { line ->
                 if (!(first && !line)) {
                     sample << line + '\n'
                 }
                 first = false
-            }            
-        }        
-    }    
+            }
+        }
+    }
 }
 
-def createDirectory(title) {    
+def createDirectory(title) {
     def newTitle = title.toString() - "Groovy Goodness: "
     newTitle = newTitle.trim()
     newTitle = newTitle.replaceAll(/(,|'|"|\?|:|\/)/, '')
@@ -60,15 +65,15 @@ def createDirectory(title) {
     if (newTitle.startsWith("the")) {
         newTitle = newTitle[0].toUpperCase() + newTitle[1..-1]
     }
-    
-    if (newTitle == 'String.multiply()') { 
+
+    if (newTitle == 'String.multiply()') {
         newTitle = 'String multiply'
     }
-    
+
     newTitle = newTitle.replaceAll(/\s+/, '_')
     def dir = new File(baseDir, newTitle)
     if (!dir.exists()) {
-        println "Creating dir $dir.absolutePath" 
+        println "Creating dir $dir.absolutePath"
         dir.mkdirs()
     }
     dir

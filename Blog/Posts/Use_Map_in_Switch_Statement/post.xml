@@ -1,0 +1,27 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-33272233048438520332010-12-16T10:55:00.001+01:002010-12-16T10:56:30.453+01:00Groovy Goodness: Use Map in Switch Statement<p>Since Groovy 1.7.6 we can use a <code>Map</code> as a case in a switch statement. Groovy adds the <code>isCase()</code> method where the switch operand is used to find map elements. Groovy tries to find a key with the given switch operand in the <code>Map</code> and if it is found true is returned.</p>
+<pre class="brush:groovy">
+def testSwitch(val) {
+    def result
+    switch (val) {
+        // New in Groovy 1.7.6: Map support.
+        case [groovy: 'Rocks!', version: '1.7.6']:
+            result = "Map contains key '$val'"
+            break
+        case 60..90:
+            result = "Range contains $val"
+            break
+        case [21, 'test', 9.12]:
+            result = "List contains '$val'"
+            break
+        default:
+            result = 'Default'
+            break
+    }    
+    result
+}
+
+assert testSwitch('groovy') == "Map contains key 'groovy'"
+assert testSwitch(70) == 'Range contains 70'
+assert testSwitch('test') == "List contains 'test'"
+assert testSwitch('default') == 'Default'
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

@@ -1,0 +1,17 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-60721065166518747672009-11-03T08:31:00.004+01:002010-11-26T11:15:13.116+01:00Groovy Goodness: Get Value from Map or a Default Value<p>The <code>get()</code> method in the Groovy enhanced <code>Map</code> interface accepts two parameters. The first parameter is the name of the key we want to get a value for. And the second parameter is the default value if there is no value for the key.</p>
+<pre class="brush:groovy">
+// Simple map.
+def m = [name: 'mrhaki', language: 'Groovy']
+
+assert 'mrhaki' == m.getAt('name')
+assert 'mrhaki' == m['name']
+assert 'Groovy' == m.language
+assert 'mrhaki' == m."name"
+assert 'mrhaki' == m.get('name')  // We can omit the default value if we know the key exists.
+assert 'Groovy' == m.get('language', 'Java')
+assert null == m.get('expression')  // Non-existing key in map.
+assert 'rocks' == m.get('expression', 'rocks')  // Use default value, this also creates the key/value pair in the map.
+assert 'rocks' ==  m.get('expression')
+assert [name: 'mrhaki', language: 'Groovy', expression: 'rocks'] == m
+</pre>
+<p>Run this script in <a href="http://groovyconsole.appspot.com/view.groovy?id=34004">Groovy web console</a>.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com6

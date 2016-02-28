@@ -1,0 +1,10 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-46031773253659076642009-12-07T08:31:00.002+01:002010-11-26T11:15:12.985+01:00Groovy Goodness: Counting the Items in a List<p>In Groovy we can count how many thimes a specific object is in a list. We use the <code>count()</code> method on the list, iterator or array to achieve this. We must specify one parameter: the object we want to count. Groovy uses the <code>compareTo</code> or <code>equals()</code> method to check for equality.</p>
+<pre class="brush:groovy">
+def list = [0, 1, 2, 1, 1, 3, 2, 0, 1]
+
+assert 9 == list.size()
+assert 2 == list.count(0)
+assert 4 == list.count(1)
+assert 2 == list.count(2)
+assert 1 == list.count(3)
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

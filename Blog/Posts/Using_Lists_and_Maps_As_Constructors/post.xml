@@ -1,0 +1,49 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-39188954904246870732009-09-08T07:00:00.001+02:002010-11-26T11:15:13.254+01:00Groovy Goodness: Using Lists and Maps As Constructors<p>Constructors in Groovy can be invoked in a classic Java way, but we can also use lists or maps to create objects. Groovy supports an explicit coersion of a list to a constructor with the <code>as</code> keyword. Or we can rely on the implicit coersion when Groovy looks at the type of the variable to automatically convert the list to the right constructor call.</p>
+<pre class="brush:groovy">
+// Default constructor invocation:
+def url1 = new URL('http', 'www.mrhaki.com', 80, '/')
+assert 'http' == url1.protocol
+assert 'www.mrhaki.com' == url1.host
+assert 80 == url1.port
+assert '/' == url1.file
+assert '/' == url1.path
+
+// Explicit coersion with as keyword:
+def url2 = ['http', 'www.mrhaki.com', 80, '/'] as URL
+assert 'http' == url1.protocol
+assert 'www.mrhaki.com' == url2.host
+assert 80 == url2.port
+assert '/' == url2.file
+assert '/' == url2.path
+
+// Implicit coersion by type of variable:
+URL url3 = ['http', 'www.mrhaki.com', 80, '/'] 
+assert 'http' == url3.protocol
+assert 'www.mrhaki.com' == url3.host
+assert 80 == url3.port
+assert '/' == url3.file
+assert '/' == url3.path    
+</pre>
+<p>When we use <a href="http://mrhaki.blogspot.com/2009/08/groovy-goodness-groovybeans-simpler.html">GroovyBeans</a> syntax we can use a map with named parameter to invoke the constructor. But we can also use the explicit and implicit coersions Groovy provides.</p>
+<pre class="brush:groovy">
+// GroovyBean: Groovy creates a constructor
+// that takes a map as parameter.
+class Sample {
+    Integer age 
+    String name
+}
+
+def s1 = new Sample([age: 36, name: 'mrhaki'])
+assert 36 == s1.age
+assert 'mrhaki' == s1.name
+
+// Explicit coersion with as keyword:
+def s2 = [age: 36, name: 'mrhaki'] as Sample
+assert 36 == s2.age
+assert 'mrhaki' == s2.name
+
+// Implicit coersion (by type of variable):
+Sample s3 = [age: 36, name: 'mrhaki']
+assert 36 == s3.age
+assert 'mrhaki' == s3.name
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

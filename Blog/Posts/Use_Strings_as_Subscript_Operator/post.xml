@@ -1,0 +1,7 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-26474307729323197432010-03-09T07:00:00.000+01:002010-11-26T11:15:12.875+01:00Groovy Goodness: Use Strings as Subscript Operator<p>Groovy adds the method <code>getAt(String)</code> to the Collection class. We can use it to request property values from elements in a list.</p>
+<pre class="brush:groovy">
+class User { String name }
+def list = [new Date(), new User(name: 'mrhaki'), 42.0, 'Groovy Rocks!']
+
+assert ['java.util.Date', 'User', 'java.math.BigDecimal', 'java.lang.String'] == list['class']['name']
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

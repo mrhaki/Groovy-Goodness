@@ -1,0 +1,17 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-61780435770408518912010-01-15T07:00:00.001+01:002010-11-26T11:15:12.904+01:00Groovy Goodness: Is Object in Class Hierarchy<p>With Groovy's <code>in</code> keyword we can check if an object is assignable for a class in the class hierarchy (noted by Andrey Paramonov - see comment section). This way we can check if the object is an instance of a certain class or one of the parents of the class or to be more specific, if the class is assignable for the class or parent classes. This can also be useful when checking if an exception for example is part of an exception hierarchy.</p>
+<pre class="brush:groovy">
+class Shape { }
+class Circle extends Shape { }
+class Square extends Shape {}
+
+// Create Square instance.
+def square = new Square()
+
+assert square in Shape
+assert square in Square
+assert !(square in Circle)
+
+[Shape.class, Square.class].each {
+    assert square in it
+}
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com6

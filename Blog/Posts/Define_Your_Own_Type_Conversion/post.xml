@@ -1,0 +1,26 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-51051678102453023602009-11-10T07:00:00.001+01:002010-11-26T11:15:13.097+01:00Groovy Goodness: Define Your Own Type Conversion<p>In Groovy we can override the method <code>asType()</code> to convert an object into another type. We can use the method <code>asType()</code> in our code to invoke the conversion, but we can even make it shorter an use <code>as</code>.</p>
+<pre class="brush:groovy">
+class Size {
+    def x, y
+    
+    Object asType(Class clazz) {
+        if (clazz == SquaredSize) {
+            new SquaredSize(x: x**2, y: y**2)
+        }
+    }
+}
+
+class SquaredSize {
+    def x, y
+    
+    String toString() { "x: $x, y: $y" }
+}
+
+def size = new Size(x: 10, y: 5)
+def squared = size as SquaredSize  // Or size.asType(SquaredSize)
+
+println squared  // Output: x: 100, y: 25
+
+assert 100 == squared.x
+assert 25 == squared.y
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com5

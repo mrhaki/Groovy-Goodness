@@ -1,0 +1,25 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-43473285893602676022012-06-22T05:00:00.000+02:002012-06-22T05:00:02.712+02:00Groovy Goodness: Multiple Overloaded Operator Methods for Nice API<p>We saw earlier that Groovy supports <a href="http://mrhaki.blogspot.com/2009/09/groovy-goodness-multimethods-or.html">Multimethods or multiple dispatch</a>. Groovy will resolve the correct overloaded method to invoke based on the runtime type of the method argument. This is great to use for a clean and simple API for a class.</p><p>Suppose we have an <code>Event</code> class with a list of attendees and sessions. We want to use the <code>&lt;&lt;</code> operator to add attendees and sessions to an <code>Event</code> object. The following code sample shows how we can implement this in Groovy:</p><pre class="brush:groovy">class Event {
+    List&lt;Person&gt; attendees = []
+    List&lt;Session&gt; sessions = []
+
+    Event leftShift(final Person person) {
+        attendees &lt;&lt; person
+        this
+    }
+    
+    Event leftShift(final Session session) {
+        sessions &lt;&lt; session
+        this
+    }  
+}
+class Session { String title }
+class Person { String name }
+
+final Event gr8Conf = new Event()
+gr8Conf &lt;&lt; new Person(name: 'mrhaki') &lt;&lt; new Session(title: /Groovy's Hidden Gems/)
+
+assert gr8Conf.attendees.size() == 1
+assert gr8Conf.sessions.size() == 1
+assert gr8Conf.attendees[0].name == 'mrhaki'
+assert gr8Conf.sessions[0].title == "Groovy's Hidden Gems"
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

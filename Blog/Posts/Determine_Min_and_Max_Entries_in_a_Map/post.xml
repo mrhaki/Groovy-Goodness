@@ -1,0 +1,18 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-6738315036138730322010-12-16T11:16:00.001+01:002010-12-16T11:17:55.175+01:00Groovy Goodness: Determine Min and Max Entries in a Map<p>Since Groovy 1.7.6 we can use the <code>min()</code> and <code>max()</code> methods on a <code>Map</code>. We use a closure to define the condition for a minimum or maximum value. If we use two parameters in the closure we must do a classic comparison. We return a negative value if the first parameters is less than the second, zero if they are both equal, or a positive value if the first parameter is greater than the second parameter. If we use a single parameter we can return a value that is used as <code>Comparable</code> for determining the maximum or minimum entry in the <code>Map</code>.</p>
+<pre class="brush:groovy">
+def money = [cents: 5, dime: 2, quarter: 3]
+
+// Determine max entry.
+assert money.max { it.value }.value == 5
+assert money.max { it.key }.key == 'quarter'  // Use String comparison for key.
+assert money.max { a, b ->
+    a.key.size() <=> b.key.size() 
+}.key == 'quarter'  // Use Comparator and compare key size.
+
+// Determine min entry.
+assert money.min { it.value }.value == 2
+assert money.min { it.key }.key == 'cents'  // Use String comparison for key.
+assert money.min { a, b ->
+    a.key.size() <=> b.key.size() 
+}.key == 'dime'  // Use Comparator and compare key size.
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

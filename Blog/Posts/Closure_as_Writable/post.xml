@@ -1,0 +1,51 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-53849215775943269232014-04-04T06:20:00.001+02:002014-04-04T06:20:51.180+02:00Groovy Goodness: Closure as Writable<p>In a <a href="http://mrhaki.blogspot.com/2014/04/groovy-goodness-gstring-as-writable.html">previous post</a> we learned about the <code>Writable</code> interface and how the GString implementation implements this interface. In Groovy we can also use a closure as an implementation of the <code>Writable</code> interface. The <code>Closure</code> class has the method <code>asWritable()</code> that will return a version of the closure with an implementation of the <code>writeTo()</code> method. The <code>Writer</code> object that is used as an argument for the <code>writeTo()</code> method will be passed as argument to the closure. The <code>asWritable()</code> method also adds a <code>toString()</code> implementation for the closure to return the result of a closure as a <code>String</code>.</p><p>In the following code we write a sample <code>make()</code> method. The <code>make()</code> method return a <code>Writable</code> closure. The closure is only executed when the <code>writeTo()</code> or <code>toString()</code> method is invoked.</p><pre class="brush:groovy">Writable make(Map binding = [:], Closure template) {
+    // Use asWritable() to make the closure
+    // implement the Writable interface.
+    def writableTemplate = template.asWritable()
+    
+    // Assing binding map as delegate so we can access
+    // the keys of the maps as properties in the 
+    // closure context.
+    writableTemplate.delegate = binding
+    
+    // Return closure as Writable.
+    writableTemplate
+}
+
+// Use toString() of Writable closure.
+assert make { Writer out -&gt; out &lt;&lt;  "Hello world!" }.toString() == 'Hello world!'
+
+// Provide data for the binding.
+// The closure is not executed when the 
+// make method is finished.
+final writable = make(user:'mrhaki', { out -&gt;
+    out.println "Welcome ${user},"
+    out.print "Today on ${new Date(year: 114, month: 3, date: 4).format('dd-MM-yyyy')}, "
+    out.println "we have a Groovy party!"
+})
+
+// We invoke toString() and now the closure
+// is executed.
+final result = writable.toString()
+
+assert result == '''Welcome mrhaki,
+Today on 04-04-2014, we have a Groovy party!
+'''
+
+// Append contents to a file.
+// NOTE: The leftShift (&lt;&lt;) operator on File is implemented
+// in Groovy to use the File.append() method.
+// The append() method creates a new Writer and
+// invokes the write() method which 
+// is re-implemented in Groovy if the argument
+// is a Writable object. Then the writeTo() method
+// is invoked:
+// Writer.write(Writable) becomes Writable.writeTo(Writer).
+// So a lot of Groovy magic allows us to use the following one-liner
+// and still the writeTo() method is used on Writable.
+new File('welcome.txt') &lt;&lt; writable
+
+assert new File('welcome.txt').text == '''Welcome mrhaki,
+Today on 04-04-2014, we have a Groovy party!
+'''
+</pre><p>Code written with Groovy 2.2.2</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

@@ -1,0 +1,89 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Extend ConfigSlurper with Custom Environments Sections</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Extend ConfigSlurper with Custom Environments Sections</h3>
+
+<div class="post">
+<p>Groovy contains the useful <a href="http://mrhaki.blogspot.com/2009/10/groovy-goodness-using-configslurper.html">ConfigSlurper</a> for reading in configuration files where settings can be different for different environments. We only have to include an <code>environments</code> block and define values for configuration properties per environment. Since Groovy 2.3 we can add our own conditional configuration blocks and therefore don't have to put everything in an <code>environments</code> block.</p><p>In the following sample we define our own configuration block <code>servers</code> and use two environments <em>local</em> and <code>prod</code>. We given the property <code>mail.host</code> different values per environment:</p><pre class="brush:groovy">// Configuration script.
+def config = '''
+// Custom block with setting
+// conditional per environment.
+servers {
+    local {
+        mail.host = 'greenmail'
+    }
+
+    prod {
+        mail.host = 'mail.server'
+    }
+}
+
+environments {
+    local {
+        appName = 'local'
+    }
+    prod {
+        appName = 'production'
+    }
+}
+'''
+
+// Helper closure to create a new
+// ConfigSlurper for the given environment and
+// register servers as section with configuration
+// per environment.
+def createConfig = { env ->
+    def configSlurper = new ConfigSlurper(env)
+    configSlurper.registerConditionalBlock('servers', env)
+    configSlurper
+}
+
+// Create configuration slurper and
+// set environment to prod.
+def configuration = createConfig('prod').parse(config)
+
+assert configuration.mail.host == 'mail.server'
+assert configuration.appName == 'production'
+
+
+// Create configuration slurper and
+// set environment to local.
+configuration = createConfig('local').parse(config)
+
+assert configuration.mail.host == 'greenmail'
+assert configuration.appName == 'local'
+</pre><p>Code written with Groovy 2.3.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-19013421759904950602011-05-02T08:39:00.001+02:002011-05-05T14:55:25.315+02:00Groovy Goodness: Cache Closure Results with Memoization<p>Closures are very powerful in Groovy. Groovy 1.8 introduces closure memoization. This means we can cache the result of a closure, so the next time we invoke the closure the result is returned immediately. This is very useful for time consuming computations in a closure.</p>
+<p>To use this feature we invoke the <code>memoize()</code> method on a closure. Now the results from calls to the closure are cached. We can use three other methods to define for example the maximum number of calls to cache, or the least number of calls with <code>memoizeAtMost()</code>, <code>memoizeAtLeast()</code> and <code>memoizeBetween()</code>.</p>
+<pre class="brush:groovy">
+// Closure simple increments parameter.
+// Also script variable incrementChange is 
+// changed so we can check if the result is
+// from a cached call or not.
+def incrementChange = false
+def increment = { 
+    incrementChange = true
+    it + 1 
+}
+// Just invoke the closure 5 times with different parameters.
+(0..5).each {
+    incrementChange  = false
+    assert increment(it) == it + 1
+    assert incrementChange
+}
+incrementChange = false
+assert increment(1) == 2  // Call is not cached.
+assert incrementChange  
+
+// Use memoize() so all calls are cached.
+incrementChange = false
+def incrementMemoize = increment.memoize()
+// Just invoke the closure 5 times with different parameters.
+(0..5).each {
+    incrementChange = false
+    assert incrementMemoize(it) == it + 1
+    assert incrementChange
+}
+incrementChange = false
+assert incrementMemoize(2) == 3  // Cached call.
+assert !incrementChange  
+
+// Use memoizeAtMost().
+incrementChange = false
+def memoizeAtMostOnce = increment.memoizeAtMost(1)
+// Just invoke the closure 5 times with different parameters.
+(0..5).each {
+    incrementChange = false
+    assert memoizeAtMostOnce(it) == it + 1
+    assert incrementChange
+}
+incrementChange = false
+assert memoizeAtMostOnce(1) == 2  // 2nd call is not cached.
+assert incrementChange  
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com3

@@ -1,0 +1,16 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-83017242228796354692010-07-14T16:09:00.001+02:002010-11-26T11:15:12.773+01:00Groovy Goodness: Map with Default Values<p>In Groovy we can create a map and use the <code>withDefault()</code> method with a closure to define default values for keys that are not yet in the map. The value for the key is then added to the map, so next time we can get the value from the map.</p>
+<pre class="brush:groovy">
+def m = [start: 'one'].withDefault { key -> 
+    key.isNumber() ? 42 : 'Groovy rocks!'
+}
+
+assert 'one' == m.start
+assert 42 == m['1']
+assert 'Groovy rocks!' == m['I say']
+assert 3 == m.size()
+
+// We can still assign our own values to keys of course:
+m['mrhaki'] = 'Hubert Klein Ikkink'
+assert 'Hubert Klein Ikkink' == m.mrhaki
+assert 4 == m.size()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

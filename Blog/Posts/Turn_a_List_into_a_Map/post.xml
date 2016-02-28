@@ -1,0 +1,9 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-53557296517338310412010-01-04T07:00:00.002+01:002010-11-26T11:15:12.910+01:00Groovy Goodness: Turn a List into a Map<p>With Groovy we can use the values of an <code>Object</code> array and transform them to a map with the <code>toSpreadMap()</code> method. The array must have an even number of elements, because the odd elements are the keys for the new map and the even numbers are the values for the keys. The <code>SpreadMap</code> object, which now contains the keys and values, is an immutable map, so we cannot change the contents once we have created the map.</p>
+<pre class="brush:groovy">
+def list = ['key', 'value', 'name', 'mrhaki'] as Object[]
+def map = list.toSpreadMap()
+
+assert 2 == map.size()
+assert 'value' == map.key
+assert 'mrhaki' == map['name']
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

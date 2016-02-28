@@ -1,0 +1,19 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-45382968739779872212013-05-30T14:56:00.001+02:002013-05-30T14:56:42.496+02:00Groovy Goodness: Customize Log Variable Name with Log AST Annotations<p>To add logging to a class with Groovy is easy. We apply one of the logging AST transformations and we get a variable in our class named <code>log</code>. We can invoke methods on the variable and the AST transformation will also automatically wrap those statement in a "if-logging-level-is-enabled" block. The transformation is even intelligent enough to do this only if Strings are added or a GString is used. If we want to use a different name than <code>log</code> we simply use the <code>value</code> parameter of the annotation. We assign the name we want to use and then we can use it in our code.</p><pre class="brush:groovy">import groovy.util.logging.*
+
+@Log(value = 'LOGGER')
+class Event {
+    String name
+    Boolean started
+    
+    void start() {
+        LOGGER.info "Event $name is started"
+        started = true
+    }
+}
+
+final Event event = new Event(name: 'gr8Conf')
+event.start()
+</pre><pre class="brush:plain;light:true">...
+INFO: Event gr8Conf is started
+...
+</pre><p>Code written with Groovy 2.1.3.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com5

@@ -1,0 +1,11 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-30236191745858869682011-04-27T21:45:00.000+02:002011-04-27T21:45:00.503+02:00Groovy Goodness: See if Sets are Equal<p>Since Groovy 1.8 we can use the <code>equals()</code> method to compare the contents of two <code>Set</code> collections. The two sets are equals if they have the same size and all elements are in both sets.</p>
+<pre class="brush:groovy">
+def set1 = ['Java', 42, true] as Set
+def set2 = ['Groovy', 42, true, 'Java'] as Set
+def set3 = [42L, true, 'Java'] as Set
+
+assert set1.equals(set3)
+assert set1 == set3
+assert !set1.equals(set2)
+assert set2 != set3
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

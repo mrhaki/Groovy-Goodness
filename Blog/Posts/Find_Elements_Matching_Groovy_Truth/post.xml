@@ -1,0 +1,14 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-10191083351786514312011-09-13T06:11:00.000+02:002011-09-13T06:11:00.330+02:00Groovy Goodness: Find Elements Matching Groovy Truth<p>In Groovy 1.8.1 we can use the <code>find()</code> and <code>findAll()</code> methods to find the elements in for example a List wich complies to Groovy truth. The <code>find()</code> and <code>findAll()</code> methods are defined in the Groovy GDK on the Object class, so we can use it for every object that can be iterated.</p><pre class="brush:groovy">class User {
+    boolean enabled
+    
+    Boolean asBoolean() {
+        enabled
+    }
+}
+
+def items = [0, false, null, [], [:], '', new User(enabled: false), 'Groovy rocks!', 101]
+
+assert items.find() == 'Groovy rocks!'
+
+assert items.findAll() == ['Groovy rocks!', 101]
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

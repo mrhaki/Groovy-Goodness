@@ -1,0 +1,21 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-27912714358156058312009-12-23T07:57:00.001+01:002010-11-26T11:15:12.942+01:00Groovy Goodness: We Can Handle the Truth<p>In Groovy 1.7 we can coerse objects to a boolean. We only have to provide the method <code>asBoolean()</code> and return true or false. This means our object can be used in a conditional context without accessing any other methods or properties.</p>
+<pre class="brush:groovy">
+class User {
+    String username
+    boolean active
+
+    boolean asBoolean() { 
+        active
+    }
+}
+
+assert new User(username: 'mrhaki', active: true)
+assert !new User(username: 'mrhaki', active: false)
+
+// We can also add the asBoolean method with metaClass.
+String.metaClass.asBoolean = {
+    delegate == /sure/
+}
+assert !'true'
+assert 'sure'
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

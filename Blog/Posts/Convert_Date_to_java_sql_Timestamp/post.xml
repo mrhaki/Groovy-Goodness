@@ -1,0 +1,14 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-38404427105077502092010-08-30T23:12:00.000+02:002010-11-26T11:15:12.753+01:00Groovy Goodness: Convert Date to java.sql.Timestamp<p>Groovy adds many methods to standard Java classes we can use in our code. To convert a simple <code>Date</code> object to a <code>java.sql.Timestamp</code> we can simply use the <code>toTimestamp()</code> method on a <code>Date</code> object.</p>
+<pre class="brush:groovy">
+import static java.util.Calendar.*
+
+// Create date object with specific year, month and day.
+def date = new Date()
+date.clearTime()
+date.set year: 2010, month: AUGUST, date: 10
+
+// Convert to java.sql.Timestamp.
+def sqlTimestamp = date.toTimestamp()
+assert 'java.sql.Timestamp' == sqlTimestamp.class.name
+assert '2010-08-10 00:00:00.0' == sqlTimestamp.toString()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

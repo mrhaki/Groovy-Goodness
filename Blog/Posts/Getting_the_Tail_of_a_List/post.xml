@@ -1,0 +1,18 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-18187273375411161822009-10-18T07:00:00.002+02:002010-11-26T11:15:13.166+01:00Groovy Goodness: Getting the Tail of a List<p>Groovy adds several methods to the <code>List</code> interface. In this post we look at the <code>head()</code> and <code>tail()</code> methods. The <code>head()</code> method returns the first element of the list, and the <code>tail()</code> returns the rest of the elements in the list after the first element. The following code snippet shows a simple recursive method to reverse a list.</p>
+<pre class="brush:groovy">
+def list = [1, 2, 3, 4]
+
+def reverse(l) {
+    if (l.size() == 0) {
+        []
+    } else {
+        reverse(l.tail()) + l.head()
+    }
+}
+
+assert [4, 3, 2, 1] == reverse(list)
+
+// For the same result we can of course use the List.reverse() method,
+// but then we didn't learn about tail() and head() ;-)
+assert [4, 3, 2, 1] == list.reverse()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com4

@@ -1,0 +1,38 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-32265981127137383412010-06-14T21:16:00.003+02:002010-11-26T11:15:12.814+01:00Groovy Goodness: Strip Leading Spaces from Lines<p>Multiline strings are very useful in Groovy. But sometimes they can mess up our code formatting especially if we want to use the multiline string's value literally. If our lines cannot start with spaces we must define our multiline string that way:</p>
+<pre class="brush:groovy">
+class Simple {
+
+    String multi() {
+        '''\
+Multiline string
+with simple 2 space
+indentation.'''
+    }
+
+    // Now in Groovy 1.7.3:
+    String multi173() {
+        '''\
+        Multiline string
+        with simple 2 space
+        indentation.'''.stripIndent()
+    }
+
+}
+</pre>
+<p>Since Groovy 1.7.3 we can strip leading spaces from such lines, so we can align the definition of our multiline string the way we want with the <code>stripIndent()</code> method. Groovy finds the line with the least spaces to determine how many spaces must be removed from the beginning of the line. Or we can tell the <code>stripIndent()</code> method how many characters must be removed from the beginning of the line.</p>
+<pre class="brush:groovy">
+def multi = '''\
+  Multiline string
+  with simple 2 space
+  indentation.'''
+
+assert '''\
+Multiline string
+with simple 2 space
+indentation.''' == multi.stripIndent()
+
+assert '''\
+ine string
+imple 2 space
+ation.''' == multi.stripIndent(8)  // We can define the number of characters ourselves as well.
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

@@ -1,0 +1,6 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-42260632235390360112009-11-15T07:10:00.002+01:002010-11-26T11:15:13.078+01:00Groovy Goodness: Raising the Power of Numbers<p>The Groovy GDK adds the <code>power()</code> method to the <code>Number</code> class. The <code>power()</code> method has a shortcut operator: <code>**</code>.</p>
+<pre class="brush:groovy">
+assert 9 == 3**2
+assert 27 == 3.power(3)
+assert 16 == Math.pow(2, 4)  // Java way.
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

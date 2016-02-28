@@ -1,0 +1,14 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-84620270099739990972009-09-15T07:00:00.001+02:002010-11-26T11:15:13.239+01:00Groovy Goodness: Check for Object Equality<p>Groovy overloads the <code>==</code> operator and maps it to the <code>equals()</code> method. This is very different from Java, so when developers are switching back and forth between Groovy and Java mistakes are bound to happen. In Java we use the <code>==</code> operator to see if variables are referring to the same object instance. In Groovy we use the <code>==</code> operator to see if two objects are the same, in Java we would use the <code>equals()</code> method for this. To test if two variables are referring to the same object instance in Groovy we use the <code>is()</code> method. The <code>!=</code> operator is also overloaded and maps to the <code>!equals()</code> statement.</p><p>And because we are in Groovy land all null values are handled gracefully. We don't have to write extra checks to check for null values before we can test for equality.</p>
+<pre class="brush:groovy">
+Integer myInt = 42
+Integer anotherInt = myInt
+Integer newInt = 42
+Integer different = 101
+
+assert myInt == anotherInt  // In Java: myInt != null &amp;&amp; myInt.equals(anotherInt)
+assert myInt.is(anotherInt)  // In Java: myInt == anotherInt
+
+assert myInt == newInt
+
+assert myInt != different
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

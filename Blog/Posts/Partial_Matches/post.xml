@@ -1,0 +1,17 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-58651201624838276852012-06-28T21:36:00.000+02:002012-06-28T21:36:13.292+02:00Groovy Goodness: Partial Matches<p>Groovy 2.0 adds the <code>matchesPartially()</code> method to the <code>Matcher</code> class. This method returns true if a String value matches the pattern or if it matches the first part of the pattern. So with the <code>matchesPartially()</code> we get the result <code>true</code> if a String value or a longer String value matches the pattern.</p><pre class="brush:groovy">def identification = /[A-Z]{2}\-\d{3,5}/
+
+def matcher = 'AB-1234' =~ identification
+assert matcher.matchesPartially()
+
+matcher = 'XY-90' =~ identification
+assert matcher.matchesPartially()
+
+matcher = 'HA' =~ identification
+assert matcher.matchesPartially()
+
+matcher = 'A-431' =~ identification
+assert !matcher.matchesPartially()
+
+matcher = 'YK-901201' =~ identification
+assert !matcher.matchesPartially()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com3

@@ -1,0 +1,45 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-34578870586948640322014-04-23T15:12:00.000+02:002014-04-23T15:12:25.539+02:00Groovy Goodness: Define Compilation Customizers With Builder Syntax<p>Since Groovy 2.1 we can use a nice builder syntax to define customizers for a <code>CompileConfiguration</code> instance. We must use the static <code>withConfig</code> method of the class <code>CompilerCustomizationBuilder</code> in the package <code>org.codehaus.groovy.control.customizers.builder</code>. We pass a closure with the code to define and register the customizers. For all the different customizers like <code>ImportCustomizer</code>, <code>SecureASTCustomizers</code> and <code> ASTTransformationCustomizer</code> there is a nice compact syntax.</p><p>In the following sample we use this builder syntax to define different customizers for a <code>CompileConfiguration</code> instance:</p><pre class="brush:groovy">package com.mrhaki.blog
+
+import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer
+import org.codehaus.groovy.control.CompilerConfiguration
+import org.codehaus.groovy.control.customizers.builder.CompilerCustomizationBuilder
+import groovy.transform.*
+
+
+def conf = new CompilerConfiguration()
+
+// Define CompilerConfiguration using 
+// builder syntax.
+CompilerCustomizationBuilder.withConfig(conf) {
+    ast(TupleConstructor)
+    ast(ToString, includeNames: true, includePackage: false)
+    
+    imports {
+        alias 'Inet', 'java.net.URL'
+    }
+    
+    secureAst {
+        methodDefinitionAllowed = false
+    }
+}
+
+
+def shell = new GroovyShell(conf)
+shell.evaluate '''
+package com.mrhaki.blog
+
+class User {
+    String username, fullname
+}
+
+// TupleConstructor is added.
+def user = new User('mrhaki', 'Hubert A. Klein Ikkink')
+
+// toString() added by ToString transformation.
+assert user.toString() == 'User(username:mrhaki, fullname:Hubert A. Klein Ikkink)'
+
+// Use alias import.
+def site = new Inet('http://www.mrhaki.com/')
+assert site.text
+'''
+</pre><p>Code written with Groovy 2.2.2.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

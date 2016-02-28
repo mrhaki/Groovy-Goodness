@@ -1,0 +1,10 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-37770997231544348102009-12-06T07:15:00.001+01:002010-11-26T11:15:12.987+01:00Groovy Goodness: Add Methods to Interfaces with ExpandoMetaClass<p>We can add new behaviour to classes with the <code>ExpandoMetaClass</code>, but we can do the same for interfaces. We can add new methods to interfaces through the <code>metaClass</code> property.</p>
+<pre class="brush:groovy">
+interface Nothing { }
+class Simple implements Nothing { }
+
+Nothing.metaClass.groovyShoutOut = { -> "Groovy is awesome!" }
+
+def s = new Simple()
+assert 'Groovy is awesome!' == s.groovyShoutOut()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

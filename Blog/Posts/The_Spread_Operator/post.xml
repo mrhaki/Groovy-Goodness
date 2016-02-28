@@ -1,0 +1,45 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-45622280496660806392009-09-03T07:00:00.002+02:002010-11-26T11:15:13.265+01:00Groovy Goodness: the Spread Operator<p>In <a href="http://mrhaki.blogspot.com/2009/08/groovy-goodness-spread-dot-operator.html">a previous post</a> we learned about the spread-dot operator, in this post we look at the spread operator. The spread operator (<code>*</code>) is used to tear a list apart into single elements. This can be used to invoke a method with multiple parameters and then spread a list into the values for the parameters. The spread operator can also be used to add lists or ranges to lists and to add maps to other maps.</p>
+<pre class="brush:groovy">
+class Simple {
+    String speak(Integer n, String text, Date date) {
+        def out = new StringBuffer()
+        n.times { 
+            out &lt;&lt; "Say $text on ${date.format('yyyy-MM-dd')}.\n" 
+        }
+        out
+    }
+}
+
+// Spread params list for speak() method.
+def params = [
+    2,
+    "hello world",
+    new Date().parse("yyyy/MM/dd", "2009/09/01")
+]
+assert '''Say hello world on 2009-09-01.
+Say hello world on 2009-09-01.
+''' == new Simple().speak(*params)
+
+// Add a list to another list.
+def list = ['Groovy', 'Java']
+assert ['Groovy', 'Java', 'Scala'] == [*list, 'Scala']
+
+// Add a range to a list.
+def range = 2..5
+assert [1, 2, 3, 4, 5, 6] == [1, *range, 6]
+
+// Add a map to another map.
+def map = [name: 'mrhaki', blog: true]
+assert [name: 'mrhaki', blog: true, subject: 'Groovy Goodness'] == [subject: 'Groovy Goodness', *:map]
+
+// Little trick to simulate named parameters for a method.
+// It is just a trick so the ordering of the map key/values
+// must be the same as the method parameters.
+def paramsMap = [
+    n: 1, 
+    text: 'hello', 
+    date: new Date().parse("yyyy/MM/dd", "2009/09/04")
+]
+def paramsList = paramsMap.values().toList()
+assert 'Say hello on 2009-09-04.\n' == new Simple().speak(*paramsList)
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

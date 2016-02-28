@@ -1,0 +1,21 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-45459594515291525532011-04-27T22:58:00.000+02:002013-06-12T05:31:26.584+02:00Groovy Goodness: New Dollar Slashy Strings<p>Groovy already has a lot of ways to define a String value, and with Groovy 1.8 we have another one: the dollar slashy String. This is closely related to the slashy String definition we already knew (which also can be multi-line by the way, added in Groovy 1.8), but with different escaping rules. We don't have to escape a slash if we use the dollar slashy String format, which we would have to do otherwise.</p><pre class="brush:groovy">def source = 'Read more about "Groovy" at http://mrhaki.blogspot.com/'
+
+// 'Normal' slashy String, we need to escape / with \/
+def regexp = /.*"(.*)".*\/(.*)\//  
+
+def matcher = source =~ regexp
+assert matcher[0][1] == 'Groovy'
+assert matcher[0][2] == 'mrhaki.blogspot.com'
+
+// Dollar slash String.
+def regexpDollar = $/.*"(.*)".*/(.*)//$  
+
+def matcherDollar = source =~ regexpDollar
+assert matcherDollar[0][1] == 'Groovy'
+assert matcherDollar[0][2] == 'mrhaki.blogspot.com'
+
+def multiline = $/
+Also multilines 
+are supported.
+/$
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

@@ -1,0 +1,15 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-35669524300339933602014-05-05T16:11:00.000+02:002014-05-05T16:11:05.810+02:00Groovy Goodness: More Efficient Tail Recursion With TailRecursive Annotation<p>Since Groovy 1.8 we can <a href="http://mrhaki.blogspot.com/2011/04/groovy-goodness-recursion-with-closure.html">use the <code>trampoline</code> method for a closure</a> to get better recursive behavior for tail recursion. All closure invocations are then invoked sequentially instead of stacked, so there is no <code>StackOverFlowError</code>. As from Groovy 2.3 we can use this for recursive methods as well with the <code>@TailRecursive</code> AST transformation. If we apply the annotation to our method with tail recursion the method invocations will be sequential and not stacked, like with the closure's <code>trampoline</code> method.</p><pre class="brush:groovy">import groovy.transform.TailRecursive
+
+@TailRecursive
+long sizeOfList(list, counter = 0) {
+    if (list.size() == 0) {
+        counter
+    } else {
+       sizeOfList(list.tail(), counter + 1) 
+    }
+}
+
+// Without @TailRecursive a StackOverFlowError
+// is thrown.
+assert sizeOfList(1..10000) == 10000
+</pre><p>Code written with Groovy 2.3.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

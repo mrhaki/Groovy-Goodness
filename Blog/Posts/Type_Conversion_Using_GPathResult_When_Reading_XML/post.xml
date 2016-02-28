@@ -1,0 +1,20 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-33205469838712548612009-12-09T06:34:00.001+01:002010-11-26T11:15:12.980+01:00Groovy Goodness: Type Conversion Using GPathResult When Reading XML<p>To read XML we can use the <code>XmlSlurper</code> class and we get a <a href="http://groovy.codehaus.org/gapi/groovy/util/slurpersupport/GPathResult.html"><code>GPathResult</code></a> object back. With <code>GPathResult</code> we can traverse throught the XML and get values from elements and attributes. <code>GPathResult</code> contains several method to convert values to specific classes, like <code>toBoolean()</code>, <code>toString()</code>, <code>toInteger()</code> and more.</p>
+<pre class="brush:groovy">
+def xml = '''
+&lt;users&gt;
+    &lt;user loggedin=&quot;true&quot;&gt;
+        &lt;age&gt;36&lt;/age&gt;
+        &lt;name&gt;mrhaki&lt;/name&gt;
+        &lt;fullname&gt;Hubert A. Klein Ikkink&lt;/fullname&gt;
+        &lt;homepage&gt;http://www.mrhaki.com/&lt;/homepage&gt;
+    &lt;/user&gt;
+&lt;/users&gt;
+'''
+
+def users = new XmlSlurper().parseText(xml)
+def mrhaki = users.user[0]
+assert mrhaki.@loggedin.toBoolean() 
+assert 36 == mrhaki.age.toInteger()
+assert 'mrhaki' == mrhaki.name.toString()
+assert new URL('http://www.mrhaki.com/') == mrhaki.homepage.toURL()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

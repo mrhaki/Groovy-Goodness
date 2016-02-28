@@ -1,0 +1,10 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-21824309997842650932009-12-08T06:57:00.001+01:002010-11-26T11:15:12.983+01:00Groovy Goodness: Semicolons are Optional<p>In Groovy we can leave out semicolons at the end of the line. As long as we use one statement per line. If we use multiple statements on a line we must use a semicolon to separate the statements.</p>
+<pre class="brush:groovy">
+assert true
+assert !false
+
+assert true; assert !false  // Need semicolon to separate statements.
+
+assert true;  // Optional, so we can use them at the end of the line.
+assert !false;
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

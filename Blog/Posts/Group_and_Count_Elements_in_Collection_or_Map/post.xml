@@ -1,0 +1,11 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-16634401833849424222011-04-27T18:43:00.002+02:002011-04-27T18:43:00.138+02:00Groovy Goodness: Group and Count Elements in Collection or Map<p>Since Groovy 1.8 we can group items in a collection, map or array and count the number of elements in a group. We use a closure to define the keys for the grouping. Then the number of elements in the group are counted and that is the value of the grouping key.</p>
+<pre class="brush:groovy">
+def list = ['Groovy', 'Grails', 'Java']
+assert list.countBy { it[0] } == ['G': 2, 'J': 1]  // 2 items start with G, 1 with J.
+
+def numbers = [1,2,3,4,5] as Integer[]
+assert numbers.countBy { it % 2 } == [0: 2, 1: 3]  // 2 even, 3 uneven numbers
+
+def map = [user: 'mrhaki', city: 'Tilburg', age: 37]
+assert map.countBy { key, value -> value.class } == [(String.class): 2, (Integer.class): 1]  // 2 values of type String and 1 of type Integer
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

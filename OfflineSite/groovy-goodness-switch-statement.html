@@ -25,9 +25,7 @@
 <h3 class="post-title">Groovy Goodness: the Switch Statement</h3>
 
 <div class="post">
-<p>The Java switch statement looks pale compared to Groovy's switch statement. In Groovy we can use different classifiers for a switch statement instead of only an int or int-derived type. Anything that implements the <code>isCase()</code> method can be used as a classifier. Groovy already added an <code>isCase()</code> method to <code>Class</code> (uses <code>isInstance</code>), <code>Object</code> (uses (<code>equals</code>), collections (uses <code>contains</code>) and regular expressions (uses <code>matches</code>). If we implement the <code>isCase</code> method in our own Groovy classes we can use it as a classifier as well. Finally we can a closure as a classifier. The closure will be evaluated to a boolean value.</p>
-<pre class="brush:groovy">
-def testSwitch(val) {
+<p>The Java switch statement looks pale compared to Groovy's switch statement. In Groovy we can use different classifiers for a switch statement instead of only an int or int-derived type. Anything that implements the <code>isCase()</code> method can be used as a classifier. Groovy already added an <code>isCase()</code> method to <code>Class</code> (uses <code>isInstance</code>), <code>Object</code> (uses (<code>equals</code>), collections (uses <code>contains</code>) and regular expressions (uses <code>matches</code>). If we implement the <code>isCase</code> method in our own Groovy classes we can use it as a classifier as well. Finally we can use a closure as a classifier. The closure will be evaluated to a boolean value.</p><pre class="brush:groovy">def testSwitch(val) {
     def result
     switch (val) {
         case ~/^Switch.*Groovy$/:

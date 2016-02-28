@@ -1,0 +1,89 @@
+<html>
+<head>
+
+<title>Groovy Goodness: New Methods to Sort and Remove Duplicates From Collection</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: New Methods to Sort and Remove Duplicates From Collection</h3>
+
+<div class="post">
+<p>In Groovy we can use the <a href="http://mrhaki.blogspot.com/2011/09/groovy-goodness-sort-or-remove.html"><code>sort</code> and <code>unique</code> methods</a> to sort a collection or remove duplicates from a collection. These methods alter the collection on which they are invoked. This is a side effect we might want to avoid. Therefore the <code>sort</code> and <code>unique</code> methods where changed and we could pass a <code>boolean</code> argument to indicate if the original collection should be changed or that we must have a new collection as the result of the methods, leaving the original collection untouched. Since Groovy 2.4 we have two new methods which by default return a new collection: <code>toSorted</code> and <code>toUnique</code>.</p><p>In the following sample we see the new methods in action:</p><pre class="brush:groovy">@groovy.transform.Sortable
+@groovy.transform.ToString
+class User {
+    String username, email
+}
+
+def mrhaki1 = new User(username: 'mrhaki', email: 'mrhaki@localhost')
+def mrhaki2 = new User(username: 'mrhaki', email: 'user@localhost')
+def hubert1 = new User(username: 'hubert', email: 'user@localhost')
+def hubert2 = new User(username: 'hubert', email: 'hubert@localhost')
+
+
+// We make the list immutable,
+// so we check the toSorted and toUnique methods
+// do not alter it.
+def users = [mrhaki1, mrhaki2, hubert1, hubert2].asImmutable()
+
+
+// toSorted 
+def sortedUsers = users.toSorted()
+
+// @Sortable adds a compareTo method 
+// to User class to sort first by username
+// and then email.
+assert sortedUsers == [hubert2, hubert1, mrhaki1, mrhaki2]
+
+// Original list is unchanged.
+assert users == [mrhaki1, mrhaki2, hubert1, hubert2]
+
+// Use toSorted with closure.
+def sortedByEmail = users.toSorted { a, b -> a.email <=> b.email }
+assert sortedByEmail == [hubert2, mrhaki1, mrhaki2, hubert1]
+
+// Or use toSorted with Comparator.
+// @Sortable added static comparatorByProperty
+// methods.
+def sortedByEmailComparator = users.toSorted(User.comparatorByEmail())
+assert sortedByEmailComparator == [hubert2, mrhaki1, mrhaki2, hubert1]
+
+
+// toUnique with Comparator.
+def uniqueUsers = users.toUnique(User.comparatorByUsername())
+assert uniqueUsers == [mrhaki1, hubert1]
+assert users == [mrhaki1, mrhaki2, hubert1, hubert2]
+
+// toUnique with Closure.
+def uniqueByEmail = users.toUnique { a, b -> a.email <=> b.email }
+assert uniqueByEmail == [mrhaki1, mrhaki2, hubert2]
+</pre><p>Written with Groovy 2.4.3.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

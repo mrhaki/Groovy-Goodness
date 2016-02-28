@@ -1,0 +1,24 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-7524603605959836402011-04-27T16:51:00.000+02:002011-04-27T16:51:43.933+02:00Groovy Goodness: Parse JSON with JsonSlurper<p>With Groovy 1.8 we can parse JSON text with the <code>JsonSlurper</code> class. We only have to feed the text to the <code>parseText()</code> method and we can the values are mapped to Maps and Lists. And getting the content then is very easy:</p>
+<pre class="brush:groovy">
+import groovy.json.*
+
+def jsonText = '''
+{
+    "message": {
+        "header": {
+            "from": "mrhaki",
+            "to": ["Groovy Users", "Java Users"]
+        },
+        "body": "Check out Groovy's gr8 JSON support."
+    }
+}       
+'''
+
+def json = new JsonSlurper().parseText(jsonText)
+
+def header = json.message.header
+assert header.from == 'mrhaki'
+assert header.to[0] == 'Groovy Users'
+assert header.to[1] == 'Java Users'
+assert json.message.body == "Check out Groovy's gr8 JSON support."
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

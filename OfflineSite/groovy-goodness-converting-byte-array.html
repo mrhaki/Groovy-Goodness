@@ -1,0 +1,60 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Converting Byte Array to Hex String</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Converting Byte Array to Hex String</h3>
+
+<div class="post">
+<p>To convert a <code>byte[]</code> array to a <code>String</code> we can simply use the <code>new String(byte[])</code> constructor. But if the array contains non-printable bytes we don't get a good representation. In Groovy we can use the method <code>encodeHex()</code> to transform a <code>byte[]</code> array to a hex <code>String</code> value. The <code>byte</code> elements are converted to their hexadecimal equivalents. </p><pre class="brush:groovy">final byte[] printable = [109, 114, 104, 97, 107, 105]
+
+// array with non-printable bytes 6, 27 (ACK, ESC)
+final byte[] nonprintable = [109, 114, 6, 27, 104, 97, 107, 105]
+
+
+assert new String(printable) == 'mrhaki'
+assert new String(nonprintable) != 'mr  haki'
+
+
+// encodeHex() returns a Writable
+final Writable printableHex = printable.encodeHex()
+assert printableHex.toString() == '6d7268616b69'
+final nonprintableHex = nonprintable.encodeHex().toString()
+assert nonprintableHex == '6d72061b68616b69'
+
+
+// Convert back
+assert nonprintableHex.decodeHex() == nonprintable
+</pre><p>Code written with Groovy 2.2.1</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

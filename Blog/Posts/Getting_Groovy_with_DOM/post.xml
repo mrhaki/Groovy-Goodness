@@ -1,0 +1,34 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-64250062441927974082009-12-18T07:00:00.001+01:002010-11-26T11:15:12.954+01:00Groovy Goodness: Getting Groovy with DOM<p>Reading XML is easy with Groovy's <code>XmlParser</code>, <code>XmlSlurper</code> classes. But sometimes we get an XML structure as DOM from another application or Java component. So we need more low-level access at the DOM level: we are in a world of nodes and elements. We can use the <code>DOMCategory</code> to make the low-level handling more Groovy.</p>
+<pre class="brush:groovy">
+import groovy.xml.*
+import groovy.xml.dom.*
+
+def xml = '''
+&lt;users&gt;
+    &lt;user active=&quot;true&quot;&gt;
+        &lt;fullname&gt;mrhaki&lt;/fullname&gt;
+    &lt;/user&gt;
+    &lt;user active=&quot;false&quot;&gt;
+        &lt;fullname&gt;Hubert A. Klein Ikkink&lt;/fullname&gt;
+    &lt;/user&gt;
+&lt;/users&gt;
+'''
+def xmlDom = DOMBuilder.newInstance().parseText(xml)  // Create DOM structure.
+
+def root = xmlDom.documentElement
+use (DOMCategory) {
+    def users = root.user
+    assert 2 == users.size()
+    
+    assert 'User with fullname mrhaki is active' == userInfo(users[0])
+    assert 'User with fullname Hubert A. Klein Ikkink is not active' == userInfo(users[1])
+
+    assert 'mrhaki' == users.findAll { it.'@active'.toBoolean() }[0].fullname.text()
+}
+
+def userInfo(user) {
+    def active = user.'@active'.toBoolean()
+    def fullname = user.fullname.text()
+    &quot;User with fullname $fullname is ${active ? 'active' : 'not active'}&quot;
+}
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

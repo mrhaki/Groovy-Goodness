@@ -1,0 +1,10 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-17545620783322983332010-04-24T21:54:00.000+02:002010-11-26T11:15:12.853+01:00Groovy Goodness: Sum the Values in a Object Array<p>Since Groovy 1.7.1 we can use the <code>sum()</code> method on an array of objects. We already could use it for collections and iterators, but this has been extended to array of objects. The <code>sum()</code> can take a closure as an argument. The result of the closure is used to add the values together. Finally we can use an initial value for the sum.</p>
+<pre class="brush:groovy">
+def n = 0..5 as Integer[]
+
+assert n instanceof Integer[]
+assert      0 + 1 + 2 + 3 + 4 + 5 == n.sum()
+assert 10 + 0 + 1 + 2 + 3 + 4 + 5 == n.sum(10)
+assert      0 + 10 + 20 + 30 + 40 + 50 == n.sum { it * 10 }
+assert 10 + 0 + 10 + 20 + 30 + 40 + 50 == n.sum(10, { it * 10 })
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

@@ -1,0 +1,38 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-66641152153578139602015-09-22T11:02:00.000+02:002015-09-22T11:05:37.892+02:00Groovy Goodness: Defining Public Accessible Constant Fields <p>There is a catch when we define a constant field in Groovy. Rob Fletcher blogged about this in the post <a href="http://blog.freeside.co/2013/02/17/groovy-the-public-keyword/">Groovy the public keyword</a> a while ago. When we omit the <code>public</code> keyword for a method then the method is still accessible as public method, because Groovy makes the method public when the class is compiled. When we leave out the <code>public</code> keyword for fields Groovy creates a getter and setter method for the field at compile time and turns it into a property that applies to the Java Bean specification. This is also true if the field is static. So if we define a constant value as <code>static final</code> we must keep in mind that Groovy will generate a getter method so the constant value is a read only property according to Java Bean specification.</p><p>Let's create a simple class with a constant field <code>DEFAULT</code>, a property <code>message</code> and a <code>message</code> method. We leave out any <code>public</code> keyword:</p><pre class="brush:groovy">// File: sample.groovy
+// Groovy makes class public.
+class Sample {
+    // Groovy adds getDEFAULT and no setDEFAULT.
+    static final String DEFAULT = 'default'
+  
+    // Groovy adds setMessage/getMessage
+    String message
+
+    // Groovy makes method public.
+    void message(final String newMessage) {
+        this.message = message
+    }
+}
+</pre><p>If we compile this class we get the following methods and fields (using <code>javap</code> to inspect the class):</p><pre class="brush:plain;light:true">$ javap -p -constants Sample
+Compiled from "sample.groovy"
+public class Sample implements groovy.lang.GroovyObject {
+  private static final java.lang.String DEFAULT = "default";
+  private java.lang.String message;
+  ...
+  public void message(java.lang.String);
+  ...
+  public static final java.lang.String getDEFAULT();
+  public java.lang.String getMessage();
+  public void setMessage(java.lang.String);
+}
+</pre><p>If we want to access the constant field in Groovy we can still use <code>Sample.DEFAULT</code>, but from Java code this doesn't work. You can see in the generated class file we should invoke <code>getDEFAULT()</code>, because this method is public. To overcome this we simply add <code>public</code> to our constant field definition. This way Groovy will leave the field unchanged and in the generated class file it is still public. Then from Java we can use <code>Sample.DEFAULT</code> to access the constant value. Let's see the output of <code>javap</code> when we make the <code>DEFAULT</code> field public:</p><pre class="brush:plain;light:true">$ javap -p -constants Sample
+Compiled from "sample.groovy"
+public class Sample implements groovy.lang.GroovyObject {
+  public static final java.lang.String DEFAULT = "default";
+  private java.lang.String message;
+  ...
+  public void message(java.lang.String);
+  ...
+  public java.lang.String getMessage();
+  public void setMessage(java.lang.String);
+}
+</pre><p>This also helps an IDE, like IntelliJ IDEA, to do a proper <code>import static</code> based on the constant field.</p><p>Written with Groovy 2.4.4.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

@@ -1,0 +1,17 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-64252097092827386772009-08-14T12:33:00.006+02:002010-11-26T11:15:13.325+01:00Groovy Goodness: Use a Map as Interface Implementation<p>To implement an interface we can use a Groovy map and with the <code>as</code> keyword we can pass it on to a method. Here is a simple example where we define an implementation of the <code>java.io.FileFilter</code> as a map. We pass the implementation on to the <code>java.io.File.listFiles()</code> method to display all files with extensions <code>.css</code> and <code>.png</code>:</p>
+<pre class="brush:groovy">
+map = [ 
+    // Implement FileFilter.accept(File) method.
+    accept: { file -&gt; file.path ==~ /.*\.(css|png)$/ } 
+] as FileFilter
+new File('c:/temp').listFiles(map).each { 
+    println it.path 
+}
+</pre>
+<p>If the interface we want to implement has more than one method we can only use a map for the implementation. But if the interface only contains one method (as in this case) we can also use a closure for the implementation. In the following example we implement the <code>java.io.FileFilter</code> interface with a closure to filter all files with the extension <code>.jpg</code>:</p>
+<pre class="brush:groovy">
+filter = { it.path ==~ /.*\.jpg$/ }
+new File('c:/temp').listFiles(filter as FileFilter).each { file -&gt;
+    println file.path
+}
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

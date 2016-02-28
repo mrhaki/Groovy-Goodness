@@ -1,0 +1,28 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-90812984352375237012009-11-18T06:50:00.002+01:002010-11-26T11:15:13.048+01:00Groovy Goodness: Testing for Expected Exceptions<p>If we create a unit test class and extend from <code>GroovyTestCase</code> we can use the very useful <code>shoulFail()</code> methods. The method provides a very concise way to define that a piece of code should throw an exception. We can specify the type of exception we expect to be thrown or leave it out.</p>
+<pre class="brush:groovy">
+class URLTest extends GroovyTestCase {
+    void testNoProtocol() {
+        // Test for exception.
+        shouldFail {
+            def url = new URL('')
+        }
+
+        // Test for exception and check resulting message.
+        def msg = shouldFail {
+            def url =  new URL('')
+        }
+        assert 'no protocol: ' == msg  // We can use the 'normal' assert.
+
+        // Test for specific exception and resulting message.
+        msg = shouldFail(MalformedURLException) {
+            def url = new URL('')
+        }
+        assertEquals 'no protocol: ', msg  // We can use the JUnit assertEquals.
+        
+        // Test for exception higher up in the hierarchy.
+        shouldFail(IOException) {
+            def url = new URL('')
+        }
+    }
+}
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

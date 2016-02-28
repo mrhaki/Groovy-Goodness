@@ -1,0 +1,25 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-18696906404024154852015-09-11T16:19:00.000+02:002015-09-11T16:19:21.504+02:00Groovy Goodness: Operator Overloading in Reverse<p>One of the very nice features of Groovy is that we can <a href="http://gr8labs.org/getting-groovy/#_operator_overloading">implement operator overloading</a>. This blog post is not about <a href="http://mrhaki.blogspot.com/2012/06/groovy-goodness-multiple-overloaded.html">how to implement operator overloading</a>, but Groovy's operator overloading also means that operators we know in Java have corresponding methods, which are not available in Java. So instead of using operators in our code we can use the corresponding methods.</p><p>The following sample code shows some operators we know in Java and the corresponding methods in Groovy:</p><pre class="brush:groovy">def a = true
+def b = false
+
+assert a | b
+// Java Boolean has no or method.
+assert a.or(b) 
+
+assert !(a &amp; b)
+assert !(a.and(b))
+
+
+def x = 100
+def y = 10
+
+assert x + y == 110
+// Java Integer has no plus method.
+assert x.plus(y) == 110 
+
+assert ++x == 101  
+// ++ maps to next method.
+assert x.next() == 102
+
+assert --y == 9
+assert y.previous() == 8
+</pre><p>Written with Groovy 2.4.4.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

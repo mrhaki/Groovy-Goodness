@@ -1,0 +1,23 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-36319483836837597032009-11-05T08:32:00.001+01:002010-11-26T11:15:13.110+01:00Groovy Goodness: Splitting Strings<p>In Java we can use the <code>split()</code> method of the <code>String</code> class or the <code>StringTokenizer</code> class to split strings. Groovy adds the methods <code>split()</code> and <code>tokenize()</code> to the <code>String</code> class, so we can invoke them directly on a string. The <code>split()</code> method return a <code>String[]</code> instance and the <code>tokenize()</code> method return a <code>List</code>. There is also a difference in the argument we can pass to the methods. The <code>split()</code> method takes a regular expression string and the <code>tokenize()</code> method will use all characters as delimiter.</p>
+<pre class="brush:groovy">
+def s = '''\
+username;language,like
+mrhaki,Groovy;yes
+'''
+
+assert s.split() instanceof String[]
+assert ['username;language,like', 'mrhaki,Groovy;yes'] == s.split()  // Default split on whitespace. ( \t\n\r\f)
+assert ['username', 'language', 'like', 'mrhaki', 'Groovy', 'yes'] == s.split(/(;|,|\n)/)  // Split argument is a regular expression.
+
+def result = []
+s.splitEachLine(&quot;,&quot;) {
+    result &lt;&lt; it  // it is list with result of split on ,
+}
+assert ['username;language', 'like'] == result[0]
+assert ['mrhaki', 'Groovy;yes'] == result[1]
+
+assert s.tokenize() instanceof List
+assert ['username;language,like', 'mrhaki,Groovy;yes'] == s.tokenize()  // Default tokenize on whitespace. ( \t\n\r\f)
+assert ['username', 'language', 'like', 'mrhaki', 'Groovy', 'yes'] == s.tokenize(&quot;\n;,&quot;)  // Argument is a String with all tokens we want to tokenize on.
+</pre>
+<p>Run script on <a href="http://groovyconsole.appspot.com/view.groovy?id=34003">Groovy web console</a>.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

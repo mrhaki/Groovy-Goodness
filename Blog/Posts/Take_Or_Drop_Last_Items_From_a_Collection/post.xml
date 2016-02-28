@@ -1,0 +1,23 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-1756489721487186462015-01-26T11:53:00.000+01:002015-01-26T11:53:34.537+01:00Groovy Goodness: Take Or Drop Last Items From a Collection<p>We know Groovy has a lot of nice methods for working with collections. For example in previous blog posts we have <a href="http://mrhaki.blogspot.com/2011/09/groovy-goodness-take-and-drop-items.html">seen how to take or drop elements from a list</a> and <a href="http://mrhaki.blogspot.com/2012/10/groovy-goodness-drop-or-take-elements.html">even with a condition</a>. Since Groovy 2.4 we can now also use the <code>dropRight</code> and <code>takeRight</code> methods to take or drop elements from the end of the list.</p><p>In the following example we have a simple list and we use the <code>dropRight</code> and <code>takeRight</code> methods to get elements from the list:</p><pre class="brush:groovy">def list = ['Simple', 'list', 'with', 5, 'items']
+
+assert list.takeRight(1) == ['items']
+assert list.takeRight(2) == [5, 'items']
+assert list.takeRight(0) == []
+// Whole list, because we take more items then the size of list
+assert list.takeRight(6) == ['Simple', 'list', 'with', 5, 'items']
+
+assert list.dropRight(1) == ['Simple', 'list', 'with', 5]
+assert list.dropRight(3) == ['Simple', 'list']
+assert list.dropRight(5) == []
+assert list.dropRight(0) == ['Simple', 'list', 'with', 5, 'items']
+assert list == ['Simple', 'list', 'with', 5, 'items']
+
+def array = ['Rock on!', 'Groovy baby!'] as String[]
+assert array.takeRight(1) == ['Groovy baby!'] as String[]
+assert array.dropRight(1) == ['Rock on!'] as String[]
+
+def range = 0..10
+assert range.takeRight(2) == [9,10]
+assert range.takeRight(4) == 7..10
+assert range.dropRight(5) == 0..5
+</pre><p>Written with Groovy 2.4.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

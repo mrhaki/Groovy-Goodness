@@ -1,0 +1,17 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-37545183332248103722009-11-29T07:00:00.001+01:002010-11-26T11:15:13.004+01:00Groovy Goodness: A Bit of metaClass DSL<p>When we add behaviour to classes with the <code>metaClass</code> property we can use a simple DSL. We pass a closure to the <code>metaClass</code> method where we group the definitions for the new behaviour. If we add multiple methods with the same name we must use &lt;&lt;, otherwise we can just set a closure to the method name. To add a static method we use 'static' and define the methods.</p>
+<pre class="brush:groovy">
+String.metaClass {
+    or &lt;&lt; { String s -&gt; delegate.plus(' or ').plus(s) }
+    or &lt;&lt; { List l -&gt; delegate.findAll(&quot;(${l.join('|')})&quot;) }
+    and { String s -&gt; delegate.plus(' and ').plus(s) }
+    'static' {
+        groovy { 'Yeah man!' }
+    }
+}
+
+assert 'Groovy or Java?' == (&quot;Groovy&quot; | &quot;Java?&quot;)
+assert ['o', 'o', 'y'] == (&quot;Groovy&quot; | ['o', 'y'])
+assert 'Groovy and Java!' == (&quot;Groovy&quot; &amp; &quot;Java!&quot;)
+
+assert 'Yeah man!' == String.groovy()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

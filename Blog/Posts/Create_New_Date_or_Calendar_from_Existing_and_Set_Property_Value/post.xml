@@ -1,0 +1,22 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-54791333169718302202013-11-18T22:14:00.001+01:002013-11-18T22:14:48.402+01:00Groovy Goodness: Create New Date or Calendar from Existing and Set Property Value<p>Since Groovy 2.2 we can create a new <code>Date</code> or <code>Calendar</code> object from an existing <code>Date</code> and <code>Calendar</code> object and directly change property values. We must use the <code>copyWith()</code> method and we pass a map with property names and values as an argument. The newly created object will have the old values for properties from the original object and the properties set in the map are overridden.</p><p>The following code shows the new <code>copyWith()</code> method:</p><pre class="brush:groovy">import static java.util.Calendar.NOVEMBER
+
+// Create original date.
+def date = new Date().clearTime()
+date.set(year: 2013, month: NOVEMBER, date: 18)
+
+// Use copyWith to get new Date and 
+// immmediatelly set year to 2014.
+def yearLater = date.copyWith(year: 2014)
+
+assert yearLater.format('dd-MM-yyyy') == '18-11-2014'
+
+
+// Also works for Calendar.
+def cal = Calendar.instance
+cal.set(year: 2013, month: NOVEMBER, date: 10)
+
+// Create new Calendar with new date value.
+def newCalendar = cal.copyWith(date: 18)
+
+assert newCalendar.format('dd-MM-yyyy') == '18-11-2013'
+</pre><p>Code written with Groovy 2.2.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

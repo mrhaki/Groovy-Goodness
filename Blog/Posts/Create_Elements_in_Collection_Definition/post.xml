@@ -1,0 +1,16 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-78400351633817911552010-01-17T09:47:00.004+01:002010-11-26T11:15:12.899+01:00Groovy Goodness: Create Elements in Collection Definition<p>Small things can make our lives easier. For example if we use Groovy we can create a new list or map with a list of elements directly. We don't have to use an <code>add()</code> method.</p>
+<pre class="brush:groovy">
+def list = [
+    'one', 
+    'two', 
+    'three',
+]
+
+def map = [
+    'groovy': 1.7,
+    'mrhaki': 'hubert',
+]
+
+assert list
+assert map
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com5

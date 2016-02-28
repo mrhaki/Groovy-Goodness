@@ -1,0 +1,48 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-31819090111151943672009-09-28T07:34:00.002+02:002010-11-26T11:15:13.209+01:00Groovy Goodness: Building Object Graphs<p>With Groovy we can build a graph of objects just like with Java, but we can also use the <a href="http://groovy.codehaus.org/ObjectGraphBuilder"><code>ObjectGraphBuilder</code></a>. With the builder we can construct a graph of objects that follow the Java Beans rules. The builder follows some standard rules to determine parent/child relations and use of classes. We can override this default behaviour by adding specific resolver classes to the builder object.</p>
+<pre class="brush:groovy">
+class School {
+    String name
+    List&lt;Course&gt; courses = []
+}
+
+class Course {
+    String name
+    Teacher teacher
+    List&lt;Student&gt; students = []
+}
+
+class Teacher { String name }
+
+class Student { String name }
+
+def builder = new ObjectGraphBuilder(classLoader: getClass().classLoader) // Need classLoader when in Groovy console.
+def firstSchool = builder.school(name: 'First School') {
+    course(name: 'Math') {
+        teacher(name: 'Matt') 
+        student(name: 'Mary', id: 'Mary')  // id attribute allows us to reference it later in the builder.
+        student(name: 'John', id: 'John')
+        student(name: 'Rose', id: 'Rose')
+    }
+    course(name: 'English') {
+        teacher(name: 'Emily', id: 'Emily')
+        student(refId: 'Mary')  // refId refers to id attribute we set earlier.
+        student(name: 'Alex')
+        student(refId: 'Rose')
+    }
+    course(name: 'Java') {
+        teacher(refId: 'Emily')
+        student(name: 'mrhaki')
+        student(refId: 'John')
+        student(refId: 'Mary')
+    }    
+}
+
+assert 'First School' == firstSchool.name
+assert 3 == firstSchool.courses.size()
+assert 'Math' == firstSchool.courses[0].name
+assert 'Matt' == firstSchool.courses[0].teacher.name
+assert 3 == firstSchool.courses[0].students.size()
+assert ['English', 'Java'] == firstSchool.courses.findAll{ it.teacher.name == 'Emily' }.name
+assert 'mrhaki' == firstSchool.courses[2].students.find { it.name == 'mrhaki' }.name
+assert 'Mary' == firstSchool.courses.find{ it.name == 'Java' }.students.find{ it.name == 'Mary' }.name
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com3

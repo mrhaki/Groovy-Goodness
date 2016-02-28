@@ -1,0 +1,28 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-53368245357937377732009-09-13T07:00:00.002+02:002010-11-26T11:15:13.243+01:00Groovy Goodness: Exception Handling<p>Handling exceptions in Groovy is the same as in Java. We write a try-catch block to catch an exception and handle it. But there is a twist: in Groovy every exception is optional. This goes for checked exceptions as well. Groovy will pass an exception to the calling code until it is handled, but we don't have to define it in our method signature. So we as developers can choose how and when to handle the exception.</p><p>We all have seen code where developers have to handle checked exceptions, because otherwise the Java source code will not compile. And what ends up in the catch block? Mostly what the IDE generates, or <code>ex.printStackTrace()</code>, or any other code that handles the exception without any thought. In Groovy we can choose at which level we want to catch an exception. If we don't do anything the exception will be passed on to the calling code. So without a compiler grinding to a halt with errors about exception handling we must have a good discipline to do this ourselves in Groovy.</p>
+<pre class="brush:groovy">
+try {
+    def url = new URL('malformedUrl')
+    assert false, 'We should never get here because of the exception.'
+} catch (MalformedURLException e) {
+    assert true
+    assert e in MalformedURLException
+}
+
+// Method throws MalformedURLException, but we don't 
+// have to define it. Groovy will pass the exception
+// on to the calling code.
+def createUrl() {
+    new URL('malformedUrl')
+}
+
+try {
+    def url1 = createUrl()
+    assert false, 'We should never get here because of the exception.'
+} catch (all) {  // Groovy shortcut: we can omit the Exception class 
+                 // if we want to catch all Exception and descendant objects. 
+                 // In Java we have to write catch (Exception all).
+    assert true
+    assert all in MalformedURLException
+}
+</pre>
+<p>Run this script in <a href="http://groovyconsole.appspot.com/?id=11017">GroovyConsole</a>.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

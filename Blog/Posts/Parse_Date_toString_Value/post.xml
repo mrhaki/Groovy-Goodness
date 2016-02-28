@@ -1,0 +1,23 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-14333626571536237062011-11-10T06:33:00.001+01:002011-11-10T06:55:23.460+01:00Groovy Goodness: Parse Date.toString() Value<p>With Groovy 1.8.4 we can parse the output of the <code>Date.toString()</code> method back to a Date. For example we get the string value of a Date from an external source and want to parse it to a Date object. The format of the string must have the pattern "EEE MMM dd HH:mm:ss zzz yyyy" with the US Locale. This is used by the <code>toString()</code> method of the Date class.</p><pre class="brush:groovy">import static java.util.Calendar.*
+
+// Create date 10 November 2011.
+def cal = Calendar.getInstance(TimeZone.getTimeZone('Europe/Amsterdam'))
+def date = cal.time
+date.clearTime()
+date[YEAR] = 2011
+date[MONTH] = NOVEMBER
+date[DATE] = 10
+
+// Get toString() value.
+def dateToString = date.toString()
+assert dateToString == 'Thu Nov 10 00:00:00 CET 2011'
+
+// Replace Nov for Dec in string and 10 for 24.
+dateString = dateToString.replace('Nov', 'Dec').replace('10', '24')
+
+// Use parseToStringDate to get new Date.
+def newDate = Date.parseToStringDate(dateString)
+assert newDate[MONTH] == DECEMBER
+assert newDate[DATE] == 24
+assert newDate[YEAR] == 2011
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

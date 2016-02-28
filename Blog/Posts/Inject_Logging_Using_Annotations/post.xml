@@ -1,0 +1,51 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-74294292866041630672011-04-27T17:29:00.001+02:002011-04-27T17:29:00.168+02:00Groovy Goodness: Inject Logging Using Annotations<p>With Groovy 1.8 we can inject a log field into our classes with a simple annotation. In our class we can invoke method on the log field, just as we would do if we wrote the code to inject the log field ourselves. How many times have we written code like this <code>Logger log = LoggerFactory.getLogger(&lt;class&gt;)</code> at the top of our classes to use for example the Slf4j API? Since Groovy 1.8 we only have to add the <code>@Slf4j</code> annotation to our class and get the same result. <b>AND</b> each invocation of a log method is encapsulated in a check to see if the log level is enabled.</p>
+<pre class="brush:groovy">
+// File: LogSlf4j.groovy
+// Add dependencies for Slf4j API and Logback
+@Grapes([
+    @Grab(group='org.slf4j', module='slf4j-api', version='1.6.1'),
+    @Grab(group='ch.qos.logback', module='logback-classic', version='0.9.28')
+])
+import org.slf4j.*
+import groovy.util.logging.Slf4j
+
+// Use annotation to inject log field into the class.
+@Slf4j
+class HelloWorldSlf4j {
+    def execute() {
+        log.debug 'Execute HelloWorld.'
+        log.info 'Simple sample to show log field is injected.'
+    }
+}
+
+def helloWorld = new HelloWorldSlf4j()
+helloWorld.execute()
+</pre>
+<p>When we run this script we get the following output:</p>
+<pre class="brush:plain;light:true">
+$ groovy LogSlf4j.groovy
+21:20:02.392 [main] DEBUG HelloWorldSlf4j - Execute HelloWorld.
+21:20:02.398 [main] INFO  HelloWorldSlf4j - Simple sample to show log field is injected.
+</pre>
+<p>Besides an annotation for the Slf4j API other logging frameworks are supported with annotations:</p>
+<table border="0">
+    <thead>
+        <tr>
+            <th>Logging framework</th><th>Annotation</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>java.util.logging</td><td>@Log</td>
+        </tr>
+        <tr>
+            <td>Log4j</td><td>@Log4j</td>
+        </tr>
+        <tr>
+            <td>Apache Commons Logging</td><td>@Commons</td>
+        </tr>
+        <tr>
+            <td>Slf4j API</td><td>@Slf4j</td>
+        </tr>
+    </tbody>
+</table>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com3

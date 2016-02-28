@@ -1,0 +1,16 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-20763237249291589372010-04-23T09:33:00.001+02:002010-11-26T11:15:12.855+01:00Groovy Goodness: Tokenize a String<p>Groovy adds the <code>tokenize()</code> method to the <code>String</code> class. We can use this method to split up a string value using a <code>String</code>, <code>char</code> or whitespace as delimiter. Groovy also adds a <code>split()</code> method without arguments that uses whitespace as delimiter, but returns a String array instead of List.</p>
+<pre class="brush:groovy">
+def s = 'one two three four'
+
+def resultList = s.tokenize()
+assert resultList.class.name == 'java.util.ArrayList'
+assert ['one', 'two', 'three', 'four'] == resultList
+
+def resultArray = s.split()
+assert resultArray instanceof String[]
+assert ['one', 'two', 'three', 'four'] == resultArray
+
+def s1 = 'Java:Groovy'
+assert ['Java', 'Groovy'] == s1.tokenize(":")
+assert ['Java', 'Groovy'] == s1.tokenize(':' as char)
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

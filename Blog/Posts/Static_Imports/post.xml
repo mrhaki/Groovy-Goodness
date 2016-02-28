@@ -1,0 +1,16 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-23971131735165012682009-10-23T07:00:00.001+02:002010-11-26T11:15:13.144+01:00Groovy Goodness: Static Imports<p>Java already has static imports, but Groovy takes it to the <a href="http://groovy.codehaus.org/Static+Import+Usage">next level</a>. In a <a href="http://mrhaki.blogspot.com/2009/09/groovy-goodness-as-keyword.html">previous post</a> we learned how we use the <code>as</code> keyword to assign a class we import to a variable in the <code>import</code> statement. But with static imports we can do this even for static methods and properties. This makes for code which may confuse us, but if we look at the import section all will be revealed.</p>
+<pre class="brush:groovy">
+import static HttpURLConnection.HTTP_OK  // Normal Java static import.
+import static HttpURLConnection.HTTP_OK as okay 
+import static HttpURLConnection.setFollowRedirects as redirect
+import java.net.HttpURLConnection as http // Non static import.
+
+redirect false  // HttpURLConnection.setFollowRedirects(false)
+assert false == HttpURLConnection.followRedirects
+
+def c = (http) 'http://mrhaki.blogspot.com'.toURL().openConnection()
+assert c instanceof HttpURLConnection
+
+assert okay == c.responseCode
+assert HTTP_OK == c.responseCode
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

@@ -1,0 +1,9 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-79515344190821125392010-01-02T07:00:00.000+01:002010-11-26T11:15:12.915+01:00Groovy Goodness: Normalize and Denormalize Linefeeds and Carriage Returns<p>Each platform where we can run Java and Groovy applications has different line separators. Groovy adds two methods to the <code>String</code> class to convert the specific platform line separator to linefeeds and vica versa.</p>
+<pre class="brush:groovy">
+def text = 'First line\r\nSecond line\r\n'
+def textNormalized = text.normalize()
+def platformLineSeparator = System.properties['line.separator']
+
+assert 'First line\nSecond line\n' == textNormalized
+assert "First line${platformLineSeparator}Second line${platformLineSeparator}" == textNormalized.denormalize()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

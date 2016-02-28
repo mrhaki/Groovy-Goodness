@@ -1,0 +1,135 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Use Custom Template Class with MarkupTemplateEngine</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Use Custom Template Class with MarkupTemplateEngine</h3>
+
+<div class="post">
+<p>Since Groovy 2.3 we can use the new <code>MarkupTemplateEngine</code> to generate XML/HTML content. The engine compiles the template for better performance and optionally provides type checking on model attributes used in the template. We can configure the template engine to use a custom base template class instead of the default <code>BaseTemplate</code>. In our custom template class we can add new methods that can be invoked from our template content.</p><p>Let's create a new base template class with an <code>icon</code> method to output valid <a href="http://fortawesome.github.io/Font-Awesome/">FontAwesome</a> markup:</p><pre class="brush:groovy">// File: FontAwesomeTemplate.groovy
+package com.mrhaki.groovy.tmpl
+
+import groovy.text.markup.*
+import groovy.text.*
+
+abstract class FontAwesomeTemplate extends BaseTemplate {
+
+    FontAwesomeTemplate(
+        final MarkupTemplateEngine templateEngine, 
+        final Map model, 
+        final Map&lt;String,String&gt; modelTypes, 
+        final TemplateConfiguration configuration) {
+        super(templateEngine, model, modelTypes, configuration)
+    }
+
+    /**
+     * Generate FontAwesome markup. 
+     *
+     * @param icon Name of the icon, will be prefixed with 'fa-'.
+     * @param attributes Optional extra attributes, will be added to markup
+     *                   and prefixed with 'fa-'.
+     * @return Span element with class attribute value for FontAwesome
+     */
+    String icon(final String icon, final String[] attributes = []) {
+        // Prefix attribute names with fa-.
+        final faAttributes = attributes.collect { "fa-$it" }
+
+        // Create markup.
+        $/&lt;span class="fa fa-${icon} ${faAttributes.join(' ')}"&gt;&lt;/span&gt;/$
+    }
+
+}
+</pre><p>Now we can create a new <code>MarkupTemplateEngine</code> and use our <code>FontAwesomeTemplate</code> class as the base template. We assign our template class to the <code>baseTemplateClass</code> property of <code>TemplateConfiguration</code>:</p><pre class="brush:groovy">import com.mrhaki.groovy.tmpl.*
+import groovy.text.*
+import groovy.text.markup.*
+
+
+// Create configuration and set 
+// base template class to
+// FontAwesomeTemplate.
+TemplateConfiguration config = new TemplateConfiguration(
+    baseTemplateClass: FontAwesomeTemplate
+)
+
+// Create engine with configuration.
+MarkupTemplateEngine engine = new MarkupTemplateEngine(config)     
+
+// Create template with text using
+// the icon method.
+Template template = engine.createTemplate('''
+    ul {
+        // Use the name of the icon as argument
+        // for the icon method.
+        li icon('cloud')
+
+        // Any extra arguments are assumed
+        // to be FontAwesome attributes.
+        li icon('pencil', 'large', 'rotate-90')
+    }
+
+    // If we want to use the icon method in between
+    // text we must use the ${stringOf notation}.
+    p "This is a ${stringOf {icon('home')}} home icon."
+
+    // Or use yieldUnescaped method.
+    p {
+        yield "This is a "
+        yieldUnescaped icon('cog')
+        yield " settings icon."
+    }
+
+''')    
+
+// Render output for template.
+Writer writer = new StringWriter()                          
+Writable output = template.make([:])  
+output.writeTo(writer)   
+String result = writer.toString()
+
+
+// This is what we would expect as a result.
+// (/ is the continuation character, so it is 
+//  actually all one line)
+def expected = $/\
+&lt;ul&gt;\
+&lt;li&gt;&lt;span class="fa fa-cloud "&gt;&lt;/span&gt;&lt;/li&gt;\
+&lt;li&gt;&lt;span class="fa fa-pencil fa-large fa-rotate-90"&gt;&lt;/span&gt;&lt;/li&gt;\
+&lt;/ul&gt;\
+&lt;p&gt;This is a &lt;span class="fa fa-home "&gt;&lt;/span&gt; home icon.&lt;/p&gt;\
+&lt;p&gt;This is a &lt;span class="fa fa-cog "&gt;&lt;/span&gt; settings icon.&lt;/p&gt;\
+/$
+
+assert result == expected
+</pre><p>Code written with Groovy 2.3.6.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

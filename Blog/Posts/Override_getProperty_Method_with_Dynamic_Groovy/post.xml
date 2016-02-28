@@ -1,0 +1,21 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-16979278388495274702010-01-18T22:30:00.004+01:002010-11-26T11:15:12.897+01:00Groovy Goodness: Override getProperty Method with Dynamic Groovy<p>Groovy's ExpandoMetaClass features allows us to override the <code>getProperty()</code> method for a class. This method is invoked if we want to access a property for an object. We can look up existing properties and return their result, but we can also write behaviour for the situation when the property doesn't exist.</p>
+<pre class="brush:groovy">
+class User {
+    String username
+}
+
+User.metaClass.getProperty = { String propName ->
+    def meta = User.metaClass.getMetaProperty(propName)
+    if (meta) {
+        meta.getProperty(delegate)
+    } else {
+        'Dynamic property for User'
+    }
+}
+
+def mrhaki = new User(username: 'mrhaki')
+def hubert = new User(username: 'hubert')
+
+assert 'mrhaki' == mrhaki.username
+assert 'Dynamic property for User' == mrhaki.fullname
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

@@ -1,0 +1,46 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-6573390967307735892009-11-25T07:00:00.002+01:002010-11-26T11:15:13.013+01:00Groovy Goodness: Simple Evaluation of Groovy Expressions in Java<p>We can run Groovy code from Java code in several ways. A very simple and easy way is to use the <code>Eval</code> class. The <code>Eval</code> class has five methods to execute simple Groovy expressions with zero to three arguments. All methods are static and the Groovy expression must be a String.</p>
+<pre class="brush:java">
+package com.mrhaki.blog;
+
+import java.util.*;
+import groovy.util.Eval;
+import junit.framework.*;
+import static junit.framework.Assert.*;
+
+public class EvalGroovyTest extends TestCase {
+    public static void main(String[] args) {        
+        assertEquals(
+            "Invoke Eval.me() without arguments",
+            "Hello from Groovy", 
+            Eval.me("def language = 'Groovy'; \"Hello from $language\";").toString()
+        );
+        
+        final Map values = new HashMap();
+        values.put("name", "mrhaki");
+        values.put("lang", "Groovy");
+        String expression = "\"Hello $params.name from $params.lang\"";
+        assertEquals(
+            "Invoke Eval.me() with 2 arguments: first is name of object used by expression, second is object self",
+            "Hello mrhaki from Groovy",
+            Eval.me("params", values, expression).toString()
+        );
+            
+        assertTrue(
+            "Invoke Eval.x() where the passed arguments name is x in the expression",
+            (Boolean) Eval.x("mrhaki", "x.any { it =~ 'a' }")
+        );
+        
+        assertTrue(
+            "Invoke Eval.xy() where the passed arguments name is x and y in the expression",
+            (Boolean) Eval.xy("mrhaki", "h", "x.any { it =~ y }")
+        );
+        
+        expression = "x.\"$z\"() * y";  // Unreadable expression to return x with the method z applied y times.
+        assertEquals(
+            "Invoke Eval.xyz() where the passed arguments name is x, y and z in the expression",
+            "GROOVYGROOVY", 
+            Eval.xyz("groovy", 2, "toUpperCase", expression).toString()
+        );
+    }
+}
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com3

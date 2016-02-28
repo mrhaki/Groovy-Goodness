@@ -1,0 +1,36 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-82431699011952635732009-08-24T08:53:00.003+02:002015-04-07T06:30:58.833+02:00Groovy Goodness: the Switch Statement<p>The Java switch statement looks pale compared to Groovy's switch statement. In Groovy we can use different classifiers for a switch statement instead of only an int or int-derived type. Anything that implements the <code>isCase()</code> method can be used as a classifier. Groovy already added an <code>isCase()</code> method to <code>Class</code> (uses <code>isInstance</code>), <code>Object</code> (uses (<code>equals</code>), collections (uses <code>contains</code>) and regular expressions (uses <code>matches</code>). If we implement the <code>isCase</code> method in our own Groovy classes we can use it as a classifier as well. Finally we can use a closure as a classifier. The closure will be evaluated to a boolean value.</p><pre class="brush:groovy">def testSwitch(val) {
+    def result
+    switch (val) {
+        case ~/^Switch.*Groovy$/:
+            result = 'Pattern match'
+            break
+        case BigInteger:
+            result = 'Class isInstance'
+            break
+        case 60..90:
+            result = 'Range contains'
+            break
+        case [21, 'test', 9.12]:
+            result = 'List contains'
+            break
+        case 42.056:
+            result = 'Object equals'
+            break
+        case { it instanceof Integer && it < 50 }:
+            result = 'Closure boolean'
+            break
+        default:
+            result = 'Default'
+            break
+    }    
+    result
+}
+
+assert 'Pattern match' == testSwitch("Switch to Groovy")
+assert 'Class isInstance' == testSwitch(42G)
+assert 'Range contains' == testSwitch(70)
+assert 'List contains' == testSwitch('test')
+assert 'Object equals' == testSwitch(42.056)
+assert 'Closure boolean' == testSwitch(20)
+assert 'Default' == testSwitch('default')
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com6

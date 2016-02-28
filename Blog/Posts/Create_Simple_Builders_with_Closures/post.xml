@@ -1,0 +1,106 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-16759365025625245312011-11-17T21:12:00.000+01:002011-11-17T21:16:18.518+01:00Groovy Goodness: Create Simple Builders with Closures<p>In Groovy we can use pre-defined builders like the <code>JsonBuilder</code> or <code>MarkupBuilder</code> to create data or text structures. It is very easy to create our own builder simply with closures. A node in the builder is simply a method and we can use a closure as the argument of the method to create a new level in the builder hierarchy.</p><p>We can use pre-defined method names in our builder syntax, but can also use dynamic or unkown method names by implementing the <code>methodMissing</code> method. The same goes for properties we can implement with real property methods or by implementing the <code>propertyMissing</code> method.</p><p>In our example we create a new builder to create a <code>Reservation</code> object for a travel flight. In the builder we can define a list of passengers, the destination airport, the departing airport and if the flight is a two-way flight.</p><pre class="brush:groovy">// Builder syntax to create a reservation with passengers,
+// departing and destination airport and make it a 2-way flight.
+def reservation = new ReservationBuilder().make {
+    passengers {
+        name 'mrhaki'
+        name 'Hubert A. Klein Ikkink'
+    }
+    from 'Schiphol, Amsterdam'
+    to 'Kastrup, Copenhagen'
+    retourFlight
+}
+
+assert reservation.flight.from == new Airport(name: 'Schiphol', city: 'Amsterdam')
+assert reservation.flight.to == new Airport(name: 'Kastrup', city: 'Copenhagen')
+assert reservation.passengers.size() == 2
+assert reservation.passengers == [new Person(name: 'mrhaki'), new Person(name: 'Hubert A. Klein Ikkink')]
+assert reservation.retourFlight
+
+
+// ----------------------------------------------
+// Builder implementation and supporting classes.
+// ----------------------------------------------
+import groovy.transform.*
+
+@Canonical
+class Reservation {
+    Flight flight = new Flight()
+    List&lt;Person&gt; passengers = []
+    Boolean retourFlight = false
+}
+
+@Canonical
+class Person { String name }
+
+@Canonical
+class Airport { String name, city }
+
+@Canonical
+class Flight { Airport from, to }
+
+// The actual builder for reservations.
+class ReservationBuilder {
+    // Reservation to make and fill with property values.
+    Reservation reservation
+
+    private Boolean passengersMode = false
+
+    Reservation make(Closure definition) {
+        reservation = new Reservation()
+
+        runClosure definition
+
+        reservation
+    }
+
+    void passengers(Closure names) {
+        passengersMode = true
+
+        runClosure names
+
+        passengersMode = false
+    }
+
+    void name(String personName) {
+        if (passengersMode) {
+            reservation.passengers &lt;&lt; new Person(name: personName)
+        } else {
+            throw new IllegalStateException("name() only allowed in passengers context.")
+        }
+    }
+
+    def methodMissing(String name, arguments) {
+        // to and from method calls will set flight properties
+        // with Airport objects.
+        if (name in ['to', 'from']) {
+            def airport = arguments[0].split(',')
+            def airPortname = airport[0].trim()
+            def city = airport[1].trim()
+            reservation.flight."$name" = new Airport(name: airPortname, city: city)
+        }
+    }
+
+    def propertyMissing(String name) {
+        // Property access of retourFlight sets reservation
+        // property retourFlight to true.
+        if (name == 'retourFlight') {
+            reservation.retourFlight = true
+        }
+    }
+
+    private runClosure(Closure runClosure) {
+        // Create clone of closure for threading access.
+        Closure runClone = runClosure.clone()
+
+        // Set delegate of closure to this builder.
+        runClone.delegate = this
+
+        // And only use this builder as the closure delegate.
+        runClone.resolveStrategy = Closure.DELEGATE_ONLY
+
+        // Run closure code.
+        runClone()
+    }
+
+}
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

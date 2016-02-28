@@ -1,0 +1,82 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-77598671645415748882014-05-22T14:13:00.001+02:002014-05-22T14:13:49.805+02:00Groovy Goodness: Chaining Traits<p>Since Groovy 2.3 we can use traits in our code. We can even chain traits using the so called <a href="http://beta.groovy-lang.org/docs/groovy-2.3.1/html/documentation/core-traits.html#_chaining_behavior">stackable traits</a> feature. This means a trait can delegate to another trait or we can stop the delegation base based on a condition. Inside the method implementation of a trait we can use <code>super.<em>method</em></code> to delegate to the next trait (if available) in the chain. If we don't use <code>super.<em>method</em></code> the chain is stopped.</p><p>In the following sample code we want to transform a String input value to an output value. We implement the <code>transform</code> method from the <code>Transformer</code> interface using different traits. For example the <code>Upper</code> trait will make the input value upper cased and invokes <code>super.transform</code> to delegate to the next trait. Then we write new classes that implement the traits. The order of the traits determines the chain. The last declared trait is invoked first then the traits defined from right to left are invoked.</p><pre class="brush:groovy">/** 
+ * Simple interface with one method to 
+ * transform a String value.
+ */
+interface Transformer {
+    String transform(String input)
+}
+
+/** Default trait will return the input value unchanged. */
+trait DefaultTransformer implements Transformer {
+    String transform(String input) {
+        input
+    }
+}
+
+/** Transform the String value to upper case */
+trait Upper implements Transformer {
+    String transform(String input) {
+        super.transform(input.toUpperCase())
+    }
+}
+
+/** Remove 'mr' from input String value. */
+trait Filter implements Transformer {
+    String transform(String input) {
+        super.transform(input - 'mr')
+    }
+}
+
+/**
+ * Simple class uses three traits. The value property get method
+ * returns the transformed value.
+ */
+class StringTransformer implements DefaultTransformer, Upper, Filter {
+    String value
+    String getValue() { transform(value) }
+}
+
+// Create StringTransformer instance.
+def transformer = new StringTransformer(value: 'mrhaki')
+
+assert transformer.value == 'HAKI' 
+
+
+// Use same traits, but in different order.
+class OtherStringTransformer implements DefaultTransformer, Filter, Upper {
+    String value
+    String getValue() { transform(value) }
+}
+
+// Create OtherStringTransformer instance.
+def otherTransformer = new OtherStringTransformer(value: 'mrhaki')
+
+// The Filter trait cannot find 'mr', 
+// because the String value is already in
+// upper case after the Upper trait.
+assert otherTransformer.value == 'MRHAKI'
+
+
+/** Only chain input values smaller than 5 characters. */
+trait SmallFilter implements Transformer {
+    String transform(String input) {
+        if (input.size() < 5) {
+            super.transform(input)
+        } else {
+            ''
+        }
+    }
+}
+
+class SmallStringTransformer implements DefaultTransformer, Upper, SmallFilter {
+    String value
+    String getValue() { transform(value) }
+}
+
+def smallTransformer = new SmallStringTransformer(value: 'mrhaki')
+assert smallTransformer.value == ''
+
+smallTransformer.value = 'haki'
+assert smallTransformer.value == 'HAKI'
+</pre>
+<p>Code written with Groovy 2.3.1.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

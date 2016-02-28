@@ -1,0 +1,31 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-63144389126470119892011-04-27T16:58:00.000+02:002011-04-27T16:49:50.811+02:00Groovy Goodness: Build JSON with JsonBuilder and Pretty Print JSON Text<p>Groovy 1.8 adds JSON support. We can build a JSON data structure with the <code>JsonBuilder</code> class. This class functions just like other builder classes. We define a hiearchy with values and this is converted to JSON output when we view the String value. We notice the syntax is the same as for a <code>MarkupBuilder</code>.</p>
+<pre class="brush:groovy">
+import groovy.json.*
+
+def json = new JsonBuilder()
+
+json.message {
+    header {
+        from('mrhaki')  // parenthesis are optional
+        to 'Groovy Users', 'Java Users'
+    }
+    body "Check out Groovy's gr8 JSON support."
+}
+
+assert json.toString() == '{"message":{"header":{"from":"mrhaki","to":["Groovy Users","Java Users"]},"body":"Check out Groovy\'s gr8 JSON support."}}'
+
+// We can even pretty print the JSON output
+def prettyJson = JsonOutput.prettyPrint(json.toString())
+assert prettyJson == '''{
+    "message": {
+        "header": {
+            "from": "mrhaki",
+            "to": [
+                "Groovy Users",
+                "Java Users"
+            ]
+        },
+        "body": "Check out Groovy's gr8 JSON support."
+    }
+}'''
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

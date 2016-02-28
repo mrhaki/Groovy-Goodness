@@ -1,0 +1,14 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-63765672813677761582009-12-22T07:30:00.000+01:002010-11-26T11:15:12.945+01:00Groovy Goodness: Implementing MetaClass Methods with Same Name but Different Arguments<p>Using the <code>metaClass</code> property of a class we can add new methods or override existing methods of the class. If we want to add a new methods that have the same name, but different arguments, we can use a shortcut notation. Groovy allows us to chain multiple <code>leftShift()</code> (<code>&lt;&lt;</code>) methods together.</p>
+<pre class="brush:groovy">
+String.metaClass.groovy &lt;&lt; { Integer number -&gt;
+    delegate * number
+} &lt;&lt; { String s -&gt;
+    delegate + s
+} &lt;&lt; { -&gt;
+    delegate + ' Groovy rocks.'
+}
+
+assert 'GroovyGroovy' == 'Groovy'.groovy(2)
+assert 'Hello world from Groovy' == 'Hello world'.groovy(' from Groovy')
+assert 'It is true. Groovy rocks.' == 'It is true.'.groovy()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

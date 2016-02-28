@@ -1,0 +1,34 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-69905758559855587462009-10-27T07:00:00.002+01:002010-11-26T11:15:13.133+01:00Groovy Goodness: Getting and Setting Properties<p>In Groovy we can set values for properties with a simple assignment using the <code>=</code> operator. Groovy will invoke the <code>set</code> for us. At first sight we might think Groovy sets the variable in the class directly, but that is not true, because the <code>set</code> method is invoked. To get the value of a property we can use dot (<code>.</code>) notation instead of the <code>get</code> method.</p><p>Let's see this in action in code. We first create a simple JavaBean in Java code and then we set and get the property in different ways.</p>
+<pre class="brush:java">
+// Simple Java Bean.
+public class Simple {
+    private String text;
+    
+    public Simple() { 
+        super(); 
+    }
+
+    public String getMessage() { 
+        return "GET " + text; 
+    }
+
+    public void setMessage(final String text) {
+        this.text = "SET " + text
+    }
+}
+</pre>
+<p>Now some Groovy code to get and set values for the text property.</p>
+<pre class="brush:groovy">
+def s1 = new Simple()
+s1.setMessage('Old style')
+assert 'GET SET Old style' == s1.getMessage()
+s1.setMessage 'A bit more Groovy'  // No parenthesis.
+assert 'GET SET A bit more Groovy' == s1.getMessage()
+
+def s2 = new Simple(message: 'Groovy constructor')  // Named parameter in constructor.
+assert 'GET SET Groovy constructor' == s1.getMessage()
+
+def s3 = new Simple()
+s3.message = 'Groovy style'  // = assigment for property.
+assert 'GET SET Groovy style' == s3.message  // get value with . notation.
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com3

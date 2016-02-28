@@ -1,0 +1,11 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-25966035873972858392009-12-19T09:35:00.001+01:002010-11-26T11:15:12.951+01:00Groovy Goodness: Get Properties from ReleaseInfo<p>We can use the <a href="http://groovy.codehaus.org/api/org/codehaus/groovy/util/ReleaseInfo.html"><code>ReleaseInfo</code></a> class to get the Groovy version we are running our application in.</p>
+<pre class="brush:groovy">
+// We run this code with Groovy 1.6.7, see assertions.
+import org.codehaus.groovy.util.ReleaseInfo
+
+assert '1.6.7' == ReleaseInfo.version
+assert '1.6.7' == ReleaseInfo['ImplementationVersion']
+assert '12:40 PM' == ReleaseInfo.get('BuildTime')
+assert '1.6.7' == ReleaseInfo.get('BundleVersion')
+assert '02-Dez-2009' == ReleaseInfo['BuildDate']
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

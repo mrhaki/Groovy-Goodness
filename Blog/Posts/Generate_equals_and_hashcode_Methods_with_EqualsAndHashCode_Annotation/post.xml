@@ -1,0 +1,27 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-34189750243229422872011-04-27T20:13:00.002+02:002011-04-27T20:13:00.053+02:00Groovy Goodness: Generate equals and hashcode Methods with EqualsAndHashCode Annotation<p>There are a lot of new bytecode generation annotation in Groovy 1.8. One of them is the <code>@EqualsAndHashCode</code> annotation. With this annotation an <code>equals()</code> and <code>hashCode()</code> method is generated for a class. The <code>hashCode()</code> method is implemented using Groovy's <code>org.codehaus.groovy.util.HashCodeHelper</code> (following an algorithm from the book <em>Effective Java</em>). The <code>equals()</code> method looks at all the single properties of a class to see of both objects are the same.</p>
+<p>We can even include class fields instead of only properties for generating both methods. We only have to use <code>includeFields=true</code> when we assign the annotation.</p>
+<p>To include calls to a super class we use the annotation attribute <code>callSuper</code> and assign the value <code>true</code>. Finally we can also exclude properties or fields from hashcode calculation or equal comparisons. We use the annotation attribute <code>excludes</code> for this and we can assign a list of property and field names.</p>
+<pre class="brush:groovy">
+import groovy.transform.EqualsAndHashCode
+
+@EqualsAndHashCode(includeFields=true)
+class User {
+    String name
+    boolean active
+    List likes
+    private int age = 37
+}
+
+def user = new User(name: 'mrhaki', active: false, likes: ['Groovy', 'Java'])
+def mrhaki = new User(name: 'mrhaki', likes: ['Groovy', 'Java'])
+def hubert = new User(name: 'Hubert Klein Ikkink', likes: ['Groovy', 'Java'])
+
+assert user == mrhaki
+assert mrhaki != hubert
+
+Set users = new HashSet()
+users.add user
+users.add mrhaki
+users.add hubert
+assert users.size() == 2
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

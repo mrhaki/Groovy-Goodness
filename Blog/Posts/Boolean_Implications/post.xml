@@ -1,0 +1,13 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-82849117484258071382012-09-25T14:04:00.000+02:002012-09-25T17:05:14.761+02:00Groovy Goodness: Boolean Implications<div><p>Since Groovy 1.8.3 we can use the <code>implies()</code> method on <code>Boolean</code> types. The <code>implies()</code> method implements a logical implication. This means that if we have two <code>Boolean</code> variables A and B, that if <em>A is <code>true</code>, then B is <code>true</code></em>. So if A is <code>true</code> then it is implied B is <code>true</code> as well. If A is <code>false</code> then B can be either <code>true</code> or <code>false</code>. We could rewrite the implication as <code>!A or B</code>.</p><pre class="brush:groovy">def a = true
+def b = true
+
+assert a.implies(b)
+assert !(a.implies(false))
+
+assert a.implies(b) == ((!a).or(b))
+
+assert true.implies(true)
+assert false.implies(true)
+assert false.implies(false)
+assert !true.implies(false)
+</pre><p><em>(Code written with Groovy 2.0.4)</em></p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com3

@@ -1,0 +1,45 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-41973587786249866062009-10-26T07:00:00.002+01:002010-11-26T11:15:13.135+01:00Groovy Goodness: Groovy SQL DataSet<p>In a <a href="http://mrhaki.blogspot.com/2009/10/groovy-goodness-groovy-sql.html">previous post</a> we learned about the basic Groovy SQL support. In this post we learn about the DataSet class. A DataSet is an abstraction on top of a table that we can use to add data to the table and to retrieve data from the table. The DataSet contains some nice magic to build queries, but there is an important issue when we use this: our Groovy script with the code must be in our classpath or the script must be run as a Groovy script (so not pre-compiled). If we don't add the script to our classpath we get the following exception: <code>GroovyRuntimeException: Could not find the ClassNode for MetaClass...</code>.</p><p>In the following code snippet we are accessing a MySQL database with the name <em>groovy</em>. Both username and password for the database are <em>groovy</em> and MySQL is running on localhost and port 3306 (is default port).</p>
+<pre class="brush:groovy">
+import groovy.sql.*
+
+// Create connection to MySQL with classic JDBC DriverManager.
+def db = Sql.newInstance("jdbc:mysql://localhost/groovy", 'groovy', 'groovy', 'com.mysql.jdbc.Driver')
+
+// Create a new table
+db.execute 'drop table if exists languages'
+db.execute '''
+    create table languages(
+        id integer not null auto_increment,
+        name varchar(20) not null,
+        primary key(id)
+    )
+'''
+
+// Create a DataSet.
+def languageSet = db.dataSet("languages")
+languageSet.add(id: null, name: 'Groovy')
+languageSet.add(name: 'Java')  // If we don't add the id column the value null is used.
+languageSet.add(name: 'JRuby')
+languageSet.add(name: 'Scala')
+
+// Get data with each method.
+def result = []
+languageSet.each {
+    result &lt;&lt; it.name
+}
+assert 4 == result.size()
+assert ['Groovy', 'Java', 'JRuby', 'Scala'] == result
+
+// Use findAll and sort to define a query condition.
+def firstItems = languageSet.findAll { it.id &lt; 3 }.sort { it.name }
+// No database acccess yet, only the query is constructed.
+// We can see the query with sql property and parameters with parameters property.
+assert 'select * from languages where id &gt; ? order by name' == firstItems.sql
+assert [3] == firstItems.parameters
+
+// We call each to really access the database.
+firstItems.findAll { it.name == 'Groovy' }.each { row -&gt;
+    assert 1 == row.id
+    assert 'Groovy' == row.name
+}
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

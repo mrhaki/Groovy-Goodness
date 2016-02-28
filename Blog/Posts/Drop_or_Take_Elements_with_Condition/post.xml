@@ -1,0 +1,17 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-74310248188686002402012-10-02T05:00:00.000+02:002012-10-02T05:00:06.536+02:00Groovy Goodness: Drop or Take Elements with Condition<p>In Groovy we can use the <a href="http://mrhaki.blogspot.com/2011/09/groovy-goodness-take-and-drop-items.html"><code>drop()</code> and <code>take()</code> methods</a> to get elements from a collection or <code>String</code> object. Since Groovy 1.8.7 we also can use the <code>dropWhile()</code> and <code>takeWhile()</code> methods and use a closure to define a condition to stop dropping or taking elements. With the <code>dropWhile()</code> method we drop elements or characters until the condition in the closure is <code>true</code>. And the <code>takeWhile()</code> method returns elements from a collection or characters from a <code>String</code> until the condition of the closure is <code>true</code>.</p><p>In the following example we see how we can use the methods:</p><pre class="brush:groovy">def s = "Groovy Rocks!"
+
+assert s.takeWhile { it != 'R' } == 'Groovy '
+assert s.dropWhile { it != 'R' } == 'Rocks!'
+
+
+def list = 0..10
+
+assert 0..4 == list.takeWhile { it &lt; 5 }
+assert 5..10 == list.dropWhile { it &lt; 5 }
+
+
+def m = [name: 'mrhaki', loves: 'Groovy', worksAt: 'JDriven']
+
+assert [name: 'mrhaki'] == m.takeWhile { key, value -&gt; key.length() == 4 }
+assert [loves: 'Groovy', worksAt: 'JDriven'] == m.dropWhile { it.key == 'name' }
+</pre><p><em>(Code is written with Groovy 2.0.4)</em></p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

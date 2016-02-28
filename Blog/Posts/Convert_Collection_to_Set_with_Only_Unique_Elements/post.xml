@@ -1,0 +1,8 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-18402099380206454142011-04-27T20:52:00.000+02:002011-04-27T20:52:00.139+02:00Groovy Goodness: Convert Collection to Set with Only Unique Elements<p>Since Groovy 1.8 we can convert an array or collection to a Set with only the unique elements of the original array or collection. We use the <code>toSet()</code> method to do this.</p>
+<pre class="brush:groovy">
+def numbers = [1,2,1,4,1,2] as int[]
+assert numbers.toSet() == [1,2,4] as Set
+
+def list = ['Groovy', 'Java', 'Grails', 'Groovy']
+assert list.toSet() == ['Groovy', 'Java', 'Grails'] as Set
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

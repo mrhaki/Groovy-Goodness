@@ -1,0 +1,14 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-38296131192817812372009-09-12T07:00:00.003+02:002010-11-26T11:15:13.245+01:00Groovy Goodness: Parameters with Default Values<p>In Groovy we can assign default values to parameters in a method. If we define a default value for a parameter Groovy basically supports two method signatures: one with all parameters and one where the parameter with a default value is omitted. If we use multiple parameters with default values then the right most parameter with a default value is first eliminated then the next and so on.</p>
+<pre class="brush:groovy">
+def say(msg = 'Hello', name = 'world') {
+    "$msg $name!"
+}
+
+// We can invoke 3 signatures:
+// say(), say(msg), say(msg, name)
+assert 'Hello world!' == say()
+// Right most parameter with default value is eliminated first.
+assert 'Hi world!' == say('Hi')
+assert 'Howdy, mrhaki!' == say('Howdy,', 'mrhaki')
+</pre>
+<p>Run this script in <a href="http://groovyconsole.appspot.com/?id=11016">GroovyConsole</a>.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com3

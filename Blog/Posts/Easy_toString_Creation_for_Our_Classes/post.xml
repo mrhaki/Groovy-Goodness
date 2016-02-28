@@ -1,0 +1,85 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-13251687851529165502011-04-27T18:10:00.000+02:002011-04-27T18:10:00.809+02:00Groovy Goodness: Easy toString Creation for Our Classes<p>Since Groovy 1.8 we can use the <code>@ToString</code> annotation for easy creation of a <code>toString()</code> method. We only have to add the annotation to our class definition and we get a nicely formatted output of the properties of our class.</p>
+<p>We can even customize what we want to see in the output. We can see the names of the properties of our class in the <code>toString()</code> output if we add the attribute <code>includeNames=true</code>. By default only properties are added to the output, but we can include fields as well with the annotation attribute <code>includeFields=true</code>.
+To exclude properties we use the attribute <code>excludes</code> and assign the names of the properties we don't want in the output separated by a comma.</p>
+<p>Finally we can include properties from a super class with the annotation atribute <code>includeSuper=true</code>.</p>
+<p>Let's see the <code>@ToString</code> in action with a few samples:</p>
+<pre class="brush:groovy">
+// Most simple implementation of toString.
+import groovy.transform.ToString
+
+@ToString
+class Person {
+    String name
+    List likes
+    private boolean active = false
+}
+
+def person = new Person(name: 'mrhaki', likes: ['Groovy', 'Java'])
+
+assert person.toString() == 'Person(mrhaki, [Groovy, Java])'
+</pre>
+<pre class="brush:groovy">
+// includeNames to output the names of the properties.
+import groovy.transform.ToString
+
+@ToString(includeNames=true)
+class Person {
+    String name
+    List likes
+    private boolean active = false
+}
+
+def person = new Person(name: 'mrhaki', likes: ['Groovy', 'Java'])
+
+assert person.toString() == 'Person(name:mrhaki, likes:[Groovy, Java])'
+</pre>
+<pre class="brush:groovy">
+// includeFields to not only output properties, but also field values.
+import groovy.transform.ToString
+
+@ToString(includeNames=true, includeFields=true)
+class Person {
+    String name
+    List likes
+    private boolean active = false
+}
+
+def person = new Person(name: 'mrhaki', likes: ['Groovy', 'Java'])
+
+assert person.toString() == 'Person(name:mrhaki, likes:[Groovy, Java], active:false)'
+</pre>
+<pre class="brush:groovy">
+// Use includeSuper to include properties from super class in output.
+import groovy.transform.ToString
+
+@ToString(includeNames=true)
+class Person {
+    String name
+    List likes
+    private boolean active = false
+}
+
+@ToString(includeSuper=true, includeNames=true)
+class Student extends Person {
+    List courses
+}
+
+def student = new Student(name: 'mrhaki', likes: ['Groovy', 'Java'], courses: ['IT', 'Business'])
+
+assert student.toString() == 'Student(courses:[IT, Business], super:Person(name:mrhaki, likes:[Groovy, Java]))'
+</pre>
+<pre class="brush:groovy">
+// excludes active field and likes property from output
+import groovy.transform.ToString
+
+@ToString(includeNames=true, includeFields=true, excludes='active,likes')
+class Person {
+    String name
+    List likes
+    private boolean active = false
+}
+
+def person = new Person(name: 'mrhaki', likes: ['Groovy', 'Java'])
+
+assert person.toString() == 'Person(name:mrhaki)'
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

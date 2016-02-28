@@ -1,0 +1,45 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-5378114975504226262015-03-23T06:20:00.000+01:002015-03-23T06:20:00.061+01:00Groovy Goodness: Combine Elements Iterable with Index<p>Since Groovy 2.4.0 we can get <a href="http://mrhaki.blogspot.com/2015/01/groovy-goodness-getting-indices-of.html">the indices from the elements</a> in a collection with the <code>indices</code> method. In addition to this method we can also use the <code>withIndex</code> to combine an <code>Iterable</code> with the indices directly. The output is a <code>List</code> of tuples where the first item is the value of the <code>Iterable</code> and the second the index value. We can pass an optional argument to the <code>withIndex</code> which is the starting point for the index values.<br />Another alternative is the <code>indexed</code> method. The <code>indexed</code> method returns a <code>Map</code>, where the key of the entry is the index value and the entry value is the <code>Iterable</code> value.</p><p>In the following example we use the <code>withIndex</code> method. The sample of the alphabet is the same as in the <a href="http://mrhaki.blogspot.com/2015/01/groovy-goodness-getting-indices-of.html">blog post about indices</a>, but rewritten with the <code>withIndex</code> method:</p><pre class="brush:groovy">def list = [3, 20, 10, 2, 1]
+assert list.withIndex() == [[3, 0], [20, 1], [10, 2], [2, 3], [1, 4]]
+
+
+def alphabet = 'a'..'z'
+
+// Combine letters in alphabet
+// with position and start at 1.
+def alphabetIndices = alphabet.withIndex(1)
+
+// alphabetIndices = [['a', 1], ['b', 2], ...]
+assert alphabetIndices[0..2] == [['a', 1], ['b', 2], ['c', 3]]
+
+// Find position of each letter
+// from 'groovy' in alphabet.
+def positionInAlphabet = 'groovy'.inject([]) { result, value ->
+    result << alphabetIndices.find { it[0] == value }[1]
+    result
+}
+
+assert positionInAlphabet == [7, 18, 15, 15, 22, 25]
+</pre>
+<p>In the next example we use the <code>indexed</code> method:</p><pre class="brush:groovy">def list = [3, 20, 10, 2, 1]
+assert list.indexed() == [0: 3, 1: 20, 2: 10, 3: 2, 4: 1]
+
+
+def alphabet = 'a'..'z'
+
+// Combine letters in alphabet
+// with position and start at 1.
+def alphabetIndices = alphabet.indexed(1)
+
+// alphabetIndices = [1: 'a', 2: 'b', ...]
+assert alphabetIndices.findAll { key, value -> key < 4} == [1: 'a', 2: 'b', 3: 'c']
+
+// Find position of each letter
+// from 'groovy' in alphabet.
+def positionInAlphabet = 'groovy'.inject([]) { result, value ->
+    result << alphabetIndices.find { it.value == value }.key
+    result
+}
+
+assert positionInAlphabet == [7, 18, 15, 15, 22, 25]
+</pre>
+<p>Written with Groovy 2.4.1.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

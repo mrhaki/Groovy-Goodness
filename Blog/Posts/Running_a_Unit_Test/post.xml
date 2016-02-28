@@ -1,0 +1,11 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-10575242173818710432009-11-19T07:10:00.001+01:002011-11-07T10:55:58.361+01:00Groovy Goodness: Running a Unit Test<p>If we create a unit test class extending <code>GroovyTestCase</code> we can run the test with the <code>groovy</code> command. This is a very easy way to execute a test.</p><pre class="brush:groovy">class SimpleTest extends GroovyTestCase {
+    void testGroovy() {
+        assertEquals 'Run with groovy', 10, 5 + 5
+    }
+}
+</pre><p>We can run this test with the following command:</p><pre class="brush:shell;light:true">$ groovy SimpleTest.groovy
+.
+Time: 0.125
+
+OK (1 test)
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

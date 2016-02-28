@@ -1,0 +1,10 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-68775743362020766192009-12-25T07:00:00.002+01:002010-11-26T11:15:12.938+01:00Groovy Goodness: Getting All Subsequences of a List<p>With Groovy 1.7 we can retrieve all subsequences from a collection with the <code>subsequences()</code> method. All possible subsequences of the elements in the list are returned.</p>
+<pre class="brush:groovy">
+def languages = ['Groovy', 'Clojure', 'Scala']
+
+def sequences = languages.subsequences()
+
+assert [['Clojure'], ['Scala'], ['Groovy']] == sequences.findAll { it.size() == 1 } as List
+assert [['Clojure', 'Scala'], ['Groovy', 'Scala'], ['Groovy', 'Clojure']] == sequences.findAll { it.size() == 2 } as List
+assert [['Groovy', 'Clojure', 'Scala']] == sequences.findAll { it.size() == 3}.toList()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

@@ -1,0 +1,23 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-85229171395703485932009-10-28T07:00:00.001+01:002010-11-26T11:15:13.130+01:00Groovy Goodness: Immutable Collections<p>Groovy adds the method <code>asImmutable()</code> to the <code>Collection</code> interface. With this method we can convert a list or map to an immutable one. We can read data from the immutable list or map, but we cannot add, change or remove elements from the list or map. This is a good way to insure our list or map is read only in for example a threading and concurrency context.</p>
+<pre class="brush:groovy">
+def list = ['Groovy', 'Java', 'JRuby'].asImmutable()
+assert 'Groovy' == list[0]
+try {
+    list &lt;&lt; 'Scala'  // Cannot add item.
+} catch (e) {
+    assert e instanceof UnsupportedOperationException
+}
+try {
+    list.remove 'Java'  // Cannot remove item.
+} catch (e) {
+    assert e instanceof UnsupportedOperationException
+}
+
+def map = [name: 'mrhaki', country: 'The Netherlands', blog: true].asImmutable()
+assert map.blog
+try {
+    map.blog = false  // Cannot change item.
+} catch (e) {
+    assert e instanceof UnsupportedOperationException
+}
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

@@ -1,0 +1,23 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-24281837160222755192009-11-07T07:00:00.001+01:002010-11-26T11:15:13.106+01:00Groovy Goodness: Complex Keys in Maps<p>In Groovy we can use non-string keys for maps. We only have to place parenthesis around the key to make it work. This way we can use variables and types like Date and Boolean as keys for our map. When we use parenthesis around the key when using the . notation the key is converted to a String, otherwise the key is not converted and keeps it type.</p>
+<pre class="brush:groovy">
+def key = 100  // Variable to be used a key.
+
+def m = [
+    (new Date(109, 11, 1)): 'date key', 
+    (-42): 'negative number key', 
+    (false): 'boolean key',
+    (key): 'variable key'
+]
+m.(true) = 'boolean key'  // Key is converted to String.
+m.(2 + 2) = 'number key'
+m[(key + 1)] = 'number key'  // Key keeps to be Integer.
+
+assert 'date key' == m[new Date(109, 11, 1)]
+assert 'negative number key' == m.get(-42)
+assert 'boolean key' == m[(false)]
+assert 'variable key' == m[100]
+assert 'variable key' == m.getAt(key)
+assert 'boolean key' == m['true']  // Key is String so we can use it to get the value.
+assert 'number key' == m.'4'
+assert 'number key' == m.get(101)
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

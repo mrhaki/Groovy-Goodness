@@ -1,0 +1,18 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-26817931002143367112010-08-24T11:27:00.001+02:002010-08-24T11:31:34.878+02:00Groovy Goodness: Process Map Entries in Reverse<p>Since Groovy 1.7.2 we can loop through a <code>Map</code> in reverse with the <code>reverseEach()</code>. The order in which the content is processed is not guaranteed with a <code>Map</code>. If we use a <code>TreeMap</code> the natural ordering of the keys of the map is used.</p>
+<pre class="brush:groovy">
+def reversed = [:]
+[a: 1, c: 3, b: 2].reverseEach { key, value ->
+    reversed[key] = value ** 2
+}
+
+assert [b: 4, c: 9, a: 1] == reversed
+
+// TreeMap uses natural ordering of keys, so 
+// reverseEach starts with key 'c'.
+def tree = [a: 10, c: 30, b: 20] as TreeMap
+def reversedMap = [:]
+tree.reverseEach {
+    reversedMap[it.key] = it.value * 2
+}
+assert [c: 60, b: 40, a: 20] == reversedMap
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

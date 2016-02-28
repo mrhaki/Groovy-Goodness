@@ -1,0 +1,39 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-74059722583935593342009-11-20T07:00:00.004+01:002010-11-26T11:15:13.029+01:00Groovy Goodness: Add Methods Dynamically to Classes with ExpandoMetaClass<p>We can add new behaviour, like methods, to classes in Groovy dynamically. So this means a method is not added to the class definition in the source code, but to the class definition while an application is already running. Groovy adds a <code>metaClass</code> property to all classes for this purpose. The type of this property is <code>ExpandoMetaClass</code>. We can assign methods (also static), properties, constructors to the <code>metaClass</code> property and the defined behaviour is added dynamically to the class definition. After we have added our behaviour we can create a new instance of the class and invoke the methods, constructors and access the properties just like we are used to do.</p>
+<pre class="brush:groovy">
+// We add the method rightShift to the List class. 
+// The implementation is simply calling the remove method of List with
+// the provided argument.
+List.metaClass.rightShift {
+    delegate.remove it
+}
+
+def list = ['one', 'two', 'three', 'four']
+assert 4 == list.size()
+
+list.rightShift 'two'
+assert 3 == list.size()
+assert ['one', 'three', 'four'] == list
+
+// Operator overloading in action: rightShift is &gt;&gt;
+list &gt;&gt; 'one'
+assert 2 == list.size()
+assert ['three', 'four'] == list
+
+
+// We can also add behaviour to a specific instance instead of class.
+// Notice we use the instance list instead of class List to assign 
+// method groovy to metaClass property.
+list.metaClass.groovy {
+    delegate.collect { it + ' groovy' }
+}
+
+assert ['three groovy', 'four groovy'] == list.groovy()
+
+def newList = ['a', 'b']
+try {
+    newList.groovy()  // groovy method was added to list instance not List class.
+    assert false
+} catch (e) {
+    assert e instanceof MissingMethodException
+}
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

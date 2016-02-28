@@ -1,0 +1,26 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-54907054180849094232011-05-31T12:22:00.000+02:002011-05-31T12:22:59.857+02:00Groovy Goodness: Transforming Reader Input to Writer Output<p>With Groovy we can immediately transform the input from a <code>Reader</code> object(like a file, URL or other input type) to a <code>Writer</code> object (like a file, URL or other output type). Groovy adds the <code>transformLine(Writer, Closure)</code> and <code>transformChar(Writer, Closure)</code> methods to the <code>Reader</code> class. We need to pass the <code>Writer</code> object that will contain the transformed output as the first argument. The second argument is a closure with the rules for the transformation that needs to be applied.</p>
+<pre class="brush:groovy">
+def reader = new StringReader('''\
+Groovy's support
+for transforming reader input to writer output.
+''')
+
+def writer = new StringWriter()
+
+reader.transformLine(writer) { line -&gt;  
+    if (line.matches(~/^Groovy.*/)) {
+        line = '&gt;&gt;' + line.replaceAll('Groovy', 'GROOVY') + '&lt;&lt; '
+    }
+    line
+}
+
+def resultTransformLine = writer.toString()
+
+reader = new StringReader(resultTransformLine)
+writer = new StringWriter()
+reader.transformChar(writer) { ch -&gt;
+    ch in ['\n', '\r'] ? '' : ch
+}
+
+assert writer.toString() == "&gt;&gt;GROOVY's support&lt;&lt; for transforming reader input to writer output."
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

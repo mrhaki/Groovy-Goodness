@@ -1,0 +1,26 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-42257212781809427182009-08-30T11:13:00.008+02:002010-11-26T11:15:13.275+01:00Groovy Goodness: The Spread-Dot Operator<p>Groovy adds some nice operators to the language to write brief code. We already learned about the <a href="http://mrhaki.blogspot.com/2009/08/groovy-goodness-elvis-operator.html">Elvis operator</a> and the <a href="http://mrhaki.blogspot.com/2009/08/groovy-goodness-spaceship-operator.html">Spaceship operator</a>. And now we see what the spread-dot operator is about and what it does.</p>
+<p>The spread-dot operator (<code>*.</code>) is used to invoke a method on all members of a <code>Collection</code> object. The result of using the spread-dot operator is another <code>Collection</code> object. Here is some sample code:</p>
+<pre class="brush:groovy">
+class Language {
+    String lang
+    def speak() { "$lang speaks." }
+}
+
+// Create a list with 3 objects. Each object has a lang 
+// property and a speak() method. 
+def list = [     
+    new Language(lang: 'Groovy'),     
+    new Language(lang: 'Java'),     
+    new Language(lang: 'Scala') 
+]  
+
+// Use the spread-dot operator to invoke the speak() method. 
+assert ['Groovy speaks.', 'Java speaks.', 'Scala speaks.'] == list*.speak() 
+assert ['Groovy speaks.', 'Java speaks.', 'Scala speaks.'] == list.collect{ it.speak() }  
+
+// We can also use the spread-dot operator to access 
+// properties, but we don't need to, because Groovy allows 
+// direct property access on list members. 
+assert ['Groovy', 'Java', 'Scala'] == list*.lang 
+assert ['Groovy', 'Java', 'Scala'] == list.lang
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com3

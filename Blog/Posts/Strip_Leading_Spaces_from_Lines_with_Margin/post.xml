@@ -1,0 +1,22 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-11750084606835449682010-06-20T23:00:00.004+02:002010-11-26T11:15:12.791+01:00Groovy Goodness: Strip Leading Spaces from Lines with Margin<p>Since Groovy 1.7.3 we can use the <code>stripMargin()</code> method to strip characters up to and including a margin character from multiline strings. The default character is the pipe symbol (|), but we can pass a parameter to the method and use a custom character.</p>
+<pre class="brush:groovy">
+def s = '''\
+        |Groovy
+        |Grails
+        |Griffon'''
+        
+assert '''\
+Groovy
+Grails
+Griffon''' == s.stripMargin()
+
+def s1 = '''\
+   * Gradle
+   * GPars
+   * Spock''' 
+   
+assert '''\
+ Gradle
+ GPars
+ Spock''' == s1.stripMargin("* ")
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

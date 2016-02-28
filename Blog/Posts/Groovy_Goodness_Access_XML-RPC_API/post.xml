@@ -1,0 +1,34 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-79634970679314507802015-02-19T07:18:00.000+01:002015-02-19T07:18:48.120+01:00Groovy  Goodness: Access XML-RPC API<p>Recently I had to access the XML-RPC WordPress API for a small project. Luckily with Groovy we can access a XML-RPC server in a Groovy way. We need to use the Groovy XML-RPC module, which is a separate dependency. The module provides code to write a XML-RPC server, but also code to access a XML-RPC server as client. We use the class <code>XMLRPCServerProxy</code> in the package <code>groovy.net.xmlrpc</code> to act as a client to a XML-RPC API. The <code>XMLRPCServerProxy</code> class only needs to know the URL to access the API. All API methods are dynamically dispatched to the server, so it is very flexible.</p><p>In the following Groovy script we use the WordPress XML-RPC API to access posts:</p><pre class="brush:groovy">@Grab('org.codehaus.groovy:groovy-xmlrpc:0.8')
+import groovy.net.xmlrpc.*
+
+// Use correct blog identifier.
+def blogId = 0 
+
+// Use correct URL for XML-RPC API.
+def blogUrl = 'http://blog/xmlrpc' 
+
+def blogUsername = 'mrhaki'
+def blogPassword = 'secret'
+
+// Create client access for XML-RPC API.
+// The second parameter is set to true
+// to autodetect encoding. Default encoding
+// is ISO-8859-1.
+def wordPress = new XMLRPCServerProxy(blogUrl, true)
+
+// Now we can access the API methods from WordPress.
+// Notice the API method wp.getPosts is dynamically
+// available from the XMLRPCServerProxy instance.
+def latestFivePost = 
+    wordPress
+        ."wp.getPosts"(
+             blogId,
+             blogUsername,
+             blogPassword,       
+             [number: 5, post_type: 'post'],
+             ['post_id', 'post_title'])
+
+latestFivePosts.each { post ->
+    println "Blog post (#${post.post_id}): ${post.post_title}"
+}
+</pre><p>Written with Groovy 2.4.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

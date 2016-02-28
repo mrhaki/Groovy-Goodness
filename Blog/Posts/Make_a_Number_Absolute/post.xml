@@ -1,0 +1,5 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-34361969269384114822010-01-05T22:50:00.002+01:002010-11-26T11:15:12.906+01:00Groovy Goodness: Make a Number Absolute<p>In Groovy we can make a number absolute with the <code>abs()</code> method. This method is added to the <code>Number</code> class by Groovy.</p>
+<pre class="brush:groovy">
+assert 42 == (-42).abs()
+assert 43.21 == (-43.21).abs()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

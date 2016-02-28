@@ -1,0 +1,14 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-40042795734041773972011-10-20T06:37:00.000+02:002011-10-20T06:37:46.152+02:00Groovy Goodness: Format Dates with TimeZone<p>Since Groovy 1.8.3 we can use an extra <code>TimeZone</code> parameter with the <code>format()</code> method of the <code>Date</code> class. This can be used to print a date/time for a particular timezone.</p><pre class="brush:groovy">import static java.util.Calendar.*
+
+def timeZone = TimeZone.getTimeZone('Europe/Amsterdam')
+def otherTimeZone = TimeZone.getTimeZone('Australia/Canberra')
+
+def cal = Calendar.instance
+cal.set(year: 2011, month: OCTOBER, date: 20, hourOfDay: 12, minute: 30)
+
+def date = cal.time
+def dateFormat = 'yyyy/MM/dd HH:mm'
+
+assert date.format(dateFormat, timeZone) == '2011/10/20 12:30'
+assert date.format(dateFormat, otherTimeZone) == '2011/10/20 21:30'
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

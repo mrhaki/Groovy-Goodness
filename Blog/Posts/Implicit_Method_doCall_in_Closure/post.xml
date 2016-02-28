@@ -1,0 +1,12 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-28572815162577349982009-12-03T07:00:00.001+01:002010-11-26T11:15:12.994+01:00Groovy Goodness: Implicit Method doCall in Closure<p>After reading <a href="http://groovy.dzone.com/articles/mixing-dynamic-and-static-code-0">Mixing dynamic and static code in Groovy</a> I learned about the implicit method available in a closure: <code>doCall()</code>. This method corresponds to the arguments and body of the closure. If we invoke a closure with the <code>call()</code> or the unnamed <code>()</code> syntax the <code>doCall()</code> method is invoked. We can use this method to run the closure from within the closure.</p>
+<pre class="brush:groovy">
+def sizeList = { list, counter = 0 ->
+    if (list.size() == 0) {
+        counter
+    } else {
+        doCall(list.tail(), counter + 1)  // Call closure self.
+    }
+}
+
+assert 5 == sizeList([1,2,3,4,5])
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

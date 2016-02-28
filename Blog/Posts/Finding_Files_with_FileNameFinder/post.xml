@@ -1,0 +1,11 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-22578195066281139502009-11-22T06:54:00.002+01:002010-11-26T11:15:13.020+01:00Groovy Goodness: Finding Files with FileNameFinder<p>The <code>groovy.util</code> package contains the <a href="http://groovy.codehaus.org/gapi/groovy/util/FileNameFinder.html"><code>FileNameFinder</code></a> and <a href="http://groovy.codehaus.org/gapi/groovy/util/FileNameByRegexFinder.html"><code>FileNameByRegExFinder</code></a> classes. We can use the <code>FileNameFinder</code> classe to search recursively for files in a directory with ANT fileset pattern conventions. With the <code>FileNameByRegExFinder</code> we use regular expressions to define the file patterns.</p>
+<pre class="brush:groovy">
+// Suppose we have a environment variable GROOVY_HOME pointing to the Groovy installation dir.
+def groovyHome = System.getenv('GROOVY_HOME')
+
+def txtFiles = new FileNameFinder().getFileNames(groovyHome, '**/*.txt' /* includes */, '**/*.doc **/*.pdf' /* excludes */)
+assert new File(groovyHome, 'README.txt').absolutePath in txtFiles
+
+def icoFiles = new FileNameByRegexFinder().getFileNames(groovyHome, /.*\.ico/)
+assert new File(groovyHome, 'html/groovy-jdk/groovy.ico').absolutePath in icoFiles
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com3

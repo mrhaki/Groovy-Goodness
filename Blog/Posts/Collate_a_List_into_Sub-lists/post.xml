@@ -1,0 +1,14 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-56109332209541419042012-04-09T21:50:00.001+02:002012-04-09T21:50:55.468+02:00Groovy Goodness: Collate a List into Sub-lists<p>I totally missed the new <code>collate()</code> method for <code>List</code> objects available since Groovy 1.8.6. With this method we can divide a list into sub-lists of a specified size. We can include a boolean parameter to indicate if we want to include remainders that don't fit in the specified size of the collated sub-lists. Finally we can use a parameter to define how many steps we go through the list before dividing the list into sub-lists.</p><pre class="brush:groovy">def letters = 'a'..'g'
+
+assert letters.collate(3) == [['a', 'b', 'c'], ['d', 'e', 'f'], ['g']]
+
+// Step through original list with 
+// 2 steps and collate.
+assert letters.collate(3, 2) == [['a', 'b', 'c'], ['c', 'd', 'e'], ['e', 'f', 'g'], ['g']]
+
+// Don't include remainder in result.
+// Default a remainder is included in the result.
+boolean remainder = false
+assert letters.collate(3, remainder) == [['a', 'b', 'c'], ['d', 'e', 'f']]
+assert letters.collate(3, 2, remainder) == [['a', 'b', 'c'], ['c', 'd', 'e'], ['e', 'f', 'g']]
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

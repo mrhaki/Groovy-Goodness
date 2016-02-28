@@ -1,0 +1,11 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-33096277068291513332010-03-05T07:00:00.002+01:002010-11-26T11:15:12.880+01:00Groovy Goodness: Intersect Collections<p>In Groovy we have a lot of useful methods to work with collections and lists. For example if we have two lists and want to determine which elements are in both lists, we can use the <code>intersect()</code> method. We can use the <code>disjoint()</code> to test if both collections contain common elements are not.</p>
+<pre class="brush:groovy">
+def one = ['Java', 'Groovy', 'Scala']
+def two = ['Groovy', 'JRuby', 'Java']
+def three = ['C++', 'C##']
+
+assert ['Groovy', 'Java'] == one.intersect(two)
+assert [] == one.intersect(three)
+assert one.disjoint(three)
+assert !one.disjoint(two)
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

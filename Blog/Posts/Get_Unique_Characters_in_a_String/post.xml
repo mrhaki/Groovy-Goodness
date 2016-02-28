@@ -1,0 +1,6 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-9774441646428053922011-04-27T20:32:00.000+02:002011-04-27T20:32:00.116+02:00Groovy Goodness: Get Unique Characters in a String<p>Groovy adds the <code>toSet()</code> method to the <code>String</code> class in version 1.8. With this method we get a Set of unique String values from the original String value.</p>
+<pre class="brush:groovy">
+String s = 'Groovy is gr8!'
+
+assert s.toSet().sort().join() == ' !8Ggiorsvy'
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

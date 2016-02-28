@@ -1,0 +1,32 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-47498335157008463602009-08-17T11:30:00.002+02:002010-11-26T11:15:13.318+01:00Groovy Goodness: Safe Navigation to Avoid NullPointerException<p>Little things in live can be such a joy. The safe navigation operator in Groovy is such a little thing. Suppose we have modelled a simple domain like this:</p>
+<pre class="brush:groovy">
+class Company {
+    Address address
+    String name
+}
+
+class Address {
+    Street street
+    String postalCode
+    String city
+}
+
+class Street { 
+    String name
+    String number
+    String additionalInfo
+}
+</pre>
+<p>We want to display the streetname, but we don't know if all object instances are available. To avoid a NullPointerException we write the following code:</p>
+<pre class="brush:groovy">
+// company can be null.
+if (company != null && company.getAddress() != null && company.getAddress().getStreet() != null) {
+    println company.address.street.name
+}
+</pre>
+<p>Groovy adds the safe navigation operator to shorten all this to:</p>
+<pre class="brush:groovy">
+// company can be null.
+println company?.address?.street?.name
+</pre>
+<p>If one of the objects was null, the output of the total statement is null. We will not get any NullPointerExceptions.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com3

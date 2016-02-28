@@ -1,0 +1,10 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-14687019421921324112015-01-28T06:26:00.000+01:002015-01-28T06:26:29.609+01:00Groovy Goodness: Getting All But the Last Element in a Collection with Init Method<p>In Groovy we can use the <code>head</code> and <code>tail</code> methods for a long time on <code>Collection</code> objects. With <code>head</code> we get the first element and with <code>tail</code> the remaining elements of a collection. Since Groovy 2.4 we have a new method <code>init</code> which returns all elements but the last in a collection.</p><p>In the following example we have a simple list and apply the different methods:</p><pre class="brush:groovy">def gr8Tech = ['Groovy', 'Grails', 'Spock', 'Gradle', 'Griffon']
+
+// Since Groovy 2.4 we can use the init method.
+assert gr8Tech.init() == ['Groovy', 'Grails', 'Spock', 'Gradle']
+assert gr8Tech.last() == 'Griffon'
+
+
+assert gr8Tech.head() == 'Groovy'
+assert gr8Tech.tail() == ['Grails', 'Spock', 'Gradle', 'Griffon']
+</pre><p>Code written with Groovy 2.4.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

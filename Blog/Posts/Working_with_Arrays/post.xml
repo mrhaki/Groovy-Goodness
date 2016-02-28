@@ -1,0 +1,44 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-49891237952334689312009-09-19T07:00:00.001+02:002010-11-26T11:15:13.227+01:00Groovy Goodness: Working with Arrays<p>Groovy supports arrays just like in Java. We only get a lot more methods because of the <a href="http://groovy.codehaus.org/groovy-jdk/primitive-types/T[].html">GDK extensions</a> added to arrays. The only we thing we need to consider is the way we initialize arrays. In Java we can define and populate an array with the following code: <code>String[] s = new String[] { "a", "b" };</code>, but in Groovy we cannot use this syntax. In Groovy the previous statement would become <code>String[] s = ["a", "b"] as String[]</code>.</p>
+<pre class="brush:groovy">
+def strArray = new String[3]
+assert strArray instanceof String[]
+strArray[0] = 'mrhaki'
+strArray.putAt(1, 'Groovy')  // New syntax.
+strArray[2] = 'Java'
+
+assert 'mrhaki' == strArray.getAt(0)  // Just another way to get a value.
+assert 'Groovy' == strArray[1]
+assert 'Java' == strArray[-1]  // Negative indeces allowed.
+assert ['mrhaki', 'Groovy'] == strArray[0..1]  // We can use ranges.
+assert ['mrhaki', 'Java'] == strArray[0, 2]
+
+assert 3 == strArray.length  // Normal length property for arrays.
+assert 3 == strArray.size()  // Groovy adds size() method as well.
+
+// We can use min() and max() methods.
+assert 42 == [102,301,42,83].min()
+assert 301 == [102,301,42,83].max()
+assert 'Java' == strArray.min { it.size() }
+assert 'mrhaki' == strArray.max { it[0] as char }
+
+// We can even use the Collection GDK methods on an array.
+strArray.eachWithIndex { value, idx -> assert value == strArray[idx] }
+assert ['ikahrm', 'yvoorG', 'avaJ'] == strArray.collect { it.reverse() }
+assert 'Groovy' == strArray.find { it =~ /Groovy/ }
+
+// We can remove values with the '-' operator.
+assert ['Groovy', 'Java'] == strArray - 'mrhaki'
+
+// Other useful methods for arrays.
+assert ['Java', 'Groovy', 'mrhaki'] == strArray.reverse()
+assert ['Groovy', 'Java', 'mrhaki'] == strArray.sort()
+assert 1 == strArray.count('mrhaki')
+
+// Convert to ArrayList.
+def strList = strArray.toList()
+assert 'java.util.ArrayList' == strList.class.name
+
+// Convert ArrayList to array object.
+def otherArray = strList as String[]
+assert otherArray instanceof String[]
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

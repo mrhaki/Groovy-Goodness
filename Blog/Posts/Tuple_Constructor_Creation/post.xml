@@ -1,0 +1,96 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-81036084480558839112011-04-27T19:39:00.002+02:002011-04-27T19:39:00.541+02:00Groovy Goodness: Tuple Constructor Creation<p>Groovy 1.8 adds the <code>@TupleConstructor</code> annotation. With this annotation we can automatically create a tuple constructor at compile time. So the constructor can be found in the compiled class. For each property in the class a parameter in the constructor is created with a default value. The order of the properties defined in the class also defines the order of parameters in the constructor. Because the parameters have default values we can use Groovy syntax and leave parameters at the end of the parameter list out when we use the constructor.</p>
+<p>We can also include fields as constructor parameters. We use the annotation attribute <code>includeFields=true</code> to activate this.</p>
+<p>If we define our constructors in the class than the <code>TupleConstructor</code> annotation will not create extra constructors. But we can override this behaviour with the attribute value <code>force=true</code>. We have to make sure we don't have constructor conflicts ourselves, because now the annotation will create the extra constructors.</p>
+<p>If our class extends another class and we want to include the properties or fields of the super class we can use the attributes <code>includeSuperProperties</code> and <code>includeSuperFields</code>. We can even instruct the annotation to create code in the constructor to call the super constructor of the super class with the properties. We must set the annotation attribute <code>callSuper=true</code> to make this happen.</p>
+<pre class="brush:groovy">
+import groovy.transform.TupleConstructor
+
+@TupleConstructor()
+class Person {
+    String name
+    List likes
+    private boolean active = false
+}
+
+def person = new Person('mrhaki', ['Groovy', 'Java'])
+
+assert person.name == 'mrhaki'
+assert person.likes == ['Groovy', 'Java']
+
+person = new Person('mrhaki')
+
+assert person.name == 'mrhaki'
+assert !person.likes
+</pre>
+<pre class="brush:groovy">
+// includeFields in the constructor creation.
+import groovy.transform.TupleConstructor
+
+@TupleConstructor(includeFields=true)
+class Person {
+    String name
+    List likes
+    private boolean active = false
+
+    boolean isActivated() { active }
+}
+
+def person = new Person('mrhaki', ['Groovy', 'Java'], true)
+
+assert person.name == 'mrhaki'
+assert person.likes == ['Groovy', 'Java']
+assert person.activated
+</pre>
+<pre class="brush:groovy">
+// use force attribute to force creation of constructor
+// even if we define our own constructors.
+import groovy.transform.TupleConstructor
+
+@TupleConstructor(force=true)
+class Person {
+    String name
+    List likes
+    private boolean active = false
+
+    Person(boolean active) {
+        this.active = active
+    }
+
+    boolean isActivated() { active }
+}
+
+def person = new Person('mrhaki', ['Groovy', 'Java'])
+
+assert person.name == 'mrhaki'
+assert person.likes == ['Groovy', 'Java']
+assert !person.activated
+
+person = new Person(true)
+
+assert person.activated
+</pre>
+<pre class="brush:groovy">
+// include properties and fields from super class.
+import groovy.transform.TupleConstructor
+
+@TupleConstructor(includeFields=true)
+class Person {
+    String name
+    List likes
+    private boolean active = false
+
+    boolean isActivated() { active }
+}
+
+@TupleConstructor(callSuper=true, includeSuperProperties=true, includeSuperFields=true)
+class Student extends Person {
+    List courses
+}
+
+def student = new Student('mrhaki', ['Groovy', 'Java'], true, ['IT'])
+
+assert student.name == 'mrhaki'
+assert student.likes == ['Groovy', 'Java']
+assert student.activated
+assert student.courses == ['IT']
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

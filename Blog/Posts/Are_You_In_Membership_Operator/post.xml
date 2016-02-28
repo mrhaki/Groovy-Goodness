@@ -1,0 +1,44 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-83380440183384532172009-11-21T07:54:00.003+01:002010-11-26T11:15:13.024+01:00Groovy Goodness: Are You In? (Membership Operator)<p>Groovy brings some new operators and keywords to the table. One of them is the <em>in</em> keyword or the so-called membership operator. The operator can be called in a conditional context, for example we can use <em>in</em> to test for the existince of a member in a collection. We can write our own implementation by implementing the <code>isCase()</code> method of our class. Or the operator is called in an iterative context, for example in a for loop. Then the <code>iterator()</code> is called. We can write our own implementation for the <code>iterator()</code> to implement <em>in</em> when called in a iterative context.</p>
+<pre class="brush:groovy">
+// *** Conditional context
+def list = ['Groovy', 'Java']
+assert 'Groovy' in list
+assert !('Scala' in list)
+
+// Write our own in implementation.
+class MyObject {
+    String value
+    boolean isCase(ch) { 
+        value.contains(ch) 
+    }
+}
+def myObj = new MyObject(value: 'Groovy')
+assert 'oo' in myObj
+assert !('oo' in myObj.value)  // isCase for String invokes equals.
+assert 'Groovy' in myObj
+assert 'Groovy' in myObj.value
+assert !('a' in myObj)
+
+// *** Iterative context
+// Use in in a for loop.
+def result = ''
+for (lang in list ) {
+    result += lang
+}
+assert 'GroovyJava' == result
+
+class Counter {
+    Integer maxValue
+    private Integer counter = 0
+    Iterator iterator() {
+        [hasNext: { counter <= maxValue }, 
+         next: { counter++ }] as Iterator
+    }
+}
+def counter = new Counter(maxValue: 10)
+result = '' 
+for (c in counter) {
+    result += c
+}
+assert result == '012345678910'
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

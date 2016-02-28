@@ -1,0 +1,13 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-15676161662805311062010-07-01T08:19:00.006+02:002010-11-26T11:15:12.783+01:00Groovy Goodness: Clear Time Portion of a Date<p>Working with dates in Groovy is easy. We get a lot of extra functionality compared to the standard Java Date class. One of the extra methods added to the Date class since Groovy 1.6.8 is <code>clearTime()</code>. With <code>clearTime()</code> we reset the time portion of a date to 12 o'clock midnight. This makes it easier to compare dates if we only are interested in the date, month, year parts.</p>
+<pre class="brush:groovy">
+// Create new date.
+def d = new Date(year: 2010, month: Calendar.JULY, date: 1, 
+                                hours: 7, minutes: 12, seconds: 0)
+
+assert '7/1/10 7:12:00 AM' == d.dateTimeString
+
+// Reset time portion of the date.
+d.clearTime()
+
+assert '7/1/10 12:00:00 AM' == d.dateTimeString
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

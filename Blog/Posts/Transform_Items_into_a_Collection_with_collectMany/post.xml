@@ -1,0 +1,14 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-43827919126709314582011-09-20T05:41:00.001+02:002011-09-20T05:41:36.560+02:00Groovy Goodness: Transform Items into a Collection with collectMany<p>In Groovy we can use the <code>collectMany()</code> method to transform items from a collection into a collection. The resulting collection is then flattened into a single collection. This means we can use the closure to return a collection with values and at the end all these collections are flattened into a single collection.<br />
+</p><pre class="brush:groovy">def text = 'groovy' as String[]
+
+def mixedCase = text.collectMany { [it, it.toUpperCase()] }
+assert mixedCase == ['g','G','r','R','o','O','o','O','v','V','y','Y']
+assert text == 'groovy' as String[]
+
+
+def list = [12, 20, 34]
+def result = list.collectMany { [it, it*2, it*3] }
+
+assert result == [12,24,36,20,40,60,34,68,102]
+assert list == [12, 20, 34]
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

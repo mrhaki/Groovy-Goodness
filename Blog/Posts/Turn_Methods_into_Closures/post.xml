@@ -1,0 +1,41 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-20070834551013080282009-08-19T08:25:00.001+02:002010-11-26T11:15:13.312+01:00Groovy Goodness: Turn Methods into Closures<p>Groovy supports closures and they are very useful when we create Groovy applications. For example we can pass closures as arguments to methods to execute them. We can create closures ourselves, but we can also convert a method to a closure with the <code>.&amp;</code> operator. And we can use the converted method just like a normal closure. Because Groovy can use Java objects we can also convert a Java method into a closure.
+</p>
+<p>Let's start with a simple Java class:</p>
+<pre class="brush:java">
+public class JavaObject {
+ public static void javaSays(final String s) {
+  System.out.println("Java says: Hello " + s + "!");
+ }
+}
+</pre>
+<p>With the following script we use this Java class and convert the <code>javaSays</code> method to a closure:</p>
+<pre class="brush:groovy">
+// Simple list with names.
+def names = ['groovy', 'grails', 'mrhaki']
+
+// Simple closure.
+names.each { println 'Normal closure says: Hello ' + it + '!' }
+
+// Groovy method to convert to closure.
+def groovySays(s) {
+ "Groovy says: Hello ${s}!"
+}
+// Use .&amp; syntax to convert method to closure.
+names.each(this.&amp;groovySays)
+
+// Convert Java method to closure and use it.
+def javaSays = JavaObject.&amp;javaSays
+names.each javaSays
+</pre>
+<p>If we run this script we get the following output:</p>
+<pre class="brush:plain">
+Normal closure says: Hello groovy!
+Normal closure says: Hello grails!
+Normal closure says: Hello mrhaki!
+Groovy says: Hello groovy!
+Groovy says: Hello grails!
+Groovy says: Hello mrhaki!
+Java says: Hello groovy!
+Java says: Hello grails!
+Java says: Hello mrhaki!
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

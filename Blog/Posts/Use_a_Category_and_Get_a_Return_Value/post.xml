@@ -1,0 +1,15 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-10058470090916159052009-11-30T08:09:00.001+01:002010-11-26T11:15:13.002+01:00Groovy Goodness: Use a Category and Get a Return Value<p>With the <code>use()</code> method in Groovy we execute a closure in the scope of a Category or list of Categories. The last statement of the closure is the return value for the <code>use()</code> method. So we can get a result from the <code>use()</code> method and use it in our program.</p>
+<pre class="brush:groovy">
+class StringCategory {
+    static String groovy(String self) {
+        self + ' Yeah man.'
+    }
+}
+
+def returnedValue = use(StringCategory) {
+    def s = 'A simple String.'
+    s.groovy()
+}
+
+assert 'A simple String. Yeah man.' == returnedValue
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

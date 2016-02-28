@@ -1,0 +1,7 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-45055511289093872602011-10-19T04:32:00.000+02:002011-10-25T08:39:36.339+02:00Groovy Goodness: Default Groovy Script File Extensions<p>When we run a Groovy script file from the command line with the <code>groovy</code> command we can use the complete filename to refer to the script file. But we can also leave out the filename extension. By default the following extensions are used to search for the Groovy script file:</p><ul><li><code>.groovy</code></li>
+<li><code>.gvy</code></li>
+<li><code>.gy</code></li>
+<li><code>.gsh</code></li>
+</ul><p>So suppose we have a Groovy script file named <code>sample.gsh</code> we can use the following commands to run the file:</p><pre class="brush:shell">$ groovy sample.gsh
+$ groovy sample
+</pre><p><em>(With this post we hit Groovy Goodness post 250. ;-) )</em></p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

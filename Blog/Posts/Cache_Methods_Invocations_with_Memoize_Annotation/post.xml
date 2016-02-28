@@ -1,0 +1,36 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-21613164492994326022013-11-19T15:13:00.001+01:002013-11-19T15:13:46.662+01:00Groovy Goodness: Cache Methods Invocations with Memoize Annotation<p>In Groovy we can cache closure results <a href="http://mrhaki.blogspot.com/2011/05/groovy-goodness-cache-closure-results.html">with memoization</a>. In Groovy 2.2 a new <code>@Memoize</code> AST transformation is added, which can be used to cache plain method results. We apply the annotation to our method and the result of the method is cached if the method is invoked for the first time. If we invoke the method a second time with the same arguments then the cached result is returned.</p><p>In the following sample we want to cache the method <code>increment(int)</code>. We use a script variable <code>incrementChange</code> to show when a cached method invocation takes place or a non-cached one.</p><pre class="brush:groovy">import groovy.transform.*
+
+// Script variable which is changed when increment()
+// method is invoked. 
+// If cached method call is invoked then the value
+// of this variable will not change.
+@Field boolean incrementChange = false
+
+@Memoized 
+int increment(int value) {
+    incrementChange = true
+    value + 1 
+}
+
+// Invoke increment with argument 10.
+increment(10)
+
+// increment is invoked so incrementChange is true.
+assert incrementChange
+
+// Set incrementChange back to false.
+incrementChange = false
+
+// Invoke increment with argument 10.
+increment(10)
+
+// Now the cached method is used and
+// incrementChange is not changed.
+assert !incrementChange
+
+// Invoke increment with other argument value.
+increment(11)
+
+// increment is invoked so incrementChange is true.
+assert incrementChange
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

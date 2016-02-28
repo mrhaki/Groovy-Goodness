@@ -1,0 +1,21 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-48471693395736151132009-12-16T07:47:00.002+01:002010-11-26T11:15:12.961+01:00Groovy Goodness: Getting Information About Objects<p>To get some information about an object we often use the <code>toString()</code> method in Java. In Groovy we can use the same <code>toString()</code> method, but we have two more alternatives. We can use the <code>dump()</code> method on an object and we get information about the name of the object, the hashcode and the values of the fields. And we can use the <code>inspect()</code> method, which will try to return a String which matches closest what we would type in Groovy code to create the object.</p>
+<pre class="brush:groovy">
+def map = [username: 'mrhaki']
+assert '[&quot;username&quot;:&quot;mrhaki&quot;]' == map.inspect()
+
+def list = [1, 2, 3, 'Groovy']
+assert '[1, 2, 3, &quot;Groovy&quot;]' == list.inspect()
+
+def range = 0..10
+assert '0..10' == range.inspect()
+
+def str = 'Inspecting object with Groovy'
+assert '&quot;Inspecting object with Groovy&quot;' == str.inspect()
+
+def dom = groovy.xml.DOMBuilder.newInstance().parseText('&lt;root&gt;&lt;language&gt;Groovy&lt;/language&gt;&lt;/root&gt;')
+println dom.documentElement.inspect()
+// Output:
+// &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+// &lt;root&gt;
+//   &lt;language&gt;Groovy&lt;/language&gt;
+// &lt;/root&gt;</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

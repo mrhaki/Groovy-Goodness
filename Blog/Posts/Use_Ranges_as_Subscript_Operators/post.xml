@@ -1,0 +1,12 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-6323406874605112452010-03-08T07:00:00.001+01:002010-11-26T11:15:12.878+01:00Groovy Goodness: Use Ranges as Subscript Operators<p>In Groovy we can use variables as subscript operators to get values from a list.</p>
+<pre class="brush:groovy">
+def list = ['Java', 'Groovy', 'Scala']
+
+def index = 0
+def indices = [0,2]
+def range = (1..-1)
+
+assert 'Java' == list[index]
+assert ['Java', 'Scala'] == list[indices]
+assert ['Groovy', 'Scala'] == list[range]
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

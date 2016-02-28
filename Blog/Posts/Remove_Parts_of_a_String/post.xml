@@ -1,0 +1,8 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-62633869241302512982009-11-02T08:05:00.007+01:002010-11-26T11:15:13.119+01:00Groovy Goodness: Remove Parts of a String<p>Groovy has added the <code>minus()</code> method to the String class. And because the <code>minus()</code> method is used by the <code>-</code> operator we can remove parts of a String with this operator. The argument can be a String or a regular expression Pattern. The first occurrence of the String or Pattern is then removed from the original String.</p>
+<pre class="brush:groovy">
+​def s = 'Groovy and Strings are fun and versatile.'
+
+assert 'Groovy and Strings are fun' == s - ' and versatile.'
+assert 'Groovy and Strings are fun.' == s.minus(" and versatile")
+assert 'Groovy  Strings are fun and versatile.' == s - ~/\b\w{3}\b/
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

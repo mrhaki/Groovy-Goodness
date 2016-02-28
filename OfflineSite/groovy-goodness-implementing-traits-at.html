@@ -1,0 +1,95 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Implementing Traits at Runtime</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Implementing Traits at Runtime</h3>
+
+<div class="post">
+<p>Groovy 2.3 introduced <a href="http://beta.groovy-lang.org/docs/groovy-2.3.1/html/documentation/core-traits.html">traits</a> as a new language construct. We can apply traits when we write new classes in Groovy using the <code>implements</code> keyword. But we can also apply traits dynamically at runtime. For example if we want to apply a trait to an already existing class and we cannot change the source code of that class.</p><p>To apply a single trait we can use the <code>as</code> keyword. The original object is then coerced into the trait instance. In the following sample we define a new trait <code>Name</code> with a couple of properties and a method. Also we have a <code>User</code> class we want to apply this trait to. After we have applied the trait we can access the properties of the <code>Name</code> trait and invoke the method <code>getFullName</code>, actually we get a new object instance with the capabilities of the <code>User</code> class and <code>Name</code> trait:</p><pre class="brush:groovy">trait Name {
+    String salutation, firstName, lastName
+
+    String getFullName() {
+        [salutation, firstName, lastName].join(' ')
+    }
+}
+
+class User {
+    String username, password   
+}
+
+def user = new User() as Name
+user.with {
+    salutation = 'Mr.'
+    firstName = 'Hubert'
+    lastName = 'Klein Ikkink'
+    username = 'mrhaki'
+    password = '*****'
+}
+
+assert user.fullName == 'Mr. Hubert Klein Ikkink'
+assert user.username == 'mrhaki'
+</pre><p>To apply multiple traits to an object we must use the method <code>withTraits</code> on an object. We can use one or more traits as arguments to this method. In the following sample we apply the traits <code>Id</code>, <code>Version</code> and <code>Active</code> with some properties and methods to an instance of the <code>Person</code> class. The <code>withTraits</code> methods return a new object instance which has all the properties and methods of the original class and the traits.</p><pre class="brush:groovy">trait Id {
+    Long id
+}
+
+trait Version {
+    Long version = 0
+}
+
+trait Active {
+    Date from = new Date()
+    Date to = null
+
+    boolean isActive() {
+        final Date now = new Date()
+        from < now && (!to || to > now)
+    }
+}
+
+class Person {
+    String username
+}
+
+def person = new Person(username: 'mrhaki')
+def domainPerson = person.withTraits Id, Version, Active
+
+domainPerson.id = 1
+
+assert domainPerson.username == 'mrhaki'
+assert domainPerson.id == 1
+assert domainPerson.version == 0
+assert domainPerson.active
+</pre><p>Code written with Groovy 2.3.1.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

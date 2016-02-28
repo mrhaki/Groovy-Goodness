@@ -1,0 +1,34 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-19752054991279722512011-09-22T06:22:00.000+02:002011-09-22T06:23:31.823+02:00Groovy Goodness: Use Connection Parameters to Get Text From URL<p>For a long time we can simply <a href="http://mrhaki.blogspot.com/2009/10/groovy-goodness-reading-url-content.html">get the text from an URL</a> in Groovy. Since Groovy 1.8.1 we can set parameters to the underlying <code>URLConnection</code> that is used to get the content. The parameters are passed as a Map to the <code>getText()</code> method or to the <code>newReader()</code> or <code>newInputStream()</code> methods for an URL.</p><p>We can set the following parameters:<br />
+<ul><li>connectTimeout in milliseconds</li>
+<li>readTimeout in milliseconds</li>
+<li>useCaches</li>
+<li>allowUserInteraction</li>
+<li>requestProperties is a Map with general request properties</li>
+</ul></p><pre class="brush:groovy">// Contents of http://www.mrhaki.com/url.html:
+// Simple test document
+// for testing URL extensions
+// in Groovy.
+
+def url = "http://www.mrhaki.com/url.html".toURL()
+
+// Simple Integer enhancement to make
+// 10.seconds be 10 * 1000 ms.
+Integer.metaClass.getSeconds = { -&gt;
+    delegate * 1000
+}
+
+// Get content of URL with parameters.
+def content = url.getText(connectTimeout: 10.seconds, readTimeout: 10.seconds,
+                          useCaches: true, allowUserInteraction: false,
+                          requestProperties: ['User-Agent': 'Groovy Sample Script'])
+
+assert content == '''\
+Simple test document
+for testing URL extensions
+in Groovy.
+'''
+
+url.newReader(connectTimeout: 10.seconds, useCaches: true).withReader { reader -&gt;
+    assert reader.readLine() == 'Simple test document'
+}
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

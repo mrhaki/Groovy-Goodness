@@ -1,0 +1,73 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Check Configuration Property Is Set In ConfigObject</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Check Configuration Property Is Set In ConfigObject</h3>
+
+<div class="post">
+<p>When we use <code>ConfigSlurper</code> to read a configuration file or script we get a <code>ConfigObject</code> as return result. We can get the values of the configuration properties by simply referring to the property name. The <code>ConfigObject</code> instance will resolve the name and returns the value. If we want to check if a property has a value we can use the property name in a condition. For example <code>app.active ? 'active' : 'non-active'</code>. But then <a href="http://mrhaki.blogspot.com/2009/08/groovy-goodness-tell-groovy-truth.html">Groovy truth</a> also has a say here. <code>app.active</code> in a conditional context will return <code>false</code> if the property is not set or if the value returns <code>false</code> (taking into account Groovy truth).</p><p>Since Groovy 2.3 we can use the <code>isSet</code> method to check if a configuration property is available, before we get the value. This way we can distinguish between a non-existing property or a <code>false</code> value for an existing property.</p><pre class="brush:groovy">// Configuration script.
+def config = '''
+app {
+    version = 0
+    active = false
+}
+'''
+
+// Read configuration.
+def configuration = new ConfigSlurper().parse(config)
+
+// Check values for app. configuration properties.
+configuration.app.with {
+    // Existing boolean property.
+    // Is property value false or non-existing?
+    assert !active
+    // Answer: value is false.
+    assert isSet('active')
+
+
+    // Not existing boolean property.
+    // Is property value false or non-existing?
+    assert !enabled
+    // Answer: non-existing.
+    assert !isSet('enabled')
+
+
+    // Non boolean property.
+    assert !version
+    assert isSet('version')
+    assert version == 0
+}
+</pre><p>Code written with Groovy 2.3.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

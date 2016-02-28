@@ -1,0 +1,58 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-14628786864660339652014-05-05T16:27:00.000+02:002014-05-05T16:27:08.757+02:00Groovy Goodness: @Builder Definition with Extra Type Checks<p>We have seen some features of the <code>@Builder</code> AST transformation in <a href="http://mrhaki.blogspot.com/2014/04/groovy-goodness-use-builder-ast.html">previous</a> and <a href="http://mrhaki.blogspot.com/2014/04/groovy-goodness-using-builder-to-create.html">other</a> blog post. We can use another strategy to let the AST transformation generate a class where the class only has a constructor that accepts a builder class. And with <code>@CompileStatic</code> we can even make sure that all required properties must have a value set by the builder before the constructor accepts the argument. We use the <code>builderStrategy</code> annotation parameter and set it to <code>InitializerStrategy</code>:</p><pre class="brush:groovy">import groovy.transform.builder.Builder
+import groovy.transform.builder.InitializerStrategy
+
+@Builder(builderStrategy = InitializerStrategy)
+class Message {
+    String from, to, subject, body
+}
+
+def message = Message.createInitializer()
+        .from('mrhaki@mrhaki.com')
+        .subject('Groovy 2.3 is released')
+
+// Returned object is not Message, but
+// internal class Message$MessageInitializer
+assert !(message instanceof Message)
+
+// Now we can use the initializer in the
+// only constructor of Message.
+def messageInstance = new Message(message)
+
+assert messageInstance instanceof Message
+assert messageInstance.from == 'mrhaki@mrhaki.com'
+assert messageInstance.subject == 'Groovy 2.3 is released'
+</pre><p>We can customize which properties need to be set with the <code>includes</code> and/or <code>excludes</code> annotation parameter. We can also customize the name of the method that create the builder instance with the parameter <code>builderMethodName</code>:</p><pre class="brush:groovy">package com.mrhaki.blog.groovy
+
+import groovy.transform.CompileStatic
+import groovy.transform.builder.Builder
+import groovy.transform.builder.InitializerStrategy
+
+@Builder(builderStrategy = InitializerStrategy,
+        excludes = 'body',
+        builderMethodName = 'creator')
+class Message {
+    String from, to, subject, body
+}
+
+// With @CompileStatic the compiler will check
+// that all properties defined in the @Builder
+// configuration are set. This way we can
+// implement required properties for a class
+// that need to be set before the object can
+// be created.
+@CompileStatic
+def createMessage() {
+    def messageInit = Message.creator()
+            .from('mrhaki@mrhaki.com')
+            .to('mail@host.nl')
+            .subject('Groovy 2.3 is released')
+
+    def message = new Message(messageInit)
+    message
+}
+
+final Message message = createMessage()
+
+assert message.from == 'mrhaki@mrhaki.com'
+assert message.subject == 'Groovy 2.3 is released'
+</pre><p>Code written with Groovy 2.3.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

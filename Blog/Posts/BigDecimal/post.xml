@@ -1,0 +1,12 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-69488500788246617652009-10-19T07:58:00.004+02:002010-11-26T11:15:13.161+01:00Groovy Goodness: BigDecimal<p>In Groovy <code>java.math.BigDecimal</code> is the default type for non-integer floating types. Because of default imports we don't have to import the <code>BigDecimal</code> class, but we can use it right away. To create a <code>BigDecimal</code> (or <code>BigInteger</code>) we can use the "G" or "g" suffix.</p>
+<pre class="brush:groovy">
+assert 123g instanceof BigInteger
+assert 42G instanceof BigInteger
+assert 1.423 instanceof BigDecimal
+assert 42.0g instanceof BigDecimal
+assert 9203.10291G instanceof BigDecimal
+
+// Let's do some math.
+assert 3.2 == 1.2G + 2G
+assert 10 == 10.1g - 0.1G
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

@@ -1,0 +1,9 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-28497018375347629302010-08-09T17:02:00.000+02:002010-11-26T11:15:12.766+01:00Groovy Goodness: Intersect Maps<p>Since Groovy 1.7.4 we can intersect two maps and get a resulting map with only the entries found in both maps.</p>
+<pre class="brush:groovy">
+def m1 = [a: 'Groovy', b: 'rocks', c: '!']
+def m2 = [a: 'Groovy', b: 'rocks', c: '?', d: 'Yes!']
+
+assert [a: 'Groovy', b: 'rocks'] == m1.intersect(m2)
+
+assert [1: 1.0, 2: 2] == [1: 1.0, 2: 2].intersect([1: 1, 2: 2.0])
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

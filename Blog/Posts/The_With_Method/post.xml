@@ -1,0 +1,45 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-6205465267999670592009-09-05T07:00:00.001+02:002010-11-26T11:15:13.260+01:00Groovy Goodness: the With Method<p>Groovy has a with method we can use to group method calls and property access to an object. The with method accepts a closure and every method call or property access in the closure applies to the object if applicable. The method is part of <a href="http://groovy.codehaus.org/groovy-jdk/java/lang/Object.html">Groovy's extensions</a> to the <code>java.lang.Object</code> class. Let's see this with an example:</p>
+<pre class="brush:groovy">
+class Sample {
+    String username
+    String email
+    List&lt;String&gt; labels = []
+    def speakUp() { "I am $username" }
+    def addLabel(value) { labels &lt;&lt; value }
+}
+
+def sample = new Sample()
+sample.with {
+    username = 'mrhaki'
+    email = 'email@host.com'
+    println speakUp()  // Output: I am mrhaki
+    addLabel 'Groovy' 
+    addLabel 'Java'    
+}
+assert 2 == sample.labels.size()
+assert 'Groovy' == sample.labels[0]
+assert 'Java' == sample.labels[1]
+assert 'mrhaki' == sample.username
+assert 'email@host.com' == sample.email
+
+def sb = new StringBuilder()
+sb.with {
+    append 'Just another way to add '
+    append 'strings to the StringBuilder '
+    append 'object.'    
+}
+
+assert 'Just another way to add strings to the StringBuilder object.' == sb.toString()
+
+// Another example as seen at 
+// http://javajeff.blogspot.com/2008/11/getting-groovy-with-with.html
+def cal = Calendar.instance
+cal.with {
+    clear()
+    set(YEAR, 2009)
+    set MONTH, SEPTEMBER
+    set DATE, 4    
+    add DATE, 2
+}
+assert'September 6, 2009' == cal.time.format('MMMM d, yyyy')
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

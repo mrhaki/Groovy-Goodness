@@ -1,0 +1,13 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-17362944880839379792010-05-26T08:55:00.008+02:002010-11-26T11:15:12.830+01:00Groovy Goodness: Use Collect with Initial Collection Value<p>The <code>collect()</code> method in Groovy can be used to iterate over collections and transform each element of the collection. The transformation is defined in as a closure and is passed to the <code>collect()</code> method. But we can also add an initial collection to which the transformed elements are added.</p>
+<pre class="brush:groovy">
+// Collect without 
+// initial collection.
+assert [0,2,4,6] == (0..3).collect { it * 2 }
+assert ['Groovy', 'Grails'] == [lang: 'Groovy', framework: 'Grails'].collect { it.value }
+
+// Collect with initial collection argument.
+assert [0, 1, 2, 3] == [2, 3].collect([0, 1]) { it }
+assert [0, 3, 6, 9] == [2, 3].collect([0, 3], { it * 3})
+assert ['Gradle', 'groovy', 'grails'] == ['Groovy', 'Grails'].collect(['Gradle']) { it.toLowerCase() }
+assert ['m','r','h','a','k','i'] == [4, -3, 7, 5].collect(['m', 'r']) { (it + 100) as char }
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

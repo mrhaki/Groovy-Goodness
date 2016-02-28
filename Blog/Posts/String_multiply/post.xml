@@ -1,0 +1,4 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-46160845460243878642009-08-13T14:54:00.004+02:002010-11-26T11:15:13.330+01:00Groovy Goodness: String.multiply()<p>I really like the Groovy extensions to the <a href="http://groovy.codehaus.org/groovy-jdk/java/lang/String.html">String</a> class. Today I discoverd the <a href="http://groovy.codehaus.org/groovy-jdk/java/lang/String.html#multiply(java.lang.Number%20factor)">multiply()</a> method. We want to repeat a dash 80 times? Solution:</p>
+<pre class="brush:groovy">'-'.multiply(80)</pre>
+<p>Simple and readable. But it can even be shorter. As John Flinchbaugh mentioned in the comments, the multiply method is nothing more than an overload for the operator *. So we get the same result with the following statement:</p>
+<pre class="brush:groovy">'-' * 80</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

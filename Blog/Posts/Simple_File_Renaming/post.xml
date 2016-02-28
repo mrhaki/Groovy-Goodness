@@ -1,0 +1,10 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-24628262891041545452010-08-09T21:25:00.000+02:002010-11-26T11:15:12.761+01:00Groovy Goodness: Simple File Renaming<p>Groovy has a lot of simple useful methods to make every day life easier. In Groovy 1.7.4 we can use the <code>renameTo()</code> method on a <code>File</code> object. We pass a <code>String</code> argument with the new name of the file.</p>
+<pre class="brush:groovy">
+def file = new File('test.groovy')
+file.text = 'simple content'
+file.renameTo 'newname.groovy'
+
+def newFile = new File('newname.groovy')
+assert newFile.exists()
+assert 'simple content' == newFile.text
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

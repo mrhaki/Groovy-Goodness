@@ -1,0 +1,26 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-4735075711531125122009-10-11T07:00:00.001+02:002010-11-26T11:15:13.182+01:00Groovy Goodness: Finding Data in Collections<p>Groovy adds several methods to <code>Collection</code> classes to find elements in the collection. The <code>findXXX()</code> methods take a closure and if an element matches the condition defined in the closure we get a result. We can also use the <code>any()</code> method to verify if at least one element applies to the closure condition, or we use the <code>every()</code> method to everify all elements that confirm to the closure condition. Both the <code>any()</code> and <code>every()</code> method return a <code>boolean</code> value.</p>
+<pre class="brush:groovy">
+def list = ['Daffy', 'Bugs', 'Elmer', 'Tweety', 'Silvester', 'Yosemite']
+assert 'Bugs' == list.find { it == 'Bugs' }
+assert ['Daffy', 'Bugs', 'Elmer'] == list.findAll { it.size() &lt; 6 }
+assert 1 == list.findIndexOf { name -&gt; name =~ /^B.*/ }  // Start with B.
+assert 3 == list.findIndexOf(3) { it[0] &gt; 'S' }  // Use a start index.
+assert [0,3,5] == list.findIndexValues { it =~ /(y|Y)/ }  // Contains y or Y.
+assert [3,5] == list.findIndexValues(2) { it =~ /(y|Y)/ }
+assert 2 == list.findLastIndexOf { it.size() == 5 }
+assert 5 == list.findLastIndexOf(1) { it.count('e') &gt; 1 }
+assert list.any { it =~ /a/ }
+assert list.every { it.size() &gt; 3 }
+
+def map = [name: 'Messages from mrhaki', url: 'http://mrhaki.blogspot.com', blog: true]
+def found = map.find { key, value -&gt; key == 'name' }
+assert found.key == 'name' &amp;&amp; found.value == 'Messages from mrhaki'
+found = map.find { it.value =~ /mrhaki/ }
+assert found.key == 'name' &amp;&amp; found.value == 'Messages from mrhaki'
+assert [name: 'Messages from mrhaki', url: 'http://mrhaki.blogspot.com'] == map.findAll { key, value -&gt; value =~ /mrhaki/ }
+assert 1 == map.findIndexOf { it.value.endsWith('com') }
+assert [1,2] == map.findIndexValues { it.key =~ /l/ }  // All keys with the letter 'l'.
+assert 2 == map.findLastIndexOf { it.key =~ /l/ &amp;&amp; it.value }
+assert map.any { entry -&gt; entry.value }
+assert map.every { key, value -&gt; key.size() &gt;= 3 }
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

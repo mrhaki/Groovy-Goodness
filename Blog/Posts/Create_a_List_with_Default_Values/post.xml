@@ -1,0 +1,45 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-67824301178252698202012-10-09T21:19:00.000+02:002012-10-09T21:19:00.375+02:00Groovy Goodness: Create a List with Default Values<p>Since Groovy 1.8.7 we can create a list and use the <code>withDefault()</code> method to define a default value for elements that are not yet in the list. We use a closure as argument of the method, which returns the default value. We can even access the index of the element in the closure as an argument.</p><p>Besides the <code>withDefault()</code> method we can use the <code>withLazyDefault()</code> which is just another name for the same functionality. If we request a value for an index that is greater or equal to the size of the list, the list will automatically grow up to the specified index. Any gaps are filled with the value <code>null</code>.</p><p>We can also use the <code>withEagerDefault()</code> method. If we use this method the gaps are filled with the result from the closure we pass to the method. So instead of the value <code>null</code> the return result from the closure is used.</p><p>The following example script shows the results from using the <code>withDefault()</code> (<code>withLazyDefault()</code>) and <code>withEagerDefault()</code>:</p><pre class="brush:groovy">def lazy = ['abc', 42].withDefault { 'default' } // Or .withLazyDefault {}
+
+// List grows because 3 is bigger than
+// current lazy list size. Value is
+// for element at index 3 is set with value
+// from init closure.
+assert lazy[3] == 'default'
+
+// Gap at index 2 is filled with null value.
+assert lazy == ['abc', 42, null, 'default']
+
+// Because value at index 2 is set to null
+// before, the init closure is invoked
+// for this index now.
+assert lazy[2] == 'default'
+
+// List is now filled.
+assert lazy == ['abc', 42, 'default', 'default']
+
+
+def eager = ['abc', 42].withEagerDefault { 'default' }
+
+// Here the list also grows, because
+// index 3 is bigger than eager list size.
+assert eager[3] == 'default'
+
+// The gaps in the list are now
+// filled with the value from
+// the init closure.
+assert eager == ['abc', 42, 'default', 'default']
+
+// Value is already set because we
+// used withEagerDefault.
+assert eager[2] == 'default'
+
+
+// We can use the index value as argument
+// for the init closure.
+def sample = [1,2,3].withDefault { index ->
+    index % 2
+}
+
+assert sample[3] == 1
+assert sample[4] == 0
+</pre><p><em>(Written with Groovy 2.0.5)</em></p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

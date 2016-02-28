@@ -1,0 +1,23 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-5533965858508418852009-12-05T06:57:00.001+01:002010-11-26T11:15:12.989+01:00Groovy Goodness: Know More About a Class<p>In Groovy we can use the Java reflection API to examine our classes. Groovy makes it a bit easier because we can access properties the Groovy way. And because we can call methods and properties directly on the class instead of the class property. We can still go the route through the class property, but it is optional.</p>
+<pre class="brush:groovy">
+interface Simple {}
+class Sample implements Simple {
+    String info
+    String displayInfo() { "info from $Sample.name" }
+}
+
+assert 'Sample' == Sample.name
+assert 'Sample' == Sample.class.name
+
+def interfaces = Sample.interfaces.name
+assert 'Simple' in interfaces
+assert 'groovy.lang.GroovyObject' in interfaces
+
+def methods = Sample.methods.name
+assert 'setInfo' in methods
+assert 'getInfo' in methods
+assert 'displayInfo' in methods
+
+def s = new Sample()
+assert 'info from Sample' == s.displayInfo()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

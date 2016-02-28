@@ -1,0 +1,26 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-42645176262814416682009-09-18T07:00:00.001+02:002010-11-26T11:15:13.232+01:00Groovy Goodness: Lazy Initialization of Properties<p>Sometimes we want the value of a property only to be calculated on first use. The calculation of the value can be time consuming or requires a lot of resources. In Groovy we can use the <code>@Lazy</code> transformation to define a property we want to be initialized lazily. The value is not calculated or assigned until the value is requested. The transformation also allows a <code>soft</code> parameter. This defines the field as soft reference.</p>
+<pre class="brush:groovy">
+class Get {
+    String url
+    @Lazy URL urlObj = { url?.toURL() }()  // Closures allowed to create object.
+    // Will use a soft reference.
+    @Lazy(soft=true) String text = urlObj?.text
+}
+
+def g = new Get(url: 'http://mrhaki.blogspot.com/') 
+assert 'http://mrhaki.blogspot.com/' == g.url
+assert g.dump().contains('text=null')
+assert g.dump().contains('urlObj=null')
+
+// Now we access the urlObj property, so the value
+// is calculated and we can access it.
+assert g.urlObj
+assert 'http' == g.urlObj.protocol
+assert 'mrhaki.blogspot.com' == g.urlObj.host
+assert '/' == g.urlObj.path
+
+// Now we access the text property, so the contents
+// is fetched from the URL.
+assert g.text
+assert g.text.contains('Messages from mrhaki')
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com3

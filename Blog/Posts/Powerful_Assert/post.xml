@@ -1,0 +1,15 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-77141084536254420332009-12-28T07:27:00.001+01:002010-11-26T11:15:12.927+01:00Groovy Goodness: Powerful Assert<p>In Groovy 1.7 we get a lot of information if an assertion isn't true. Before we only could see the assertion was false, but now we get a breakdown of all components used in the assertion. For each component the return value is shown, so we can easily determine what component is responsible for the false assertion.</p>
+<p>For example we run the following code:</p>
+<pre class="brush:groovy">
+def list = [1, 2, 3, 4, 5]
+assert 4 == list.max() - 2
+</pre>
+<p>And the assert output is:</p>
+<pre class="brush:plain;light:true">
+assert 4 == list.max() - 2
+         |  |    |     |
+         |  |    5     3
+         |  [1, 2, 3, 4, 5]
+         false
+</pre>
+<p>We notice how the output shows the contents of the list, the output of <code>list.max()</code> and the result of <code>list.max() - 2</code>.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

@@ -1,0 +1,8 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-5651094938996615802010-04-22T07:37:00.000+02:002010-11-26T11:15:12.858+01:00Groovy Goodness: See if String is a Number<p>Groovy adds several methods to the <code>String</code> class we can use to determine if the String value can be parsed into a <code>Number</code> or related class like <code>BigDecimal</code>.</p>
+<pre class="brush:groovy">
+def n = '42.01'
+def i = '201'
+
+assert n.isNumber() && n.isBigDecimal() && n.isFloat() && n.isDouble()
+assert i.isInteger() && i.isLong() && i.isBigInteger()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

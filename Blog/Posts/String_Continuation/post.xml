@@ -1,0 +1,10 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-25368939083263302822010-11-29T15:22:00.000+01:002010-11-29T15:22:03.515+01:00Groovy Goodness: String Continuation<p>Groovy makes writing concise code easy,. We can use the continuation character (\) in a String to split up the definition over multiple lines.</p>
+<pre class="brush:groovy">
+def name ='mrhaki'
+
+def s = "This is not a multiline\
+ String, $name, but the continuation\
+ character (\\) makes it more readable."
+        
+assert 'This is not a multiline String, mrhaki, but the continuation character (\\) makes it more readable.' == s
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

@@ -1,0 +1,88 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-58219831616795782062014-05-05T16:20:00.000+02:002014-05-05T16:20:00.971+02:00Groovy Goodness: Use Builder AST Transformation for Fluent API<p>Since Groovy 2.3 we can easily create a fluent API for our classes with the <code>@Builder</code> AST transformation. We can apply the annotation to our classes and the resulting class file will have all the necessary methods to support a fluent API. We can customize how the fluent API is generated with different annotation parameters. In Groovy code we already can <a href="http://mrhaki.blogspot.com/2009/09/groovy-goodness-with-method.html">use the <code>with</code> method</a> to have a clean way to set property values or use the named constructor arguments. But if our classes need to be used from Java it is nice to give the Java developers a fluent API for our Groovy classes.</p><p>In the following sample we apply the <code>@Builder</code> annotation to a simple class <code>Message</code> with some properties. We leave everything to the default settings and then the resulting <code>Message</code> class file will have a new <code>builder</code> method that return an internal helper class we can use to set our properties. For each property their is a new method with the name of the property so we can set a value. And finally our class contains a <code>build</code> that will return a new instance of the <code>Message</code> class with the correct values for the properties.</p><pre class="brush:groovy">import groovy.transform.builder.Builder
+
+@Builder
+class Message {
+    String from, to, subject, body
+}
+
+def message = Message
+        .builder()  // New internal helper class.
+        .from('mrhaki@mrhaki.com')  // Method per property.
+        .to('mail@host.nl')
+        .subject('Sample mail')
+        .body('Groovy rocks!')
+        .build()  // Create instance of Message
+
+assert message.body == 'Groovy rocks!'
+assert message.from == 'mrhaki@mrhaki.com'
+assert message.subject == 'Sample mail'
+assert message.to == 'mail@host.nl'
+</pre><p>If we want to change the names of the <code>builder</code> and <code>build</code> methods we can use the annotation parameters <code>builderMethodName</code> and <code>buildMethodName</code>:</p><pre class="brush:groovy">import groovy.transform.builder.Builder
+
+@Builder(builderMethodName = 'initiator', buildMethodName = 'create')
+class Message {
+    String from, to, subject, body
+}
+
+def message = Message.initiator()
+        .from('mrhaki@mrhaki.com')
+        .body('Groovy rocks!')
+        .create()
+
+assert message.body == 'Groovy rocks!'
+assert message.from == 'mrhaki@mrhaki.com'
+</pre><p>We see that for each property a corresponding method is generated. We can also customize the prefix for the generated method name with the annotation parameter <code>prefix</code>. In the following sample we define the prefix <em>assign</em> for the method names:</p><pre class="brush:groovy">import groovy.transform.builder.Builder
+
+@Builder(prefix = 'assign')
+class Message {
+    String from, to, subject, body
+}
+
+def message = Message.builder()
+        .assignFrom('mrhaki@mrhaki.com')
+        .assignBody('Groovy rocks!')
+        .build()
+
+assert message.body == 'Groovy rocks!'
+assert message.from == 'mrhaki@mrhaki.com'
+</pre><p>Finally we can also include and exclude properties to need to be included or excluded from our fluent API. We use the annotation parameters <code>includes</code> and <code>excludes</code> to define the names of the properties. This can be a list or a comma separated list of names.</p><pre class="brush:groovy">import groovy.transform.builder.Builder
+
+@Builder(excludes = 'body' /* or includes = 'from,to,subject' */)
+class Message {
+    String from, to, subject, body
+}
+
+def message = Message.builder()
+        .from('mrhaki@mrhaki.com')
+        .to('mail@host.nl')
+        .subject('Groovy 2.3 is released')
+        .build()
+
+assert message.from == 'mrhaki@mrhaki.com'
+assert message.subject == 'Groovy 2.3 is released'
+
+try {
+    message = Message.builder().body('Groovy rocks!').build()
+} catch (MissingMethodException e) {
+    assert e.message.readLines().first() ==
+            'No signature of method: static Message.body() is applicable for argument types: (java.lang.String) values: [Groovy rocks!]'
+}
+</pre><p>The <code>@Builder</code> AST transformation also checks if the <code>@Canonical</code> AST transformation is applied to a class. Any included or excluded properties defined in the <code>@Canonical</code> transformation are also included or excluded for the generated builder code.</p><p>We can define the <code>SimpleStrategy</code> strategy with the <code>builderStrategy</code> annotation parameter. Then the generated class will not have a separate inner helper builder class and build method. The default <code>prefix</code> is set to <code>set</code>, but we can change that if we want to:</p><pre class="brush:groovy">import groovy.transform.builder.Builder
+import groovy.transform.builder.SimpleStrategy
+
+@Builder(builderStrategy = SimpleStrategy, prefix = 'assign')
+class Message {
+    String from, to, subject, body
+}
+
+def message = new Message()
+        .assignFrom('mrhaki@mrhaki.com')  // Method per property.
+        .assignTo('mail@host.nl')
+        .assignSubject('Sample mail')
+        .assignBody('Groovy rocks!')
+
+assert message.body == 'Groovy rocks!'
+assert message.from == 'mrhaki@mrhaki.com'
+assert message.subject == 'Sample mail'
+assert message.to == 'mail@host.nl'
+</pre><p>We will see other feature of the <code>@Builder</code> annotation in future blog posts.</p><p>Code written with Groovy 2.3.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

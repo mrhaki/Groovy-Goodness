@@ -1,0 +1,20 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-75588311433043929042011-10-24T16:05:00.001+02:002011-10-24T16:06:40.152+02:00Groovy Goodness: Customize Groovy Console Visual Output<p>The Groovy Console (<code>$ groovyConsole</code>)  is a great tool to run Groovy scripts and experiment with Groovy. Normally when we run a script the return result (if not null) is shown as a string value. We can customize the way the value is shown by creating a new file with the name <code>OutputTransforms.groovy</code> in our <code>GROOVY_HOME</code> directory. Normally this directory is located in your user directory with the name <code>.groovy</code>.</p><p>In <code>OutputTransforms.groovy</code> we must fill the internal script variable <code>transforms</code> of type <code>ArrayList</code> with a closure where we do the actual customization of the return result. The closure has one parameter which is the return result of the script. We can check for example the type and then transform the result to a different output result.</p><p>The Groovy Console already contains some transformations for script results of type <code>java.awt.Image</code>, <code>javax.swing.Icon</code> and <code>java.awt.Component</code> with no parent. To see the customized visual output we must make sure we enable this in the <em>View</em> menu and select <em>Visualize Script Results</em>.</p><p>The following sample code show that we return a String result that starts with <code>&lt;html&gt;</code> and ends with <code>&lt;/html&gt;</code> as a formatted <code>JLabel</code>. Other String values are prepended with the default text <em>Groovy Console says:</em>.</p><pre class="brush:groovy">// File: ~/.groovy/OutputTransforms.groovy
+import javax.swing.JLabel
+import javax.swing.ImageIcion
+
+transforms << { result -&gt;
+    if (result instanceof String) {
+        if (result ==~ /&lt;html&gt;.*&lt;\/html&gt;/) {
+            return new JLabel(result)
+        } else if (result == 'mrhaki') {
+            return new ImageIcon('/Users/mrhaki/Pictures/blog/haki-logo-black-64.png')
+        } else {
+            return "Groovy Console says: $result"
+        }
+    }
+}
+</pre>
+
+<div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-mVj7v55BBfQ/TqVvlbapHuI/AAAAAAAAE98/Mfc_nv_LGQQ/s1600/groovyconsole-output-1.png" imageanchor="1" style="margin-left:1em; margin-right:1em"><img border="0" height="173" width="400" src="http://2.bp.blogspot.com/-mVj7v55BBfQ/TqVvlbapHuI/AAAAAAAAE98/Mfc_nv_LGQQ/s400/groovyconsole-output-1.png" /></a></div>
+<div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-OpA9qopU4xU/TqVvld-1nrI/AAAAAAAAE-E/WMAfFmvZDEk/s1600/groovyconsole-output-2.png" imageanchor="1" style="margin-left:1em; margin-right:1em"><img border="0" height="132" width="400" src="http://2.bp.blogspot.com/-OpA9qopU4xU/TqVvld-1nrI/AAAAAAAAE-E/WMAfFmvZDEk/s400/groovyconsole-output-2.png" /></a></div>
+<div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/-BXB5S_NAHPE/TqVwj51mkPI/AAAAAAAAE-U/fRfJYtta_FY/s1600/groovyconsole-output-3.png" imageanchor="1" style="margin-left:1em; margin-right:1em"><img border="0" height="215" width="400" src="http://1.bp.blogspot.com/-BXB5S_NAHPE/TqVwj51mkPI/AAAAAAAAE-U/fRfJYtta_FY/s400/groovyconsole-output-3.png" /></a></div><br />Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

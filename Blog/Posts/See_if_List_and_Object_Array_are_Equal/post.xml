@@ -1,0 +1,19 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-26426713943460960462011-04-03T15:06:00.000+02:002011-04-03T15:06:46.286+02:00Groovy Goodness: See if List and Object Array are Equal<p>Groovy adds a lot of useful methods to standard JDK classes. For example Groovy adds the <code>equals()</code> method to <code>List</code> and <code>Object[]</code> so both can be compared. We must make sure the array is of type <code>Object[]</code> to make it work. Also the <code>equals()</code> method is added to arrays of type <code>int</code>.</p>
+<pre class="brush:groovy">
+def numbers1 = [1,2,3] as int[]
+def numbers2 = [1,2,3] as int[]
+def numbers3 = [1,2] as int[]
+
+assert numbers1.equals(numbers2)
+assert numbers2 == numbers1
+assert !(numbers1.equals(numbers3))
+
+def list = ['Groovy', 'Grails', 'Gradle']
+def stringArray1 = ['Grails', 'Gradle', 'Groovy'] as Object[]
+def stringArray2 = ['Groovy', 'Grails', 'Gradle'] as Object[]
+
+assert list.equals(stringArray2)
+assert list == stringArray2
+assert !(list.equals(stringArray1)) // order matters
+assert list != stringArray1
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

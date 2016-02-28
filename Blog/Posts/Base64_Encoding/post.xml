@@ -1,0 +1,11 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-32277821684663942192009-11-04T07:00:00.002+01:002010-11-26T11:15:13.112+01:00Groovy Goodness: Base64 Encoding<p>The <code>byte[]</code> and <code>String</code> classes in Groovy's GDK have methods to Base64 encode and decode Strings.</p>
+<pre class="brush:groovy">
+def s = 'Argh, Groovy you say, mate?'
+
+String encoded = s.bytes.encodeBase64().toString()
+assert 'QXJnaCwgR3Jvb3Z5IHlvdSBzYXksIG1hdGU/' == encoded
+
+byte[] decoded = encoded.decodeBase64()
+assert s == new String(decoded)
+</pre>
+<p>Run this script on <a href="http://groovyconsole.appspot.com/view.groovy?id=35001">Groovy web console</a>.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com6

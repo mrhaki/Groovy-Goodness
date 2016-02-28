@@ -1,0 +1,46 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-14605340309743575922014-04-23T15:23:00.000+02:002014-04-23T15:23:16.572+02:00Groovy Goodness: Customize ToString Creation<p>The <code>@ToString</code> AST transformation has several parameters we can define to customize the generated code for the <code>toString</code> method. We have already seen some of the parameters in an <a href="http://mrhaki.blogspot.com/2011/04/groovy-goodness-easy-tostring-creation.html">earlier blog post</a>, but in new Groovy releases some extra parameters were added.</p><p>For example we can leave out the package name of the class with the parameter <code>includePackage</code>. If we set the value to <code>false</code> the package name is not included:</p><pre class="brush:groovy">package com.mrhaki.blog.groovy
+
+import groovy.transform.*
+
+@ToString(includePackage=false /* default true */)
+class Course {
+    String title
+    Integer maxAttendees
+}
+
+final Course course = new Course(title: 'Groovy 101', maxAttendees: 200)
+
+assert course.toString() == 'Course(Groovy 101, 200)'
+</pre><p>We can skip properties with <code>null</code> value from the <code>toString</code> method output with the paramater <code>ignoreNulls</code>:</p><pre class="brush:groovy">package com.mrhaki.blog.groovy
+
+import groovy.transform.*
+
+@ToString(ignoreNulls=true /* default false */)
+class Course {
+    String title
+    Integer maxAttendees
+}
+
+final Course course = new Course(title: 'Groovy 101')
+
+assert course.toString() == 'com.mrhaki.blog.groovy.Course(Groovy 101)'
+</pre><p>And since Groovy 2.1 we can cache the result of <code>toString</code> when we know the class is immutable or at lease we know the values won't change:</p><pre class="brush:groovy">package com.mrhaki.blog.groovy
+
+import groovy.transform.*
+
+@ToString(cache=true /* default false */)
+class Course {
+    String title
+    Integer maxAttendees
+}
+
+Course course = new Course(title: 'Groovy 101', maxAttendees: 200)
+
+assert course.toString() == 'com.mrhaki.blog.groovy.Course(Groovy 101, 200)'
+
+// Value change will not be reflected in toString().
+course.title = 'Grails with REST'
+
+assert course.toString() == 'com.mrhaki.blog.groovy.Course(Groovy 101, 200)'
+assert course.title == 'Grails with REST'
+</pre><p>Code written with Groovy 2.2.2.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

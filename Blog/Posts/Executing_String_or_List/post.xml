@@ -1,0 +1,23 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-67333104533458743832009-10-09T07:00:00.002+02:002010-11-26T11:15:13.186+01:00Groovy Goodness: Executing String or List<p>Groovy adds the <code>execute()</code> method to the <code>String</code> and <code>List</code> classes. When we invoke the <code>execute()</code> we get a <code>Process</code> object back. We can get information from this object with some Groovy added methods. For example to get the output of the command we only have to access the <code>text</code> property. Or we can access the input and output streams to send data to the process or retrieve data from the <a href="http://groovy.codehaus.org/Process+Management">process</a>.</p>
+<pre class="brush:groovy">
+new File('.').eachFileMatch(~/.*.jpg$/) {
+    // Use ImageMagick convert command to create a thumbnail for a JPEG image.
+    def converter = "convert ${it.name} -thumbnail 100x100 thumb-${it.name - '.jpg'}.gif".execute()
+    converter.waitFor()
+    
+    if (converter.exitValue()) {
+        println "Error creating thumbnail for ${it.name}:"
+        println converter.text
+    } else {
+        println "Created a thumbnail for ${it.name}."
+    }
+}
+
+// We can also use a List. Useful if arguments have spaces or 
+// for shell wildcards like *.
+def thumbnail = ["convert", "file.jpg", "-thumbnail", "100x100", "thumb-file.gif"].execute()
+thumbnail.waitFor()
+
+println "Exit value: ${thumbnail.exitValue()}"
+println "Output: ${thumbnail.text}"
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

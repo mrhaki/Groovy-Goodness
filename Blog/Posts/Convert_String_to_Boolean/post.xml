@@ -1,0 +1,13 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-1791948853464140262009-11-13T07:03:00.001+01:002010-11-26T11:15:13.083+01:00Groovy Goodness: Convert String to Boolean<p>Groovy adds the <code>toBoolean()</code> method to the <code>String</code> class. If the value of the string is <em>true</em>, <em>1</em> or <em>y</em> the result is true, otherwise it is false.</p>
+<pre class="brush:groovy">
+assert "y".toBoolean()
+assert 'TRUE'.toBoolean()
+assert '  trUe  '.toBoolean()
+assert " y".toBoolean()
+assert "1".toBoolean()
+
+assert ! 'other'.toBoolean()
+assert ! '0'.toBoolean()
+assert ! 'no'.toBoolean()
+assert ! '  FalSe'.toBoolean()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com3

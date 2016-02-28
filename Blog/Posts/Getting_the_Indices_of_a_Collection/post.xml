@@ -1,0 +1,20 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-50702963069175308802015-01-28T16:54:00.000+01:002015-01-28T16:54:38.164+01:00Groovy Goodness: Getting the Indices of a Collection<p>Since Groovy 2.4 we can use the <code>indices</code> property on a <code>Collection</code> to get the indices of the elements in the collection. We get an <code>IntRange</code> object as a result.</p><pre class="brush:groovy">def list = [3, 20, 10, 2, 1]
+assert list.indices == 0..4
+
+
+// Combine letters in alphabet
+// with position (zero-based).
+def alphabet = 'a'..'z'
+def alphabetIndices = [alphabet, alphabet.indices].transpose()
+// alphabetIndices = [['a', 0], ['b', 1], ...]
+
+// Find position of each letter
+// from 'groovy' in alphabet.
+def positionInAlphabet = 'groovy'.inject([]) { result, value ->
+    result << alphabetIndices.find { it[0] == value }[1] + 1
+    result
+}
+
+assert positionInAlphabet == [7, 18, 15, 15, 22, 25]
+</pre>
+<p>Code written with Groovy 2.4.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

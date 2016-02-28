@@ -1,0 +1,15 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-9026706255193138522009-12-21T07:00:00.001+01:002010-11-26T11:15:12.947+01:00Groovy Goodness: Override and Use Old Implementation with Dynamic Methods<p>We can add new methods to classes with the <code>metaClass</code> property. But what if we want to use the old implementation for some cases? We can save the original method implementation in a variable and use it in our new implementation. The best way to get the original method is to access <code>metaClass</code> and invoke the <code>getMetaMethod()</code> method. We save this method in a variable. In the new implementatation we can use the <code>invoke()</code> method on the saved method to invoke the original code.</p>
+<pre class="brush:groovy">
+def savedToUpperCase = String.metaClass.getMetaMethod('toUpperCase', [] as Class[])
+String.metaClass.toUpperCase = { -> 
+    def result = savedToUpperCase.invoke(delegate)    
+    if (delegate =~ /Groovy/) {
+        result + ' Oh, yeah man! Groooovy...'
+    } else {
+        result
+    }
+}
+
+assert 'A SIMPLE STRING' == 'A simple string'.toUpperCase()
+assert 'THIS IS GROOVY. Oh, yeah man! Groooovy...' == 'This is Groovy.'.toUpperCase()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

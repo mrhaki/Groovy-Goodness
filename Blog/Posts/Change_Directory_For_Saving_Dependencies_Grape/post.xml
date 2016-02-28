@@ -1,0 +1,14 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-62761225579214194922015-09-14T14:57:00.001+02:002015-09-14T14:57:43.633+02:00Groovy Goodness: Change Directory For Saving Dependencies Grape<p>With <a href="http://mrhaki.blogspot.com/2009/09/groovy-goodness-grab-that-dependency.html">Grape</a> in Groovy we can add dependency management for our code. Especially the <code>@Grab</code> annotation is very useful to specify dependencies directly in our code. Groovy will download the dependencies if needed and store them in the <code>USER_HOME/.groovy/grapes</code> directory. If we want to change this directory we must set the Java system property <code>grape.root</code>. We specify the new directory to store the downloaded dependencies as a value.</p><p>In the following example we have a simple script with a dependency on the Apache Commons library. We use the <code>-Dgrape.root</code> command line option when we run the script and specify the directory <code>deps</code>. After we have run the script we can see the contents of the <code>deps</code> directory to see the downloaded files.</p><pre class="brush:plain;light:true">$ groovy -Dgrape.root=deps/ sample.groovy
+$ tree deps
+deps
+└── grapes
+    └── org.apache.commons
+        └── commons-lang3
+            ├── ivy-3.4.xml
+            ├── ivy-3.4.xml.original
+            ├── ivydata-3.4.properties
+            └── jars
+                └── commons-lang3-3.4.jar
+
+4 directories, 4 files
+</pre><p>Written with Groovy 2.4.4.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

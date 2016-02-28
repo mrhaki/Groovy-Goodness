@@ -1,0 +1,73 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Use Constructor as Method Pointer</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Use Constructor as Method Pointer</h3>
+
+<div class="post">
+<p>In Java 8 we can create a constructor reference. We must use the syntax <code>Class::new</code> and we get a constructor reference. This syntax is not supported in Groovy, but we can use the method pointer or reference syntax <code>.&amp;</code> to turn a method into a closure. We can even turn a constructor into a closure and use it everywhere where closures are allowed.</p><p>In the following sample code we have a <code>User</code> class with some properties. Via the <code>User.metaClass</code> we can get a reference to the method <code>invokeConstructor</code> and turn it into a method closure:</p><pre class="brush:groovy">@groovy.transform.Immutable
+class User {
+    String name
+    int age
+}
+
+
+// Initial list with user defined
+// using a map or Object array.
+def userList = [
+    // User defined as map, keys
+    // are properties of User class.
+    [name: 'mrhaki', age: 41], 
+    
+    // Object array with name and
+    // age properties for User class.
+    ['john', 30] as Object[]
+]
+
+// Create constructor reference.
+// Result is a closure we can use in our code.
+def createUser = User.metaClass.&invokeConstructor
+
+// Invoke the collect method with our
+// constructor reference. At the end
+// all elements of the userList 
+// are converted to new User objects.
+def users = userList.collect(createUser)
+
+
+assert users.name == ['mrhaki', 'john']
+assert users.age == [41, 30]
+</pre><p>Code written with Groovy 2.4.1.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

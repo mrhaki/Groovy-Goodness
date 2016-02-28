@@ -1,0 +1,16 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-68246435771448684562010-04-29T22:06:00.001+02:002010-11-26T11:15:12.844+01:00Groovy Goodness: Using the Subscript Operator on Iterators<p>Since Groovy 1.7.2 we can use the subscript operator for the <code>Iterator</code> class through the <code>getAt()</code> method. But we have to keep in mind the index value we use depends on a previous invocation of the subscript operator. Let's see this with an example:</p>
+<pre class="brush:groovy">
+def list = ['Groovy', 'Grails', 'Griffon', 'Gradle']
+def iterator = list.iterator()
+
+assert 'Groovy' == iterator[0]
+assert 'Gradle' == iterator[-1]
+assert !iterator[1]  // Iterator is exhausted.
+
+iterator = list.iterator()  // Get new iterator.
+def newList = []
+(0..&lt;list.size()).each {
+ newList &lt;&lt; iterator[0]  // Index 0 is next element.
+}
+assert 'Groovy,Grails,Griffon,Gradle' == newList.join(',')
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

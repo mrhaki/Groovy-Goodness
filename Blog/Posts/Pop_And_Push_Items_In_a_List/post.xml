@@ -1,0 +1,17 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-12681283852101976442015-01-28T16:32:00.000+01:002015-01-28T16:32:05.509+01:00Groovy Goodness: Pop And Push Items In a List<p>Groovy adds the <code>pop</code> and <code>push</code> methods to the <code>List</code> class. With the <code>pop</code> method we remove the last element of the list. And with the <code>push</code> method we add an element to the end of the list.</p><pre class="brush:groovy">def list = ['Groovy', 'is', 'great!']
+
+// Remove last item from list
+// with pop().
+assert list.pop() == 'great!'
+assert list == ['Groovy', 'is']
+
+// Remove last item
+// which is now 'is'.
+list.pop()
+
+// Add new item to end of
+// the list (equivalent for add()).
+list.push('rocks!')
+
+assert list == ['Groovy', 'rocks!']
+</pre><p>Code written with Groovy 2.4.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

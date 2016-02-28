@@ -1,0 +1,20 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-12900905499359625102010-12-01T22:56:00.000+01:002010-12-01T22:56:06.157+01:00Groovy Goodness: Invoke Anonymous Closure<p>Groovy closures can be invoked directly after we have defined them. This way we get the result immediately and can assign it to a variable. We use <code>call()</code> or <code>()</code> after we have defined the closure, so the closure code is executed and the return value of the closure is assigned to the variable.</p>
+<pre class="brush:groovy">
+def date = {
+    def d = new Date()
+    d.set year: 2010, month: Calendar.DECEMBER, date: 1
+    d.format "dd-MM-yyyy"
+}()
+
+assert date == '01-12-2010'
+
+def text = {
+    def result = ''
+    "mrhaki".size().times {
+        result += it
+    }
+    result
+}.call()
+
+assert text == '012345'
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

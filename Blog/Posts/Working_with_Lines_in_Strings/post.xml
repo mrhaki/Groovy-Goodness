@@ -1,0 +1,48 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-41026811763311030422009-11-01T07:00:00.002+01:002010-11-26T11:15:13.121+01:00Groovy Goodness: Working with Lines in Strings<p>In Groovy we can create multiline strings, which contain line separators. But we can also read text from an file containing line separators. The Groovy String GDK contains method to work with strings that contain line separators. We can loop through the string line by line, or we can do split on each line. We can even convert the line separators to the platform specific line separators with the <code>denormalize()</code> method or linefeeds with the <code>normalize()</code> method.</p>
+<pre class="brush:groovy">
+def multiline = '''\
+Groovy is closely related to Java,
+so it is quite easy to make a transition.
+'''
+
+// eachLine takes a closure with one argument, that
+// contains the complete line.
+multiline.eachLine { 
+    if (it =~ /Groovy/) {
+        println it  // Output: Groovy is closely related to Java,
+    }
+}  
+
+// or eachLine has a closure with two argument, the current line
+// and the line count.
+multiline.eachLine { line, count -> 
+    if (count == 0) {
+        println "line $count: $line"  // Output: line 0: Groovy is closely related to Java,
+    }
+}
+
+def platformLinefeeds = multiline.denormalize()
+def linefeeds = multiline.normalize()
+
+// Read all lines and convert to list.
+def list = multiline.readLines()
+assert list instanceof ArrayList
+assert 2 == list.size()
+assert 'Groovy is closely related to Java,' == list[0]
+
+def records = """\
+mrhaki\tGroovy
+hubert\tJava
+"""
+
+// splitEachLine will split each line with the specified
+// separator. The closure has one argument, the list of 
+// elements separated by the separator.
+records.splitEachLine('\t') { items ->
+    println items[0] + " likes " + items[1]
+}
+// Output:
+// mrhaki likes Groovy
+// hubert likes Java
+</pre>
+<p>Run this script in <a href="http://groovyconsole.appspot.com/view.groovy?id=34005">Groovy web console</a>.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

@@ -1,0 +1,26 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-85580321860526861182009-11-06T07:00:00.002+01:002010-11-26T11:15:13.108+01:00Groovy Goodness: Variable Scope in Scripts<p>In Groovy scripts we can define variables with a type or with the <code>def</code> keyword. Or we can leave out any type definition or <code>def</code> keyword. This effects the scope of the variable. If we want to use the variable in a method we must not define it with a type or <code>def</code>. This way the variable is added to the script binding and can be accessed in a method.</p>
+<pre class="brush:groovy">
+String s = 'I am in local scope.'
+def i = 42
+counter = 0
+
+def runIt() {
+    try {
+        assert 'I am in local scope.' == s
+    } catch (e) {
+        assert e instanceof MissingPropertyException
+    }
+    try {
+        assert 42 == i
+    } catch (e) {
+        assert e instanceof MissingPropertyException
+    }
+    assert 0 == counter++
+}
+
+runIt()
+
+assert 'I am in local scope.' == s
+assert 42 == i
+assert 1 == counter
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com3

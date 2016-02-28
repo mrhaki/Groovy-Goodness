@@ -1,0 +1,13 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-53984664180866320212009-10-30T07:00:00.003+01:002010-11-26T11:15:13.125+01:00Groovy Goodness: Invoke Methods Dynamically<p>In Groovy we can invoke a method with a name assigned to a variable. We use the GString notation to invoke the method with the variable name. We can pass parameters to the method just like when we use the method name directly.</p>
+<pre class="brush:groovy">
+def s = "Groovy is so much fun"
+def methods = ['Upper', 'Lower']
+def result = methods.collect { s."to${it}Case"() }
+assert 'GROOVY IS SO MUCH FUN' == result[0]
+assert 'groovy is so much fun' == result[1]
+
+// We can pass parameters just like a normal method invocation.
+def method = 'count'
+def param = 'o'
+assert 3 == s."$method"(param)  // s.count('o').
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

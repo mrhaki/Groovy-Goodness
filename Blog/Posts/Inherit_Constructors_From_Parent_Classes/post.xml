@@ -1,0 +1,27 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-61581364433317392642010-06-14T22:36:00.004+02:002010-11-26T11:15:12.805+01:00Groovy Goodness: Inherit Constructors From Parent Classes<p>We have a new transformation annotation in Groovy 1.7.3 to safe us a lot of typing when we define new classes that extend from parent classes with multiple constructors: <code>@InheritConstructors</code>. When we apply this transformation to our class we automatically get all constructors from the super class. This is very useful if we for example extend from <code>java.lang.Exception</code>, because otherwise we would have to define four constructors ourselves. The transformation adds these constructors for us in our class file. This works also for our own created classes.</p>
+<pre class="brush:groovy">
+import groovy.transform.InheritConstructors
+
+@InheritConstructors
+class MyException extends Exception {
+}
+
+def e = new MyException()
+def e1 = new MyException('message')   // Other constructors are available.
+assert 'message' == e1.message
+
+
+class Person {
+    String name
+    
+    Person(String name) {
+        this.name = name
+    }
+}
+
+@InheritConstructors
+class Child extends Person {}
+
+def child = new Child('Liam')
+assert 'Liam' == child.name
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

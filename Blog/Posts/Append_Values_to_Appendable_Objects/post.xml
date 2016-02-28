@@ -1,0 +1,55 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-67143236003684543012013-01-28T05:46:00.000+01:002013-01-28T05:46:16.506+01:00Groovy Goodness: Append Values to Appendable Objects<p>Since Groovy 2.1 we have a couple of extra methods available for objects that implement the <code><a href="http://docs.oracle.com/javase/6/docs/api/java/lang/Appendable.html">java.lang.Appendable</a></code> interface. A lot of <em>Writer</em> objects implement this interface. The documentation of the <code>Appendable</code> interface mentions: An object to which <code>char</code> sequences and values can be appended.</p><p>First the <code>leftShift()</code> method is added. This means we can use the leftShift operator (&lt;&lt;) to append a value. Then we also can use the <code>withFormatter()</code> method. We can pass a closure to this method or a <code>java.util.Locale</code> object and a closure. The closure has a single parameter which is a <code><a href="http://docs.oracle.com/javase/6/docs/api/java/util/Formatter.html">java.util.Formatter</a></code> instance. We can use this method to add printf-style formatted strings to an <code>Appendable</code> object. If we pass a <code>Locale</code> object to the method the <code>Formatter</code> is created with the specified <code>Locale</code> to created localized printf-sytle formatted strings.</p><pre class="brush:groovy">// Create object that implements the Appendable interface.
+final Appendable appendable = new StringWriter()
+
+assert appendable in Appendable
+
+
+// Use leftShift operator to add to Appendable implementation.
+appendable &lt;&lt; 'Groovy is Gr8!' &lt;&lt; newLine
+
+
+// Use withFormatter() method.
+// Formatter object 
+// is passed to closure as parameter.
+appendable.withFormatter { formatter ->
+    // Simple formatter pattern to reorder the arguments.
+    formatter.format(/m r %3$1s %2$1s %1$1s %4$1s%n/, 'k', 'a', 'h', 'i')
+}
+
+
+// Use withFormatter() method and use Locale object
+// as extra argument. The Locale is passed on
+// to create the Formatter object.
+appendable.withFormatter(Locale.US) { formatter ->
+    formatter.format("US: " + datePattern, date)
+}
+// Use different Locale.
+appendable.withFormatter(new Locale('nl')) { formatter ->
+    formatter.format("Dutch: $datePattern", date)
+}
+
+
+// Check result is as expected:
+assert appendable.toString() == '''Groovy is Gr8!
+m r h a k i
+US: January 27, 2013
+Dutch: januari 27, 2013
+'''
+
+
+// Helper getters:
+
+String getNewLine() {
+    System.getProperty('line.separator')
+}
+
+Date getDate() {
+    // Simple date to use in withFormatter() methods.
+    Date.parse('yyyy-MM-dd', '2013-01-27')
+}
+
+String getDatePattern() {
+    // Date pattern for Formatter.
+    '%1$tB %1$te, %1$tY%n'
+}
+</pre><p>Code written with Groovy 2.1</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

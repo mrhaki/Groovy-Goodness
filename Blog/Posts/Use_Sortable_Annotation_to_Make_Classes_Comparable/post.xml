@@ -1,0 +1,65 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-83174691319925592782014-05-05T16:45:00.000+02:002014-05-09T08:35:18.127+02:00Groovy Goodness: Use Sortable Annotation to Make Classes Comparable<p>Since Groovy 2.3 we can use the <code>@Sortable</code> annotation to make a class implement the <code>Comparable</code> interface. Also new <code>comparator</code> methods are added. All properties of a class are used to implement the <code>compareTo</code> method. The order of the properties determines the priority used when sorting. With the annotation parameters <code>includes</code> and <code>excludes</code> we can define which properties of the class need to be used to implement the <code>compareTo</code> method.</p><p>In the following class with the name <code>Course</code> we define three properties <code>title</code>, <code>beginDate</code> and <code>maxAttendees</code>. We also apply the <code>@Sortable</code> annotation. Notice we cannot use <code>int</code> as a type, because it doesn't implement the <code>Comparable</code> interface. The class <code>Integer</code> does.</p><pre class="brush:groovy">import groovy.transform.Sortable
+import groovy.transform.ToString
+
+@Sortable
+@ToString
+class Course {
+    // Order of properties determines priority when sorting
+    String title
+    Date beginDate
+    Integer maxAttendees  // int doesn't implement Comparable, so use Integer
+}
+
+
+final Course groovy = new Course(
+        title: 'Groovy', beginDate: new Date() + 7, maxAttendees: 40)
+final Course groovy2 = new Course(
+        title: 'Groovy', beginDate: new Date() + 2, maxAttendees: 50)
+final Course grails = new Course(
+        title: 'Grails', beginDate: new Date() + 1, maxAttendees: 20)
+
+
+final List&lt;Course&gt; courses = [groovy, groovy2, grails]
+assert courses.last().title == 'Grails'
+
+// Use sort() method to sort
+final List&lt;Course&gt; sorted = courses.sort(false /* do not mutate original collection */)
+
+assert sorted.first().title == 'Grails'
+assert sorted.last().title == 'Groovy'
+assert sorted.maxAttendees == [20, 50, 40]
+</pre><p>If we only want the properties <code>title</code> and <code>maxAttendees</code> to be used in the <code>compareTo</code> method we define those properties with the <code>includes</code> parameter:</p><pre class="brush:groovy">// Order of fields for includes determines priority when sorting
+@Sortable(includes = ['title', 'maxAttendees'])
+// Or @Sortable(excludes = ['beginDate'])
+@ToString
+class CourseSort {
+    String title
+    Date beginDate
+    Integer maxAttendees
+}
+
+final Course groovy = new Course(
+        title: 'Groovy', beginDate: new Date() + 7, maxAttendees: 40)
+final Course groovy2 = new Course(
+        title: 'Groovy', beginDate: new Date() + 2, maxAttendees: 50)
+final Course grails = new Course(
+        title: 'Grails', beginDate: new Date() + 1, maxAttendees: 20)
+
+
+final List&lt;Course&gt; courses = [groovy, groovy2, grails]
+
+// Use sort() method to sort
+final List&lt;Course&gt; sorted = courses.sort(false)
+
+assert sorted.first().title == 'Grails'
+assert sorted.last().title == 'Groovy'
+assert sorted.maxAttendees == [20, 40, 50]
+</pre><p>Besides implementing the <code>Comparable</code> interface with a <code>compareTo</code> method, the AST transformation also adds public static methods with the pattern <code>comparatorBy<em>Property</em></code>. These methods return a <code>Comparator</code> object for the given property.</p><pre class="brush:groovy">final Comparator byMaxAttendees = Course.comparatorByMaxAttendees()
+final List<course> sortedByMaxAttendees = courses.sort(false, byMaxAttendees)
+
+assert sortedByMaxAttendees.maxAttendees == [20, 40, 50]
+// beginDate is not used for sorting
+assert sortedByMaxAttendees[2].beginDate &lt; sortedByMaxAttendees[1].beginDate
+
+assert Course.declaredMethods.name.findAll { it.startsWith('comparatorBy') } == ['comparatorByTitle', 'comparatorByMaxAttendees']
+</pre><p>Code written with Groovy 2.3.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

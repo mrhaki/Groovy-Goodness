@@ -1,0 +1,7 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-40512285791915753242009-12-31T07:00:00.001+01:002010-11-26T11:15:12.920+01:00Groovy Goodness: Recursively Collect Elements<p>The <code>collectAll()</code> method of the <code>Collection</code> class is a Groovy extension to the standard Java classes. With this method we can transform values in a collection and the result is stored in a new collection. We have learned about the <code>collect()</code> method before. The <code>collectAll()</code> can apply the closure to the elements in the collection, but also to collections in the collection. So if we have nested collections we can use the <code>collectAll()</code> method to transform each element.</p>
+<pre class="brush:groovy">
+def list = [10, 20, 30, [1, 2, 3, [25, 50]], ['Groovy']]
+
+assert [20, 40, 60, [2, 4, 6, [50, 100]], ['GroovyGroovy']] == list.collectAll { it*2 }
+assert [20, 40, 60, [1, 2, 3, [25, 50], 1, 2, 3, [25, 50]], ['Groovy', 'Groovy']] == list.collect { it * 2 }
+​</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

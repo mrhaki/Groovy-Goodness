@@ -1,0 +1,15 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-65987751052611590302010-03-11T07:00:00.002+01:002010-11-26T11:15:12.873+01:00Groovy Goodness: Use Keywords as Method Names<p>Normally we cannot use keywords in Java or Groovy to use as method names. But in Groovy we can. We need to enclose the keyword between single or double quotes as we define the method. In the following example we create a method with the name <code>switch</code>, which is a Java/Groovy keyword.</p>
+<pre class="brush:groovy">
+class User {
+
+    String username
+    
+    String 'switch'() {
+        username = username.reverse()
+    }
+
+}
+
+def u = new User(username: 'mrhaki')
+assert 'ikahrm' == u.switch()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com5

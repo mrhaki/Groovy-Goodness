@@ -1,0 +1,41 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-38778999253004317162009-10-01T07:00:00.005+02:002010-11-26T11:15:13.203+01:00Groovy Goodness: Create a Singleton Class<p>Creating a singleton class in Groovy is simple. We only have to use the <code>@Singleton</code> transformation annotation and a complete singleton class is generated for us.</p>
+<pre class="brush:groovy">
+package com.mrhaki.blog
+
+// Old style singleton class.
+public class StringUtil {
+    private static final StringUtil instance = new StringUtil();
+
+    private StringUtil() {
+    }
+
+    public static StringUtil getInstance() { 
+        return instance;
+    }
+    
+    int count(text) { 
+        text.size() 
+    }
+}
+
+assert 6 == StringUtil.instance.count('mrhaki')
+
+// Use @Singleton to create a valid singleton class.
+// We can also use @Singleton(lazy=true) for a lazy loading
+// singleton class.
+@Singleton 
+class Util {
+    int count(text) {
+        text.size()
+    }
+}
+
+assert 6 == Util.instance.count("mrhaki")
+
+try {
+    new Util()
+} catch (e) {
+    assert e instanceof RuntimeException
+    assert "Can't instantiate singleton com.mrhaki.blog.Util. Use com.mrhaki.blog.Util.instance" == e.message
+}
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com3

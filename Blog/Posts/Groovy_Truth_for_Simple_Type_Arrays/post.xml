@@ -1,0 +1,12 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-28122363986414814022010-08-09T21:08:00.000+02:002010-11-26T11:15:12.763+01:00Groovy Goodness: Groovy Truth for Simple Type Arrays<p>Since Groovy 1.7.4 we can use simple type arrays in a conditional context. If the array is empty we get false, otherwise true is returned. Support for byte, short, int, long, float, double, char and boolean type arrays is added to Groovy. This functionality already worked for Object arrays, but now also for simple type arrays.</p>
+<pre class="brush:groovy">
+def bytes = [] as byte[]
+def ints = [1,2,4] as int[]
+def floats = [] as float[]
+def booleans = [true, false] as boolean[]
+
+assert !bytes
+assert ints
+assert !floats
+assert booleans
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

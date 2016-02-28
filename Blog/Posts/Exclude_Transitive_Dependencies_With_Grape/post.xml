@@ -1,0 +1,35 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-31494786937950826872015-09-15T14:06:00.000+02:002015-09-15T14:08:51.415+02:00Groovy Goodness: Exclude Transitive Dependencies With Grape<p>The built-in dependency mechanism in Groovy is Grape. With Grape we can define dependencies in our code and Groovy will download them and make them available when we run our Groovy application. The easiest way to use it is with the <code>@Grab</code> annotation with a dependency as the value. If we want to exclude a transitive dependency we use the <code>@GrabExclude</code> annotation. We must specify the attributes <code>group</code> and <code>module</code> of the annotation with the dependency we want to exclude. An alternative syntax is a shorthand version where the <code>group</code> and <code>module</code> are combined into a single String value separated by a colon (<code>:</code>).</p><p>In the following Groovy script we have a very simple Spring application with Java (Groovy) based configuration. So we need a dependency on the <em>spring-context</em> module. But we don't want to use the standard Spring logging. Spring used Apache Commons logging and we want to replace it with an SLF4J API implementation: Logback. So we use the <code>@GrabExclude</code> annotation to exclude the commons logging dependency. And we add two extra dependencies to replace it: <code>org.slf4j:jcl-over-slf4j</code> and <code>ch.qos.logback:logback-classic</code>.</p><pre class="brush:groovy">package com.mrhaki
+
+@Grab('org.springframework:spring-context:4.2.1.RELEASE')
+// Exclude the commons-logging dependency 
+// as Spring transitive dependency.
+@GrabExclude(group = 'commons-logging', module='commons-logging') // Or 'commons-logging:commons-logging'
+// Replace commons-logging with SLF4J 
+// implementation Logback.
+@Grab('org.slf4j:jcl-over-slf4j:1.7.12')
+@Grab('ch.qos.logback:logback-classic:1.1.3')
+import org.springframework.context.ApplicationContext
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.AnnotationConfigApplicationContext
+
+
+// Define Spring Java (Groovy) configuration class.
+@Configuration
+class AppConfig {
+
+    // Simple bean is a String.
+    @Bean
+    String obvious() {
+        'Groovy is gr8!'
+    }
+}
+
+// Create new Spring application context and use
+// our Groovy configuration class
+final ApplicationContext appContext = 
+    new AnnotationConfigApplicationContext(AppConfig)
+
+// Check that bean is in application context.
+assert appContext.getBean('obvious') == 'Groovy is gr8!'
+</pre><p>Written with Groovy 2.4.4.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

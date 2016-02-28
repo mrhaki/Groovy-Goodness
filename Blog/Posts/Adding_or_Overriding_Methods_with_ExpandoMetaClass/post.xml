@@ -1,0 +1,18 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-11877666153639098562009-12-20T07:00:00.001+01:002010-11-26T11:15:12.949+01:00Groovy Goodness: Adding or Overriding Methods with ExpandoMetaClass<p>In Groovy we can add new methods to classes with <code>ExpandoMetaClass</code> using the <code>leftShift</code> (<code>&lt;&lt;</code>) operator. If the method already exists we get an error. To override an existing method we can use the equal operator (<code>=</code>). But we can also use the equal operator (<code>=</code>) to add a new method, but then we don't get an error when the method already exists.</p>
+<pre class="brush:groovy">
+Integer.metaClass.eights &lt;&lt; { delegate * 8 }
+assert 32 == 4.eights()
+
+Integer.metaClass.hundreds = { delegate * 100 }
+assert 200 == 2.hundreds()
+
+try {
+    Integer.metaClass.toString &lt;&lt; { 'Groovy' } // Cannot use &lt;&lt; for existing method.
+    assert false
+} catch (e) {
+    assert 'Cannot add new method [toString] for arguments [[]]. It already exists!' == e.message
+}
+
+Integer.metaClass.toString = { 'Groovy' }
+assert 'Groovy' == 100.toString()
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

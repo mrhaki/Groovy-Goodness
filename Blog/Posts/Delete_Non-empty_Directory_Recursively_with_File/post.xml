@@ -1,0 +1,15 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-28750352363404382442009-12-10T06:53:00.001+01:002010-11-26T11:15:12.978+01:00Groovy Goodness: Delete Non-empty Directory Recursively with File<p>Groovy enhances the <code>File</code> class with several methods. One is the <code>deleteDir()</code> method. With this method we can delete a directory with all it's subdirectories and files. So the directory doesn't need to be empty to run this method.</p>
+<pre class="brush:groovy">
+def mainDir = new File('test') 
+def subDir = new File(mainDir, 'app')
+def file = new File(subDir, 'test.txt')
+
+subDir.mkdirs()  // Create directories.
+file &lt;&lt; 'sample'  // Create file and add contents.
+
+assert mainDir.exists() &amp;&amp; subDir.exists() &amp;&amp; file.exists()
+
+def result = mainDir.deleteDir()  // Returns true if all goes well, false otherwise.
+assert result
+assert !mainDir.exists() &amp;&amp; !subDir.exists() &amp;&amp; !file.exists() 
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

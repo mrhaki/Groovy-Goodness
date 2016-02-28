@@ -1,0 +1,7 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-85768944011818415532013-09-09T04:00:00.000+02:002013-09-09T04:00:00.046+02:00Groovy Goodness: Check if a String Only Contains Whitespaces<p>In Groovy we can check if a <code>String</code> value only contains whitespaces with the <code>isAllWhitespace()</code> method. The method checks for spaces, but also takes into account tab and newline characters as whitespace.</p><pre class="brush:groovy">assert ''.allWhitespace
+assert '  '.allWhitespace
+assert '\t '.allWhitespace
+assert ' \r\n '.allWhitespace
+
+assert !'mrhaki'.allWhitespace
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com2

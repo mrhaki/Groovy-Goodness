@@ -1,0 +1,14 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-24712975449100058032013-11-18T20:56:00.001+01:002013-11-18T20:56:39.191+01:00Groovy Goodness: Remove Part of String With Regular Expression Pattern<p>Since Groovy 2.2 we can subtract a part of a String value using a regular expression pattern. The first match found is replaced with an empty String. In the following sample code we see how the first match of the pattern is removed from the String:</p><pre class="brush:groovy">// Define regex pattern to find words starting with gr (case-insensitive).
+def wordStartsWithGr = ~/(?i)\s+Gr\w+/
+
+assert ('Hello Groovy world!' - wordStartsWithGr) == 'Hello world!'
+assert ('Hi Grails users' - wordStartsWithGr) == 'Hi users'
+
+
+// Remove first match of a word with 5 characters.
+assert ('Remove first match of 5 letter word' - ~/\b\w{5}\b/) == 'Remove  match of 5 letter word'
+
+
+// Remove first found numbers followed by a whitespace character.
+assert ('Line contains 20 characters' - ~/\d+\s+/) == 'Line contains characters'
+</pre><p>Code written with Groovy 2.2.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

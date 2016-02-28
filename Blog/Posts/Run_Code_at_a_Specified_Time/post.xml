@@ -1,0 +1,51 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-8206847820830863012009-11-14T07:00:00.003+01:002010-11-26T11:15:13.081+01:00Groovy Goodness: Run Code at a Specified Time<p>In Groovy we can use the method <code>runAfter()</code> to run a closure after a specified delay in milliseconds. This method is added by Groovy GDK to the <code>Timer</code> class.</p>
+<pre class="brush:groovy">
+// File: timer.groovy
+def timer = new Timer()
+def task = timer.runAfter(10000) {
+    println "Actually executed at ${new Date()}."
+}
+println "Current date is ${new Date()}. Task is executed at ${new Date(task.scheduledExecutionTime())}."
+</pre>
+<p>If we run this script we get the following output (of course depending on the time the script is executed):</p>
+<pre class="brush:shell;light:true">
+$ groovy timer.groovy
+Current date is Thu Nov 12 6:51:41 CET 2009. Task is executed at Thu Nov 12 6:51:51 CET 2009.
+Actually executed at Thu Nov 12 6:51:51 CET 2009.
+</pre>
+<p>As a bonus we add a <code>runEvery()</code> method to the <code>Timer</code> class with categories:</p>
+<pre class="brush:groovy">
+// File: newtimer.groovy
+class GroovyTimerTask extends TimerTask {
+    Closure closure
+    void run() {
+        closure()
+    }
+}
+
+class TimerMethods {
+    static TimerTask runEvery(Timer timer, long delay, long period, Closure codeToRun) {
+        TimerTask task = new GroovyTimerTask(closure: codeToRun)
+        timer.schedule task, delay, period
+        task
+    }
+}
+
+use (TimerMethods) {
+    def timer = new Timer()
+    def task = timer.runEvery(1000, 5000) {
+        println "Task executed at ${new Date()}."
+    }
+    println "Current date is ${new Date()}."
+}
+</pre>
+<pre class="brush:shell;light:true">
+$ groovy newtimer.groovy
+Current date is Thu Nov 12 7:03:29 CET 2009.
+Task executed at Thu Nov 12 7:03:30 CET 2009.
+Task executed at Thu Nov 12 7:03:35 CET 2009.
+Task executed at Thu Nov 12 7:03:40 CET 2009.
+Task executed at Thu Nov 12 7:03:45 CET 2009.
+Task executed at Thu Nov 12 7:03:50 CET 2009.
+...
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

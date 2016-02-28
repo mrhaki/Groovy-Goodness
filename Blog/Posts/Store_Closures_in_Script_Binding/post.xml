@@ -1,0 +1,38 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-4010704953126127392010-08-26T16:02:00.001+02:002010-11-26T11:15:12.755+01:00Groovy Goodness: Store Closures in Script Binding<p>We have several ways to run (external) Groovy scripts from our code. For example we can use <code>GroovyShell</code> and the <code>evaluate()</code> method. If we want to pass variables to the script to be run we must create a <code>Binding</code> object and assign values to the variables and in our script we can use the variables. But if we assign closures to the variables we have methods available in our scripts. We can use it for example to define a DSL externally from the script that uses the DSL.</p>
+<p>First we create a script with a simple DSL for sending text to the console or to a file:</p>
+<pre class="brush:groovy">
+// File: Output.groovy
+console 'Groovy is great'
+
+file('result.txt') { out -&gt;
+    out &lt;&lt; 'Yes it is!'
+}
+</pre>
+<p>Now we define the Groovy script that reads the script file and executes it:</p>
+<pre class="brush:groovy">
+// File: RunOutput.groovy
+// Define DSL methods as closure variables in the binding.
+def binding = new Binding()
+binding.console = { String message ->
+    println message
+}
+binding.file = { String fileName, Closure outputCode ->
+    def outputFile = new File(fileName)
+    outputFile.withWriter { writer ->
+        outputCode.call writer
+    }
+}
+
+// Create shell with the new binding.
+def shell = new GroovyShell(binding)
+def script = new File('Output.groovy')
+
+// And execute
+shell.evaluate script
+</pre>
+<p>We get the following output when we run the script:</p>
+<pre class="brush:plain">
+$ groovy RunOutput
+Groovy is great
+</pre>
+<p>And in the current directory we have a new file <code>result.txt</code> with the following contents: <code>Yes it is!</code>.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

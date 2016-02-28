@@ -1,0 +1,28 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-36881626944185646562009-12-13T08:56:00.002+01:002010-11-26T11:15:12.972+01:00Groovy Goodness: Info About Closure Parameters<p>We can inspect the number and type of parameters defined for a closure very easily. A closure has the properties <code>maximumNumberOfParameters</code> and <code>parameterTypes</code> for this. So in our code we can ask a closure how many parameters are expected and even which type the parameters are.</p>
+<pre class="brush:groovy">
+// Two simple closure with one and two parameters.
+def one = { it.toUpperCase() }
+def two = { String s, upper ->
+    if (upper) {
+        s.toUpperCase()
+    } else {
+        s.toLowerCase()
+    }
+}
+
+def runClosure(cl) {
+    switch (cl.maximumNumberOfParameters) {
+        case 1: 
+            assert [java.lang.Object] == cl.parameterTypes
+            cl.call('Groovy')
+            break
+        case 2:
+            assert [java.lang.String, java.lang.Object] == cl.parameterTypes
+            cl('Groovy', false)
+            break
+    } 
+}
+
+assert 'GROOVY' == runClosure(one)
+assert 'groovy' == runClosure(two)
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com3

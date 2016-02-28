@@ -1,0 +1,6 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-5319572832340029632013-01-26T10:40:00.000+01:002013-01-26T10:40:27.649+01:00Groovy Goodness: Calculating Directory Size<p>Groovy 2.1 adds the method <code>directorySize()</code> to <code>File</code> objects. If the <code>File</code> object is a directory then the total size of all files is calculated. Notice this method will go recursively through all subdirectories so it might take some time before the method returns. If we invoke the method on a <code>File</code> object that is not a directory an <code>IllegalArgumentException</code> is thrown.</p><pre class="brush:groovy">def sampleDir = new File('sample')
+def sampleDirSize = sampleDir.directorySize()
+
+println sampleDirSize // Outputs size in bytes, eg. 130615981
+</pre><p>Using Groovy from the command-line we can easily get the directory size like this:</p><pre class="brush:plain">$ groovy -e "println new File('.').directorySize()"
+</pre><p>Written with Groovy 2.1</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com1

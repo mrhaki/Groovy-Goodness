@@ -1,0 +1,11 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-77756728374903761252011-04-27T18:32:00.000+02:002011-04-27T18:32:00.413+02:00Groovy Goodness: Count Occurrences in a Collection or Map<p>We can count occurrences of elements in a collection that apply to a condition given by a closure. The closure contains the condition the elements we want to count must apply to. We can use the new <code>count()</code> method since Groovy 1.8 and it can be applied to collections, maps and arrays.</p>
+<pre class="brush:groovy">
+def list = ['Groovy', 'Grails', 'Java']
+assert list.count { it.startsWith('G') } == 2
+
+def numbers = [1,2,3,4] as Integer[]
+assert numbers.count { it > 2 } == 2
+
+def map = [user: 'mrhaki', city: 'Tilburg', age: 37]
+assert map.count { key, value -> key.size() == 3 } == 1
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

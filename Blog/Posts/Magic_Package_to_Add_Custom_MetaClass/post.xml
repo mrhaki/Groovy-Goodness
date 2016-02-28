@@ -1,0 +1,27 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-30158969623042268272011-11-23T15:57:00.001+01:002011-11-23T16:18:42.318+01:00Groovy Goodness: Magic Package to Add Custom MetaClass<p>Groovy is very dynamic. We can add methods to classes at runtime that don't exist at compile time. We can add our own custom <code>MetaClass</code> at startup time of our application if we follow the <em>magic</em> package naming convention. The naming convention is <code>groovy.runtime.metaclass.[package].[class]MetaClass</code>. For example if we want to change the behavior of the <code>java.lang.String</code> class, then we must write a custom <code>MetaClass</code> with the package name <code>groovy.runtime.metaclass.java.lang</code> and class name <code>StringMetaClass</code>. We can do the same for classes we create ourselves. For example if we have a class <code>myapp.RunApp</code> than the custom metaclass implementation <code>RunAppMetaClass</code> would be in package <code>groovy.runtime.metaclass.myapp</code>.</p><p>Our custom <code>MetaClass</code> is extended from <code>DelegatingMetaClass</code> and besides the name of the class and the package we can write our code the way we want.</p><p>We must first compile the custom <code>MetaClass</code> and then we must put it in the classpath of the application code that is going to use the <code>MetaClass</code>.</p><pre class="brush:groovy">// File: StringMetaClass.groovy
+package groovy.runtime.metaclass.java.lang
+
+class StringMetaClass extends DelegatingMetaClass {
+
+    StringMetaClass(MetaClass meta) {
+        super(meta)
+    }
+
+    Object invokeMethod(Object object, String method, Object[] arguments) {
+        if (method == 'hasGroovy') {
+            object ==~ /.*[Gg]roovy.*/
+        } else {
+            super.invokeMethod object, method, arguments
+        }
+    }
+}
+</pre><p>The code that will use the delegating metaclass implementation:</p><pre class="brush:groovy">// File: StringDelegateSample.groovy
+
+// Original methods are still invoked.
+assert 'mrhaki'.toUpperCase() == 'MRHAKI'
+
+// Invoke 'hasGroovy' method we added via the DelegatingMetaClass.
+assert !'Java'.hasGroovy()
+assert 'mrhaki loves Groovy'.hasGroovy()
+assert 'Groovy'.toLowerCase().hasGroovy()
+</pre><p>First we compile our <code>StringMetaClass</code>:<br /><code>$ groovyc StringMetaClass.groovy</code>.</p><p>Next we can run the <code>StringDelegateSample.groovy</code> file if we put the generated class file in our classpath:<br /><code>$ groovy -cp . StringDelegateSample</code></p><br />Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

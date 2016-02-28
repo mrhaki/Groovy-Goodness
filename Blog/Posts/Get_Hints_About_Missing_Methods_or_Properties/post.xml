@@ -1,0 +1,25 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-44256443554332399552010-06-10T22:42:00.000+02:002010-11-26T11:15:12.821+01:00Groovy Goodness: Get Hints About Missing Methods or Properties<p>Groovy helps us if for example we make a small mistake in our code. We don't only get an error message, but also a hint about a possible solution. This works also for classes we create ourselves.</p>
+<p>In the following example we use <code>toUppercase()</code> instead of <code>toUpperCase()</code>. Notice the suggestion we get from Groovy:</p>
+<pre class="brush:plain">
+$ groovy -e "println 'mrhaki'.toUppercase()"
+Caught: groovy.lang.MissingMethodException: No signature of method: java.lang.String.toUppercase() is applicable for argument types: () values: []
+Possible solutions: toUpperCase(), toUpperCase(java.util.Locale), toLowerCase(), toLowerCase(java.util.Locale)
+ at script_from_command_line.run(script_from_command_line:1)
+</pre>
+<p>Suppose we define the following script:</p>
+<pre class="brush:groovy">
+class User {
+    String name
+    String giveName() { name }
+}
+
+def u = new User(name: 'mrhaki')
+println u.givenName()
+</pre>
+<p>When we run this script we get the following output:</p>
+<pre class="brush:plain">
+$ groovy UserScript.groovy 
+Caught: groovy.lang.MissingMethodException: No signature of method: User.givenName() is applicable for argument types: () values: []
+Possible solutions: giveName(), getName(), setName(java.lang.String)
+ at UserScript.run(UserScript.groovy:7)
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

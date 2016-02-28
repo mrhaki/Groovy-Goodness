@@ -1,0 +1,29 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-81254928032336688472010-06-14T22:00:00.003+02:002010-11-26T11:15:12.812+01:00Groovy Goodness: Setting Date and Calendar Values with Subscript Operators<p>In Groovy 1.7.3 we have some new ways to set the value of <code>Date</code> or <code>Calendar</code> objects. We can for example use the subscript operators (<code>getAt()</code> and <code>putAt()</code> methods) to define value for fields or get the value from a field. The fields are the <code>Calendar</code> constants like <code>Calendar.YEAR</code>, <code>Calendar.DATE</code>.</p>
+<pre class="brush:groovy">
+import static java.util.Calendar.*
+
+def date = new Date()
+// Set value with subscript operator
+date[YEAR] = 2010
+date[MONTH] = JUNE
+date[DATE] = 14
+
+assert 110 == date.year
+assert 5 == date.month
+assert 14 == date.date
+
+// Get value with subscript operator
+assert 2010 == date[YEAR]  
+assert JUNE == date[MONTH]
+assert 14 == date[DATE]
+
+
+def cal = Calendar.instance
+// Set value with subscript operator
+cal[YEAR] = 2000
+cal[MONTH] = DECEMBER
+cal[DATE] = 25
+
+assert '2000-12-25' == cal.format('yyyy-MM-dd')
+assert 2000 == cal[YEAR]  // Get value with subscript operator
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

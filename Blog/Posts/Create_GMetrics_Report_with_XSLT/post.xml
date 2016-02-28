@@ -1,0 +1,470 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-50560875252106139072011-01-15T09:05:00.001+01:002011-04-01T08:50:23.280+02:00Groovy Goodness: Create GMetrics Report with XSLT<p>With <a href="http://gmetrics.sourceforge.net">GMetrics</a> we can analyze complexity and size of our Groovy classes and methods. The default HTML reports shows basic information, but if we want to create our own HTML report we best use the XML output and use XSLT to create a HTML report. In a <a href="http://mrhaki.blogspot.com/2011/01/groovy-goodness-create-codenarc-reports.html">previous blog</a> we learned how to use XSLT to transform the XML output from <a href="http://codenarc.sourceforge.net">CodeNarc</a> to <a href="http://github.mrhaki.com/CodeNarc/samples/default.html">a HTML report</a>. In this blog post we see how we can create XML output and how to format it to a HTML report.</p>
+<div class="separator" style="clear: both; text-align: center;">
+<a href="http://1.bp.blogspot.com/_-vJw6r2W-bw/TTFSsVqQGLI/AAAAAAAAEYc/XzMzWDTyqz0/s1600/github.mrhaki.com%2Bscreen%2Bcapture%2B2011-1-15-8-51-47.png" imageanchor="1" style="margin-left:1em; margin-right:1em"><img border="0" height="320" width="221" src="http://1.bp.blogspot.com/_-vJw6r2W-bw/TTFSsVqQGLI/AAAAAAAAEYc/XzMzWDTyqz0/s320/github.mrhaki.com%2Bscreen%2Bcapture%2B2011-1-15-8-51-47.png" /></a></div>
+<a name='more'></a>
+<p>First we must get XML output from GMetrics. If we use the ANT task we can specify the report type and we must set it to <code>org.gmetrics.report.XmlReportWriter</code>.</p>
+<pre class="brush:groovy;highlight:[2]">
+// Using AntBuilder.
+ant.gmetrics(metricSetFile: 'metrics.groovy') {
+    report(type: 'org.gmetrics.report.XmlReportWriter') {
+       option name: 'gmetrics.xml'
+       option title: 'Sample GMetrics Report'
+    }
+    fileset(dir: 'src/main/groovy') {
+        include name: '**/*.groovy'
+    }
+}
+</pre>
+<p>We get an XML file with the following structure and content:</p>
+<pre class="brush:xml">
+&lt;?xml version="1.0"?&gt;
+&lt;GMetrics url='http://www.gmetrics.org' version='GMetrics 0.3'&gt;
+    &lt;Report timestamp='Jan 11, 2011 12:52:37 PM'/&gt;
+    &lt;Project title='Sample GMetrics Report'&gt;
+        &lt;SourceDirectory&gt;src/main/groovy&lt;/SourceDirectory&gt;
+    &lt;/Project&gt;
+    &lt;PackageSummary&gt;
+        &lt;MetricResult name='ABC' average='3.3' maximum='4.1' minimum='2.2' total='6.2'/&gt;
+        &lt;MetricResult name='CyclomaticComplexity' average='1.0' maximum='1' minimum='1' total='2'/&gt;
+        &lt;MetricResult name='MethodLineCount' average='3.0' maximum='3' minimum='3' total='3'/&gt;
+        &lt;MetricResult name='ClassLineCount' average='9.0' maximum='13' minimum='5' total='18'/&gt;
+    &lt;/PackageSummary&gt;
+    &lt;Package path='com'&gt;
+        &lt;MetricResult name='ABC' average='3.3' maximum='4.1' minimum='2.2' total='6.2'/&gt;
+        &lt;MetricResult name='CyclomaticComplexity' average='1.0' maximum='1' minimum='1' total='2'/&gt;
+        &lt;MetricResult name='MethodLineCount' average='3.0' maximum='3' minimum='3' total='3'/&gt;
+        &lt;MetricResult name='ClassLineCount' average='9.0' maximum='13' minimum='5' total='18'/&gt;
+    &lt;/Package&gt;
+    &lt;Package path='com/mrhaki'&gt;
+        &lt;MetricResult name='ABC' average='3.3' maximum='4.1' minimum='2.2' total='6.2'/&gt;
+        &lt;MetricResult name='CyclomaticComplexity' average='1.0' maximum='1' minimum='1' total='2'/&gt;
+        &lt;MetricResult name='MethodLineCount' average='3.0' maximum='3' minimum='3' total='3'/&gt;
+        &lt;MetricResult name='ClassLineCount' average='9.0' maximum='13' minimum='5' total='18'/&gt;
+    &lt;/Package&gt;
+    &lt;Package path='com/mrhaki/app'&gt;
+        &lt;MetricResult name='ABC' average='3.3' maximum='4.1' minimum='2.2' total='6.2'/&gt;
+        &lt;MetricResult name='CyclomaticComplexity' average='1.0' maximum='1' minimum='1' total='2'/&gt;
+        &lt;MetricResult name='MethodLineCount' average='3.0' maximum='3' minimum='3' total='3'/&gt;
+        &lt;MetricResult name='ClassLineCount' average='9.0' maximum='13' minimum='5' total='18'/&gt;
+        &lt;Class name='com.mrhaki.app.App'&gt;
+            &lt;MetricResult name='ABC' average='4.1' maximum='4.1' minimum='4.1' total='4.1'/&gt;
+            &lt;MetricResult name='CyclomaticComplexity' average='1.0' maximum='1' minimum='1' total='1'/&gt;
+            &lt;Method name='run'&gt;
+                &lt;MetricResult name='ABC' average='4.1' maximum='4.1' minimum='4.1' total='4.1'/&gt;
+                &lt;MetricResult name='CyclomaticComplexity' average='1' maximum='1' minimum='1' total='1'/&gt;
+            &lt;/Method&gt;
+        &lt;/Class&gt;
+        &lt;Class name='com.mrhaki.app.Person'&gt;
+            &lt;MetricResult name='ClassLineCount' average='5' maximum='5' minimum='5' total='5'/&gt;
+        &lt;/Class&gt;
+        &lt;Class name='com.mrhaki.app.PersonService'&gt;
+            &lt;MetricResult name='ABC' average='2.2' maximum='2.2' minimum='2.2' total='2.2'/&gt;
+            &lt;MetricResult name='CyclomaticComplexity' average='2.0' maximum='2' minimum='2' total='2'/&gt;
+            &lt;MetricResult name='MethodLineCount' average='3.0' maximum='3' minimum='3' total='3'/&gt;
+            &lt;MetricResult name='ClassLineCount' average='13' maximum='13' minimum='13' total='13'/&gt;
+            &lt;Method name='findByNickname'&gt;
+                &lt;MetricResult name='ABC' average='2.2' maximum='2.2' minimum='2.2' total='2.2'/&gt;
+                &lt;MetricResult name='CyclomaticComplexity' average='2' maximum='2' minimum='2' total='2'/&gt;
+                &lt;MetricResult name='MethodLineCount' average='3' maximum='3' minimum='3' total='3'/&gt;
+            &lt;/Method&gt;
+        &lt;/Class&gt;
+    &lt;/Package&gt;
+    &lt;Metrics&gt;
+        &lt;Metric name='ABC'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Measures size and complexity of source code. See http://c2.com/cgi/wiki?AbcMetric]]&gt;&lt;/Description&gt;
+        &lt;/Metric&gt;
+        &lt;Metric name='ClassLineCount'&gt;
+            &lt;Description&gt;&lt;![CDATA[Measures the number of lines in each class or interface.]]&gt;&lt;/Description&gt;
+        &lt;/Metric&gt;
+        &lt;Metric name='CyclomaticComplexity'&gt;
+            &lt;Description&gt;
+                &lt;![CDATA[Measures the (McCabe) Cyclomatic Complexity of source code. See http://en.wikipedia.org/wiki/Cyclomatic_complexity.]]&gt;&lt;/Description&gt;
+        &lt;/Metric&gt;
+        &lt;Metric name='MethodLineCount'&gt;
+            &lt;Description&gt;&lt;![CDATA[Measures the number of lines in each method.]]&gt;&lt;/Description&gt;
+        &lt;/Metric&gt;
+    &lt;/Metrics&gt;
+&lt;/GMetrics&gt;
+</pre>
+<p>Now we can write a XSLT file with transformation rules to display the information in a HTML report. In the following XSLT file we first create a summary block with general information and averages of the different metrics. Next we create two top 7 tables with a list of classes and methods with the highest cyclomatic complexity number. We also display the information for all classes that are analyzed for the project, and finally we display descriptions of the metrics that are applied for the source files. Through hyperlinking we can simply click through the HTML report.</p>
+<pre class="brush:xslt">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"&gt;
+    &lt;xsl:output method="html" indent="yes"/&gt;
+    &lt;xsl:decimal-format decimal-separator="." grouping-separator=","/&gt;
+
+    &lt;xsl:key name="packageSummary" match="PackageSummary/MetricResult" use="@name"/&gt;
+
+    &lt;xsl:template match="GMetrics"&gt;
+        &lt;html&gt;
+            &lt;head&gt;
+                &lt;title&gt;&lt;xsl:value-of select="Project/@title"/&gt;&lt;/title&gt;
+                &lt;link rel="stylesheet" href="default.css" type="text/css"/&gt;
+            &lt;/head&gt;
+            &lt;body&gt;
+                &lt;a name="top"&gt;&lt;/a&gt;
+
+                &lt;div class="header"&gt;
+                    &lt;h1&gt;
+                        &lt;img src="haki-logo.png" width="48" height="48"/&gt;
+                        &lt;xsl:value-of select="Project/@title"/&gt;
+                     &lt;/h1&gt;
+                &lt;/div&gt;
+
+                &lt;div class="rule"&gt;&lt;/div&gt;
+
+                &lt;div class="summary"&gt;
+                    &lt;div class="first"&gt;
+                        &lt;dl&gt;
+                            &lt;dt&gt;Generated&lt;/dt&gt;
+                            &lt;dd&gt;&lt;xsl:value-of select="Report/@timestamp"/&gt;&lt;/dd&gt;
+                        &lt;/dl&gt;
+                        &lt;dl&gt;
+                            &lt;dt&gt;Tool&lt;/dt&gt;
+                            &lt;dd&gt;&lt;a href="{@url}"&gt;&lt;xsl:value-of select="@version"/&gt;&lt;/a&gt;&lt;/dd&gt;
+                        &lt;/dl&gt;
+
+                        &lt;dl&gt;
+                            &lt;dt&gt;Sources&lt;/dt&gt;
+                            &lt;dl&gt;
+                            &lt;xsl:for-each select="Project/SourceDirectory"&gt;
+                                &lt;xsl:value-of select="."/&gt;
+                                &lt;br /&gt;
+                            &lt;/xsl:for-each&gt;
+                            &lt;/dl&gt;
+                        &lt;/dl&gt;
+                    &lt;/div&gt;
+                    &lt;div class="last"&gt;
+                        &lt;xsl:apply-templates select="PackageSummary"/&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+
+                &lt;div class="rule"&gt;&lt;/div&gt;
+
+                &lt;div id="top-lists"&gt;
+                    &lt;div class="first"&gt;
+                        &lt;xsl:apply-templates select="." mode="top-classes"/&gt;
+                    &lt;/div&gt;
+                    &lt;div class="last"&gt;
+                        &lt;xsl:apply-templates select="." mode="top-methods"/&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+
+                &lt;div class="rule"&gt;&lt;/div&gt;
+
+                &lt;xsl:apply-templates select="." mode="full"/&gt;
+
+                &lt;div class="rule"&gt;&lt;/div&gt;
+
+                &lt;xsl:apply-templates select="Metrics"/&gt;
+
+                &lt;div class="rule"&gt;&lt;/div&gt;
+
+                &lt;p&gt;XSLT created by &lt;a href="http://www.mrhaki.com"&gt;Hubert A. Klein Ikkink (mrhaki)&lt;/a&gt;&lt;/p&gt;
+
+            &lt;/body&gt;
+        &lt;/html&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template match="PackageSummary"&gt;
+        &lt;ul id="summary_stats"&gt;
+            &lt;li&gt;
+                &lt;strong&gt;
+                    &lt;xsl:call-template name="display_value"&gt;
+                        &lt;xsl:with-param name="value" select="MetricResult[@name = 'ABC']/@average"/&gt;
+                    &lt;/xsl:call-template&gt;
+                &lt;/strong&gt;
+                &lt;span&gt;ABC&lt;/span&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+                &lt;strong&gt;
+                    &lt;xsl:call-template name="display_value"&gt;
+                        &lt;xsl:with-param name="value" select="MetricResult[@name = 'CyclomaticComplexity']/@average"/&gt;
+                    &lt;/xsl:call-template&gt;
+                &lt;/strong&gt;
+                &lt;span&gt;cyclomatic complexity&lt;/span&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+                &lt;strong&gt;
+                    &lt;xsl:call-template name="display_value"&gt;
+                        &lt;xsl:with-param name="value" select="MetricResult[@name = 'MethodLineCount']/@average"/&gt;
+                    &lt;/xsl:call-template&gt;
+                &lt;/strong&gt;
+                &lt;span&gt;method lines&lt;/span&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+                &lt;strong&gt;
+                    &lt;xsl:call-template name="display_value"&gt;
+                        &lt;xsl:with-param name="value" select="MetricResult[@name = 'ClassLineCount']/@average"/&gt;
+                    &lt;/xsl:call-template&gt;
+                &lt;/strong&gt;
+                &lt;span&gt;class lines&lt;/span&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template match="Metrics"&gt;
+        &lt;h2&gt;Metrics&lt;/h2&gt;
+
+        &lt;table border="0" width="100%" cellpadding="0" cellspacing="0"&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Name&lt;/th&gt;
+            &lt;th&gt;Description&lt;/th&gt;
+            &lt;th&gt;Average&lt;/th&gt;
+            &lt;th&gt;Total&lt;/th&gt;
+            &lt;th&gt;Maximum&lt;/th&gt;
+            &lt;th&gt;Minimum&lt;/th&gt;
+        &lt;/tr&gt;
+
+        &lt;xsl:apply-templates select="Metric"/&gt;
+
+        &lt;/table&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template match="Metric"&gt;
+        &lt;xsl:variable name="metricName" select="@name"/&gt;
+        &lt;xsl:variable name="summary" select="key('packageSummary', $metricName)"/&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;a name="m-{$metricName}"&gt; &lt;/a&gt;
+                &lt;xsl:value-of select="$metricName"/&gt;
+            &lt;/td&gt;
+            &lt;td&gt;
+                &lt;xsl:value-of select="Description"/&gt;
+            &lt;/td&gt;
+            &lt;td class="number"&gt;
+                &lt;xsl:call-template name="display_value"&gt;
+                    &lt;xsl:with-param name="value" select="$summary/@average"/&gt;
+                &lt;/xsl:call-template&gt;
+            &lt;/td&gt;
+            &lt;td class="number"&gt;
+                &lt;xsl:call-template name="display_value"&gt;
+                    &lt;xsl:with-param name="value" select="$summary/@total"/&gt;
+                &lt;/xsl:call-template&gt;
+            &lt;/td&gt;
+            &lt;td class="number"&gt;
+                &lt;xsl:call-template name="display_value"&gt;
+                    &lt;xsl:with-param name="value" select="$summary/@maximum"/&gt;
+                &lt;/xsl:call-template&gt;
+            &lt;/td&gt;
+            &lt;td class="number"&gt;
+                &lt;xsl:call-template name="display_value"&gt;
+                    &lt;xsl:with-param name="value" select="$summary/@minimum"/&gt;
+                &lt;/xsl:call-template&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template match="GMetrics" mode="top-methods"&gt;
+        &lt;h2&gt;Top Complexity Methods&lt;/h2&gt;
+
+        &lt;table border="0" cellpadding="0" cellspacing="0"&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Name&lt;/th&gt;
+            &lt;th&gt;Complexity&lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;xsl:for-each select="//Method/MetricResult[@name = 'CyclomaticComplexity']"&gt;
+            &lt;xsl:sort select="@total" data-type="number" order="descending"/&gt;
+            &lt;xsl:if test="position() &amp;lt;= 7"&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;
+                        &lt;a href="#method-{../../@name}-{../@name}"&gt;
+                            &lt;xsl:value-of select="../@name"/&gt;
+                        &lt;/a&gt;
+                    &lt;/td&gt;
+                    &lt;td&gt;&lt;xsl:value-of select="@total"/&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/xsl:if&gt;
+        &lt;/xsl:for-each&gt;
+        &lt;/table&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template match="GMetrics" mode="top-classes"&gt;
+        &lt;h2&gt;Top Complexity Classes&lt;/h2&gt;
+
+        &lt;table border="0" cellpadding="0" cellspacing="0"&gt;
+        &lt;tr&gt;
+            &lt;th&gt;Name&lt;/th&gt;
+            &lt;th&gt;Complexity&lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;xsl:for-each select="//Class/MetricResult[@name = 'CyclomaticComplexity']"&gt;
+            &lt;xsl:sort select="@total" data-type="number" order="descending"/&gt;
+            &lt;xsl:if test="position() &amp;lt;= 7"&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;
+                        &lt;a href="#c-{../@name}"&gt;
+                            &lt;xsl:value-of select="../@name"/&gt;
+                        &lt;/a&gt;
+                    &lt;/td&gt;
+                    &lt;td&gt;&lt;xsl:value-of select="@total"/&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/xsl:if&gt;
+        &lt;/xsl:for-each&gt;
+        &lt;/table&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template match="GMetrics" mode="full"&gt;
+        &lt;xsl:for-each select="Package/Class"&gt;
+            &lt;xsl:sort select="@name"/&gt;
+            &lt;xsl:apply-templates select="." mode="full"/&gt;
+            &lt;p/&gt;
+            &lt;p/&gt;
+        &lt;/xsl:for-each&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template match="Class" mode="summary"&gt;
+        &lt;xsl:variable name="violationCount" select="count(Violation)"/&gt;
+        &lt;tr&gt;
+            &lt;td&gt;&lt;a href="#c-{@name}"&gt;&lt;xsl:value-of select="../@path"/&gt;/&lt;xsl:value-of select="@name"/&gt;&lt;/a&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;xsl:value-of select="$violationCount"/&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template match="Class" mode="full"&gt;
+        &lt;xsl:variable name="classLineCount" select="MetricResult[@name = 'ClassLineCount']"/&gt;
+        &lt;xsl:variable name="methodLineCount" select="MetricResult[@name = 'MethodLineCount']"/&gt;
+        &lt;xsl:variable name="abc" select="MetricResult[@name = 'ABC']"/&gt;
+        &lt;xsl:variable name="cyclomaticComplexity" select="MetricResult[@name = 'CyclomaticComplexity']"/&gt;
+        &lt;a name="c-{@name}"&gt;&lt;/a&gt;
+        &lt;h2&gt;
+            Class
+            &lt;xsl:value-of select="@name"/&gt;
+        &lt;/h2&gt;
+
+        &lt;div class="class_summary"&gt;
+            &lt;table border="0" cellpadding="0" cellspacing="0" width="100%"&gt;
+                &lt;tbody&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;a href="#m-ClassLineCount"&gt;
+                                &lt;h3&gt;Class line count&lt;/h3&gt;
+                            &lt;/a&gt;
+                            &lt;p&gt;
+                                &lt;strong&gt;
+                                    &lt;xsl:call-template name="display_value"&gt;
+                                        &lt;xsl:with-param name="value" select="$classLineCount/@total"/&gt;
+                                        &lt;xsl:with-param name="format" select="'####0'"/&gt;
+                                    &lt;/xsl:call-template&gt;
+                                &lt;/strong&gt;
+                            &lt;/p&gt;
+                        &lt;/td&gt;
+                        &lt;td&gt;
+                            &lt;a href="#m-MethodLineCount"&gt;
+                                &lt;h3&gt;Methods&lt;/h3&gt;
+                            &lt;/a&gt;
+                            &lt;p&gt;
+                                &lt;strong&gt;
+                                    &lt;xsl:value-of select="count(Method)"/&gt;
+                                &lt;/strong&gt;
+                            &lt;/p&gt;
+                            &lt;dl&gt;
+                                &lt;dt&gt;Average LC:&lt;/dt&gt;
+                                &lt;dd&gt;
+                                    &lt;xsl:call-template name="display_value"&gt;
+                                        &lt;xsl:with-param name="value" select="$methodLineCount/@average"/&gt;
+                                    &lt;/xsl:call-template&gt;
+                                &lt;/dd&gt;
+                                &lt;dt&gt;Maximum LC:&lt;/dt&gt;
+                                &lt;dd&gt;
+                                    &lt;xsl:call-template name="display_value"&gt;
+                                        &lt;xsl:with-param name="value" select="$methodLineCount/@total"/&gt;
+                                    &lt;/xsl:call-template&gt;
+                                &lt;/dd&gt;
+                            &lt;/dl&gt;
+                        &lt;/td&gt;
+                        &lt;td&gt;
+                            &lt;a href="#m-CyclomaticComplexity"&gt;
+                                &lt;h3&gt;Complexity&lt;/h3&gt;
+                            &lt;/a&gt;
+                            &lt;p&gt;
+                                &lt;strong&gt;
+                                    &lt;xsl:call-template name="display_value"&gt;
+                                        &lt;xsl:with-param name="value" select="$cyclomaticComplexity/@average"/&gt;
+                                    &lt;/xsl:call-template&gt;
+                                &lt;/strong&gt;
+                            &lt;/p&gt;
+                            &lt;dl&gt;
+                                &lt;dt&gt;Maximum:&lt;/dt&gt;
+                                &lt;dd&gt;
+                                    &lt;xsl:call-template name="display_value"&gt;
+                                        &lt;xsl:with-param name="value" select="$cyclomaticComplexity/@maximum"/&gt;
+                                    &lt;/xsl:call-template&gt;
+                                &lt;/dd&gt;
+                            &lt;/dl&gt;
+                        &lt;/td&gt;
+                        &lt;td&gt;
+                            &lt;a href="#m-ABC"&gt;
+                                &lt;h3&gt;ABC&lt;/h3&gt;
+                            &lt;/a&gt;
+                            &lt;p&gt;
+                                &lt;strong&gt;
+                                    &lt;xsl:call-template name="display_value"&gt;
+                                        &lt;xsl:with-param name="value" select="$abc/@average"/&gt;
+                                    &lt;/xsl:call-template&gt;
+                                &lt;/strong&gt;
+                            &lt;/p&gt;
+                            &lt;dl&gt;
+                                &lt;dt&gt;Maximum:&lt;/dt&gt;
+                                &lt;dd&gt;
+                                    &lt;xsl:call-template name="display_value"&gt;
+                                        &lt;xsl:with-param name="value" select="$abc/@maximum"/&gt;
+                                    &lt;/xsl:call-template&gt;
+                                &lt;/dd&gt;
+                            &lt;/dl&gt;
+                        &lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/tbody&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+
+        &lt;xsl:if test="count(Method) &amp;gt; 0"&gt;
+        &lt;table border="0" width="100%" cellpadding="0" cellspacing="0"&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Method&lt;/th&gt;
+                &lt;th&gt;Cyclomatic Complexity&lt;/th&gt;
+                &lt;th&gt;ABC&lt;/th&gt;
+                &lt;th&gt;Lines&lt;/th&gt;
+            &lt;/tr&gt;
+            &lt;xsl:for-each select="Method"&gt;
+                &lt;xsl:sort select="MetricResult[@name = 'CyclomaticComplexity']/@total"/&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;
+                        &lt;a name="method-{../@name}-{@name}"&gt;&lt;/a&gt;
+                        &lt;xsl:value-of select="@name"/&gt;
+                    &lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;xsl:value-of select="MetricResult[@name = 'CyclomaticComplexity']/@total"/&gt;
+                    &lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;xsl:value-of select="MetricResult[@name = 'ABC']/@total"/&gt;
+                    &lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;xsl:value-of select="MetricResult[@name = 'MethodLineCount']/@total"/&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/xsl:for-each&gt;
+        &lt;/table&gt;
+        &lt;/xsl:if&gt;
+        &lt;a href="#top"&gt;Back to top&lt;/a&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template name="display_value"&gt;
+        &lt;xsl:param name="value"/&gt;
+        &lt;xsl:param name="format" select="'####.0'"/&gt;
+        &lt;xsl:choose&gt;
+            &lt;xsl:when test="string($value) != ''"&gt;
+                &lt;xsl:value-of select="format-number($value, $format)"/&gt;
+            &lt;/xsl:when&gt;
+            &lt;xsl:otherwise&gt;
+                &lt;xsl:value-of select="'N/A'"/&gt;
+            &lt;/xsl:otherwise&gt;
+        &lt;/xsl:choose&gt;
+    &lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;
+</pre>
+<p>The <a href="http://github.mrhaki.com/GMetrics/samples/default.html">resulting HTML report</a> shows all information nicely formatted and styled. Of course we can customize the XSLT file for our own projects. For example to add extra information in our report. The following image also show the generated HTML report:</p>
+
+<div class="separator" style="clear: both; text-align: center;">
+<a href="http://1.bp.blogspot.com/_-vJw6r2W-bw/TTFSsVqQGLI/AAAAAAAAEYc/XzMzWDTyqz0/s1600/github.mrhaki.com%2Bscreen%2Bcapture%2B2011-1-15-8-51-47.png" imageanchor="1" style="margin-left:1em; margin-right:1em"><img border="0" height="320" width="221" src="http://1.bp.blogspot.com/_-vJw6r2W-bw/TTFSsVqQGLI/AAAAAAAAEYc/XzMzWDTyqz0/s320/github.mrhaki.com%2Bscreen%2Bcapture%2B2011-1-15-8-51-47.png" /></a></div>
+<p>The XSLT source file and supporting CSS and images are at <a href="https://github.com/mrhaki/GMetrics">Github</a>.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com15

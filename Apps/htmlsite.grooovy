@@ -6,7 +6,7 @@ baseDir = '../OfflineSite'
 tocList = []
 
 def bloggerId = '6671019398434141469'
-def baseURI = "http://www.blogger.com/feeds/$bloggerId/posts/default/-/Groovy%3AGoodness" 
+def baseURI = "https://www.blogger.com/feeds/$bloggerId/posts/default/-/Groovy%3AGoodness" 
 
 def nextLink = baseURI 
 

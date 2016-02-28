@@ -1,0 +1,18 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-31114831625865422012010-06-14T22:10:00.004+02:002010-11-26T11:15:12.809+01:00Groovy Goodness: Use the set Method to Define a Date or Calendar Value<p>In a previous post we learned about the new subscript operator support in Groovy 1.7.3 for setting <code>Date</code> or <code>Calendar</code> values. But we have other new ways in Groovy 1.7.3: we can use a <code>set()</code> method to set the values. The method accepts a <code>Map</code> with the following keys: year, month, date, hourOfDay, minute and second. The keys are used to set the according values of the <code>Date</code> or <code>Calendar</code> object.</p>
+<pre class="brush:groovy">
+import static java.util.Calendar.*
+
+def cal = Calendar.instance
+cal.set(year: 2010, month: JULY, date: 9)
+
+assert 'Birthday @ 2010-7-9' == 'Birthday @ ' + cal.format('yyyy-M-d')
+assert FRIDAY == cal[DAY_OF_WEEK]
+
+def date = new Date()
+date.set(hourOfDay: 12, minute: 0, second: 0, year: 2010, month: JUNE, date: 1)
+
+assert '12:00:00' == date.format('HH:mm:ss')
+assert 2010 == date[YEAR]
+assert JUNE == date[MONTH]
+assert 1 == date.getAt(DATE)
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

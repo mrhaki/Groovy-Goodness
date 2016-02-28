@@ -1,0 +1,17 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-40700054751359678292014-04-04T05:41:00.000+02:002014-04-04T05:41:43.194+02:00Groovy Goodness: GString as Writable<p>The Groovy API has the interface <a href="http://groovy.codehaus.org/api/groovy/lang/Writable.html">Writable</a>. Classes that implement this interface are capable of writing their selves to a <code>java.io.Writer</code> object. The interface has one method <code>writeTo()</code> where the code is that writes the contents to a given <code>Writer</code> instance. Most implementations will also use the implementation of the <code>writeTo()</code> method in their <code>toString()</code> implementation.</p><p>The GString implementation in Groovy also implements the <code>Writable</code> interface. This means we can redirect the GString contents to some <code>Writer</code> instance if we want to. In the following code we use a <code>FileWriter</code> to write the contents of a GString to a file:</p><pre class="brush:groovy">def data = [
+    new Expando(id: 1, user: 'mrhaki', country: 'The Netherlands'),
+    new Expando(id: 2, user: 'hubert', country: 'The Netherlands'),
+]
+
+data.each { userData -&gt;
+    new File("${userData.id}.txt").withWriter('UTF-8') { fileWriter -&gt;
+        // Use writeTo method on GString to save
+        // result in a file.
+        "User $userData.user lives in $userData.country".writeTo(fileWriter)
+    }
+}
+
+
+assert new File('1.txt').text == 'User mrhaki lives in The Netherlands'
+assert new File('2.txt').text == 'User hubert lives in The Netherlands'
+</pre><p>Code written with Groovy 2.2.2</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

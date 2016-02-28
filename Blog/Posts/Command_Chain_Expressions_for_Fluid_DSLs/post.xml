@@ -1,0 +1,88 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-43292227045899530592011-05-27T11:29:00.000+02:002011-05-27T11:29:51.821+02:00Groovy Goodness: Command Chain Expressions for Fluid DSLs<p>Groovy 1.8 introduces command chain expression to further the support for DSLs. We already could leave out parenthesis when invoking top-level methods. But now we can also leave out punctuation when we chain methods calls, so we don't have to type the dots anymore. This results in a DSL that looks and reads like a natural language.</p>
+<p>Let 's see a little sample where we can see how the DSL maps to real methods with arguments:</p>
+<pre class="brush:groovy">
+// DSL:
+take 3.apples from basket
+// maps to:
+take(3.apples).from(basket)
+
+// DSL (odd number of elements):
+calculate high risk
+// maps to:
+calculate(high).risk
+// or:
+calculate(high).getRisk()
+
+// DSL:
+// We must use () for last method call, because method doesn't have arguments.
+talk to: 'mrhaki' loudly()  
+// maps to:
+talk(to: 'mrhaki').loudly()
+</pre>
+<p>Implementing the methods to support these kind of DSLs can be done using maps and closures. The following sample is a DSL to record the time spent on a task at different clients:</p>
+<pre class="brush:groovy">
+worked 2.hours on design at GroovyRoom
+developed 3.hours at OfficeSpace
+developed 1.hour at GroovyRoom
+worked 4.hours on testing at GroovyRoom
+</pre>
+<p>We see how to implement the methods to support this DSL here:</p>
+<pre class="brush:groovy">
+// Constants for tasks and clients.
+enum Task { design, testing, developing }
+enum Client { GroovyRoom, OfficeSpace }
+
+// Supporting class to save work item info.
+class WorkItem {
+    Task task
+    Client client
+    Integer hours
+}
+
+// Support syntax 1.hour, 3.hours and so on.
+Integer.metaClass.getHour = { -&gt; delegate }
+Integer.metaClass.getHours = { -&gt; delegate }
+
+// Import enum values as constants.
+import static Task.*
+import static Client.*
+
+// List to save hours spent on tasks at
+// different clients.
+workList = []
+ 
+def worked(Integer hours) {
+    ['on': { Task task -&gt;
+        ['at': { Client client -&gt;
+            workList &lt;&lt; new WorkItem(task: task, client: client, hours: hours)
+        }]
+    }]
+}
+
+def developed(Integer hours) {
+    ['at': { Client client -&gt;
+        workList &lt;&lt; new WorkItem(task: developing, client: client, hours: hours)
+    }]
+}
+
+// -----------------------------------
+// DSL
+// -----------------------------------
+worked 2.hours on design at GroovyRoom
+developed 3.hours at OfficeSpace
+developed 1.hour at GroovyRoom
+worked 4.hours on testing at GroovyRoom
+
+
+// Test if workList is filled
+// with correct data.
+def total(condition) {
+    workList.findAll(condition).sum { it.hours }
+}
+
+assert total({ it.client == GroovyRoom }).hours == 7
+assert total({ it.client == OfficeSpace }).hours == 3
+assert total({ it.task == developing }).hours == 4
+assert total({ it.task == design }).hours == 2
+assert total({ it.task == testing }).hours == 4
+</pre>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0

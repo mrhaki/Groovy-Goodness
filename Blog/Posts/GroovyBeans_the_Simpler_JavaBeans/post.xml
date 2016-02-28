@@ -1,0 +1,87 @@
+tag:blogger.com,1999:blog-6671019398434141469.post-59593531574529036062009-08-18T07:00:00.002+02:002010-11-26T11:15:13.316+01:00Groovy Goodness: GroovyBeans the Simpler JavaBeans<p>We use JavaBeans a lot in our day to day Java programming. <a href="http://groovy.codehaus.org/Groovy+Beans">GroovyBeans</a> use a much simpler syntax to get the same result. If we define a property in a JavaBean we must provide the corresponding <code>get/set</code> methods. Most IDEs can generate these methods for us, but still the resulting code of a JavaBeans is less readable, because we have a lot of these methods.</p>
+<p>Let's see some code first before we continue to look into GroovyBeans in more detail:</p>
+<pre class="brush:groovy">
+class Car {
+ int numberOfDoors
+ String model
+ String brand
+ boolean automatic
+ double price
+ 
+ String toString() {
+     "[Car details =&gt; brand: '${brand}', model: '${model}', #doors: '${numberOfDoors}', automatic: '${automatic}', price: '${price}']"
+ }
+}
+</pre>
+<p>We can use the <code>Car</code> GroovyBean from a Groovy class or script:</p>
+<pre class="brush:groovy">
+Car ford = new Car(brand: 'Ford', model: 'Focus', numberOfDoors: 4, automatic: false, price: 24995)
+Car toyota =  new Car(brand: 'Toyota', model: 'Verso')
+toyota.automatic = true  // Yes, this invokes setAutomatic.
+toyota.setPrice(28919)  // Normal set invocation.
+toyota.setNumberOfDoors 5  // In Groovy we can omit the parentheses.
+println ford  // Output: [Car details => brand: 'Ford', model: 'Focus', #doors: '4', automatic: 'false', price: '24995.0']
+println toyota // Output: [Car details => brand: 'Toyota', model: 'Verso', #doors: '5', automatic: 'true', price: '28919.0']
+</pre>
+<p>The class <code>Car</code> is our GroovyBean. It looks like we defined only some fields, but because we haven't use any of the access modifiers (public, protected or private) these fields are actually properties when the code is compiled. Groovy will generate the <code>get/set</code> methods so we can use the properties (see a <a href="http://groovy.codehaus.org/Groovy+Beans">complete list of rules </a> the compiler uses to generate properties). To prove this is true we write a simple Java application to use the <code>Car</code> class:</p>
+<pre class="brush:java">
+public class CarApp {
+ public static void main(String[] args) {
+     Car car = new Car();
+  car.setNumberOfDoors(3);
+  car.setModel("A3");
+  car.setBrand("AUDI");
+  car.setPrice(32010);
+  System.out.println(car); // Output: [Car details => brand: 'AUDI', model: 'A3', #doors: '3', automatic: 'false', price: '32010.0']
+ }
+}
+</pre>
+<p>GroovyBeans are flexible. To make a property read-only when designate a field final. Let's make the <code>brand</code> final and run our Groovy script again. We now get the following exception:</p>
+<pre class="brush:groovy">
+Caught: groovy.lang.ReadOnlyPropertyException: Cannot set readonly property: brand for class: Car
+</pre>
+<p>We can add our own <code>get/set</code> methods if we like. For example in the following code we have added our own protected <code>set</code> method for the <code>model</code> property:</p>
+<pre class="brush:groovy">
+class Car {
+ int numberOfDoors
+ String model
+ final String brand  // Readonly, public getter is generated, no setter.
+ boolean automatic
+ double price
+ 
+ // Protected setter, public getter is still generated.
+ protected void setModel(model) {
+     this.model = modelName
+    }
+ 
+ String toString() {
+     "[Car details =&gt; brand: '${brand}', model: '${model}', #doors: '${numberOfDoors}', automatic: '${automatic}', price: '${price}']"
+ }
+}
+</pre>
+<p>To access the fields in GroovyBeans directly we can use the <code>.@</code> operator. With this operator we bypass the <code>get/set</code> methods. Of course we shouldn't be doing this, because that is why we have properties, but still the following code shows how it works:</p>
+<pre class="brush:groovy">
+class Car {
+ int numberOfDoors
+ String model
+ String brand
+ boolean automatic
+ double price
+ 
+ public void setBrand(brand) {
+     this.brand = brand + ' (set via setter method)'
+ }
+ 
+ String toString() {
+     "[Car details => brand: '${brand}', model: '${model}', #doors: '${numberOfDoors}', automatic: '${automatic}', price: '${price}']"
+ }
+}
+
+Car ford = new Car(brand: 'Ford', model: 'Focus', numberOfDoors: 4, automatic: false, price: 24995)
+println ford.brand  // Output: Ford (set via setter method)
+
+ford.@brand = 'Overrule brand'
+println ford.brand  // Output: Overrule brand
+println ford.@brand  // Output: Overrule brand
+</pre>
+<p>GroovyBeans provide a clean way to define beans with properties usable in Groovy and Java code.</p>Hubert Klein Ikkinkhttps://plus.google.com/116304108087638220732noreply@blogger.com0
