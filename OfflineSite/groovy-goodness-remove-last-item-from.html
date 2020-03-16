@@ -1,0 +1,71 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Remove Last Item From List Using RemoveLast Method (And Pop/Push Methods Reimplemented)</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Remove Last Item From List Using RemoveLast Method (And Pop/Push Methods Reimplemented)</h3>
+
+<div class="post">
+<p>Versions of Groovy before 2.5.0 implemented <a href="http://mrhaki.blogspot.com/2015/01/groovy-goodness-pop-and-push-items-in.html"><code>pop</code> and <code>push</code></a> methods for the <code>List</code> class for items at the end of a <code>List</code> object. The <code>pop</code> method removed the last item of a <code>List</code> and <code>push</code> added a item to the <code>List</code>. Groovy 2.5.0 reimplemented the methods so they now work on the first item of a <code>List</code> instance. To remove an item from the end of the list we can use the newly added method <code>removeLast</code>.</p><p>In the following example Groovy code we use the <code>removeLast</code> and <code>add</code> methods to remove and add items to the end of the list. And with the <code>pop</code> and <code>push</code> methods we remove and add items to the beginnen of the list:<p><pre class="brush:groovy;">def list = ['Groovy', 'is', 'great!']
+ 
+// Remove last item from list
+// with removeLast().
+assert list.removeLast() == 'great!'
+assert list == ['Groovy', 'is']
+ 
+// Remove last item which is now 'is'.
+list.removeLast()
+ 
+// Add new item to end of the list.
+list.add 'rocks!'
+ 
+assert list.join(' ') == 'Groovy rocks!'
+
+
+/* IMPORTANT */
+/* pop() and push() implementations has changed */
+/* in Groovy 2.5.0. They now work on the first */
+/* item in a List instead of the last. */
+
+// Using pop() we remove the first item
+// of a List.
+assert list.pop() == 'Groovy'
+
+// And with push we add item to 
+// beginning of a List.
+list.push 'Spock'
+
+assert list.join(' ') == 'Spock rocks!'
+</pre><p>Written with Groovy 2.5.0.<p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<title>Groovy Goodness: Swapping Elements in a List</title>
+<title>Groovy Goodness: Uncapitalize Strings</title>
 
 <script language="javascript" src="scripts/shCore.js"></script> 
 <script language="javascript" src="scripts/shLegacy.js"></script> 
@@ -22,15 +22,15 @@
 
 <a href="index.html">Back to index</a>
 
-<h3 class="post-title">Groovy Goodness: Swapping Elements in a List</h3>
+<h3 class="post-title">Groovy Goodness: Uncapitalize Strings</h3>
 
 <div class="post">
-<p>Groovy already has so many extra methods for working with lists. If we have to need to swap two elements in a <code>List</code> we can use the <code>swap</code> method. We provide the two index values of the elements we want to swap and Groovy swaps the elements.</p><p>In the following sample we have a simple list and swap all elements by invoking the <code>swap</code> method two times:</p><pre class="brush:groovy">def saying = ['Groovy', 'is', 'great']
+<p>Since Groovy 2.4.8 we can use the <code>uncapitalize</code> method on <code>CharSequence</code> objects. The <a href="http://mrhaki.blogspot.nl/2010/06/groovy-goodness-capitalize-strings.html"><code>capitalize</code></a> method was already available for a long time, but now we have the opposite as well.</p><p>In the following example we see that the <code>uncapitalize</code> method only replaces the first letter of a <code>String</code> value to lower case:</p><pre class="brush:groovy;">assert 'Groovy'.uncapitalize() == 'groovy'
+assert 'MrHaki'.uncapitalize() == 'mrHaki'
 
-def yodaSays = saying.swap(2, 1).swap(0, 1)
-
-assert yodaSays.join(' ') == 'great Groovy is'
-</pre><p>Written with Groovy 2.4.1.</p
+String message = 'Groovy Rocks!'
+assert message.uncapitalize() == 'groovy Rocks!'
+</pre><p>Written with Groovy 2.4.8.</p
 </div>
 
 <script language="javascript"> 

@@ -1,0 +1,58 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Java 8 Stream Enhancements</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Java 8 Stream Enhancements</h3>
+
+<div class="post">
+<p>Groovy 2.5.0 adds several methods to make working with Java 8 Streams more Groovy. First of all the methods <code>toList</code> and <code>toSet</code> are added to the <code>Stream</code> class. These methods will convert the stream to a <code>List</code> and <code>Set</code> using the <code>Stream.collect</code> method with <code>Collectors.toList</code> and <code>Collectors.toSet</code> as argument. Furthermore we can convert any array object to a <code>Stream</code> using the <code>stream</code> method that is added to all array objects.</p><p>In the following example we use the support of converting an array to a <code>Stream</code> and then getting a <code>List</code> and <code>Set</code> from the stream:</p><pre class="brush:groovy;">def sample = ['Groovy', 'Gradle', 'Grails', 'Spock'] as String[]
+
+def result = sample.stream()  // Use stream() on array objects
+                   .filter { s -> s.startsWith('Gr') } 
+                   .map { s -> s.toUpperCase() }
+                   .toList()  // toList() added to Stream by Groovy
+                   
+assert result == ['GROOVY', 'GRADLE', 'GRAILS']
+
+
+def numbers = [1, 2, 3, 1, 4, 2, 5, 6] as int[]
+
+def even = numbers.stream()  // Use stream() on array objects
+                  .filter { n -> n % 2 == 0 }
+                  .toSet()  // toSet() added to Stream 
+                  
+assert even == [2, 4, 6] as Set
+</pre><p>Written with Groovy 2.5.0.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

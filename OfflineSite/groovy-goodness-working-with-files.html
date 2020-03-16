@@ -25,10 +25,7 @@
 <h3 class="post-title">Groovy Goodness: Working with Files</h3>
 
 <div class="post">
-<p>When we write code in Java to work with files we must write a lot of boilerplate code to make sure all streams are opened and closed correctly and provide exception handling. The <a href="http://commons.apache.org/io/index.html">Commons IO</a> package already helps, but Groovy makes working with files so easy. Groovy adds a lot of useful methods to the <a href="http://groovy.codehaus.org/groovy-jdk/java/io/File.html"><code>java.io.File</code></a> class. We can use simple properties to write and read text, methods to traverse the file system and methods to filter contents.</p>
-<p>Here is a Groovy script with different samples of working with files:</p>
-<pre class="brush:groovy">
-// Normal way of creating file objects.
+<p>When we write code in Java to work with files we must write a lot of boilerplate code to make sure all streams are opened and closed correctly and provide exception handling. The <a href="http://commons.apache.org/io/index.html">Commons IO</a> package already helps, but Groovy makes working with files so easy. Groovy adds a lot of useful methods to the <a href="http://groovy.codehaus.org/groovy-jdk/java/io/File.html"><code>java.io.File</code></a> class. We can use simple properties to write and read text, methods to traverse the file system and methods to filter contents.</p><p>Here is a Groovy script with different samples of working with files:</p><pre class="brush:groovy">// Normal way of creating file objects.
 def file1 = new File('groovy1.txt')
 def file2 = new File('groovy2.txt')
 def file3 = new File('groovy3.txt')
@@ -81,7 +78,7 @@ assert 'Working with files the Groovy way is easy.\r\n' == sw.toString()
 // See for a complete list the File GDK documentation.
 files = []
 new File('.').eachFileMatch(~/^groovy.*\.txt$/) { files &lt;&lt; it.name }
-assert ['groovy1.txt', 'groovy2.txt', groovy3.txt'] == files
+assert ['groovy1.txt', 'groovy2.txt', 'groovy3.txt'] == files
 
 // Delete all files:
 files.each { new File(it).delete() }

@@ -25,7 +25,7 @@
 <h3 class="post-title">Groovy Goodness: @Builder Definition with Extra Type Checks</h3>
 
 <div class="post">
-<p>We have seen some features of the <code>@Builder</code> AST transformation in <a href="http://mrhaki.blogspot.com/2014/04/groovy-goodness-use-builder-ast.html">previous</a> and <a href="http://mrhaki.blogspot.com/2014/04/groovy-goodness-using-builder-to-create.html">other</a> blog post. We can use another strategy to let the AST transformation generate a class where the class only has a constructor that accepts a builder class. And with <code>@CompileStatic</code> we can even make sure that all required properties must have a value set by the builder before the constructor accepts the argument. We use the <code>builderStrategy</code> annotation parameter and set it to <code>InitializerStrategy</code>:</p><pre class="brush:groovy">import groovy.transform.builder.Builder
+<p>We have seen some features of the <code>@Builder</code> AST transformation in <a href="http://mrhaki.blogspot.nl/2014/05/groovy-goodness-use-builder-ast.html">previous</a> and <a href="http://mrhaki.blogspot.nl/2014/05/groovy-goodness-use-builder-ast.html">other</a> blog post. We can use another strategy to let the AST transformation generate a class where the class only has a constructor that accepts a builder class. And with <code>@CompileStatic</code> we can even make sure that all required properties must have a value set by the builder before the constructor accepts the argument. We use the <code>builderStrategy</code> annotation parameter and set it to <code>InitializerStrategy</code>:</p><pre class="brush:groovy">import groovy.transform.builder.Builder
 import groovy.transform.builder.InitializerStrategy
 
 @Builder(builderStrategy = InitializerStrategy)

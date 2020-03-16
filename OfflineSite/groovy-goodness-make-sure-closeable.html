@@ -1,0 +1,60 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Make Sure Closeable Objects Are Closed Using withCloseable Method</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Make Sure Closeable Objects Are Closed Using withCloseable Method</h3>
+
+<div class="post">
+<p>If a class implements the <code>Closeable</code> interface Groovy adds the <code>withCloseable</code> method to the class. The <code>withCloseable</code> method has a closure as argument. The code in the closure is executed and then the implementation of the <code>close</code> method of the <code>Closeable</code> interface is invoked. The <code>Closeable</code> object is passed as argument to the closure, so we can refer to it inside the closure.</p><p>In the following example we have two objects that implement the <code>Closeable</code> interface. By using <code>withCloseable</code> we know for sure the <code>close</code> method is invoked after all the code in the closure is executed:</p><pre class="brush:groovy;">@Grab(group='org.apache.httpcomponents', module='httpclient', version='4.5.3')
+import org.apache.http.impl.client.HttpClientBuilder
+import org.apache.http.client.methods.HttpGet
+
+// HttpClientBuilder.create().build() returns a CloseableHttpClient
+// that implements the Closeable interface. Therefore we can use
+// the withCloseable method to make sure the client is closed
+// after the closure code is executed. 
+HttpClientBuilder.create().build().withCloseable { client ->
+    final request = new HttpGet('http://www.mrhaki.com')
+
+    // The execute method returns a CloseableHttpResponse object
+    // that implements the Closeable interface. We can use
+    // withCloseable method to make sure the response is closed
+    // after the closure code is executed.
+    client.execute(request).withCloseable { response ->
+        assert response.statusLine.statusCode == 200
+    }
+}
+</pre><p>Written with Groovy 2.4.12.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Safe Index Based Access For Lists, Arrays and Maps</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Safe Index Based Access For Lists, Arrays and Maps</h3>
+
+<div class="post">
+<p>Groovy 3 adds the feature of safe index based access for lists, arrays and maps. This means we can use <code>?[index]</code> to get or a set a value on a list or array without getting a <code>NullPointerException</code> when the list or array is not initialised. With maps we can use <code>?[key]</code> for getting a value or set a value and when the map object is not initialised we don't get a <code>NullPointerException</code>.</p><p>In the following example we see several examples of setting or getting values using indices or keys:</p><pre class="brush:groovy;">def list = null
+
+// Accessing null list or array 
+// using index based access, 
+// will throw NullPointerException when
+// collection is null.
+try {
+    list[0]
+} catch (NullPointerException npe) {
+    assert npe
+}
+
+// Using ?[...] will not throw NullPointerException.
+assert list?[0] == null
+
+// Assignment are ignored when list is null.
+list?[1] = 42
+assert list?[1] == null
+
+// When collection is not null we simply
+// get the default behaviour for index based
+// access of elements.
+def values = ["Groovy", "rocks"]
+assert values?[0] == "Groovy"
+values?[2] = '!'
+assert values?.join(" ") == "Groovy rocks !"
+
+// We can use ?[key] for maps as well.
+def info = null
+assert info?['address'] == null
+info?['address'] = 'unknown'
+assert info?['address'] == null
+
+def user = [alias: 'mrhaki', loves: 'Groovy']
+assert user?['alias'] == 'mrhaki'
+user?['country'] = 'The Netherlands'
+assert user?['country'] == 'The Netherlands'
+assert user?['age'] == null
+</pre><p>Written with Groovy 3.0.1.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

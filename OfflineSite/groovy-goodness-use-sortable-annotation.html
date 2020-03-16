@@ -82,7 +82,7 @@ assert sorted.first().title == 'Grails'
 assert sorted.last().title == 'Groovy'
 assert sorted.maxAttendees == [20, 40, 50]
 </pre><p>Besides implementing the <code>Comparable</code> interface with a <code>compareTo</code> method, the AST transformation also adds public static methods with the pattern <code>comparatorBy<em>Property</em></code>. These methods return a <code>Comparator</code> object for the given property.</p><pre class="brush:groovy">final Comparator byMaxAttendees = Course.comparatorByMaxAttendees()
-final List<course> sortedByMaxAttendees = courses.sort(false, byMaxAttendees)
+final List&lt;Course&gt; sortedByMaxAttendees = courses.sort(false, byMaxAttendees)
 
 assert sortedByMaxAttendees.maxAttendees == [20, 40, 50]
 // beginDate is not used for sorting

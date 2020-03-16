@@ -25,9 +25,7 @@
 <h3 class="post-title">Groovy Goodness: Running Groovy Scripts in Java with GroovyClassLoader</h3>
 
 <div class="post">
-<p>With the <code>GroovyClassLoader</code> we can load Groovy scripts and run them in Java code. First we must create a new <code>GroovyClassLoader</code> and then parse a Groovy script. The script can be in a file, string or inputstream. Once the script is parsed we have a <code>Class</code> and we can make a new instance of this class. We cast the instance to a <code>GroovyObject</code> instance, so we can use the <code>invokeMethod()</code> method to invoke methods in our Groovy script.</p>
-<pre class="brush:java">
-package com.mrhaki.blog;
+<p>With the <code>GroovyClassLoader</code> we can load Groovy scripts and run them in Java code. First we must create a new <code>GroovyClassLoader</code> and then parse a Groovy script. The script can be in a file, string or inputstream. Once the script is parsed we have a <code>Class</code> and we can make a new instance of this class. We cast the instance to a <code>GroovyObject</code> instance, so we can use the <code>invokeMethod()</code> method to invoke methods in our Groovy script.</p><pre class="brush:java">package com.mrhaki.blog;
 
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyObject;
@@ -56,12 +54,10 @@ public class GroovyRun {
         groovy = classLoader.parseClass(new File("SampleScript.groovy"));
         groovyObj = (GroovyObject) groovy.newInstance();
         output = groovyObj.invokeMethod("scriptSays", new Object[] { "mrhaki", new Integer(2) });
-        assert "Hello mrhaki, from Groovy. Hello mrhaki, from Groovy".equals(output);
+        assert "Hello mrhaki, from Groovy. Hello mrhaki, from Groovy. ".equals(output);
     }
 }
-</pre>
-<pre class="brush:groovy">
-// File: SampleScript.groovy
+</pre><pre class="brush:groovy">// File: SampleScript.groovy
 class SampleScript {
     String scriptSays(name, num) { 
         "Hello $name, from Groovy. " * num

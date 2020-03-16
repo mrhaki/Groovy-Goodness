@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<title>Groovy Goodness: Swapping Elements in a List</title>
+<title>Groovy Goodness: Use Optional In Conditional Context</title>
 
 <script language="javascript" src="scripts/shCore.js"></script> 
 <script language="javascript" src="scripts/shLegacy.js"></script> 
@@ -22,15 +22,13 @@
 
 <a href="index.html">Back to index</a>
 
-<h3 class="post-title">Groovy Goodness: Swapping Elements in a List</h3>
+<h3 class="post-title">Groovy Goodness: Use Optional In Conditional Context</h3>
 
 <div class="post">
-<p>Groovy already has so many extra methods for working with lists. If we have to need to swap two elements in a <code>List</code> we can use the <code>swap</code> method. We provide the two index values of the elements we want to swap and Groovy swaps the elements.</p><p>In the following sample we have a simple list and swap all elements by invoking the <code>swap</code> method two times:</p><pre class="brush:groovy">def saying = ['Groovy', 'is', 'great']
-
-def yodaSays = saying.swap(2, 1).swap(0, 1)
-
-assert yodaSays.join(' ') == 'great Groovy is'
-</pre><p>Written with Groovy 2.4.1.</p
+<p>In Groovy 2.5.0 we can use a Java 8 <code>Optional</code> object in a conditional context. When an <code>Optional</code> object has a value the value is coerced to <code>true</code> and when empty the value is <code>false</code>.</p><pre class="brush:groovy;">assert !Optional.empty()
+assert !Optional.ofNullable(null)
+assert Optional.of('Groovy rocks!')
+</pre><p>Written with Groovy 2.5.0.</p
 </div>
 
 <script language="javascript"> 

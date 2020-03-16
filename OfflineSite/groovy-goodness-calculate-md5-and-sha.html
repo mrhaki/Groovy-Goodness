@@ -1,0 +1,54 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Calculate MD5 And SHA Hash Values</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Calculate MD5 And SHA Hash Values</h3>
+
+<div class="post">
+<p>Groovy adds a lot of useful methods to the <code>String</code> class. Since Groovy 2.5.0 we can even calculate MD5 and SHA hash values using the methods <code>md5</code> and <code>digest</code>. The <code>md5</code> method create a hash value using the MD5 algorithm. The <code>digest</code> method accepts the name of the algorithm as value. These values are dependent on the available algorithms on our Java platform. For example the algorithms MD2, MD5, SHA-1, SHA-256, SHA-384 and SHA-512 are by default available.</p><p>In the next example we use the <code>md5</code> and <code>digest</code> methods on a <code>String</code> value:</p><pre class="brush:groovy;">def value = 'IamASecret'
+
+def md5 = value.md5()
+
+// We can provide hash algorithm with digest method.
+def md2 = value.digest('MD2')
+def sha1 = value.digest('SHA-1')
+def sha256 = value.digest('SHA-256')
+
+assert md5 == 'a5f3147c32785421718513f38a20ca44'
+assert md2 == '832cbe3966e186194b1203c00ef47488'
+assert sha1 == '52ebfed118e0a411e9d9cbd60636fc9dea718928'
+assert sha256 == '4f5e3d486d1fd6c822a81aa0b93d884a2a44daf2eb69ac779a91bc76de512cbe'
+</pre><p>Written with Groovy 2.5.0.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

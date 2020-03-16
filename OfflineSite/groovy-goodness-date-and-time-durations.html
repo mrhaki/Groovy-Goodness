@@ -25,11 +25,7 @@
 <h3 class="post-title">Groovy Goodness: Date and Time Durations and the TimeCategory</h3>
 
 <div class="post">
-<p>Groovy has some elegant ways to work with date and time values. One of them is the support of durations. We can define a duration to denote a certain time amount, like 7 days, 2 hours and 50 minutes. We can use these durations to add or subtract them from date and time objects.</p>
-<p>The <code>TimeCategory</code> provides an even Groovier way to work with durations. We can use constructs like 7.days + 12.minutes to create a duration. When we read this code it is just like reading English text. Here is some sample code:</p>
-<pre class="brush:groovy">
-import groovy.time.*
-import org.codehaus.groovy.runtime.TimeCategory
+<p>Groovy has some elegant ways to work with date and time values. One of them is the support of durations. We can define a duration to denote a certain time amount, like 7 days, 2 hours and 50 minutes. We can use these durations to add or subtract them from date and time objects.</p><p>The <code>TimeCategory</code> provides an even Groovier way to work with durations. We can use constructs like 7.days + 12.minutes to create a duration. When we read this code it is just like reading English text. Here is some sample code:</p><pre class="brush:groovy">import groovy.time.*
 
 // Define period of 2 years, 3 months, 15 days, 0 hours, 23 minutes, 2 seconds and 0 milliseconds.
 def period = new DatumDependentDuration(2, 3, 15, 0, 23, 2, 0)
@@ -48,12 +44,14 @@ use (TimeCategory) {
     // We can use period.from.now syntax.    
     def d1 = 1.week - 1.day
     def d2 = new Date() + 6.days
-    assert d2.format('yyyy-MM-dd') == d1.from.now.toString()
+    assert d2.format('yyyy-MM-dd') == d1.from.now.format('yyyy-MM-dd')
+    assert d2.clearTime() == d1.from.now
     
     // We can use period.ago syntax.
     def d3 = 3.days.ago
     def d4 = new Date() - 3
-    assert d4.format('yyyy-MM-dd') == d3.toString()
+    assert d4.format('yyyy-MM-dd') == d3.format('yyyy-MM-dd')
+    assert d4.clearTime() == d3
 }
 </pre
 </div>

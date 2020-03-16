@@ -1,0 +1,200 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Make Class Cloneable With @AutoClone</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Make Class Cloneable With @AutoClone</h3>
+
+<div class="post">
+<p>Groovy has many AST annotations that add code to our class (the Abstract Syntax Tree - AST) before it is compiled. So the compiled class file contains the code added by the AST annotation. With the <code>@AutoClone</code> annotation a <code>clone</code> method is added and the class implements the <code>Cloneable</code> interface. We have different strategies to choose from to support cloning for our class.</p><p>The default strategy is to invoke <code>super.clone()</code> in the generated <code>clone</code> method. The next statements will deep copy the properties (and optional fields) from our class. If one of the properties cannot be cloned an exception is thrown. In the following example code snippet we apply the <code>@AutoClone</code> annotation to the classes <code>Course</code> and <code>Teacher</code>:</p><pre class="brush:groovy;">import groovy.transform.AutoClone
+
+@AutoClone
+class Course {
+    String name
+    Date date
+    Teacher teacher
+}
+
+@AutoClone
+class Teacher {
+    String name
+}
+
+def mrhaki =
+    new Teacher(name: 'mrhaki')
+    
+def course = 
+    new Course(
+        name: 'Groovy 101',
+        date: new Date() + 10,
+        teacher: mrhaki)
+
+// We make a deep copy.
+def secondCourse = course.clone()
+assert secondCourse != course
+assert !secondCourse.is(course)
+assert secondCourse.teacher != course.teacher
+
+// Change property on cloned instance.
+secondCourse.name = 'Groovy 101 2nd edition'
+
+assert secondCourse.name == 'Groovy 101 2nd edition'
+assert course.name == 'Groovy 101'
+</pre><p>We can use the <code>excludes</code> annotation attribute to give a list of properties that must not be cloned:</p><pre class="brush:groovy;">import groovy.transform.AutoClone
+
+// Do not clone the teacher property.
+@AutoClone(excludes = ['teacher'])
+class Course {
+    String name
+    Date date
+    Teacher teacher
+}
+
+@AutoClone()
+class Teacher {
+    String name
+}
+
+def mrhaki =
+    new Teacher(name: 'mrhaki')
+    
+def course = 
+    new Course(
+        name: 'Groovy 101',
+        date: new Date() + 10,
+        teacher: mrhaki)
+
+// We make a deep copy.
+def secondCourse = course.clone()
+assert secondCourse != course
+assert !secondCourse.is(course)
+// Only the teacher property is
+// a shallow copy.
+assert secondCourse.teacher == mrhaki
+assert secondCourse.teacher.is(mrhaki)
+
+// Change property on teacher property on cloned instance.
+secondCourse.teacher.name = 'hubert'
+
+assert secondCourse.teacher.name == 'hubert'
+assert course.teacher.name == 'hubert'
+</pre><p>To include fields as well as properties we must set the annotation attribute <code>includeFields</code> to <code>true</code>.</p><p>If we want to invoke the default constructor of our class in the <code>clone</code> method we must use the clone style <code>AutoCloneStyle.SIMPLE</code>. In the generated <code>clone</code> method the constructor is invoked followed by copying the properties:</p><pre class="brush:groovy;">import groovy.transform.AutoClone
+import static groovy.transform.AutoCloneStyle.SIMPLE
+
+@AutoClone(style = SIMPLE)
+class Course {
+    String name
+    Date date
+    Teacher teacher
+    
+    static int counter
+    
+    Course() {
+        counter++
+    }
+}
+
+@AutoClone(style = SIMPLE)
+class Teacher {
+    String name
+    
+    static int counter
+    
+    Teacher() {
+        counter++
+    }
+}
+
+def mrhaki =
+    new Teacher(name: 'mrhaki')
+    
+def course = 
+    new Course(
+        name: 'Groovy 101',
+        date: new Date() + 10,
+        teacher: mrhaki)
+        
+def otherCourse = course.clone()
+
+// Constructor is invoked twice:
+// once by ourselves to create a 
+// course, the other by the clone()
+// method added by @AutoClone.
+assert course.counter == 2
+assert course.teacher.counter == 2
+</pre><p>The last clone style we can choose is <code>AutoCloneStyle.COPY_CONSTRUCTOR</code>. This time the annotation will add a <code>protected</code> constructor that takes another object of the same type as argument. This new constructor is used in the generated <code>clone</code> method. This style is useful if we have <code>final</code> read-only properties that can only be set via the constructor:</p><pre class="brush:groovy;">import groovy.transform.AutoClone
+import static groovy.transform.AutoCloneStyle.COPY_CONSTRUCTOR
+
+@AutoClone(style = COPY_CONSTRUCTOR)
+class Course {
+    final String name
+    final Date date
+    final Teacher teacher
+    
+    Course(
+        final String name,
+        final Date date,
+        final Teacher teacher) {
+        
+        this.name = name
+        this.date = date
+        this.teacher = teacher
+    }
+}
+
+@AutoClone(style = COPY_CONSTRUCTOR)
+class Teacher {
+    final String name
+    
+    Teacher(final String name) {
+        this.name = name
+    }
+}
+
+def mrhaki =
+    new Teacher('mrhaki')
+    
+def course = 
+    new Course(
+        'Groovy 101',
+        new Date() + 10,
+        mrhaki)
+        
+def secondCourse = course.clone()
+assert secondCourse != course
+assert !secondCourse.is(course)
+assert secondCourse.teacher != mrhaki
+assert !secondCourse.teacher.is(mrhaki)
+</pre><p>This annotation was already available since Groovy 1.8.</p><p>Written with Groovy 2.4.6.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

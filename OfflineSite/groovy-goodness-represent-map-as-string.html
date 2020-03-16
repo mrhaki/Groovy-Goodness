@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<title>Groovy Goodness: Swapping Elements in a List</title>
+<title>Groovy Goodness: Represent Map As String</title>
 
 <script language="javascript" src="scripts/shCore.js"></script> 
 <script language="javascript" src="scripts/shLegacy.js"></script> 
@@ -22,15 +22,20 @@
 
 <a href="index.html">Back to index</a>
 
-<h3 class="post-title">Groovy Goodness: Swapping Elements in a List</h3>
+<h3 class="post-title">Groovy Goodness: Represent Map As String</h3>
 
 <div class="post">
-<p>Groovy already has so many extra methods for working with lists. If we have to need to swap two elements in a <code>List</code> we can use the <code>swap</code> method. We provide the two index values of the elements we want to swap and Groovy swaps the elements.</p><p>In the following sample we have a simple list and swap all elements by invoking the <code>swap</code> method two times:</p><pre class="brush:groovy">def saying = ['Groovy', 'is', 'great']
+<p>Groovy adds to <code>Map</code> objects the <code>toMapString</code> method. With this method we can have a String representation of our <code>Map</code>. We can specify an argument for the maximum width of the generated <code>String</code>. Groovy will make sure at least the key/value pairs are added as a pair, before adding three dots (<code>...</code>) if the maximum size is exceeded.</p><pre class="brush:groovy;">def course = [
+    name: 'Groovy 101',
+    teacher: 'mrhaki',
+    location: 'The Netherlands']
+    
+assert course.toMapString(15) == '[name:Groovy 101, ...]'
+assert course.toMapString(25) == '[name:Groovy 101, teacher:mrhaki, ...]'
+</pre><p>As mentioned in a <a href="http://mrhaki.blogspot.com/2010/06/groovy-goodness-represent-list-as.html">previous post</a> we can use the <code>toListString</code> method to represent a <code>List</code> as a <code>String</code>:</p><pre class="brush:groovy;">def names = ['mrhaki', 'hubert']
 
-def yodaSays = saying.swap(2, 1).swap(0, 1)
-
-assert yodaSays.join(' ') == 'great Groovy is'
-</pre><p>Written with Groovy 2.4.1.</p
+assert names.toListString(5) == '[mrhaki, ...]'
+</pre><p>Written with Groovy 2.4.7.</p
 </div>
 
 <script language="javascript"> 

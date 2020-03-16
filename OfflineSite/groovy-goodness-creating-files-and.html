@@ -1,0 +1,149 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Creating Files And Directories With Nice DSL Using FileTreeBuilder</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Creating Files And Directories With Nice DSL Using FileTreeBuilder</h3>
+
+<div class="post">
+<p>Groovy has a lot of nice and useful gems. One of them is the <code>FileTreeBuilder</code> class. With this class we can create directories and files using a nice DSL with a builder syntax. The code already reflects the hierarchy of the directory structure, which makes it so more readable. We can use an explicit way of referring to methods in the <code>FileTreeBuilder</code> class, but there is also support for a more dynamic version, where Groovy's dynamic nature comes to play.</p><p>In the first example we use the explicit method names. We can use the method <code>dir</code> to create directories and the method <code>file</code> to create a file. We can specify a name for the file and also contents:</p><pre class="brush:groovy;">// Create new FileTreeBuilder. Default the current
+// directory is the base directory for creating new
+// files and directories.
+// We can pas another directory in the constructor as
+// the base directory.
+final FileTreeBuilder treeBuilder = new FileTreeBuilder(new File('tree'))
+
+// Add a file and set the contents using
+// a closure. The delegate of the closure
+// is the File object.
+treeBuilder.file('README.adoc') {
+    write '''\
+        = Groovy rocks!
+
+        Hidden features in Groovy are also cool.
+
+        '''.stripIndent()
+}
+
+// Append to file contents with a String argument.
+treeBuilder.file('README.adoc', '== Extra heading')
+
+final File sample = new File('sample')
+sample.text = '''\
+= Another sample
+
+Testing the Groovy FileTreeBuilder.
+'''
+
+// Or we use another File's contents to append to a file.
+treeBuilder.file('README1.adoc', sample)
+
+// Create a new directory.
+treeBuilder.dir('out')
+
+// Create subdirectories and files
+// using a closure. The delegate is
+// is FileTreeBuilder again.
+treeBuilder.dir('src') {
+    dir('docs') {
+        file('manuscript.adoc') {
+            // Another way to write file contents.
+            withWriter('UTF-8') { writer ->
+                writer.write '= Building Apps With Grails 3'
+            }
+        }
+    }
+}
+
+assert new File('tree/README.adoc').exists()
+assert new File('tree/src/docs/manuscript.adoc').exists()
+assert new File('tree/src/docs/manuscript.adoc').text == '= Building Apps With Grails 3'
+</pre><p>We can achieve the same result using a more compact DSL. The <code>FileTreeBuilder</code> will determine if a directory or file needs to be created. Notice that contents is always append to a file:</p><pre class="brush:groovy;">// We can even use a shorter syntax with the
+// FileTreeBuilder where the node names are the name
+// of a directory to be created (argument is a closure),
+// or the name of a file and some contents.
+// Notice that with the DSL all file contents is
+// appended to existing file contents.
+// We need to delete an existing file first if we
+// don't want to append the contents.
+
+final File newDir = new File('dsl')
+
+// Remove existing dir, so file contents is
+// only set by the FileTreeBuilder DSL,
+// otherwise content is added to the existing files.
+if (newDir.exists()) {
+    newDir.deleteDir()
+}
+
+newDir.mkdirs()
+final FileTreeBuilder dir = new FileTreeBuilder(newDir)
+
+dir {
+    // Node name is the file name, followed by the contents.
+    'README.adoc'('''\
+        = Groovy rocks!
+
+        Hidden features in Groovy are also cool.
+
+        '''.stripIndent())
+
+    'README.adoc'('== Extra heading')
+
+     // We cannot use a closure argument with this DSL,
+     // like with the builder. The DSL assume that a node with a
+     // closure is a directory.
+     // But we can use the File object argument to set
+     // the file contents.
+    'README1.adoc'(sample)
+}
+
+// If name is follwed by closure than a directory
+// name is assumed and created.
+dir.out {}
+
+// Created directory with subdirectories.
+dir.src {
+    // The name of the node is the directory name.
+    docs {
+        // And create file in the src/docs directory.
+        'manuscript.adoc'('= Building Apps With Grails 3')
+    }
+}
+
+assert new File('dsl/README.adoc').exists()
+assert new File('dsl/src/docs/manuscript.adoc').exists()
+assert new File('dsl/src/docs/manuscript.adoc').text == '= Building Apps With Grails 3'
+</pre><p>Written with Groovy 2.4.6.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

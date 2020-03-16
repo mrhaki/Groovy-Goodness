@@ -1,0 +1,63 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Customise Log AST Annotations</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Customise Log AST Annotations</h3>
+
+<div class="post">
+<p><a href="http://mrhaki.blogspot.com/2011/04/groovy-goodness-inject-logging-using.html">Adding logging support</a> to a class in Groovy is easy. We can choose to add SLF4J, Log4j, Log4j2, Apache Commons or Java Util Logging to our class. The default implementation of the Abstract Syntax Tree (AST) transformation is to add a <code>log</code> field of the correct type. As category name the complete class name (including the package) is used. We can change the name of the field with the <code>value</code> attribute. To alter the category name we use the attribute <code>category</code>.</p><p>In the following example snippet we change the log field name to <code>LOGGER</code> and set a custom category name:</p><pre class="brush:groovy;">@Grapes(
+    @Grab(group='ch.qos.logback', module='logback-classic', version='1.1.7')
+)
+import groovy.util.logging.Slf4j
+
+// Change name of the field to LOGGER and
+// the category to 'mrhaki.blog.samples'.
+@Slf4j(value = 'LOGGER', category = 'mrhaki.blog.samples')
+class SampleLogging {
+
+    String sample(final String message) {
+        LOGGER.info 'Running sample({}) method', message
+        
+        "Groovy is $message!"
+    }
+    
+}
+
+def s = new SampleLogging()
+println "System.out says: ${s.sample('gr8')}"
+</pre><p>When we execute the script we get the following output:</p><pre class="brush:plain;light:true;">16:33:56.972 [Thread-7] INFO mrhaki.blog.samples - Running sample(gr8) method
+System.out says: Groovy is gr8!
+</pre><p>Notice the category is <code>mrhaki.blog.samples</code> and we use the field <code>LOGGER</code> in our code.</p><p>Written with Groovy 2.4.7.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

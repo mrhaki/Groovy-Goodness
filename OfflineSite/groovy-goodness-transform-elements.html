@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<title>Groovy Goodness: Swapping Elements in a List</title>
+<title>Groovy Goodness: Transform Elements While Flattening</title>
 
 <script language="javascript" src="scripts/shCore.js"></script> 
 <script language="javascript" src="scripts/shLegacy.js"></script> 
@@ -22,15 +22,18 @@
 
 <a href="index.html">Back to index</a>
 
-<h3 class="post-title">Groovy Goodness: Swapping Elements in a List</h3>
+<h3 class="post-title">Groovy Goodness: Transform Elements While Flattening</h3>
 
 <div class="post">
-<p>Groovy already has so many extra methods for working with lists. If we have to need to swap two elements in a <code>List</code> we can use the <code>swap</code> method. We provide the two index values of the elements we want to swap and Groovy swaps the elements.</p><p>In the following sample we have a simple list and swap all elements by invoking the <code>swap</code> method two times:</p><pre class="brush:groovy">def saying = ['Groovy', 'is', 'great']
+<p>We can use the <code>flatten</code> method in Groovy to flatten a collection that contains other collections into a single collection with all elements. We can pass a closure as extra argument to the <code>flatten</code> method to transform each element that is flattened. The argument of the closure is the element from the original collection.</p><p>In the following example we first use the <code>flatten</code> method without a closure argument. Then we pass a closure argument and transform the element:</p><pre class="brush:groovy;">def list = [1, [2, 3], [[4]]]
 
-def yodaSays = saying.swap(2, 1).swap(0, 1)
+// Simple flatten the nested collections.
+assert list.flatten() == [1, 2, 3, 4]
 
-assert yodaSays.join(' ') == 'great Groovy is'
-</pre><p>Written with Groovy 2.4.1.</p
+// We can use a closure to transform
+// the elements in the resulting collection.
+assert list.flatten { it * 2 } == [2, 4, 6, 8]
+</pre><p>Written with Groovy 2.5.7.</p
 </div>
 
 <script language="javascript"> 

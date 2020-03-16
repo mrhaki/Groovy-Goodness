@@ -1,0 +1,93 @@
+<html>
+<head>
+
+<title>Groovy Goodness: The Elvis Assignment Operator</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: The Elvis Assignment Operator</h3>
+
+<div class="post">
+<p>Groovy 3 adds a new operator to the language: elvis assignment operator (<code>?=</code>). This operator is a shorthand for an assignment where we want to assign a value to a variable or property if the variable or property is null or false (following Groovy truth). If the value of the variable or property is not null or false (again apply Groovy truth rules), the value stays the same.</p><p>In the following example code we use the elvis assignment operator:</p><pre class="brush:groovy;">// First an example using the elvis operator.
+a = null
+a = a ?: 100
+
+assert a == 100
+
+// Now we can shorten the assignment using the 
+// elvis assignment operator.
+a = null
+a ?= 100
+
+assert a == 100
+
+b = 200
+b ?= 100
+
+assert b == 200
+
+// The elvis assignment operator can also 
+// be useful in maps to set default values.
+def m = [a: 1, b: 2]
+m.a = 100
+m.b ?= 200
+m.c ?= 300
+
+assert m.a == 100
+assert m.b == 2
+assert m.c == 300
+
+// Also to set default values for properties
+// in an object. Especially if we cannot
+// change the class to set a default value.
+// In our example we have the source of the
+// Email class and we could set default values
+// in the class definition, but if the class
+// is not under our control we can use the
+// elvis assignment operator to set default
+// values easily.
+class Email {
+    String to, from, subject, body
+}
+
+def mail = new Email(to: 'test@mrhaki.com', 
+                     subject: 'Sample', 
+                     body: 'Trying Elvis assignment.')
+mail.subject ?= 'Mail has no subject'
+mail.from ?= 'no-reply@mrhaki.com'
+
+assert mail.to == 'test@mrhaki.com'
+assert mail.from == 'no-reply@mrhaki.com'
+assert mail.subject == 'Sample'
+assert mail.body == 'Trying Elvis assignment.'
+</pre><p>Written with Groovy 3.0.1.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

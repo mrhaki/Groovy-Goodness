@@ -1,0 +1,73 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Getting All Init And Tail Values Recursively </title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Getting All Init And Tail Values Recursively </h3>
+
+<div class="post">
+<p>For a long time we could get <a href="http://mrhaki.blogspot.com/2009/10/groovy-goodness-getting-tail-of-list.html">the tail</a> or <a href="http://mrhaki.blogspot.com/2015/01/groovy-goodness-getting-all-but-last.html">init values</a> for a collection. Groovy 2.5.0 adds the methods <code>inits</code> and <code>tails</code> for <code>Iterable</code> objects. These methods return a <code>List</code> with <code>List</code> values where the first element is the original collection and the next is the result of <code>init</code> or <code>tail</code> on the previous element. This is repeated until the result of <code>init</code> or <code>tail</code> is an empty <code>List</code>.</p><p>In the next example script we have a original collection of letters. We first run the <code>init</code> and <code>tail</code> methods (without the <code>s</code>). Next we look at the result of invoking <code>inits</code> and <code>tails</code>:</p><pre class="brush:groovy;">def letters = ('a'..'d').toList()
+
+assert letters == ['a', 'b', 'c', 'd']
+
+assert letters.init() == ['a', 'b', 'c']
+assert letters.tail() == ['b', 'c', 'd']
+
+// Inits returns collection of all init()
+// results for an Iterable. The first element
+// has the original values, the next element
+// the result of init()
+// of the previous element and so on until
+// an empty List is the result.
+assert letters.inits() == [
+    ['a', 'b', 'c', 'd'], 
+    ['a', 'b', 'c'], 
+    ['a', 'b'], 
+    ['a'], 
+    []]
+
+// Tails returns collection of all tail()
+// results for an Iterable. The first element
+// has the original values, the next element
+// the result of tail()
+// of the previous element and so on until
+// an empty List is the result.
+assert letters.tails() == [
+    ['a', 'b', 'c', 'd'], 
+    ['b', 'c', 'd'], 
+    ['c', 'd'], 
+    ['d'], 
+    []]
+</pre><p>Written with Groovy 2.5.0.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

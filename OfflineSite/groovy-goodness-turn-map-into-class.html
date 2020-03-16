@@ -1,0 +1,41 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Turn Map Into Class With IntelliJ IDEA</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Turn Map Into Class With IntelliJ IDEA</h3>
+
+<div class="post">
+<p>IntelliJ IDEA has very good Groovy support. It also provides some intentions especially for the Groovy language. For example we can turn a map definition into a Groovy class definition with a few simple clicks.</p><p>The following screenshot shows a simple map declaration with two keys: <code>username</code> and <code>alias</code>. If we use the shortcut for intentions (<kbd>Alt+Enter</kbd> on my computer) we can choose the <em>Convert to Class</em> option:</p><div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-d0Ql2e3I0IQ/Vf_zY2Q813I/AAAAAAAALU4/AY_AgVxFogE/s1600/idea-map-convert.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://2.bp.blogspot.com/-d0Ql2e3I0IQ/Vf_zY2Q813I/AAAAAAAALU4/AY_AgVxFogE/s400/idea-map-convert.png" /></a></div><p style="clear:both">IDEA opens a new dialog window where we can type the name of the class we want to generate and a package name:</p><div class="separator" style="clear: both; text-align: center;"><a href="http://3.bp.blogspot.com/-1k6G-31zXkc/Vf_zc9WzBqI/AAAAAAAALVA/HDTND0KEZqI/s1600/idea-map-convert1.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/-1k6G-31zXkc/Vf_zc9WzBqI/AAAAAAAALVA/HDTND0KEZqI/s400/idea-map-convert1.png" /></a></div><p style="clear:both;">When we click the <em>OK</em> button IDEA generates a new Groovy class file in our project:</p><div class="separator" style="clear: both; text-align: center;"><a href="http://3.bp.blogspot.com/-z53H8pkVCQE/Vf_0EG39baI/AAAAAAAALVY/vwS-qUg75cE/s1600/idea-map-convert2.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/-z53H8pkVCQE/Vf_0EG39baI/AAAAAAAALVY/vwS-qUg75cE/s320/idea-map-convert2.png" /></a></div><p style="clear:both;">Also our original source where we declared the map is changed. Now the constructor of the new class is declared and the original values from the map are assigned to the correct properties of the class:</p><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-PB-UIkJQqfg/Vf_zj6ntz3I/AAAAAAAALVQ/tx18wQ-0QCQ/s1600/idea-map-convert3.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://4.bp.blogspot.com/-PB-UIkJQqfg/Vf_zj6ntz3I/AAAAAAAALVQ/tx18wQ-0QCQ/s400/idea-map-convert3.png" /></a></div><p style="clear:both;">Written with IntelliJ IDEA CE 14.1.4.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

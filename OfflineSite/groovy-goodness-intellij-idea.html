@@ -1,0 +1,41 @@
+<html>
+<head>
+
+<title>Groovy Goodness: IntelliJ IDEA Intentions For String Values</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: IntelliJ IDEA Intentions For String Values</h3>
+
+<div class="post">
+<p>The best IDE to use when developing Groovy code is <a href="http://www.jetbrains.com">IntelliJ IDEA</a>. The Groovy plugin has some nice intentions for us that we can use to optimise and refactor our code. We will look at some of the intentions that deal with String values in this blog post. The intentions shown here work in the free Community Edition as well in the paid Ultimate Edition. To see the possible intentions in IDEA we must select the <em>Show Intentions Action</em>. We need to check our shortcut keys to see the assigned shortcut. On my Mac it is for example <kbd>Alt+Enter</kbd>. Alternatively we can press the <kdb>Shift</kbd> key twice and type in <em>Show intentions</em>. IDEA will show the action with the shortcut key for us.</p><p>Suppose we have assigned a String value to a variable in our code. We used the double quoted syntax to do so, like in Java. But we want to change it to a single quoted String value, so to make it explicit the value cannot be a GString implementation. In the following screenshot we see our variable <code>s</code> with a value. We use our shortcut key to open the suggested intentions. We type <kbd>convert</kbd> to shorten the list with only conversion options. We see that we can change our String value to dollar slashy, regular expression, multiline or plain String syntax:</p><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-R7NV9p4epZA/VflKi2NVP3I/AAAAAAAALTU/x2IyUiES6-g/s1600/idea-intention-convert-string.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://4.bp.blogspot.com/-R7NV9p4epZA/VflKi2NVP3I/AAAAAAAALTU/x2IyUiES6-g/s640/idea-intention-convert-string.png" /></a></div><p style="clear:both">When we select <em>Convert to String</em> IntelliJ IDEA changed our value assignment:</p><div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/-9qsqVoEDhMM/VflLErnPxeI/AAAAAAAALTc/s5NjfIfD-5M/s1600/idea-intention.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://1.bp.blogspot.com/-9qsqVoEDhMM/VflLErnPxeI/AAAAAAAALTc/s5NjfIfD-5M/s640/idea-intention.png" /></a></div><p style="clear:both">We can also apply the conversion the other way around:</p><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-qp-7TMxMkq8/VflLKPz_NdI/AAAAAAAALTk/oxLVrOxKAOM/s1600/idea-intention-convert.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://4.bp.blogspot.com/-qp-7TMxMkq8/VflLKPz_NdI/AAAAAAAALTk/oxLVrOxKAOM/s640/idea-intention-convert.png" /></a></div><p style="clear:both">Another useful intention, especially when we copy-past some Java code in our Groovy source files, is to convert a String concatenation with the <code>+</code> operator to a GString value. We can select one of the elements of the concatenation and open the <em>Show Intentions Action</em>. Now we see the option <em>Convert to GString</em>:</p><div class="separator" style="clear: both; text-align: center;"><a href="http://3.bp.blogspot.com/-spMi6fYcvz4/VflLOavabLI/AAAAAAAALTs/yDdsP9ZdtK8/s1600/idea-intention-gstring-concat.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/-spMi6fYcvz4/VflLOavabLI/AAAAAAAALTs/yDdsP9ZdtK8/s640/idea-intention-gstring-concat.png" /></a></div><p style="clear:both">When we select the option IDEA will turn the statement into a GString with the variable value replaced as an expression:</p><div class="separator" style="clear: both; text-align: center;"><a href="http://3.bp.blogspot.com/-CQiJcTUOmCI/VflLRmCH4qI/AAAAAAAALT0/gT8sJmT2YsU/s1600/idea-intention-gstring-concatted.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://3.bp.blogspot.com/-CQiJcTUOmCI/VflLRmCH4qI/AAAAAAAALT0/gT8sJmT2YsU/s640/idea-intention-gstring-concatted.png" /></a></div><p style="clear:both">Also when we already have a GString value in our code we can remove unnecessary braces. In Groovy we can leave out the curly braces for dotted expression or the expression is a single value. We select the option <em>Remove unnecessary braces in GString</em> from the intentions to make this work:</p><div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-4ujfa9YEK_0/VflLWvsP_bI/AAAAAAAALT8/ukaml4N2T9k/s1600/idea-intention-gstring-braces.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://2.bp.blogspot.com/-4ujfa9YEK_0/VflLWvsP_bI/AAAAAAAALT8/ukaml4N2T9k/s640/idea-intention-gstring-braces.png" /></a></div><p style="clear:both;">The result is that the braces are removed:</p><div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-_nr5qPYOlx0/VflLeWU1ErI/AAAAAAAALUE/Ec1GX5ANwSk/s1600/idea-intention-gstring-concatted.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://2.bp.blogspot.com/-_nr5qPYOlx0/VflLeWU1ErI/AAAAAAAALUE/Ec1GX5ANwSk/s640/idea-intention-gstring-concatted.png" /></a></div><p style="clear:both;">Finally we take a look at the intention to turn a String value with end of line characters in it to a multiline String value:</p><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-pGwELm4IFpk/VflLiv8qF1I/AAAAAAAALUM/kqjmnnJmAqs/s1600/idea-intention-multiline.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://4.bp.blogspot.com/-pGwELm4IFpk/VflLiv8qF1I/AAAAAAAALUM/kqjmnnJmAqs/s640/idea-intention-multiline.png" /></a></div><p style="clear:both;">If we have selected the option <em>Convert to Multiline</em> IDEA turns our original String value to a multiline String value:</p><div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/-35V1iBbqgRo/VflLl0jqP7I/AAAAAAAALUU/biWUzsYNEuU/s1600/idea-intention-multiline-result.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://1.bp.blogspot.com/-35V1iBbqgRo/VflLl0jqP7I/AAAAAAAALUU/biWUzsYNEuU/s640/idea-intention-multiline-result.png" /></a></div><p style="clear:both;">Written with Groovy 2.4.4 and IntelliJ IDEA CE 14.1.4</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

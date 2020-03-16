@@ -1,0 +1,90 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Redirecting Print Methods In Scripts</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Redirecting Print Methods In Scripts</h3>
+
+<div class="post">
+<p>To run external Groovy scripts in our Java or Groovy application is easy to do. For example we can use <code>GroovyShell</code> to evaluate Groovy code in our applications. If our script contains print methods like <code>println</code> we can redirect the output of these methods. The <code>Script</code> class, which is a base class to run script code, has an implementation for the <code>print</code>, <code>printf</code> and <code>println</code> methods. The implementation of the method is to look for a property <code>out</code>, either as part of a <code>Script</code> subclass or in the binding added to a <code>Script</code> class. If the property <code>out</code> is available than all calls to <code>print</code>, <code>printf</code> and <code>println</code> methods are delegated to the object assigned to the <code>out</code> property. When we use a <code>PrintWriter</code> instance we have such an object, but we could also write our own class with an implementation for the <code>print</code> methods. Without an assignment to the <code>out</code> property the fallback is to print on <code>System.out</code>.</p><p>In the following example we have a external script defined with the variable <code>scriptText</code>, but it could also be a file or other source with the contents of the script we want to run. We assign our own <code>PrintWriter</code> that encapsulates a <code>StringWriter</code> to capture all invocations to the <code>print</code> methods:</p><pre class="brush:groovy;">// Groovy script to execute.
+def scriptText = '''
+def s = "Groovy rocks!"
+
+// Print value of s.
+println s
+
+// Use printf for formatted printing.
+printf 'The answer is %X', 42
+'''
+
+// Assign new PrintWriter to "out"
+// variable of binding object.
+def stringWriter = new StringWriter()
+def shellBinding = new Binding(out: new PrintWriter(stringWriter))
+
+// Create GroovyShell to evaluate script.
+def shell = new GroovyShell(shellBinding)
+
+// Run the script.
+shell.evaluate(scriptText)
+
+// Check the output of print, println and printf methods.
+assert stringWriter.toString() == 'Groovy rocks!\nThe answer is 2A'
+</pre><p>Another option is to directory set the <code>out</code> property of a <code>Script</code> object:</p><pre class="brush:groovy;">def scriptText = '''
+def s = "Groovy rocks!"
+
+// Print value of s.
+println s
+
+// Use printf for formatted printing.
+printf 'The answer is %X', 42
+'''
+
+def shell = new GroovyShell()
+
+// Parse script text and return Script object.
+def script = shell.parse(scriptText)
+
+// Assign new PrintWriter to "out"
+// variable of Script class.
+def stringWriter = new StringWriter()
+script.out = new PrintWriter(stringWriter)
+
+// Run the script.
+script.run()
+
+// Check the output of print, println and printf methods.
+assert stringWriter.toString() == 'Groovy rocks!\nThe answer is 2A'
+</pre><p>Written with Groovy 2.4.10.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

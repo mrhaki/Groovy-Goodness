@@ -1,0 +1,134 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Creating Extra Method Supporting Named Arguments Using @NamedVariant Annotation</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Creating Extra Method Supporting Named Arguments Using @NamedVariant Annotation</h3>
+
+<div class="post">
+<p>Groovy <a href="http://mrhaki.blogspot.com/2009/09/groovy-goodness-named-parameters-are.html">supports named arguments</a> for methods. Actually Groovy collects all named arguments (defined using the name followed by a <code>:</code> and the value) into a <code>Map</code>. The <code>Map</code> must be the first parameter of the method to make it all work. Since Groovy 2.5.0 we can use the <code>@NamedVariant</code> AST transformation annotation to let Groovy create a method where the first parameter is a <code>Map</code> to support named arguments for an existing method. The existing method is still available, but Groovy adds an extra method to our generated class.</p><p>By default Groovy will make the first parameters of the original method part of the new method supporting named arguments. If the first parameters is a class type, then the properties of the class can be used as named arguments. We can also explicitly define which parameters of our original method should be named arguments using the annotations <code>@NamedParam</code> and <code>@NamedDelegate</code>. These annotations need to defined for each parameter. The newly created method by the AST transformation invokes the original method.</p><p>In the following example we use <code>@NamedVariant</code> for the <code>ConferenceMaker.copy</code> method:</p><pre class="brush:groovy;">import groovy.transform.NamedVariant
+import groovy.transform.NamedDelegate
+
+class Conference {
+    String name, location
+}
+
+class ConferenceMaker {
+    // First parameter's properties will be the 
+    // named arguments we can use. Optionally
+    // we could add @NamedDelegate before the
+    // parameter definition.
+    @NamedVariant
+    static Conference copy(Conference conf) {
+        new Conference(name: conf.name, location: conf.location)
+    }
+
+    // We use @NamedDelegate to let the properties of the
+    // second parameter be named arguments for the newly
+    // created method.
+    @NamedVariant
+    static Conference copy(boolean upper, @NamedDelegate Conference conf) {
+        upper ? new Conference(name: conf.name.toUpperCase(), location: conf.location.toUpperCase())
+              : new Conference(name: conf.name, location: conf.location)
+    }
+}
+
+
+// All properties of the type of the argument (Conference)
+// can be used as named arguments.
+def greach = ConferenceMaker.copy(name: 'Greach', location: 'Madrid')
+
+assert greach.name == 'Greach'
+assert greach.location == 'Madrid'
+
+// Parameter upper in original method definition is not
+// part of the named arguments.
+def gr8conf = ConferenceMaker.copy(name: 'Gr8Conf', true, location: 'Copenhagen')
+
+assert gr8conf.name == 'GR8CONF'
+assert gr8conf.location == 'COPENHAGEN'
+</pre><p>In the next example we use <code>@NamedParam</code> to define the parameters that need to be used as named arguments. We can use the attribute <code>required</code> to indicate the named argument must be provided otherwise an error is thrown:</p><pre class="brush:groovy;">import static groovy.test.GroovyAssert.shouldFail
+
+import groovy.transform.NamedVariant
+import groovy.transform.NamedParam
+
+class Conference {
+    String name, location
+}
+
+class ConferenceMaker {
+    // Using @NamedVariant to create
+    // also an implementation of the make 
+    // method with a Map argument to 
+    // support named arguments.
+    @NamedVariant
+    static Conference make(
+        @NamedParam(required = true) String name, 
+        @NamedParam String location) {
+        
+        new Conference(name: name, location: location)
+    }
+}
+
+// The named argument 'name' is required,
+// 'location' is optional.
+def gr8Conf = ConferenceMaker.make(name: 'Gr8Conf')
+
+assert gr8Conf.name == 'Gr8Conf'
+
+def required = shouldFail(AssertionError) {
+    // If we don't specify the required named
+    // argument an exception is thrown.
+    ConferenceMaker.make(location: 'Copenhagen')
+}
+assert required.message.contains("Missing required named argument 'name'.")
+
+
+// With named arguments the order of the arguments
+// is not important.
+def gr8ConfEU = ConferenceMaker.make(location: 'Copenhagen', name: 'Gr8Conf')
+
+assert gr8ConfEU.name == 'Gr8Conf'
+assert gr8ConfEU.location == 'Copenhagen'
+
+
+shouldFail(MissingMethodException) {
+    // Because the original make method is
+    // invoked by the generated named arguments make 
+    // method, so we get an exception when
+    // the type of the named argument is incorrect.
+    ConferenceMaker.make(name: 'G' as char)
+}
+</pre><p>Written with Groovy 2.5.0.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

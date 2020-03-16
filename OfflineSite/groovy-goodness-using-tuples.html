@@ -1,0 +1,102 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Using Tuples</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Using Tuples</h3>
+
+<div class="post">
+<p>A tuple is an ordered, immutable list of elements. Groovy has it's own <code>groovy.lang.Tuple</code> class. We can create an instance of a <code>Tuple</code> by providing all elements that need to be in the <code>Tuple</code> via the constructor. We cannot add new elements to a <code>Tuple</code> instance or remove elements. We cannot even change elements in a tuple, so it is completely immutable. This makes it very useable as return value for a method where we need to return multiple values. Groovy also provides a <code>Tuple2</code> class that can be used for tuple instance of only two elements. The elements are typed in a <code>Tuple2</code> instance.</p><p>In the following example we see different uses of the <code>Tuple</code> and <code>Tuple2</code> classes:</p><pre class="brush:groovy;">def tuple = new Tuple('one', 1, new Expando(number: 1))
+
+assert tuple.size() == 3
+
+// To get the value of an element
+// at a certain position we use
+// the get(index) method.
+assert tuple.get(0) == 'one'
+
+// We can use the [] syntax to
+// get elements from the tuple.
+assert tuple[1] == 1
+
+// We can use methods added to the
+// Collection API by Groovy.
+assert tuple.last().number == 1
+
+// We cannot change the tuple.
+try {
+    tuple.add('extra')
+    assert false
+} catch (UnsupportedOperationException e) {
+    assert e
+}
+
+try {
+    tuple.remove('one')
+    assert false
+} catch (UnsupportedOperationException e) {
+    assert e
+}
+
+try {
+    tuple[0] = 'new value'
+    assert false
+} catch (UnsupportedOperationException e) {
+    assert e
+}
+
+
+// Create a Tuple with fixed size 
+// of 2 elements, a pair.
+def pair = new Tuple2('two', 2)
+
+// The Tuple2 class has extra methods
+// getFirst() and getSecond() to 
+// access the values.
+assert pair.first == 'two'
+assert pair.second == 2
+</pre><p>An example on how to use a <code>Tuple2</code> as return value for a method:</p><pre class="brush:groovy;">def calculate(String key, Integer... values) {
+    // Method return a Tuple2 instance.
+    new Tuple2(key, values.sum())
+}
+
+// Use multiple assignment to
+// extract the values from the tuple.
+// Tuple2 has typed objects.
+def (String a, Integer b) = calculate('sum', 1, 2, 3)
+
+assert a == 'sum'
+assert b == 6
+</pre><p>Written with Groovy 2.4.6.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

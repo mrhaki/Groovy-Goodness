@@ -1,0 +1,91 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Using String Values In Ranges</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Using String Values In Ranges</h3>
+
+<div class="post">
+<p>We can use ranges in Groovy using an easy syntax where the start and end values of the range are separated by <code>..</code> for an inclusive range and <code>..&lt;</code> for an exclusive range as we have seen in <a href="http://mrhaki.blogspot.com/2009/09/groovy-goodness-keep-your-values-in.html">a previous post</a>. The values of the range are mostly numbers or <code>enum</code> values. But we can also use <code>String</code> values to define a range. Groovy will check if the <code>String</code> values are the same length and if the values, except for the last character, are the same. Then the natural ordering of the last character of the <code>String</code> value, based on the character's <code>int</code> value, is used to create the range values.</p><p>In the following example we define several ranges using <code>String</code> values. We can even define a reverse range using <code>String</code> values.</p><pre class="brush:groovy;">// Range is defined based on int
+// value of character.
+def characters = 'A'..'F'
+
+assert characters.from == 'A'
+assert characters.to == 'F'
+assert characters.toList() == ['A', 'B', 'C', 'D', 'E', 'F']
+assert characters.step(2) == ['A', 'C', 'E']
+
+
+// We can create a reverse range
+// also based on the int value
+// of the character.
+def sample = '&amp;'..'!'
+
+assert sample.toList() == ['&amp;', '%', '$', '#', '&quot;', '!']
+assert sample.reverse
+assert sample.from == '!'
+assert sample.to == '&amp;'
+
+
+// We can use String values and
+// the last character is used
+// to create a range. Therefore
+// the last character must be valid
+// to create a range from.
+def groovyRange = 'Groovy10'..&lt;'Groovy15'
+
+assert groovyRange.from == 'Groovy10'
+assert groovyRange.to == 'Groovy14'
+assert groovyRange.toList() == ['Groovy10', 'Groovy11', 'Groovy12', 'Groovy13', 'Groovy14']
+
+
+// Also works in reverse.
+def groovyReverse = 'Groovy19'..'Groovy15'
+
+assert groovyReverse.reverse
+assert groovyReverse.from == 'Groovy15'
+assert groovyReverse.to == 'Groovy19'
+assert groovyReverse.toList() == ['Groovy19', 'Groovy18', 'Groovy17', 'Groovy16', 'Groovy15']
+
+
+import static groovy.test.GroovyAssert.shouldFail
+
+// Should fail because String values,
+// except for the last character, should
+// be the same.
+shouldFail(IllegalArgumentException) {
+    def invalidRange = 'Groovy15'..'Groovy20'
+}
+</pre><p>Written with Groovy 2.5.0.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

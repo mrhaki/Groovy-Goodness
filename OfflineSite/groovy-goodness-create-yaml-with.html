@@ -1,0 +1,98 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Create YAML With YamlBuilder</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Create YAML With YamlBuilder</h3>
+
+<div class="post">
+<p>Groovy 3 adds the <code>YamlBuilder</code> class to create YAML output using a Groovy syntax. The <code>YamlBuilder</code> is closely related to <code>JsonBuilder</code> that is described in a <a href="http://mrhaki.blogspot.com/2011/04/groovy-goodness-build-json-with.html">previous post</a>. We define a hierarchy using a builder syntax where we can use primitive types, strings, collections and objects. Once we have build our structure we can use the <code>toString()</code> method to get a string representation in YAML format.</p><p>In the following example we use <code>YamlBuilder</code> to create YAML:</p><pre class="brush:groovy;">import groovy.yaml.YamlBuilder
+
+// Sample class and object to transform in YAML.
+class User { String firstName, lastName, alias, website }
+def userObj = new User(firstName: 'Hubert', lastName: 'Klein Ikkink', alias: 'mrhaki', website: 'https://www.mrhaki.com/') 
+
+
+// Create YamlBuilder.
+def config = new YamlBuilder()
+
+config {
+    application 'Sample App'
+    version '1.0.1'
+    autoStart true
+    
+    // We can nest YAML content.
+    database {
+        url 'jdbc:db//localhost'    
+    }
+    
+    // We can use varargs arguments that will
+    // turn into a list.
+    // We could also use a Collection argument.
+    services 'ws1', 'ws2'
+
+    // We can even apply a closure to each
+    // collection element.
+    environments(['dev', 'acc']) { env -&gt;
+        name env.toUpperCase()
+        active true
+    }
+
+    // Objects with their properties can be converted.
+    user(userObj)
+}
+
+assert config.toString() == '''\
+---
+application: "Sample App"
+version: "1.0.1"
+autoStart: true
+database:
+  url: "jdbc:db//localhost"
+services:
+- "ws1"
+- "ws2"
+environments:
+- name: "DEV"
+  active: true
+- name: "ACC"
+  active: true
+user:
+  firstName: "Hubert"
+  alias: "mrhaki"
+  lastName: "Klein Ikkink"
+  website: "https://www.mrhaki.com/"
+'''
+</pre><p>Written with Groovy 3.0.0.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Interrupted Sleeping</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Interrupted Sleeping</h3>
+
+<div class="post">
+<p>Groovy adds a lot of useful methods to the Java JDK classes. One of them is the <code>sleep</code> method that is added to all objects. With the <code>sleep</code> method we can add a pause to our code. The <code>sleep</code> method accepts a sleep time in milli seconds. The implementation of the method will always wait for he given amount of milli seconds even if interrupted. But we can add a closure as extra argument, which is invoked when the <code>sleep</code> method is interrupted. We should return <code>true</code> for the closure to really interrupt, otherwise we use <code>false</code>.</p><p>In the following example we use the <code>sleep</code> method to pause the <code>bedtime</code> method of the <code>User</code> class. We run the <code>bedtime</code> method in a thread and after 2000 milli seconds we intercept the thread. The <code>sleep</code> method still wait for 5 seconds, before ending:</p><pre class="brush:groovy;">class User {
+    String username
+    
+    void bedtime() {
+        long start = System.currentTimeMillis()
+        println 'Sleeping'
+        sleep(5000)
+        long slept = System.currentTimeMillis() - start
+        println "Awake after $slept ms"
+    }
+}
+
+def user = new User(username: 'mrhaki')
+
+// Run bedtime method in thread.
+def bedtime = Thread.start {
+    user.bedtime()
+}
+
+def alarm = new Timer()
+alarm.runAfter(2000) {
+    println 'BEEP BEEP'
+    // Interrupt thread with bedtime method.
+    bedtime.interrupt()
+}
+
+bedtime.join()
+</pre><p>When we run this script we get the following output:</p><pre class="brush:plain;light:true;">$ groovy user.groovy
+Sleeping
+BEEP BEEP
+Awake after 5002 ms
+$
+</pre><p>Next we use the <code>sleep</code> method with a closure. The closure prints a message and return <code>false</code>, so the <code>sleep</code> method still only ends after 5 seconds:</p><pre class="brush:groovy;">class User {
+    String username
+    
+    void bedtime() {
+        long start = System.currentTimeMillis()
+        println 'Sleeping'
+        sleep(5000) { e ->
+            assert e in InterruptedException
+            println 'What is that noise?'
+            false // keep on sleeping        
+        }
+        long slept = System.currentTimeMillis() - start
+        println "Awake after $slept ms"
+    }
+}
+
+def user = new User(username: 'mrhaki')
+
+// Run bedtime method in thread.
+def bedtime = Thread.start {
+    user.bedtime()
+}
+
+def alarm = new Timer()
+alarm.runAfter(2000) {
+    println 'BEEP BEEP'
+    // Interrupt thread with bedtime method.
+    bedtime.interrupt()
+}
+
+bedtime.join()
+</pre><p>Let's run this script and we see the output from the closure we passed to the <code>sleep</code> method:</p><pre class="brush:plain;light:true;">$ groovy user.groovy
+Sleeping
+BEEP BEEP
+What is that noise?
+Awake after 5005 ms
+$
+</pre><p>Finally we use a closure as argument for the <code>sleep</code> method, but this time we return <code>true</code> to indicate the <code>sleep</code> method must stop:</p><pre class="brush:groovy;">class User {
+    String username
+    
+    void bedtime() {
+        long start = System.currentTimeMillis()
+        println 'Sleeping'
+        sleep(5000) { e ->
+            assert e in InterruptedException
+            println 'Yeah, yeah, I am awake...'
+            true // stop on sleeping        
+        }
+        long slept = System.currentTimeMillis() - start
+        println "Awake after $slept ms"
+    }
+}
+
+def user = new User(username: 'mrhaki')
+
+// Run bedtime method in thread.
+def bedtime = Thread.start {
+    user.bedtime()
+}
+
+def alarm = new Timer()
+alarm.runAfter(2000) {
+    println 'BEEP BEEP'
+    // Interrupt thread with bedtime method.
+    bedtime.interrupt()
+}
+
+bedtime.join()
+</pre><p>When we run this script we notice we are awake after 2 seconds:</p><pre class="brush:plain;light:true;">$ groovy user.groovy
+Sleeping
+BEEP BEEP
+Yeah, yeah, I am awake...
+Awake after 2001 ms
+$
+</pre><p>Written with Groovy 2.4.7.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

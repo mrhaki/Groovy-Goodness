@@ -1,0 +1,126 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Customising The Groovy Compiler</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Customising The Groovy Compiler</h3>
+
+<div class="post">
+<p>With Groovy we can configure the compiler for our source files just like we can configure the Groovy compilation unit when we use <code>GroovyShell</code> to execute scripts. We can for example add annotations to source files, before they are compiled, without adding them to the actual source code ourselves. Suppose we want to apply the <code>TypeChecked</code> or <code>CompileStatic</code> AST transformation annotation to all source files in our project. We only have to write a configuration file and specify the name of the configuration file with the <code>--configscript</code> option of the Groovy compiler. If we use Gradle to build our Groovy project we can also customise the <code>GroovyCompile</code> task to set the configuration file.</p><p>The configuration file has an implicit object with the name <code>configuration</code> of type <code>CompilerConfiguration</code>. Also there is a builder syntax available via the <code>CompilerCustomizationBuilder</code> class. Let's look at both ways to define our custom configuration. We want to add the <code>CompileStatic</code> annotation to all classes, together with the <code>ToString</code> AST transformation annotation. Next we also want to add the package <code>java.time</code> as implicit import for our source files. This means we don't have to write an <code>import</code> statement in our code to include classes from this package. Finally we add a <code>ExpressionChecker</code> that will fail the compilation of our project if a variable name is only 1 character. We assume we use Gradle to build our project and we place the file <code>groovycConfig.groovy</code> in the directory <code>src/groovyCompile</code>. We must not name the file <code>configuration.groovy</code>, because there is already a variable with the name <code>configuration</code> in the script and this will confuse the compiler.</p><pre class="brush:groovy;">// File: src/groovyCompile/groovycConfig.groovy
+import groovy.transform.CompileStatic
+import groovy.transform.ToString
+import org.codehaus.groovy.ast.expr.VariableExpression
+import org.codehaus.groovy.control.customizers.SecureASTCustomizer.ExpressionChecker
+import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer
+import org.codehaus.groovy.control.customizers.ImportCustomizer
+import org.codehaus.groovy.control.customizers.SecureASTCustomizer
+
+// Add the AST annotation @CompileStatic
+// and @ToString to all classes.
+configuration.addCompilationCustomizers(
+        new ASTTransformationCustomizer(CompileStatic))
+configuration.addCompilationCustomizers(
+        new ASTTransformationCustomizer(ToString))
+
+// Add implicit import for all classes
+// for the package java.time.
+def imports = new ImportCustomizer()
+imports.addStarImports('java.time')
+configuration.addCompilationCustomizers(imports)
+
+// Define expression checker to deny 
+// usage of variable names with length of 1.
+def smallVariableNames = { expr ->
+    if (expr instanceof VariableExpression) {
+        expr.variable.size() > 1
+    } else {
+        true
+    }
+} as ExpressionChecker
+
+def secureAstCustomizer = new SecureASTCustomizer()
+secureAstCustomizer.addExpressionCheckers(smallVariableNames)
+configuration.addCompilationCustomizers(secureAstCustomizer)
+</pre><p>With the builder syntax of <code>CompilerCustomizatioBuilder</code> we also have the flexibility to pass parameters to the AST transformations we want to apply. We configure the <code>ToString</code> annotation to include the names of the properties in the generated <code>toString</code> method implementation:</p><pre class="brush:groovy;">// File: src/groovyCompile/groovycConfig.groovy
+import org.codehaus.groovy.ast.expr.VariableExpression
+import org.codehaus.groovy.control.customizers.SecureASTCustomizer.ExpressionChecker
+
+// Using CompilerCustomizationBuilder.withConfig 
+// method, where the class
+// CompilerCustomizationBuilder is implicitly 
+// imported for this script.
+withConfig(configuration)  {
+
+    ast(groovy.transform.CompileStatic)
+
+    // Define includeNames parameter for ToString
+    // AST annotation.
+    ast(includeNames: true, groovy.transform.ToString)
+    
+    imports {
+        star('java.time')
+    }
+
+    // Define expression checker to deny 
+    // usage of variable names with length of 1.
+    def smallVariableNames = { expr ->
+        if (expr instanceof VariableExpression) {
+            expr.variable.size() > 1
+        } else {
+            true
+        }
+    } as ExpressionChecker
+    secureAst {
+        addExpressionCheckers smallVariableNames
+    }
+}
+</pre><p>Next we configure the <code>GroovyCompile</code> task <code>compileGroovy</code> in our Gradle project to use our configuration file when the code is compiled. We do this via the property <code>groovyOptions</code> of the compile task:</p><pre class="brush:groovy;">// File: build.gradle
+plugins {
+    id "groovy"
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile "org.codehaus.groovy:groovy-all:2.4.5"
+    testCompile "org.spockframework:spock-core:1.0-groovy-2.4"
+}
+
+// Add the configuration script file
+// to the compiler options.
+compileGroovy.groovyOptions.configurationScript = file('src/groovyCompile/groovycConfig.groovy')
+</pre><p>Andre Steingress wrote a good blog post about the <a href="http://blog.andresteingress.com/2013/01/25/groovy-2-1-groovyc-configscript/">Groovy compiler configuration script</a>.</p><p>Written with Groovy 2.4.5.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

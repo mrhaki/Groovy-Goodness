@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<title>Groovy Goodness: Swapping Elements in a List</title>
+<title>Groovy Goodness: Check Object Instances Are The Same With === Operator</title>
 
 <script language="javascript" src="scripts/shCore.js"></script> 
 <script language="javascript" src="scripts/shLegacy.js"></script> 
@@ -22,15 +22,23 @@
 
 <a href="index.html">Back to index</a>
 
-<h3 class="post-title">Groovy Goodness: Swapping Elements in a List</h3>
+<h3 class="post-title">Groovy Goodness: Check Object Instances Are The Same With === Operator</h3>
 
 <div class="post">
-<p>Groovy already has so many extra methods for working with lists. If we have to need to swap two elements in a <code>List</code> we can use the <code>swap</code> method. We provide the two index values of the elements we want to swap and Groovy swaps the elements.</p><p>In the following sample we have a simple list and swap all elements by invoking the <code>swap</code> method two times:</p><pre class="brush:groovy">def saying = ['Groovy', 'is', 'great']
+<p>Groovy has used the <code>==</code> operator to check if <a href="">objects are equal</a> for a long time. To test if object instances are the same we must use the <code>is</code> method. Groovy 3 adds a new operator for the <code>is</code> method and that is the <code>===</code> operator. And to negate the result of the <code>is</code> method we can use the <code>!==</code> operator.</p><p>In the following example we use the <code>===</code> and <code>!==</code> operator to check if objects refer to the same instance or not:</p><pre class="brush:groovy;">def answer = new Integer(42)
+def anotherAnswer = new Integer(42)
+def meaningOfLife = answer
 
-def yodaSays = saying.swap(2, 1).swap(0, 1)
+// Equals is true for answer and anotherAnswer
+assert answer == anotherAnswer
 
-assert yodaSays.join(' ') == 'great Groovy is'
-</pre><p>Written with Groovy 2.4.1.</p
+// But they don't refer to the same instance.
+assert answer !== anotherAnswer
+
+// The variables meaningOfLife and answer
+// do refer to the same object instance.
+assert answer === meaningOfLife
+</pre><p>Written with Groovy 3.0.2.</p
 </div>
 
 <script language="javascript"> 

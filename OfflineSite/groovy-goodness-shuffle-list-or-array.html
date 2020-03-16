@@ -1,0 +1,95 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Shuffle List or Array</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Shuffle List or Array</h3>
+
+<div class="post">
+<p>In Java we can use <code>Collections.shuffle</code> method to randomly reorder items in a list. Groovy 3.0.0 adds the <code>shuffle</code> and <code>shuffled</code> methods to a <code>List</code> or array directly. The implementation delegates to <code>Collections.shuffle</code>. The <code>shuffle</code> method will reorder the original list, so there is a side effect using this method. Or we can use the <code>shuffled</code> method that will return a copy of the original list where the items are randomly ordered.</p><p>In the next example we use both methods to randomly order lists:</p><pre class="brush:groovy;">import java.nio.charset.Charset
+
+def signs = (2..10) + ['J', 'Q', 'K', 'A']
+def symbols = ['♣', '♦', '♥', '♠']
+
+// Create list as [♣2, ♦2, ♥2, ♠2, ..., ♣A, ♦A, ♥A, ♠A] 
+def cards = [symbols, signs].combinations().collect { it.join() }
+
+// Store original cards list.
+def deck = cards.asImmutable()
+
+// We should have 52 cards.
+assert cards.size() == 52
+
+// Let's shuffle the cards.
+// Notice this will change the cards list.
+cards.shuffle()
+ 
+assert cards.every { card -> deck.contains(card) }
+
+println cards.take(5) // Possible output: [♣6, ♠A,  ♥Q, ♦Q, ♠5]
+
+// We can use our own Random object for shuffling.
+cards.shuffle(new Random(42))
+
+assert cards.every { card -> deck.contains(card) }
+
+println cards.take(5)  // Possible output: [♦5, ♦2, ♦3, ♣7, ♦J]
+
+
+// Store first 5 cards.
+def hand = cards.take(5)
+
+// Using shuffled we get a new list 
+// with items in random order. 
+// The original list is not changed.
+def shuffledCards = cards.shuffled()
+
+assert shuffledCards.size() == cards.size()
+assert shuffledCards.every { card -> cards.contains(card) }
+
+// Original list has not changed.
+assert hand == cards.take(5)
+
+println shuffledCards.take(5) // Possible output: [♣4, ♠2, ♠6, ♥Q, ♦4]
+
+// We can pass our own Random object.
+def randomizer = new Random(42)
+def randomCards = cards.shuffled(randomizer)
+
+assert randomCards.size() == cards.size()
+assert randomCards.every { card -> cards.contains(card) }
+
+println randomCards.take(5) // Possible output: [♥5, ♠6, ♠8, ♣3, ♠4]
+</pre><p>Written with Groovy 3.0.0.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Download Grab Dependencies In IntelliJ IDEA</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Download Grab Dependencies In IntelliJ IDEA</h3>
+
+<div class="post">
+<p>In our Groovy scripts we can <a href="http://mrhaki.blogspot.nl/2009/09/groovy-goodness-grab-that-dependency.html">use the <code>@Grab</code> annotation</a>. With this annotation we define dependencies for our script and they will be automatically downloaded and added to the class path when we run our script. When we use IntelliJ IDEA we can use a nice intention that is part of the IntelliJ IDEA Groovy support to download the dependencies from our IDE editor. IDEA downloads the dependencies and add it to the project module dependencies. This is useful, because this will also adds code completion for the classes in the dependency to our editor.</p><p>Let's see this with a little example. We have the following Groovy script in our Groovy project in IntelliJ IDEA:</p><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-aShuus14nI4/WfK76_38hyI/AAAAAAAANnw/p_mY462eQ5wWWxLtUTknpI4DRsmbnZSggCLcBGAs/s1600/grab-idea-source.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="https://4.bp.blogspot.com/-aShuus14nI4/WfK76_38hyI/AAAAAAAANnw/p_mY462eQ5wWWxLtUTknpI4DRsmbnZSggCLcBGAs/s1600/grab-idea-source.png" data-original-width="391" data-original-height="103" /></a></div><p>We place the cursor on the <code>@Grab</code> annotation and enable the intention popup using <kbd>Alt+Enter</kbd> (check <em>Keymap Reference</em> for the key combination). We select the option <em></em> from the popup:</p><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-28V_ieYjMu4/WfK8AyBRMmI/AAAAAAAANn0/3okKADEaY6gkHMbegE9lWFl_UsiAtj49gCLcBGAs/s1600/grab-idea.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="https://4.bp.blogspot.com/-28V_ieYjMu4/WfK8AyBRMmI/AAAAAAAANn0/3okKADEaY6gkHMbegE9lWFl_UsiAtj49gCLcBGAs/s1600/grab-idea.png" data-original-width="379" data-original-height="105" /></a></div><p>IntelliJ IDEA downloads the dependency. When we look at our <em>Project Structure</em> and at the <em>Module Dependencies</em> we see the downloaded dependency:</p><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-9R1tUEqsn7A/WfK8E3umuqI/AAAAAAAANn4/91wrtjk9sLEVKBJjHSksoZ3ne83WahxEQCLcBGAs/s1600/idea-grab-modules.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="https://2.bp.blogspot.com/-9R1tUEqsn7A/WfK8E3umuqI/AAAAAAAANn4/91wrtjk9sLEVKBJjHSksoZ3ne83WahxEQCLcBGAs/s1600/idea-grab-modules.png" data-original-width="946" data-original-height="760" /></a></div><p>In our example we added the Groovy script to a Groovy project in IntelliJ IDEA. When the project is a Gradle or Maven project we must make sure Ivy is part of the compile class path, because otherwise IntelliJ IDEA cannot download the dependencies using this intention. For example we could add to a Gradle build file the following dependency <code>compileOnly 'org.apache.ivy:ivy:2.4.0'</code>.</p><p>Written with Groovy 2.4.12 and IntelliJ IDEA 2017.2.5</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

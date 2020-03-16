@@ -1,0 +1,183 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Easy Object Creation With Tap Method</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Easy Object Creation With Tap Method</h3>
+
+<div class="post">
+<p>Groovy 2.5.0 adds the <code>tap</code> method to all objects and changes the method signature of the <code>with</code> method. In <a href="http://mrhaki.blogspot.com/2009/09/groovy-goodness-with-method.html">a previous post</a> we already learned about the <code>with</code> method. In Groovy 2.5.0 we can add an extra <code>boolean</code> argument to the <code>with</code> method. If the value is <code>false</code> (is default) the <code>with</code> method must return the same value as what the closure invocation returns. If the value is <code>true</code> the object instance on which the <code>with</code> method is invoked is returned. The new <code>tap</code> method is an alias for <code>with(true)</code>, so it will always return the object instance.</p><p>In the first example we use the <code>tap</code> method to create a new <code>Sample</code> object and set property values and invoke methods of the <code>Sample</code> class:</p><pre class="brush:groovy">/** 
+ * Sample class with some properties
+ * and a method.
+ */
+class Sample {
+    
+    String username, email
+    
+    List&lt;String&gt; labels = []
+    
+    void addLabel(value) { 
+        labels &lt;&lt; value 
+    }
+    
+}
+
+// Use tap method to create instance of 
+// Sample and set properties and invoke methods. 
+def sample = 
+        new Sample().tap {
+            assert delegate.class.name == 'Sample'
+            
+            username = 'mrhaki'
+            email = 'email@host.com'
+            addLabel 'Groovy'
+            addLabel 'Gradle'
+            
+            // We use tap, an alias for with(true), 
+            // so the delegate of the closure, 
+            // the Sample object, is returned.
+        }
+
+assert sample.labels == ['Groovy', 'Gradle']
+assert sample.username == 'mrhaki'
+assert sample.email == 'email@host.com'
+</pre><p>In the following example we use the <code>with</code> method to demonstrate the differences for several invocations using different argument values:</p><pre class="brush:groovy">/** 
+ * Sample class with some properties
+ * and a method.
+ */
+class Sample {
+    
+    String username, email
+    
+    List&lt;String&gt; labels = []
+    
+    void addLabel(value) { 
+        labels &lt;&lt; value 
+    }
+    
+}
+
+// Use with method to create instance of 
+// Sample and set properties and invoke methods. 
+def sample1 = 
+        new Sample().with {
+            assert delegate.class.name == 'Sample'
+
+            username = 'mrhaki'
+            email = 'email@host.com'
+            addLabel 'Groovy'
+            addLabel 'Gradle'   
+        }
+       
+// With method returns the result 
+// from the closure. In the previous
+// case the return result is null,
+// because the last statement addLabel
+// is used as return value. addLabel has
+// return type void.
+assert !sample1
+
+
+// Use with method to create instance of 
+// Sample and set properties and invoke methods. 
+def sample2 = 
+        new Sample().with {
+            assert delegate.class.name == 'Sample'
+
+            username = 'mrhaki'
+            email = 'email@host.com'
+            addLabel 'Groovy'
+            addLabel 'Gradle'
+            
+            // Explicitly return delegate of
+            // closure, which is the Sample object.
+            return delegate
+        }
+
+assert sample2.labels == ['Groovy', 'Gradle']
+assert sample2.username == 'mrhaki'
+assert sample2.email == 'email@host.com'
+
+
+// Use with method to create instance of 
+// Sample and set properties and invoke methods. 
+def sample3 = 
+        new Sample().with(true) {
+            assert delegate.class.name == 'Sample'
+
+            username = 'mrhaki'
+            email = 'email@host.com'
+            addLabel 'Groovy'
+            addLabel 'Gradle'
+            
+            // We use with(true), so the 
+            // delegate of the closure, the Sample
+            // object, is returned.
+        }
+
+assert sample3.labels == ['Groovy', 'Gradle']
+assert sample3.username == 'mrhaki'
+assert sample3.email == 'email@host.com'
+</pre><p>A good use case for using the <code>with</code> method is to transform an object to another type using values from the object. In the next example we use values from a <code>Sample</code> objects to create a new <code>String</code>:</p><pre class="brush:groovy;">/** 
+ * Sample class with some properties
+ * and a method.
+ */
+class Sample {
+    
+    String username, email
+    
+    List&lt;String&gt; labels = []
+    
+    void addLabel(value) { 
+        labels &lt;&lt; value 
+    }
+    
+}
+
+def sample = 
+        new Sample().tap {
+            username = 'mrhaki'
+            email = 'email@host.com'
+            addLabel 'Groovy'
+            addLabel 'Gradle'
+        }
+
+// The with method can be very useful to
+// transform object to another type using
+// values from the object.
+def user = sample.with { "$username likes ${labels.join(', ')}." }
+
+assert user == 'mrhaki likes Groovy, Gradle.'
+</pre><p>Written with Groovy 2.5.0.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

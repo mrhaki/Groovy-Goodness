@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<title>Groovy Goodness: Swapping Elements in a List</title>
+<title>Groovy Goodness: Check Item Is Not In A Collection With !in</title>
 
 <script language="javascript" src="scripts/shCore.js"></script> 
 <script language="javascript" src="scripts/shLegacy.js"></script> 
@@ -22,15 +22,21 @@
 
 <a href="index.html">Back to index</a>
 
-<h3 class="post-title">Groovy Goodness: Swapping Elements in a List</h3>
+<h3 class="post-title">Groovy Goodness: Check Item Is Not In A Collection With !in</h3>
 
 <div class="post">
-<p>Groovy already has so many extra methods for working with lists. If we have to need to swap two elements in a <code>List</code> we can use the <code>swap</code> method. We provide the two index values of the elements we want to swap and Groovy swaps the elements.</p><p>In the following sample we have a simple list and swap all elements by invoking the <code>swap</code> method two times:</p><pre class="brush:groovy">def saying = ['Groovy', 'is', 'great']
+<p>Groovy contains lots of little gems that just make live easier and our code more expressive. Groovy 3 doesn't disappoint by adding some nice syntax additions. For example we can now use <code>!in</code> to check if an item is not in a collection, opposed to <code>in</code> that checks if an item is in a collection.</p><p>In the following example we use <code>!in</code>:</p><pre class="brush:groovy;">def list = ['Groovy', 3, 'is', 'awesome', '!']
 
-def yodaSays = saying.swap(2, 1).swap(0, 1)
+// New Groovy 3 syntax to check item 
+// is NOT in a collection.
+assert 'Java' !in list
 
-assert yodaSays.join(' ') == 'great Groovy is'
-</pre><p>Written with Groovy 2.4.1.</p
+// Old syntax.
+assert !('Java' in list)
+
+// Just to show in still works.
+assert 'Groovy' in list
+</pre><p>Written with Groovy 3.0.1.</p
 </div>
 
 <script language="javascript"> 

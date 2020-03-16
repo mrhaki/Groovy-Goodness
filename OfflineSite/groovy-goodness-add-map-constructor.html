@@ -1,0 +1,180 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Add Map Constructor With Annotation</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Add Map Constructor With Annotation</h3>
+
+<div class="post">
+<p>Since the early days of Groovy we can create POGO (Plain Old Groovy Objects) classes that will have a constructor with a <code>Map</code> argument. Groovy adds the constructor automatically in the generated class. We can use named arguments to create an instance of a POGO, because of the <code>Map</code> argument constructor.  This only works if we don't add our own constructor and the properties are not final. Since Groovy 2.5.0 we can use the <code>@MapConstrutor</code> AST transformation annotation to add a constructor with a <code>Map</code> argument. Using the annotation we can have more options to customize the generated constructor. We can for example let Groovy generate the constructor with <code>Map</code> argument and add our own constructor. Also properties can be final and we can still use a constructor with <code>Map</code> argument.</p><p>First we look at the default behaviour in Groovy when we create a POGO:</p><pre class="brush:groovy;">// Simple POGO.
+// Groovy adds Map argument
+// constructor to the class.
+class Person {
+    String name
+    String alias
+    List&lt;String&gt; likes
+}
+
+// Create Person object using
+// the Map argument constructor.
+// We can use named arguments, 
+// with the name of key being
+// the property name. Groovy
+// converts this to Map.
+def mrhaki = 
+    new Person(
+        alias: 'mrhaki',
+        name: 'Hubert Klein Ikkink',
+        likes: ['Groovy', 'Gradle'])
+        
+assert mrhaki.alias == 'mrhaki'
+assert mrhaki.name == 'Hubert Klein Ikkink'
+assert mrhaki.likes == ['Groovy', 'Gradle']
+
+
+// Sample class with already
+// a constructor. Groovy cannot
+// create a Map argument constructor now.
+class Student {
+    String name
+    String alias
+    
+    Student(String name) {
+        this.name = name
+    }
+}
+
+
+import static groovy.test.GroovyAssert.shouldFail
+
+// When we try to use named arguments (turns into a Map)
+// in the constructor we get an exception.
+def exception = shouldFail(GroovyRuntimeException) {
+    def student = 
+        new Student(
+            name: 'Hubert Klein Ikkink', 
+            alias: 'mrhaki')
+}
+
+assert exception.message.startsWith('failed to invoke constructor: public Student(java.lang.String) with arguments: []')
+assert exception.message.endsWith('reason: java.lang.IllegalArgumentException: wrong number of arguments')
+</pre><p>Now let's use the <code>@MapConstructor</code> annotation in our next example:</p><pre class="brush:groovy;">import groovy.transform.MapConstructor
+
+@MapConstructor
+class Person {
+    final String name // AST transformation supports read-only properties.
+    final String alias
+    List&lt;String&gt; likes
+}
+
+// Create object using the Map argument constructor.
+def mrhaki = 
+    new Person(
+        name: 'Hubert Klein Ikkink', 
+        alias: 'mrhaki', 
+        likes: ['Groovy', 'Gradle'])
+        
+assert mrhaki.name == 'Hubert Klein Ikkink'
+assert mrhaki.alias == 'mrhaki'
+assert mrhaki.likes == ['Groovy', 'Gradle']
+
+// Using the annotation the Map argument
+// constructor is added, even though we
+// have our own constructor as well.
+@MapConstructor
+class Student {
+    String name
+    String alias
+    
+    Student(String name) {
+        this.name = name
+    }
+}
+
+def student = 
+    new Student(
+        name: 'Hubert Klein Ikkink', 
+        alias: 'mrhaki')
+        
+assert student.name == 'Hubert Klein Ikkink'
+assert student.alias == 'mrhaki'
+</pre><p>The AST transformation supports several attributes. We can use the attributes <code>includes</code> and <code>excludes</code> to include or exclude properties that will get a value in the <code>Map</code> argument constructor. In the following example we see how we can use the <code>includes</code> attribute:</p><pre class="brush:groovy;">import groovy.transform.MapConstructor
+
+@MapConstructor(includes = 'name')
+class Person {
+    final String name 
+    final String alias
+    List&lt;String&gt; likes
+}
+
+// Create object using the Map argument constructor.
+def mrhaki = 
+    new Person(
+        name: 'Hubert Klein Ikkink', 
+        alias: 'mrhaki', 
+        likes: ['Groovy', 'Gradle'])
+        
+assert mrhaki.name == 'Hubert Klein Ikkink'
+assert !mrhaki.alias 
+assert !mrhaki.likes 
+</pre><p>We can add custom code that is executed before or after the generated code by the AST transformation using the attributes <code>pre</code> and <code>post</code>. We assign a <code>Closure</code> to these attributes with the code that needs to be executed.</p><p>In the next example we set the <code>pre</code> attribute with code that calculates the <code>alias</code> property value if it is not set via the constructor:</p><pre class="brush:groovy;">// If alias is set in constructor use it, otherwise
+// calculate alias value based on name value.
+@MapConstructor(post = { alias = alias ?: name.split().collect { it[0] }.join() })
+class Person {
+    final String name // AST transformation supports read-only properties.
+    final String alias
+    List&lt;String&gt; likes
+}
+
+// Set alias in constructor.
+def mrhaki = 
+    new Person(
+        name: 'Hubert Klein Ikkink', 
+        alias: 'mrhaki', 
+        likes: ['Groovy', 'Gradle'])
+        
+assert mrhaki.name == 'Hubert Klein Ikkink'
+assert mrhaki.alias == 'mrhaki'
+assert mrhaki.likes == ['Groovy', 'Gradle']
+
+// Don't set alias via constructor.
+def hubert = 
+    new Person(
+        name: 'Hubert A. Klein Ikkink')
+        
+assert hubert.name == 'Hubert A. Klein Ikkink'
+assert hubert.alias == 'HAKI'
+assert !hubert.likes
+</pre><p>Written with Groovy 2.5.0.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

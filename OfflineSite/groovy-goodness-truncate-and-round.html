@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<title>Groovy Goodness: Swapping Elements in a List</title>
+<title>Groovy Goodness: Truncate And Round BigDecimal Values</title>
 
 <script language="javascript" src="scripts/shCore.js"></script> 
 <script language="javascript" src="scripts/shLegacy.js"></script> 
@@ -22,15 +22,21 @@
 
 <a href="index.html">Back to index</a>
 
-<h3 class="post-title">Groovy Goodness: Swapping Elements in a List</h3>
+<h3 class="post-title">Groovy Goodness: Truncate And Round BigDecimal Values</h3>
 
 <div class="post">
-<p>Groovy already has so many extra methods for working with lists. If we have to need to swap two elements in a <code>List</code> we can use the <code>swap</code> method. We provide the two index values of the elements we want to swap and Groovy swaps the elements.</p><p>In the following sample we have a simple list and swap all elements by invoking the <code>swap</code> method two times:</p><pre class="brush:groovy">def saying = ['Groovy', 'is', 'great']
+<p>Groovy 2.5.0 adds <code>round</code> and <code>truncate</code> methods to the <code>BigDecimal</code> class. These methods were already available on <a href="http://mrhaki.blogspot.com/2010/01/groovy-goodness-round-and-truncate.html"><code>Double</code> and <code>Float</code> classes</a>. The methods can take an argument to denote the number of decimals the rounding or truncating must be applied to.</p><p>In the following example we see the methods with and without arguments:</p><pre class="brush:groovy;">def bigDecimal = 42.576135
 
-def yodaSays = saying.swap(2, 1).swap(0, 1)
+// Groovy uses BigDecimal for decimal 
+// numbers by default.
+assert bigDecimal.class.name == 'java.math.BigDecimal'
 
-assert yodaSays.join(' ') == 'great Groovy is'
-</pre><p>Written with Groovy 2.4.1.</p
+assert bigDecimal.round() == 43
+assert bigDecimal.round(2) == 42.58
+
+assert bigDecimal.trunc() == 42
+assert bigDecimal.trunc(2) == 42.57
+</pre><p>Written with Groovy 2.5.0.</p
 </div>
 
 <script language="javascript"> 

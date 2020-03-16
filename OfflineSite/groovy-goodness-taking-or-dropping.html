@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<title>Groovy Goodness: Swapping Elements in a List</title>
+<title>Groovy Goodness: Taking Or Dropping Number Of Characters From A String</title>
 
 <script language="javascript" src="scripts/shCore.js"></script> 
 <script language="javascript" src="scripts/shLegacy.js"></script> 
@@ -22,15 +22,24 @@
 
 <a href="index.html">Back to index</a>
 
-<h3 class="post-title">Groovy Goodness: Swapping Elements in a List</h3>
+<h3 class="post-title">Groovy Goodness: Taking Or Dropping Number Of Characters From A String</h3>
 
 <div class="post">
-<p>Groovy already has so many extra methods for working with lists. If we have to need to swap two elements in a <code>List</code> we can use the <code>swap</code> method. We provide the two index values of the elements we want to swap and Groovy swaps the elements.</p><p>In the following sample we have a simple list and swap all elements by invoking the <code>swap</code> method two times:</p><pre class="brush:groovy">def saying = ['Groovy', 'is', 'great']
+<p>Groovy adds a lot of methods to the Java <code>String</code> class. For example we can use the <code>take</code> method to get a certain number of characters from the start of a string value. With the <code>drop</code> method we remove a given number of characters from the start of the string. In Groovy 3 we can now also take and drop a certain number of characters from the end of a string using the methods <code>takeRight</code> and <code>dropRight</code>.</p><p>In the following example we see how we can use the methods:</p><pre class="brush:groovy;">def s = "Groovy rocks!"
 
-def yodaSays = saying.swap(2, 1).swap(0, 1)
+// Drop first 7 characters.
+assert s.drop(7) == "rocks!"
 
-assert yodaSays.join(' ') == 'great Groovy is'
-</pre><p>Written with Groovy 2.4.1.</p
+// Drop last 7 characters.
+assert s.dropRight(7) == "Groovy"
+
+
+// Take first 6 characters.
+assert s.take(6) == "Groovy"
+
+// Take last 6 characters.
+assert s.takeRight(6) == "rocks!"
+</pre><p>Written with Groovy 3.0.2.</p
 </div>
 
 <script language="javascript"> 

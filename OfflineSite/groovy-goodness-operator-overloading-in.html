@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<title>Groovy Goodness: Swapping Elements in a List</title>
+<title>Groovy Goodness: Operator Overloading in Reverse</title>
 
 <script language="javascript" src="scripts/shCore.js"></script> 
 <script language="javascript" src="scripts/shLegacy.js"></script> 
@@ -22,15 +22,34 @@
 
 <a href="index.html">Back to index</a>
 
-<h3 class="post-title">Groovy Goodness: Swapping Elements in a List</h3>
+<h3 class="post-title">Groovy Goodness: Operator Overloading in Reverse</h3>
 
 <div class="post">
-<p>Groovy already has so many extra methods for working with lists. If we have to need to swap two elements in a <code>List</code> we can use the <code>swap</code> method. We provide the two index values of the elements we want to swap and Groovy swaps the elements.</p><p>In the following sample we have a simple list and swap all elements by invoking the <code>swap</code> method two times:</p><pre class="brush:groovy">def saying = ['Groovy', 'is', 'great']
+<p>One of the very nice features of Groovy is that we can <a href="http://gr8labs.org/getting-groovy/#_operator_overloading">implement operator overloading</a>. This blog post is not about <a href="http://mrhaki.blogspot.com/2012/06/groovy-goodness-multiple-overloaded.html">how to implement operator overloading</a>, but Groovy's operator overloading also means that operators we know in Java have corresponding methods, which are not available in Java. So instead of using operators in our code we can use the corresponding methods.</p><p>The following sample code shows some operators we know in Java and the corresponding methods in Groovy:</p><pre class="brush:groovy">def a = true
+def b = false
 
-def yodaSays = saying.swap(2, 1).swap(0, 1)
+assert a | b
+// Java Boolean has no or method.
+assert a.or(b) 
 
-assert yodaSays.join(' ') == 'great Groovy is'
-</pre><p>Written with Groovy 2.4.1.</p
+assert !(a &amp; b)
+assert !(a.and(b))
+
+
+def x = 100
+def y = 10
+
+assert x + y == 110
+// Java Integer has no plus method.
+assert x.plus(y) == 110 
+
+assert ++x == 101  
+// ++ maps to next method.
+assert x.next() == 102
+
+assert --y == 9
+assert y.previous() == 8
+</pre><p>Written with Groovy 2.4.4.</p
 </div>
 
 <script language="javascript"> 

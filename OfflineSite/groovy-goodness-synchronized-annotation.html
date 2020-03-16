@@ -25,9 +25,7 @@
 <h3 class="post-title">Groovy Goodness: Synchronized Annotation for Synchronizing Methods</h3>
 
 <div class="post">
-<p>Since Groovy 1.7.3 we have a new AST transformation: <a href="http://projectlombok.org/features/Synchronized.html">@Synchronized</a>. This annotation is based on the <a href="http://projectlombok.org/features/Synchronized.html">Project Lombok Synchronized annotation</a>. We can use the annotation on instance and static methods. The annotation will create a lock variable in our class (or we can use an existing variable) and the code is synchronized on that lock variable. Normally with the <code>synchronized</code> keyword the lock is on <code>this</code>, but that can have side-effects.</p>
-<pre class="brush:groovy">
-import groovy.transform.Synchronized
+<p>Since Groovy 1.7.3 we have a new AST transformation: <a href="http://projectlombok.org/features/Synchronized.html">@Synchronized</a>. This annotation is based on the <a href="http://projectlombok.org/features/Synchronized.html">Project Lombok Synchronized annotation</a>. We can use the annotation on instance and static methods. The annotation will create a lock variable in our class (or we can use an existing variable) and the code is synchronized on that lock variable. Normally with the <code>synchronized</code> keyword the lock is on <code>this</code>, but that can have side-effects.</p><pre class="brush:groovy">import groovy.transform.Synchronized
 
 class Util {
     private counter = 0
@@ -48,7 +46,7 @@ class Util {
     @Synchronized('listLock')
     void workOnList() {
         assert 'Groovy' == list[0]
-        list << 'Grails'
+        list &lt;&lt; 'Grails'
         assert 2 == list.size()
         list = list - 'Grails'
         assert 'Groovy' == list[0]

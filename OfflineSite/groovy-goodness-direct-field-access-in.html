@@ -1,0 +1,88 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Direct Field Access In (Super) Classes</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Direct Field Access In (Super) Classes</h3>
+
+<div class="post">
+<p>When we use the property syntax of Groovy to get the value for a property, Groovy will actually try to invoke a <code>get</code> method for that property if it is available. So for example if we have the statement <code>user.name</code> actually <code>user.getName()</code> is invoked. If we want to reference a property field directly, so bypassing the <code>get</code> method, we must place an <code>@</code> in front of the property field name. In the previous example we would write <code>user.@name</code> to get the field value directly. The same rules apply for setting a value for a property with the Groovy syntax. If we write <code>user.name = 'mrhaki'</code> then actually <code>user.setName('mrhaki')</code> is invoked. We can use the <code>@</code> prefix also to set a value without invoking the <code>set</code> method for that property. So in our example it would be <code>user.@name = 'mrhaki'</code> and the <code>setName</code> method is not used.</p><p>In the following example we have a class <code>Person</code> with a <code>name</code> property. We add a <code>getName</code> method which formats the <code>name</code> field and returns the value. In a subclass <code>User</code> we access the <code>name</code> property from the super class using the Groovy property syntax and with the <code>@</code> prefix:</p><pre class="brush:groovy;">class Person {
+    // We must not leave out a modifier,
+    // because without a modifier, 
+    // Groovy would add
+    // a getName and setName method if
+    // they are not already available.
+    // But Groovy also adds a private modifier
+    // for this property and being
+    // private it is not accessible from
+    // subclasses.
+    protected String name
+
+    String getName() {
+        "_${name}_"
+    }
+
+    void setName(String name) {
+        this.name = "*${name}*"
+    }
+}
+
+class User extends Person {
+    String getUsername() {
+        // .name will invoke getName().
+        "User(${this.name})"
+    }
+
+    String getUsernameField() {
+        // .@name will access name field.
+        "User(${this.@name})"
+    }
+}
+
+def u = new User(name: 'mrhaki')
+
+assert u.username == 'User(_*mrhaki*_)'
+assert u.usernameField == 'User(*mrhaki*)'
+assert u.name == '_*mrhaki*_'
+assert u.@name == '*mrhaki*'
+
+// Set field value directly
+u.@name = 'mrhaki'
+
+assert u.username == 'User(_mrhaki_)'
+assert u.usernameField == 'User(mrhaki)'
+assert u.name == '_mrhaki_'
+assert u.@name == 'mrhaki'
+</pre><p>Written with Groovy 2.4.7.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

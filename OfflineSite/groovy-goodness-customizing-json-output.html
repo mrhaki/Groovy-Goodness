@@ -1,0 +1,162 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Customizing JSON Output</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Customizing JSON Output</h3>
+
+<div class="post">
+<p>Groovy 2.5.0 adds the possibility to customize JSON output via a <code>JsonGenerator</code> instance. The easiest way to turn an object into a JSON string value is via <code>JsonOutput.toJson</code>. This method uses a default <code>JsonGenerator</code> with sensible defaults for JSON output. But we can customize this generator and create JSON output using the custom generator. To create a custom generator we use a builder accessible via <code>JsonGenerator.Options</code>. Via a fluent API we can for example ignore fields with <code>null</code> values in the output, change the date format for dates and ignore fields by their name or type of the value. And we can add a custom converter for types via either an implementation of the conversion as <code>Closure</code> or implementation of the <code>JsonGenerator.Converter</code> interface. To get the JSON string we simple invoke the <code>toJson</code> method of our generator.</p><p>In the following example Groovy code we have a <code>Map</code> with data and we want to convert it to JSON. First we use the default generator and then we create our own to customize the JSON output:</p><pre class="brush:groovy;">// Sample class to be used in JSON.
+@groovy.transform.TupleConstructor
+class Student { 
+    String firstName, lastName
+}
+
+def data = 
+    [student: new Student('Hubert', 'Klein Ikkink'),
+     dateOfBirth: Date.parse('yyyyMMdd', '19730709'),
+     website: 'https://www.mrhaki.com'.toURL(),
+     password: 'IamSecret',
+     awake: Optional.empty(),
+     married: Optional.of(true), 
+     location: null,
+     currency: '\u20AC' /* Unicode EURO */]
+     
+
+import groovy.json.JsonGenerator
+import groovy.json.JsonGenerator.Converter
+        
+// Default JSON generator. This generator is used by
+// Groovy to create JSON if we don't specify our own. 
+// For this example we define the default generator 
+// explicitly to see the default output.       
+def jsonDefaultOutput = new JsonGenerator.Options().build()
+        
+// Use generator to create JSON string.
+def jsonDefaultResult = jsonDefaultOutput.toJson(data) // Or use JsonOutput.toJson(data)
+
+assert jsonDefaultResult == '{&quot;student&quot;:{&quot;firstName&quot;:&quot;Hubert&quot;,&quot;lastName&quot;:&quot;Klein Ikkink&quot;},' + 
+    '&quot;dateOfBirth&quot;:&quot;1973-07-08T23:00:00+0000&quot;,&quot;website&quot;:&quot;https://www.mrhaki.com&quot;,&quot;password&quot;:&quot;IamSecret&quot;,' + 
+    '&quot;awake&quot;:{&quot;present&quot;:false},&quot;married&quot;:{&quot;present&quot;:true},&quot;location&quot;:null,&quot;currency&quot;:&quot;\\u20ac&quot;}'
+
+
+// Define custom rules for JSON that will be generated.
+def jsonOutput = 
+    new JsonGenerator.Options()
+        .excludeNulls()  // Do not include fields with value null.
+        .dateFormat('EEEE dd-MM-yyyy', new Locale('nl', 'NL')) // Set format for dates.
+        .timezone('Europe/Amsterdam') // Set timezone to be used for formatting dates.
+        .excludeFieldsByName('password')  // Exclude fields with given name(s). 
+        .excludeFieldsByType(URL)  // Exclude fields of given type(s).
+        .disableUnicodeEscaping()  // Do not escape UNICODE.
+        .addConverter(Optional) { value -&gt; value.orElse('UNKNOWN') } // Custom converter for given type defined as Closure.
+        .addConverter(new Converter() {  // Custom converter implemented via Converter interface.
+        
+            /**
+             * Indicate which type this converter can handle.
+             */
+            boolean handles(Class&lt;?&gt; type) { 
+                return Student.isAssignableFrom(type)
+            }
+            
+            /**
+             * Logic to convert Student object.
+             */
+            Object convert(Object student, String key) {
+                &quot;$student.firstName $student.lastName&quot;
+            }
+            
+        })
+        .build()  // Create the converter instance.
+
+// Use generator to create JSON from Map data structure.
+def jsonResult = jsonOutput.toJson(data)
+
+assert jsonResult == '{&quot;student&quot;:&quot;Hubert Klein Ikkink&quot;,' + 
+    '&quot;dateOfBirth&quot;:&quot;maandag 09-07-1973&quot;,' + 
+    '&quot;awake&quot;:&quot;UNKNOWN&quot;,&quot;married&quot;:true,&quot;currency&quot;:&quot;&euro;&quot;}'
+</pre><p>The <code>JsonBuilder</code> and <code>StreamingJsonBuilder</code> classes now also support the use of a <code>JsonGenerator</code> instance. The generator is used when the JSON output needs to be created. The internal data structure of the builder is not altered by using a custom generator.</p><p>In the following example we use the custom generator of the previous example and apply it with a <code>JsonBuilder</code> and <code>StreamingJsonBuilder</code> instance:</p><pre class="brush:groovy">import groovy.json.JsonBuilder
+
+// We can use a generator instance as constructor argument
+// for JsonBuilder. The generator is used when we create the
+// JSON string. It will not effecct the internal JSON data structure.
+def jsonBuilder = new JsonBuilder(jsonOutput)
+jsonBuilder {
+    student new Student('Hubert', 'Klein Ikkink')
+    dateOfBirth Date.parse('yyyyMMdd', '19730709')
+    website 'https://www.mrhaki.com'.toURL()
+    password 'IamSecret'
+    awake Optional.empty()
+    married Optional.of(true)
+    location null
+    currency  '\u20AC' 
+}
+
+def jsonBuilderResult = jsonBuilder.toString()
+
+assert jsonBuilderResult == '{&quot;student&quot;:&quot;Hubert Klein Ikkink&quot;,' + 
+    '&quot;dateOfBirth&quot;:&quot;maandag 09-07-1973&quot;,' + 
+    '&quot;awake&quot;:&quot;UNKNOWN&quot;,&quot;married&quot;:true,&quot;currency&quot;:&quot;&euro;&quot;}'
+
+// The internal structure is unaffected by the generator.
+assert jsonBuilder.content.password == 'IamSecret'
+assert jsonBuilder.content.website.host == 'www.mrhaki.com'
+
+
+import groovy.json.StreamingJsonBuilder
+
+new StringWriter().withWriter { output -&gt; 
+
+    // As with JsonBuilder we can provide a custom generator via
+    // the constructor for StreamingJsonBuilder.
+    def jsonStreamingBuilder = new StreamingJsonBuilder(output, jsonOutput)
+    jsonStreamingBuilder {
+        student new Student('Hubert', 'Klein Ikkink')
+        dateOfBirth Date.parse('yyyyMMdd', '19730709')
+        website 'https://www.mrhaki.com'.toURL()
+        password 'IamSecret'
+        awake Optional.empty()
+        married Optional.of(true)
+        location null
+        currency  '\u20AC' 
+    }
+
+    def jsonStreamingBuilderResult = output.toString()
+    
+    assert jsonStreamingBuilderResult == '{&quot;student&quot;:&quot;Hubert Klein Ikkink&quot;,' + 
+        '&quot;dateOfBirth&quot;:&quot;maandag 09-07-1973&quot;,' + 
+        '&quot;awake&quot;:&quot;UNKNOWN&quot;,&quot;married&quot;:true,&quot;currency&quot;:&quot;&euro;&quot;}'
+}
+</pre><p>Written with Groovy 2.5.0.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

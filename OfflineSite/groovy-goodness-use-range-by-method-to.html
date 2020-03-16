@@ -1,0 +1,102 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Use Range By Method To Set Steps Between Numbers</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Use Range By Method To Set Steps Between Numbers</h3>
+
+<div class="post">
+<p>Groovy has support for defining ranges in the language. When we define a range of numbers the steps between the values in the range is <code>1</code> by default. We can change the step size using the <code>step</code> method. This method accepts a <code>int</code> value with a new  step size. The result is a <code>List</code> object with the values. Since Groovy 2.5.0 the <code>by</code> method is added to ranges with numbers. The <code>by</code> method accepts also decimal numbers and the result of the method is a <code>NumberRange</code> object instead of a <code>List</code>.</p><p>In the following example Groovy script we first define a range with <code>int</code> values. We use the <code>by</code> method to change the step size using both an <code>int</code> value and <code>BigDecimal</code> value. We also use the <code>by</code> method for a range of <code>BigDecimal</code> numbers:</p><pre class="brush:groovy;">// Define range with int values.
+def ints = 1..10
+
+assert ints.from == 1
+assert ints.to == 10
+assert ints == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+assert ints.class.name == 'groovy.lang.IntRange'
+
+// Use by method to set steps
+// between int values in range.
+// The results is a new range.
+def intsBy = ints.by(3)
+
+assert intsBy.from == 1
+assert intsBy.to == 10
+assert intsBy == [1, 4, 7, 10]
+assert intsBy.class.name == 'groovy.lang.NumberRange'
+
+// Use step method to set steps
+// between int values in range.
+// The range is now converted to a List.
+def intsStep = ints.step(3)
+
+assert intsStep == [1, 4, 7, 10]
+assert intsStep.class.name == 'java.util.ArrayList'
+
+// Use by method to set step size to 0.9.
+def intsBy2 = ints.by(0.9)
+
+assert intsBy2.from == 1
+assert intsBy2.to == 10
+assert intsBy2 == [1, 1.9, 2.8, 3.7, 4.6, 5.5, 6.4, 7.3, 8.2, 9.1, 10.0]
+assert intsBy2.class.name == 'groovy.lang.NumberRange'
+
+
+// Define range with BigDecimal numbers.
+def numbers = 1.0..4.5
+
+assert numbers.from == 1.0
+assert numbers.to == 4.5
+assert numbers == [1.0, 2.0, 3.0, 4.0]
+assert numbers.class.name == 'groovy.lang.NumberRange'
+
+// Use by method to set step size
+// between numbers to 0.5.
+def numbersBy = numbers.by(0.5)
+
+assert numbersBy.from == 1.0
+assert numbersBy.to == 4.5
+assert numbersBy == [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5]
+assert numbersBy.class.name == 'groovy.lang.NumberRange'
+
+// We cannot use the step method to set
+// step size to 0.5,
+// because the step method only accepts
+// int values as argument.
+try {
+    numbers.step(0.5)
+} catch (MissingMethodException e) {
+    assert e.message.contains('Possible solutions: step(int), step(int, groovy.lang.Closure)')
+}
+</pre><p>Written with Groovy 2.5.0.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,103 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Parse YAML With YamlSlurper</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Parse YAML With YamlSlurper</h3>
+
+<div class="post">
+<p>In Groovy we have useful classes to parse JSON and XML: <code>JsonSlurper</code> and <code>XmlSlurper</code>. Groovy 3 adds the <code>YamlSlurper</code> class to read in YAML formatted strings. The result of parsing the YAML content is a <code>Map</code> object.</p><p>In the next example we have a sample YAML as string that we parse using the <code>parseText</code> method of <code>YamlSlurper</code>:</p><pre class="brush:groovy;">import groovy.yaml.YamlSlurper
+
+def configYaml = '''\
+---
+application: "Sample App"
+users:
+- name: "mrhaki"
+  likes: 
+  - Groovy
+  - Clojure
+  - Java
+- name: "Hubert"
+  likes:
+  - Apples
+  - Bananas
+connections: 
+- "WS1"
+- "WS2"
+'''
+
+// Parse the YAML.
+def config = new YamlSlurper().parseText(configYaml)
+
+assert config.application == 'Sample App'
+
+assert config.users.size() == 2
+assert config.users[0] == [name: 'mrhaki', likes: ['Groovy', 'Clojure', 'Java']]
+assert config.users[1] == [name: 'Hubert', likes: ['Apples', 'Bananas']]
+
+assert config.connections == ['WS1', 'WS2']
+</pre><p>We can also use <code>Reader</code> with the <code>parse</code> method of <code>YamlSlurlper</code>:</p><pre class="brush:groovy;">// Create YAML file.
+def yamlFile = new File("sample.yml")
+// with YAML contents.
+yamlFile.write('''\
+---
+sample: true
+Groovy: "Rocks!"
+''')
+
+// Using File.withReader, 
+// so reader is closed by Groovy automatically.
+yamlFile.withReader { reader -&gt;
+    // Use parse method of YamlSlurper.
+    def yaml = new YamlSlurper().parse(reader)
+    
+    assert yaml.sample
+    assert yaml.Groovy == 'Rocks!'
+}
+</pre><p>Finally we need to do an extra step if we want to read in a multiple YAML documents defined in one string or file. The underlying parser of <code>YamlSlurper</code> only reads in one document. A simple workaround is to remove the document separator (<code>---</code>) before parsing the YAML:</p><pre class="brush:groovy;">def multiDocYaml = '''\
+---
+version: 1
+--- 
+loadAtStartup: true
+'''
+
+// For YAML with multiple documents separated by ---
+// we first need to remove the separators, otherwise
+// only the first document is parsed.
+def multiDoc = new YamlSlurper().parseText(multiDocYaml.replaceAll('---', ''))
+
+assert multiDoc.version == 1
+assert multiDoc.loadAtStartup
+</pre><p>Written with Groovy 3.0.0.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

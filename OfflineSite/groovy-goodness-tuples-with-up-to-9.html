@@ -1,0 +1,83 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Tuples With Up To 9 Items</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Tuples With Up To 9 Items</h3>
+
+<div class="post">
+<p>A tuple is an ordered, immutable list of elements. Groovy <a href="http://mrhaki.blogspot.com/2016/03/groovy-goodness-using-tuples.html">supported tuples with one or two elements</a> before Groovy 2.5.0. Since Groovy 2.5.0 we can use tuples with maximal nine items. Groovy added the classes <code>Tuple3</code> up to <code>Tuple9</code>. The bonus we get compared to an unmodifiable list with elements is that we can use properties like <code>first</code>, <code>second</code>, <code>third</code>, <code>fourth</code>, <code>fifth</code>, <code>sixth</code>, <code>seventh</code>, <code>eighth</code>, <code>ninth</code> to get items at the specified position.</p><p>In the following example we use different <code>Tuple</code> classes:</p><pre class="brush:groovy">// We can define the types of the elements when we 
+// construct a tuple.
+def tuple3 = new Tuple3&lt;String, Integer, BigDecimal&gt;('add', 2, 40.0)
+
+// We can use first, second, third properties
+// to get values from the tuple.
+assert tuple3.first == 'add'
+assert tuple3.second == 2
+assert tuple3.third == 40.0
+
+// We can use the [index] syntax to get element.
+assert tuple3[0] == 'add'  
+
+// Fully typed tuple.
+Tuple4&lt;String, Integer, BigDecimal, Integer&gt; tuple4 = 
+    new Tuple4&lt;&gt;('subtract', 100, 55.0, 3)
+    
+assert tuple4.first == 'subtract'
+assert tuple4.second == 100
+assert tuple4.third == 55.0
+assert tuple4.fourth == 3
+assert tuple4[-1] == 3
+
+// With subTuple we can get subsequent
+// values from the tuple as a new tuple.
+assert tuple4.subTuple(2, tuple4.size()) == new Tuple2&lt;BigDecimal, Integer&gt;(55.0, 3)
+
+// We can imagine how to work with Tuple4..Tuple8 :-)
+// ...
+
+// Finally a tuple with 9 items.
+def tuple9 = new Tuple9('Groovy', 'rocks', 'and', 'is', 'fun', 'to', 'use', 'as', 'language')
+
+assert tuple9.fifth == 'fun'
+assert tuple9.sixth == 'to'
+assert tuple9.seventh == 'use'
+assert tuple9.eighth == 'as'
+assert tuple9.ninth == 'language'
+
+// Tuple extends AbstractList, so we can
+// use all methods from List as well.
+assert tuple9.join(' ') == 'Groovy rocks and is fun to use as language'
+</pre><p>Written with Groovy 2.5.0.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

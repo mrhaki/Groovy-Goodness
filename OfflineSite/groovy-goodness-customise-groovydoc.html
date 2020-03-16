@@ -1,0 +1,129 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Customise Groovydoc Output With Gradle</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Customise Groovydoc Output With Gradle</h3>
+
+<div class="post">
+<p>When we write our Groovy application we of course add documentation to our classes. If we use Gradle to build our project we can run the <code>groovydoc</code> task that is added by the Groovy plugin to generate documentation. We can set document and windows titles and a footer for the generated documentation by changing some properties of the <code>groovydoc</code> task. If we want some further customisation we must take some extra steps. The <code>groovydoc</code> task uses the GroovyDoc tool that is bundled with the Groovy library. GroovyDoc tool uses the GStringTemplateEngine to generate the documentation. The default template files are stored in the package <code>org.codehaus.tools.groovydoc.gstringTemplates</code>. The following files are in the package:</p><pre class="brush:plain;light:true;">└── org
+    └── codehaus
+        └── groovy
+            └── tools
+                └── groovydoc
+                    └── gstringTemplates
+                        ├── classLevel
+                        │   └── classDocName.html
+                        ├── packageLevel
+                        │   ├── package-frame.html
+                        │   └── package-summary.html
+                        └── topLevel
+                            ├── allclasses-frame.html
+                            ├── deprecated-list.html
+                            ├── help-doc.html
+                            ├── index-all.html
+                            ├── index.html
+                            ├── overview-frame.html
+                            ├── overview-summary.html
+                            └── stylesheet.css
+</pre><p>We can write our own template files if we follow the same package structure and file names. Then when we run the GroovyDoc tool we must make sure our custom template files are used instead of the default ones. If we place our custom files in the class path of the GroovyDoc tool before the Groovy library then our custom files are used. In our Gradle project we can create a new source set that will contain our custom template files. Then we configure the <code>classpath</code> property of the <code>groovydoc</code> task and prepend it with the output of our source set. This way we can override the default implementation.</p><p>Let's change the <code>classDocName.html</code> template. We make a directory <code>src/groovydoc</code>. Here we create the directories <code>org/codehaus/groovy/tools/groovy/gstringTemplates/classLevel</code>. Inside the directory we create the file <code>classDocName.html</code>. We use the contents from the default <code>classDocName.html</code> found in the Groovy library and make some small changes. We want to add a <a href="http://www.gravatar.com">Gravatar</a> image to the Authors section. In our source code we must use the <code>@author</code> tag and include the e-mail address of the user between square brackets. For example <code>@author Hubert Klein Ikkink [actual-email-address]</code>. In our template file we will look for the value between the square brackets and replace it with a <code>&lt;img/&gt;</code> HTML tag referencing the Gravatar image.</p><pre class="brush:html;">...
+&lt;% if (classDoc.commentText()) { 
+
+   def commentText = classDoc.commentText().replaceAll(/\[(.*)\]/) {
+        def md5 = java.security.MessageDigest.getInstance("MD5").digest(it[1].getBytes("UTF-8")).encodeHex()
+        "&lt;img src=\"http://www.gravatar.com/avatar/${md5}?s=24\"/&gt;"
+   }
+
+%&gt;
+            
+    &lt;p&gt;${commentText}&lt;/p&gt;
+&lt;% } %&gt;
+...
+</pre><p>We also include a custom header. We set the value via our Gradle build file and it is available in our template file as <code>props.header</code>:</p><pre class="brush:html;">...
+<% if (props.header) { %><div>${props.header}</div><% } %>
+...
+</pre><p>To make CSS changes we add the file <code>stylesheet.css</code> in the directory <code>src/groovydoc/org/codehaus/groovy/tools/groovy/gstringTemplates/topLevel</code>. Also here we can use the file from the Groovy library as starting point and make changes in it.</p><p>We make the following Gradle build file to support our custom template and reconfigure the <code>groovydoc</code> task:</p><pre class="brush:groovy;">plugins {
+    id "groovy"
+}
+
+// Here we add a new SourceSet
+// that has a resources directory
+// at 'src/groovydoc'. This directory
+// contains Groovydoc template files
+// we want to override for our project.
+sourceSets {
+    groovydoc {
+        resources {
+            srcDir 'src/groovydoc'
+        }
+    }
+}
+
+// Customize groovydoc task that is
+// added by the Groovy plugin.
+groovydoc {
+    // Set document and window titles.
+    docTitle = "Sample GroovyDoc"
+    windowTitle = "Example customizing GroovyDoc"
+    
+    // Set custom header. We will include this
+    // in the changed classDocName.html file.
+    header = '''\
+        &lt;img src="http://www.mrhaki.com/images/haki-logo-black-64.png"/&gt;
+        &lt;h2&gt;Sample project&lt;/h2&gt;
+        '''.stripIndent()
+    
+    // Set custom footer for generated documentation.
+    footer = """\
+        &lt;div class="custom-footer"&gt;
+            Generated on: ${new Date().format('yyyy-MM-dd HH:mm:ss')}
+        &lt;/div&gt;""".stripIndent()
+
+    // Change classpath property and include
+    // the output of the SourceSet groovydoc.
+    // The output contains the changed stylesheet
+    // and template file and must be first in the classpath
+    // before the files that are bundled with Groovy.
+    classpath = sourceSets.groovydoc.output + classpath
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile "org.codehaus.groovy:groovy-all:2.4.5"
+}
+</pre><p>When we make some small changes to <code>stylesheet.css</code> and run the <code>groovydoc</code> task we see the following example output:</p><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-FVvq5yl-gfw/VqdVo7EHfRI/AAAAAAAALc4/mNdUCKrFsv4/s1600/groovydoc.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://4.bp.blogspot.com/-FVvq5yl-gfw/VqdVo7EHfRI/AAAAAAAALc4/mNdUCKrFsv4/s640/groovydoc.png" /></a></div><p style="clear:both;">Notice we have our custom header, the Gravatar image and custom CSS.</p><p>Written with Groovy 2.4.5.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

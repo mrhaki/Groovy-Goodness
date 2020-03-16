@@ -1,0 +1,124 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Removing Elements From a Collection</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Removing Elements From a Collection</h3>
+
+<div class="post">
+<p>There are a lot of methods added to the Java collection classes by Groovy. For example to remove elements from a collection, and indeed modify the collection itself, we can use the <code>removeAll</code> and <code>removeElement</code> methods. With the <code>removeAll</code> method we define a closure with a condition that needs to be true for an element to be removed from the collection. The <code>removeElement</code> method is added to overcome any ambiguity with the standard overloaded <code>remove</code> method for collections with integer values. The <code>remove</code> method accepts both an <code>Object</code> or <code>int</code> value, to remove either an element or an element at the specified index. When the collection contains integer values than the argument is interpreted as index value. The <code>removeElement</code> method will use the <code>remove(Object)</code> method implementation. When the collection is a <code>List</code> Groovy adds the <code>removeAt</code> method. We need to specify the index value of the element we want to remove.</p><pre class="brush:groovy">def list = ['Groovy', '=', 'gr8!']
+
+// Groovy adds removeAll method
+// to remove items from collection
+// that apply to the condition we 
+// define in the closure.
+list.removeAll { it.toLowerCase().startsWith('g') }
+
+// All values starting with a G or g
+// are now removed.
+// Remember the collection we use the
+// removeAll method on is changed.
+assert list == ['=']
+
+// Java 8 adds removeIf method with
+// a predicate. In Groovy we can implement
+// the predicate as closure.
+list.removeIf { it instanceof String }
+
+assert list.size() == 0
+
+
+def values = ['Hello', 'world']
+
+// Groovy adds removeAll(Object[]) 
+// to remove multiple elements
+// from a collection.
+values.removeAll(['world', 'Hello'] as Object[])
+
+assert values.empty
+
+
+def items = [1, 2, 3]
+
+// remove method is overloaded
+// for Object and index value.
+// Because Groovy wraps int to
+// Integer object, the method call
+// is ambiguous for Integer collections.
+items.remove(1)
+
+// We want to remove object
+// Integer(1) from the list,
+// but item with index 1 is removed.
+assert items == [1, 3]
+
+// Groovy adds removeElement
+// as alias for remove(Object).
+items.removeElement(1)
+
+assert items == [3]
+
+// When the collection is a List
+// we can use the removeAt method
+// to remove based on index value.
+items.removeAt(0)
+
+assert !items
+</pre><p>Instead of removing elements with a any of the <code>remove...</code> methods we can also use the <code>retainAll</code> method in Groovy. Any elements that don't apply to the condition we specify in the closure are removed from the collection. See the following example code with some usages of the <code>retainAll</code> methods:</p><pre class="brush:groovy">def list = ['Groovy', 42, 'gr8!', 5.2, new Date()]
+
+// Groovy adds retainAll method
+// to remove items from collection
+// that do not apply to the condition we 
+// define in the closure and keep those
+// items that do apply to the condition.
+list.retainAll { it instanceof String }
+
+// All values that are not a String
+// object are removed.
+// Remember the collection we use the
+// retainAll method on is changed.
+assert list == ['Groovy', 'gr8!']
+
+
+def values = ['Hello', 'world', 'from', 'Groovy']
+
+// Groovy adds retainAll(Object[]) 
+// to keep multiple elements
+// in a collection and remove all
+// the other elements.
+values.retainAll(['world', 'Hello'] as Object[])
+
+assert values.join(' ') == 'Hello world'
+</pre><p>Written with Groovy 2.4.4.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

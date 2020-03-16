@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<title>Groovy Goodness: Swapping Elements in a List</title>
+<title>Groovy Goodness: Where Is My Class?</title>
 
 <script language="javascript" src="scripts/shCore.js"></script> 
 <script language="javascript" src="scripts/shLegacy.js"></script> 
@@ -22,15 +22,25 @@
 
 <a href="index.html">Back to index</a>
 
-<h3 class="post-title">Groovy Goodness: Swapping Elements in a List</h3>
+<h3 class="post-title">Groovy Goodness: Where Is My Class?</h3>
 
 <div class="post">
-<p>Groovy already has so many extra methods for working with lists. If we have to need to swap two elements in a <code>List</code> we can use the <code>swap</code> method. We provide the two index values of the elements we want to swap and Groovy swaps the elements.</p><p>In the following sample we have a simple list and swap all elements by invoking the <code>swap</code> method two times:</p><pre class="brush:groovy">def saying = ['Groovy', 'is', 'great']
+<p>Groovy 2.5.0 makes it possible to get the location of a <code>Class</code> file by adding the method <code>getLocation</code> to the <code>Class</code> class. If the <code>Class</code> is part of the JDK the location returned is <code>null</code>, but otherwise we get the location of the JAR file or source file (if available) with the <code>Class</code> file.</p><p>In the following example we get the location for the internal JDK <code>String</code> class and the Groovy utility class <code>ConfigSlurper</code>:</p><pre class="brush:groovy;">// Internal JDK class location is null.
+assert String.location == null
 
-def yodaSays = saying.swap(2, 1).swap(0, 1)
 
-assert yodaSays.join(' ') == 'great Groovy is'
-</pre><p>Written with Groovy 2.4.1.</p
+// Import ConfigSlurper with alias.
+import groovy.util.ConfigSlurper as ConfigReader
+
+// Location of Groovy JAR file.
+def groovyJarFile = 'file:/Users/mrhaki/.sdkman/candidates/groovy/2.5.0/lib/groovy-2.5.0.jar'.toURL()   
+
+// ConfigSlurper is located in the Groovy JAR file.
+assert ConfigSlurper.location == groovyJarFile
+
+// Works also for aliased class.
+assert ConfigReader.location == groovyJarFile                                                 
+</pre><p>Written with Groovy 2.5.0.</p
 </div>
 
 <script language="javascript"> 

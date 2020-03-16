@@ -1,0 +1,133 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Creating Root JSON Array With JsonBuilder</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Creating Root JSON Array With JsonBuilder</h3>
+
+<div class="post">
+<p>To create JSON output with Groovy is easy using <a href="http://mrhaki.blogspot.nl/2011/04/groovy-goodness-build-json-with.html">JsonBuilder</a> and <a href="http://mrhaki.blogspot.nl/2011/09/groovy-goodness-streaming-json-with.html">StreamingJsonBuilder</a>. In the samples mentioned in the links we create a JSON object with a key and values. But what if we want to create JSON with a root JSON array using <code>JsonBuilder</code> or <code>StreamingJsonBuilder</code>? It turns out to be very simple by passing a list of values using the constructor or using the implicit method <code>call</code>.</p><p>In the following example we use <code>JsonBuilder</code> to create a root JSON array:</p><pre class="brush:groovy;">import groovy.json.JsonBuilder
+
+// Example class.
+@groovy.transform.Immutable
+class Villain { 
+    String name 
+}
+
+// A list of Villain objects that needs to transformed
+// to a JSON array.
+def list = ['The Joker', 'Penguin', 'Catwoman', 'Harley Quinn'].collect { name -> new Villain(name) }
+
+// We create a new JsonBuilder and 
+// use the list of Villain objects
+// as argument for the constructor
+// to create a root JSON array.
+def json1 = new JsonBuilder(list)
+
+assert json1.toString() == '[{"name":"The Joker"},{"name":"Penguin"},{"name":"Catwoman"},{"name":"Harley Quinn"}]'
+
+
+// Here we use the no-argument constructor
+// to create a JsonBuilder.
+// Then we use the instance implicit
+// method call with the list of Villain
+// objects as arguments
+def json2 = new JsonBuilder()
+json2(list)
+
+assert json2.toString() == '[{"name":"The Joker"},{"name":"Penguin"},{"name":"Catwoman"},{"name":"Harley Quinn"}]'
+</pre><p>In the next example we use <code>StreamingJsonBuilder</code> to create a root JSON array:</p><pre class="brush:groovy;">import groovy.json.StreamingJsonBuilder
+
+// Example class.
+@groovy.transform.Immutable
+class Villain { 
+    String name 
+}
+
+// A list of Villain objects that needs to transformed
+// to a JSON array.
+def list = ['The Joker', 'Penguin', 'Catwoman', 'Harley Quinn'].collect { name -> new Villain(name) }
+
+// Here we use the no-argument constructor
+// to create a JsonBuilder.
+// Then we use the instance implicit
+// method call with the list of Villain
+// objects as arguments
+def json = new StringWriter()
+def jsonBuilder = new StreamingJsonBuilder(json)
+jsonBuilder(list)
+
+assert json.toString() == '[{"name":"The Joker"},{"name":"Penguin"},{"name":"Catwoman"},{"name":"Harley Quinn"}]'
+</pre><p>There is also an implicit method <code>call</code> that takes an extra <code>Closure</code> argument. For each element in the list the <code>Closure</code> is invoked with the element as argument. This way we can customize the root JSON array output using the properties of the object that is in the list. In the following example we use both the <code>JsonBuilder</code> and <code>StreamingJsonBuilder</code> classes to transform the elements in the list:</p><pre class="brush:groovy;">import groovy.json.JsonBuilder
+import groovy.json.StreamingJsonBuilder
+
+// Example class.
+@groovy.transform.Immutable
+class Villain { 
+    String name 
+}
+
+// A list of Villain objects that needs to transformed
+// to a JSON array.
+def list = ['The Joker', 'Penguin', 'Catwoman', 'Harley Quinn'].collect { name -> new Villain(name) }
+
+// We create a new JsonBuilder and 
+// then we use the instance implicit
+// method call with the list of Villain
+// objects as arguments and closure
+// to transform each Villain object
+// in the root JSON array.
+def json1 = new JsonBuilder() 
+json1(list) { Villain villain ->
+    name villain.name
+    initials villain.name.split(' ').collect { it[0].toUpperCase() }.join()
+}
+
+assert json1.toString() == '[{"name":"The Joker","initials":"TJ"},{"name":"Penguin","initials":"P"},{"name":"Catwoman","initials":"C"},{"name":"Harley Quinn","initials":"HQ"}]'
+
+
+// We can use the same implicit
+// method call for a list and 
+// closure to transform each element
+// to a root JSON array.
+def json = new StringWriter()
+def json2 = new StreamingJsonBuilder(json)
+json2(list) { Villain villain -> 
+    name villain.name
+    initials villain.name.split(' ').collect { it[0].toUpperCase() }.join()
+}
+
+assert json.toString() == '[{"name":"The Joker","initials":"TJ"},{"name":"Penguin","initials":"P"},{"name":"Catwoman","initials":"C"},{"name":"Harley Quinn","initials":"HQ"}]'
+</pre><p>Written with Groovy 2.4.8</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

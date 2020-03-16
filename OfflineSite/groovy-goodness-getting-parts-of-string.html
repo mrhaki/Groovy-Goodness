@@ -1,0 +1,78 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Getting Parts Of A String Enclosed By Strings</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Getting Parts Of A String Enclosed By Strings</h3>
+
+<div class="post">
+<p>Groovy 3 adds the <code>takeBetween</code> method to the <code>String</code> class. With this method we can get all the characters that are enclosed by string values. We can specify one enclosed string value and then all text between the the first occurrence of the string and the second occurrence is returned. If multiple parts are enclosed by the string values we can also specify which occurrence we want. If the text is enclosed by different string values we can use a variant of <code>takeBetween</code> that takes two string values to indicate the boundaries of the text we want. Also with two different enclosed string values we can use an argument to get the n-th occurrence of the string that is found.<br />Since Groovy 3 we can also use <code>takeBefore</code> and <code>takeAfter</code> to get the string before or after a given string value. All three methods will return an empty string if no text can be found.</p><p>In the following example we use the <code>takeBefore</code>, <code>takeAfter</code> and <code>takeBetween</code> methods with different arguments:</p><pre class="brush:groovy;">def text = 'Just saying: "Groovy is gr8!"'
+
+// Return all characters before the first quote.
+assert text.takeBefore('"') == 'Just saying: '
+// Return everything after the colon.
+assert text.takeAfter(': ') == '"Groovy is gr8!"'
+// Return everything between two quotes.
+assert text.takeBetween('"') == 'Groovy is gr8!'
+// Return text between is and !.
+assert text.takeBetween('is', '!') == ' gr8'
+
+// When no value can be found
+// an empty string is returned.
+assert text.takeBefore('?') == ''
+assert text.takeAfter('Java') == ''
+assert text.takeBetween('-') == ''
+assert text.takeBetween('[', '/') == ''
+
+def sample = 'JVM languages are "Groovy", "Clojure", "Java".'
+
+assert sample.takeBetween('"') == 'Groovy'
+// We can also specify which occurrence we 
+// want for a text between same strings.
+assert sample.takeBetween('"', 0) == 'Groovy'
+assert sample.takeBetween('"', 1) == 'Clojure'
+assert sample.takeBetween('"', 2) == 'Java'
+
+
+def users = "Users: [mrhaki], [hubert]"
+
+assert users.takeBetween('[', ']') == 'mrhaki'
+// We can also specify which occurrence we 
+// want for a text between to strings.
+assert users.takeBetween('[', ']', 0) == 'mrhaki'
+assert users.takeBetween('[', ']', 1) == 'hubert'
+// When no occurrence an empty string is returned.
+assert users.takeBetween('[', ']', 2) == ''
+</pre><p>Written with Groovy 3.0.2.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>

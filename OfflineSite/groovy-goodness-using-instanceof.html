@@ -1,7 +1,7 @@
 <html>
 <head>
 
-<title>Groovy Goodness: Swapping Elements in a List</title>
+<title>Groovy Goodness: Using !instanceof Operator</title>
 
 <script language="javascript" src="scripts/shCore.js"></script> 
 <script language="javascript" src="scripts/shLegacy.js"></script> 
@@ -22,15 +22,17 @@
 
 <a href="index.html">Back to index</a>
 
-<h3 class="post-title">Groovy Goodness: Swapping Elements in a List</h3>
+<h3 class="post-title">Groovy Goodness: Using !instanceof Operator</h3>
 
 <div class="post">
-<p>Groovy already has so many extra methods for working with lists. If we have to need to swap two elements in a <code>List</code> we can use the <code>swap</code> method. We provide the two index values of the elements we want to swap and Groovy swaps the elements.</p><p>In the following sample we have a simple list and swap all elements by invoking the <code>swap</code> method two times:</p><pre class="brush:groovy">def saying = ['Groovy', 'is', 'great']
+<p>Groovy 3 adds the <code>!instanceof</code> operator to check if an object is not an instance of a type. This is a shorthand for using <code>instanceof</code> and then negate the result. It shows how little changes can make code easier to read.</p><p>In the following example we use the <i>old</i> way to check if object is not an instance of a type and the new <code>!instanceof</code> operator:</p><pre class="brush:groovy;">// Check using !(obj instanceof type) 
+// if object is not an instance of type.
+assert !("Groovy is awesome!" instanceof Number)
 
-def yodaSays = saying.swap(2, 1).swap(0, 1)
-
-assert yodaSays.join(' ') == 'great Groovy is'
-</pre><p>Written with Groovy 2.4.1.</p
+// Since Groovy 3 we can use !instanceof to check
+// if object is not an instance of a type.
+assert 42 !instanceof String
+</pre><p>Written with Groovy 3.0.1.</p
 </div>
 
 <script language="javascript"> 

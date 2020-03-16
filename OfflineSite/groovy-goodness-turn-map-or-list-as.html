@@ -1,0 +1,82 @@
+<html>
+<head>
+
+<title>Groovy Goodness: Turn A Map Or List As String To Map Or List</title>
+
+<script language="javascript" src="scripts/shCore.js"></script> 
+<script language="javascript" src="scripts/shLegacy.js"></script> 
+<script language="javascript" src="scripts/shBrushJava.js"></script> 
+<script language="javascript" src="scripts/shBrushXml.js"></script> 
+<script language="javascript" src="scripts/shBrushJScript.js"></script> 
+<script language="javascript" src="scripts/shBrushGroovy.js"></script> 
+<script language="javascript" src="scripts/shBrushPlain.js"></script> 
+<script language="javascript" src="scripts/shBrushBash.js"></script> 
+ 
+<link href="styles/reset.css" rel="stylesheet" type="text/css" />
+<link href="styles/shCore.css" rel="stylesheet" type="text/css" />
+<link type="text/css" rel="stylesheet" href="styles/shThemeRDark.css"/>
+<link href="styles/blog.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<a href="index.html">Back to index</a>
+
+<h3 class="post-title">Groovy Goodness: Turn A Map Or List As String To Map Or List</h3>
+
+<div class="post">
+<p>In a <a href="http://mrhaki.blogspot.com/2016/06/groovy-goodness-represent-map-as-string.html">previous post</a> we learned how to use the <code>toListString</code> or <code>toMapString</code> methods. With these methods we create a String representation of a <code>List</code> or <code>Map</code> object. With a bit of Groovy code we can take such a <code>String</code> object and turn it into a <code>List</code> or <code>Map</code> again.</p><p>In the following code snippet we turn the <code>String</code> value <code>[abc, 123, Groovy rocks!]</code> to a <code>List</code> with three items:</p><pre class="brush:groovy;">// Original List with three items.
+def original = ['abc', 123, 'Groovy rocks!']
+
+// Create a String representation:
+// [abc, 123, Groovy rocks!]
+def listAsString = original.toListString()
+
+// Take the String value between
+// the [ and ] brackets, then
+// split on , to create a List
+// with values.
+def list = listAsString[1..-2].split(', ')
+
+assert list.size() == 3
+assert list[0] == 'abc'
+assert list[1] == '123' // String value
+assert list[2] == 'Groovy rocks!'
+</pre><p>We can do something similar for a <code>String</code> value representing a map structure:</p><pre class="brush:groovy;">// Original Map structure.
+def original = [name: 'mrhaki', age: 42]
+
+// Turn map into String representation:
+// [name:mrhaki, age:42]
+def mapAsString = original.toMapString()
+
+def map = 
+    // Take the String value between
+    // the [ and ] brackets.
+    mapAsString[1..-2]
+        // Split on , to get a List.
+        .split(', ')
+        // Each list item is transformed
+        // to a Map entry with key/value.
+        .collectEntries { entry -> 
+            def pair = entry.split(':')
+            [(pair.first()): pair.last()]
+        }
+        
+
+assert map.size() == 2
+assert map.name == 'mrhaki'
+assert map.age == '42'
+</pre><p>Written with Groovy 2.4.7.</p
+</div>
+
+<script language="javascript"> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'scripts/clipboard.swf';
+SyntaxHighlighter.defaults['first-line'] = 0;
+SyntaxHighlighter.defaults['auto-links'] = false;
+SyntaxHighlighter.all();
+dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
+</body>
+</html>
